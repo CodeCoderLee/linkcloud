@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.core.ServerInfoMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.core.ServerInfo" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cpuUsage" property="cpuusage" jdbcType="VARCHAR" />
+    <result column="setCpuUsage" property="setcpuusage" jdbcType="VARCHAR" />
+    <result column="jvmUsage" property="jvmusage" jdbcType="VARCHAR" />
+    <result column="setJvmUsage" property="setjvmusage" jdbcType="VARCHAR" />
+    <result column="ramUsage" property="ramusage" jdbcType="VARCHAR" />
+    <result column="setRamUsage" property="setramusage" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="operTime" property="opertime" jdbcType="TIMESTAMP" />
+    <result column="mark" property="mark" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

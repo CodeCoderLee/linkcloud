@@ -1,0 +1,44 @@
+package cn.ac.bcc.controller;
+
+import cn.ac.bcc.controller.base.BaseController;
+import cn.ac.bcc.model.${Model};
+import cn.ac.bcc.service.${Model}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import net.sf.json.JSONObject;
+
+@Controller
+@RequestMapping("/${model}/")
+public class ${Model}Controller extends BaseController<${Model}> {
+
+    @Autowired
+    private ${Model}Service ${model}Service;
+
+    @ResponseBody
+    @RequestMapping(value = "search")
+    public JSONObject search(${Model} ${model},String pageNum, String pageSize) {
+        return super.search(${model}Service,${model},pageNum,pageSize);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "modify")
+    public JSONObject modify(${Model} ${model}, String pageNum, String pageSize) {
+        return super.modify(${model}Service,${model},pageNum,pageSize);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "add")
+    public JSONObject add(${Model} ${model}, String pageNum, String pageSize) {
+        return super.add(${model}Service,${model},pageNum,pageSize);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "delete")
+    public JSONObject delete() {
+        return super.delete(${model}Service,new ${Model}());
+
+    }
+    
+}

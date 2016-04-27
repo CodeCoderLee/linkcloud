@@ -1,0 +1,46 @@
+{
+  "form": {
+    "name": {
+      "type": "text",
+      "initValue": [
+        ""
+      ],
+      "readOnly": false,
+      "maxLength": 6,
+      "placeholder": "请输入不超过5个字符",
+      "validator": [
+        "noneEmptyFunc"
+      ]
+    },
+    "rolekey": {
+      "type": "text",
+      "initValue": [
+        ""
+      ],
+      "readOnly": false,
+      "validator": [
+        "noneEmptyFunc"
+      ]
+    },
+    "state": {
+      "type": "select",
+      "initValue": [
+        {"0":"在线","1":"离线"}
+      ],
+      "readOnly": false,
+      "validator": [
+        "noneEmptyFunc"
+      ]
+    },
+    "description": {
+      "type": "text",
+      "initValue": [
+        ""
+      ],
+      "readOnly": false,
+      "validator": [
+        "noneEmptyFunc"
+      ]
+    }
+  }
+}
