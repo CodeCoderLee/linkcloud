@@ -33,6 +33,7 @@ public class UserLoginLogController extends BaseController<UserLogin>{
     @ResponseBody
     @RequestMapping("search")
     public ResponseData search(UserLogin userLogin, Integer limit, Integer offset) throws Exception {
+        System.out.println("test");
         PageHelper.startPage(offset + 1, limit);
         Example example = getEqualsToExample(userLogin);
         List<UserLogin> list = userLoginService.selectByExample(example);
