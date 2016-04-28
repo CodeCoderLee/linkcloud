@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>bcc.ac.cn</groupId>
-	<artifactId>easyframework-demo</artifactId>
+	<artifactId>linkcloud</artifactId>
 	<packaging>war</packaging>
 	<version>3.1</version>
-	<name>easyframework-demo Maven Webapp</name>
+	<name>linkcloud Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<!-- 项目属性 -->
 	<properties>
