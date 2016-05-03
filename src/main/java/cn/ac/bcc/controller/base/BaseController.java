@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import cn.ac.bcc.service.base.BaseService;
 import cn.ac.bcc.util.DataObject;
@@ -83,6 +84,14 @@ public abstract class BaseController<T> {
      */
     protected HttpServletResponse getResponse() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+    }
+
+    /**
+     * 获取session
+     * @return
+     */
+    protected HttpSession getSession(){
+        return getRequest().getSession();
     }
 
     /**

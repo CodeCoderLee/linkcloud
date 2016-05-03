@@ -65,9 +65,9 @@ public class UserLoginController extends BaseController {
 
 
 
-    @RequestMapping(value = "admin", produces = "text/html; charset=utf-8")
-    public String admin(Model model) {
-        System.out.println("admin");
+    @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
+    public String index(Model model) {
+        System.out.println("index");
         JSONObject jsonObject = new JSONObject();
         try {
             HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
@@ -81,6 +81,7 @@ public class UserLoginController extends BaseController {
                 //return jsonObject;
                 return "/error";
             }
+            getSession().setAttribute("user",user1);
             List<Resources> rs = resourcesService.findUserResourcess("" + user1.getId());
             System.out.println(rs.size());
             List<TreeObject> list = new ArrayList<TreeObject>();
@@ -99,17 +100,17 @@ public class UserLoginController extends BaseController {
             jsonObject.put("user", user1);
             jsonObject.put("status", 1);
             System.out.println(JSONArray.fromObject(ns).toString());
-
+            getSession().setAttribute("resourceList", ns);
             model.addAttribute("list", ns);
             // 登陆的信息回传页面
             model.addAttribute("user", user1);
             //return jsonObject;
-            return "/admin";
+            return "/index";
         } catch (Exception e) {
             e.printStackTrace();
             jsonObject.put("status", 0);
             //return jsonObject;
-            return "/admin";
+            return "/index";
         }
     }
 
@@ -265,7 +266,7 @@ public class UserLoginController extends BaseController {
 //        if("simple".equals(roleKey)){
 //            return "redirect:front.shtml";
 //        }else{
-        return "redirect:admin.shtml";
+        return "redirect:index.shtml";
 //        }
     }
 

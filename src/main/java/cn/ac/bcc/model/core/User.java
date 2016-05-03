@@ -52,6 +52,11 @@ public class User {
     @Model(name = "创建时间")
     private Date createtime;
 
+    @Model(name = "性别")
+    private Integer sex;
+
+
+
     /**
      * 逻辑删除状态0:存在1:删除
      */
@@ -231,6 +236,14 @@ public class User {
         this.deleteStatus = deleteStatus;
     }
 
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
     public String getRole() {
         return role;
     }
@@ -238,6 +251,8 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+
 
     @Override
 	public String toString() {
