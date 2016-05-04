@@ -41,20 +41,22 @@
             </ul>
         </div>
 
+        <div id="menuList">
+            <ul class="main-menu">
+                <c:forEach var="key" items="${sessionScope.resourceList}" varStatus="s">
+                    <li <c:if test="${key.children.size()>0}"> class="sub-menu" </c:if> >
+                        <a href="admin.jsp" <c:if test="${s.index == 0}">class="active" </c:if> ><i class="zmdi zmdi-home"></i>${key.name}</a>
+                        <ul>
+                            <c:forEach var="kc" items="${key.children}" varStatus="kcs">
+                                <li>
+                                    <a href="">${kc.name}</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
 
-        <ul class="main-menu">
-            <c:forEach var="key" items="${sessionScope.resourceList}" varStatus="s">
-                <li <c:if test="${key.children.size()>0}"> class="sub-menu" </c:if> >
-                    <a href="admin.jsp" <c:if test="${s.index == 0}">class="active" </c:if> ><i class="zmdi zmdi-home"></i>${key.name}</a>
-                    <ul>
-                        <c:forEach var="kc" items="${key.children}" varStatus="kcs">
-                            <li>
-                                <a href="">${kc.name}</a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </li>
-            </c:forEach>
-        </ul>
     </div>
 </aside>

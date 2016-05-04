@@ -1,4 +1,6 @@
 <%@ page language="java"  pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <!--[if IE 9 ]><html class="ie9"><![endif]-->
 <head>
@@ -15,130 +17,35 @@
     <link href="/css/app.min.1.css" rel="stylesheet">
     <link href="/css/app.min.2.css" rel="stylesheet">
 </head>
+<script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
+<script type="text/javascript" src="${ctx}/common/common.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var rootPath = "${ctx}"
+        //---------修改人赵雷完毕----------
+        var tb = $("#content");
+        tb.html('<div class="alert alert-warning">'
+                + '<button type="button" class="close" data-dismiss="alert">'
+                + '<i class="ace-icon fa fa-times"></i></button><div style="text-align:center">'
+                + '<img src="' + rootPath + '/images/loading.gif"/><div>'
+                + '</div>');
+        /*获取菜单栏中active菜单的url，进行加载*/
+        if($("#menuList ul a.active ").length>0){
+            //判断是否有权限
+            tb.load(rootPath + "/list.jsp");
+        }else{
+            /*一个权限都没有*/
+            tb.load(rootPath + "/WEB-INF/jsp/system/user/list.jsp");
+        }
+
+    });
+</script>
 <body>
 <%@include file="header.jsp"%>
 <section id="main">
     <%@include file="sidebar.jsp"%>
     <section id="content">
-        <div class="container">
-            <div class="block-header">
-                <h2>用户信息管理</h2>
 
-                <ul class="actions">
-                    <li>
-                        <a href="">
-                            <i class="zmdi zmdi-trending-up"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="zmdi zmdi-check-all"></i>
-                        </a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="" data-toggle="dropdown">
-                            <i class="zmdi zmdi-more-vert"></i>
-                        </a>
-
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>
-                                <a href="">Refresh</a>
-                            </li>
-                            <li>
-                                <a href="">Manage Widgets</a>
-                            </li>
-                            <li>
-                                <a href="">Widgets Settings</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h2>Basic Table
-                        <small>Basic example without any additional modification classes</small>
-                    </h2>
-                </div>
-
-                <div class="card-body table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                            <th>Nickname</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Alexandra</td>
-                            <td>Christopher</td>
-                            <td>@makinton</td>
-                            <td>Ducky</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Madeleine</td>
-                            <td>Hollaway</td>
-                            <td>@hollway</td>
-                            <td>Cheese</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Sebastian</td>
-                            <td>Johnston</td>
-                            <td>@sebastian</td>
-                            <td>Jaycee</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Mitchell</td>
-                            <td>Christin</td>
-                            <td>@mitchell4u</td>
-                            <td>AdskiDeAnus</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Elizabeth</td>
-                            <td>Belkitt</td>
-                            <td>@belkitt</td>
-                            <td>Goat</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Benjamin</td>
-                            <td>Parnell</td>
-                            <td>@wayne234</td>
-                            <td>Pokie</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Katherine</td>
-                            <td>Buckland</td>
-                            <td>@anitabelle</td>
-                            <td>Wokie</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>Nicholas</td>
-                            <td>Walmart</td>
-                            <td>@mwalmart</td>
-                            <td>Spike</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-
-
-        </div>
     </section>
 </section>
 <%@include file="footer.jsp"%>
