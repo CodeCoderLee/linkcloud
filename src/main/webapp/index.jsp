@@ -22,7 +22,7 @@
 <script type="text/javascript">
     $(function () {
         var rootPath = "${ctx}"
-        //---------修改人赵雷完毕----------
+        //
         var tb = $("#content");
         tb.html('<div class="alert alert-warning">'
                 + '<button type="button" class="close" data-dismiss="alert">'
@@ -30,8 +30,13 @@
                 + '<img src="' + rootPath + '/images/loading.gif"/><div>'
                 + '</div>');
         /*获取菜单栏中active菜单的url，进行加载*/
-        if($("#menuList ul a.active ").length>0){
+        if($("#menuList ul li.active a.active").length>0){
             //判断是否有权限
+            console.log($("#menuList ul li.active  a.active"));
+            var nav = $($("#menuList ul li.active  a.active")[0]).attr("nav-n");
+            console.log("nav",nav);
+            var sn = nav.split(",");
+            tb.load(rootPath + sn[2]);
             tb.load(rootPath + "/list.jsp");
         }else{
             /*一个权限都没有*/
@@ -43,22 +48,13 @@
             $(this).bind("click", function () {
                 var nav = $(this).attr("nav-n");
                 var sn = nav.split(",");
-                var html = '<li><i class="fa fa-home"></i>';
-                html += '<a href="index.shtml">Home</a></li>';
-                for (var i = 0; i < 2; i++) {
-                    html += '<li><a href="javascript:void(0)">' + sn[i] + '</a></li>';
-                }
-
-                //added by lisy  2015-12-23  start
-                //设备配置管理添加顶部操作菜单
-                //if(sn[2].indexOf('device') > 0){
-                //html+='<span style="display:inline-block;"><button type="button" class="btn btn-primary btn-offset-50x" id="btn-add-device">添加设备</button><button type="button" class="btn btn-primary btn-offset-15x" id="btn-del-device">删除设备</button></span>';
-                //}
-                //added by lisy  2015-12-23  end
-
-                $("#topli").html(html);
-                var tb = $("#loadhtml");
-                tb.html(CommnUtil.loadingImg());
+                var tb = $("#content");
+                tb.html('<div class="alert alert-warning">'
+                        + '<button type="button" class="close" data-dismiss="alert">'
+                        + '<i class="ace-icon fa fa-times"></i></button><div style="text-align:center">'
+                        + '<img src="' + rootPath + '/images/loading.gif"/><div>'
+                        + '</div>');
+                console.log("path==",rootPath + sn[2]);
                 tb.load(rootPath + sn[2]);
             });
         });
@@ -69,7 +65,66 @@
 <body>
 <%@include file="header.jsp"%>
 <section id="main">
-    <%@include file="sidebar.jsp"%>
+    <aside id="sidebar">
+        <div class="sidebar-inner c-overflow">
+            <div class="profile-menu">
+                <a href="">
+                    <div class="profile-pic">
+                        <c:choose>
+                            <c:when test="${sessionScope.user.sex==0}">
+                                <img src="img/profile-pics/1.jpg" alt="">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="img/profile-pics/2.jpg" alt="">
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+
+                    <div class="profile-info">
+                        ${sessionScope.user.username}
+                        <i class="zmdi zmdi-arrow-drop-down"></i>
+                    </div>
+                </a>
+
+                <ul class="main-menu">
+                    <li>
+                        <a href="profile-about.html"><i class="zmdi zmdi-account"></i> 个人信息</a>
+                    </li>
+                    <li>
+                        <a href=""><i class="zmdi zmdi-settings"></i> 设置</a>
+                    </li>
+                    <li>
+                        <a href="logout.shtml"><i class="zmdi zmdi-time-restore"></i> 退出</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="menuList">
+                <ul class="main-menu">
+                    <c:forEach var="key" items="${sessionScope.resourceList}" varStatus="s">
+                        <li class="<c:if test="${key.children.size()>0}"> sub-menu </c:if>
+                                <c:if test="${s.index==0}"> active </c:if>
+                                <c:if test="${key.children.size()>0&&s.index==0}"> toggled </c:if>" >
+
+                        <a class="<c:if test="${s.index==0&&key.children.size()==0}"> active </c:if>" nav-n="${key.name},${key.name},${key.resUrl}?id=${kc.id}">
+                        <i class="zmdi zmdi-widgets"></i>${key.name}
+                        </a>
+                            <ul>
+                                <c:forEach var="kc" items="${key.children}" varStatus="kcs">
+                                    <li <c:if test="${kcs.index==0}">class="active"</c:if> >
+                                        <a href="javascript:void(0)"  <c:if test="${kcs.index==0}">class="active"</c:if>
+                                           nav-n="${key.name},${kc.name},${kc.resUrl}?id=${kc.id}"> <i
+                                                class="fa fa-angle-right"></i> <span>${kc.name}</span>
+                                        </a></li>
+                                </c:forEach>
+                            </ul>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+
+        </div>
+    </aside>
     <section id="content">
 
     </section>
