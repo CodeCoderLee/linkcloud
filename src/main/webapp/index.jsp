@@ -32,9 +32,6 @@
         /*获取菜单栏中active菜单的url，进行加载*/
         if($("#menuList ul li.active a.active").length>0){
             //判断是否有权限
-            console.log($("#menuList ul li.active  a.active"));
-            var nav = $($("#menuList ul li.active  a.active")[0]).attr("nav-n");
-            console.log("nav",nav);
             var sn = nav.split(",");
             tb.load(rootPath + sn[2]);
             tb.load(rootPath + "/list.jsp");
@@ -44,7 +41,8 @@
             tb.load(rootPath + "/denied.jsp");
         }
 
-        $("[nav-n]").each(function () {
+        /*绑定拥有load类的class的点击事件,加载页面*/
+        $("a.load").each(function () {
             $(this).bind("click", function () {
                 var nav = $(this).attr("nav-n");
                 var sn = nav.split(",");
@@ -102,17 +100,22 @@
             <div id="menuList">
                 <ul class="main-menu">
                     <c:forEach var="key" items="${sessionScope.resourceList}" varStatus="s">
+                        <%--一级目录的li的class有三种情况
+                        1.有二级目录,那么class添加sub-menu类
+                        2.是第一个目录,那么class添加active类,默认选中
+                        3.如果有二级目录,并且是第一个目录,那么默认展开,选中二级目录中的第一个--%>
                         <li class="<c:if test="${key.children.size()>0}"> sub-menu </c:if>
                                 <c:if test="${s.index==0}"> active </c:if>
                                 <c:if test="${key.children.size()>0&&s.index==0}"> toggled </c:if>" >
-
-                        <a class="<c:if test="${s.index==0&&key.children.size()==0}"> active </c:if>" nav-n="${key.name},${key.name},${key.resUrl}?id=${kc.id}">
+                        <%--为菜单栏中的<a>标签,添加load的class,只有拥有load类的标签的点击事件才会加载页面--%>
+                        <a href="javascript:void(0)" class="<c:if test="${key.children.size()==0} load"></c:if> <c:if test="${s.index==0&&key.children.size()==0}"> active </c:if>" nav-n="${key.name},${key.name},${key.resUrl}?id=${kc.id}">
                         <i class="zmdi zmdi-widgets"></i>${key.name}
                         </a>
                             <ul>
                                 <c:forEach var="kc" items="${key.children}" varStatus="kcs">
                                     <li <c:if test="${kcs.index==0}">class="active"</c:if> >
-                                        <a href="javascript:void(0)"  <c:if test="${kcs.index==0}">class="active"</c:if>
+                                        <%--二级目录的菜单,都需要加载页面,所以添加class添加load--%>
+                                        <a href="javascript:void(0)"  class="load <c:if test="${kcs.index==0&&s.index==0}"> active </c:if>"
                                            nav-n="${key.name},${kc.name},${kc.resUrl}?id=${kc.id}"> <i
                                                 class="fa fa-angle-right"></i> <span>${kc.name}</span>
                                         </a></li>
