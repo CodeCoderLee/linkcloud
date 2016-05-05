@@ -32,16 +32,15 @@
         /*获取菜单栏中active菜单的url，进行加载*/
         if($("#menuList ul li.active a.active").length>0){
             //判断是否有权限
+            var nav = $($("#menuList ul li.active  a.active")[0]).attr("nav-n");
             var sn = nav.split(",");
             tb.load(rootPath + sn[2]);
-            tb.load(rootPath + "/list.jsp");
         }else{
             /*一个权限都没有*/
 //            tb.load(rootPath + "/WEB-INF/jsp/system/user/list.jsp");
             tb.load(rootPath + "/denied.jsp");
         }
-
-        /*绑定拥有load类的class的点击事件,加载页面*/
+        /*绑定class=load的<a>元素的点击事件,加载页面*/
         $("a.load").each(function () {
             $(this).bind("click", function () {
                 var nav = $(this).attr("nav-n");
