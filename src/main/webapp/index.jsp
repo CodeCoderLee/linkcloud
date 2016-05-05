@@ -9,13 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Link Cloud</title>
     <!-- Vendor CSS -->
-    <link href="/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
-    <link href="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
-    <link href="/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css"
+    <link href="${ctx}/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+    <link href="${ctx}/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
+    <link href="${ctx}/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css"
           rel="stylesheet">
     <!-- CSS -->
-    <link href="/css/app.min.1.css" rel="stylesheet">
-    <link href="/css/app.min.2.css" rel="stylesheet">
+    <link href="${ctx}/css/app.min.1.css" rel="stylesheet">
+    <link href="${ctx}/css/app.min.2.css" rel="stylesheet">
 </head>
 <script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
 <script type="text/javascript" src="${ctx}/common/common.js"></script>
@@ -35,8 +35,34 @@
             tb.load(rootPath + "/list.jsp");
         }else{
             /*一个权限都没有*/
-            tb.load(rootPath + "/WEB-INF/jsp/system/user/list.jsp");
+//            tb.load(rootPath + "/WEB-INF/jsp/system/user/list.jsp");
+            tb.load(rootPath + "/denied.jsp");
         }
+
+        $("[nav-n]").each(function () {
+            $(this).bind("click", function () {
+                var nav = $(this).attr("nav-n");
+                var sn = nav.split(",");
+                var html = '<li><i class="fa fa-home"></i>';
+                html += '<a href="index.shtml">Home</a></li>';
+                for (var i = 0; i < 2; i++) {
+                    html += '<li><a href="javascript:void(0)">' + sn[i] + '</a></li>';
+                }
+
+                //added by lisy  2015-12-23  start
+                //设备配置管理添加顶部操作菜单
+                //if(sn[2].indexOf('device') > 0){
+                //html+='<span style="display:inline-block;"><button type="button" class="btn btn-primary btn-offset-50x" id="btn-add-device">添加设备</button><button type="button" class="btn btn-primary btn-offset-15x" id="btn-del-device">删除设备</button></span>';
+                //}
+                //added by lisy  2015-12-23  end
+
+                $("#topli").html(html);
+                var tb = $("#loadhtml");
+                tb.html(CommnUtil.loadingImg());
+                tb.load(rootPath + sn[2]);
+            });
+        });
+
 
     });
 </script>
@@ -51,21 +77,21 @@
 <%@include file="footer.jsp"%>
 
 <!-- Javascript Libraries -->
-<script src="/vendors/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="${ctx}/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="${ctx}/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<script src="/vendors/bower_components/jquery.nicescroll/jquery.nicescroll.min.js"></script>
-<script src="/vendors/bower_components/Waves/dist/waves.min.js"></script>
-<script src="/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script src="/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+<script src="${ctx}/vendors/bower_components/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+<script src="${ctx}/vendors/bower_components/Waves/dist/waves.min.js"></script>
+<script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script src="${ctx}/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
 
 <!-- Placeholder for IE9 -->
 <!--[if IE 9 ]>
-<script src="/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+<script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
 <![endif]-->
 
-<script src="/js/functions.js"></script>
-<script src="/js/demo.js"></script>
+<script src="${ctx}/js/functions.js"></script>
+<script src="${ctx}/js/demo.js"></script>
 
 
 </body>

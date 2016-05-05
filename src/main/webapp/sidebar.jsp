@@ -36,7 +36,7 @@
                     <a href=""><i class="zmdi zmdi-settings"></i> 设置</a>
                 </li>
                 <li>
-                    <a href="login.html"><i class="zmdi zmdi-time-restore"></i> 退出</a>
+                    <a href="logout.shtml"><i class="zmdi zmdi-time-restore"></i> 退出</a>
                 </li>
             </ul>
         </div>
@@ -48,14 +48,20 @@
                         <a href="admin.jsp" <c:if test="${s.index == 0}">class="active" </c:if> ><i class="zmdi zmdi-home"></i>${key.name}</a>
                         <ul>
                             <c:forEach var="kc" items="${key.children}" varStatus="kcs">
-                                <li>
-                                    <a href="">${kc.name}</a>
-                                </li>
+                                <li <c:if test="${kcs.index==0}">class="active"</c:if> >
+                                    <a href="javascript:void(0)"  class="active"
+                                       nav-n="${key.name},${kc.name},${kc.resUrl}?id=${kc.id}"> <i
+                                            class="fa fa-angle-right"></i> <span>${kc.name}</span>
+                                    </a></li>
                             </c:forEach>
                         </ul>
                     </li>
                 </c:forEach>
             </ul>
+
+
+
+
         </div>
 
     </div>
