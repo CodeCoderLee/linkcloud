@@ -1,258 +1,222 @@
-<%@page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<link rel="stylesheet" href="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.css">
 <div class="container">
     <div class="block-header">
         <h2>用户信息管理</h2>
-
-        <ul class="actions">
-            <li>
-                <a href="">
-                    <i class="zmdi zmdi-trending-up"></i>
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    <i class="zmdi zmdi-check-all"></i>
-                </a>
-            </li>
-            <li class="dropdown">
-                <a href="" data-toggle="dropdown">
-                    <i class="zmdi zmdi-more-vert"></i>
-                </a>
-
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li>
-                        <a href="">Refresh</a>
-                    </li>
-                    <li>
-                        <a href="">Manage Widgets</a>
-                    </li>
-                    <li>
-                        <a href="">Widgets Settings</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
     </div>
-
     <div class="card">
         <div class="card-header">
-            <h2>Basic Table
-                <small>Basic example without any additional modification classes</small>
-            </h2>
+            <div class="m-b-md" style="margin-bottom: 18px">
+                <form class="form-inline" role="form" id="searchForm"
+                      name="searchForm">
+                    <div class="form-group">
+                        <label class="control-label"> <span
+                                class="h4 font-thin v-middle">账号:</span></label>
+                        <input class="input-medium ui-autocomplete-input" id="accountName"/>
+                    </div>
+                    <a class="btn btn-default" id="search">查询</a>
+                </form>
+            </div>
+            <button type="button" class="btn btn-success" id="newBtn">
+                <i class="glyphicon glyphicon-plus"></i>新增
+            </button>
+            <button type="button" class="btn btn-success" id="modifyBtn">
+                <i class="glyphicon glyphicon-plus"></i>修改
+            </button>
+            <button type="button" class="btn btn-success" id="deleteBtn">
+                <i class="glyphicon glyphicon-plus"></i>删除
+            </button>
+            <button id="refreshBtn" class="btn btn-default">
+                <i class="glyphicon glyphicon-refresh"></i>刷新
+            </button>
         </div>
-
         <div class="card-body table-responsive">
-            <table class="table">
+            <table id="personalUserTable"
+                   data-toggle="table"
+                   data-sort-name="id"
+                   data-sort-order="desc"
+                   data-pagination="true"
+                   data-pagination-v-align="bottom"
+                   data-pagination-h-align="right"
+                   data-pagination-detail-h-align="left"
+                   data-pagination-first-text="<<"
+                   data-pagination-last-text=">>"
+                   data-pagination-pre-text="<"
+                   data-pagination-next-text=">"
+                   data-page-size="5"
+                   data-page-list="[5,10,25,50,100]"
+                   data-side-pagination="server"
+                   data-url="user/search.shtml"
+                   data-refresh="true"
+                   data-click-to-select="true"
+                   data-locale="zh-CN"
+                   <%--data-height="300"--%>
+            >
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                    <th>Nickname</th>
+                    <th data-checkbox="true"></th>
+                    <th data-field="username" data-sortable="true">姓名</th>
+                    <th data-field="accountname" data-sortable="true">账户名</th>
+                    <th data-field="description" data-sortable="true">描述</th>
+                    <th data-field="locked" data-formatter="lockedFormatter" data-sortable="true">是否被锁</th>
+                    <th data-field="createtime" data-formatter="dateTimeFormatter" data-sortable="true">创建时间</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Alexandra</td>
-                    <td>Christopher</td>
-                    <td>@makinton</td>
-                    <td>Ducky</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Madeleine</td>
-                    <td>Hollaway</td>
-                    <td>@hollway</td>
-                    <td>Cheese</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Sebastian</td>
-                    <td>Johnston</td>
-                    <td>@sebastian</td>
-                    <td>Jaycee</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Mitchell</td>
-                    <td>Christin</td>
-                    <td>@mitchell4u</td>
-                    <td>AdskiDeAnus</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Elizabeth</td>
-                    <td>Belkitt</td>
-                    <td>@belkitt</td>
-                    <td>Goat</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Benjamin</td>
-                    <td>Parnell</td>
-                    <td>@wayne234</td>
-                    <td>Pokie</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>Katherine</td>
-                    <td>Buckland</td>
-                    <td>@anitabelle</td>
-                    <td>Wokie</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Nicholas</td>
-                    <td>Walmart</td>
-                    <td>@mwalmart</td>
-                    <td>Spike</td>
-                </tr>
-                </tbody>
             </table>
         </div>
     </div>
-
-    <div class="card">
-        <div class="card-header">
-            <h2>Striped rows
-                <small>Add zebra-striping to any table row within the tbody</small>
-            </h2>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                    <th>Nickname</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Alexandra</td>
-                    <td>Christopher</td>
-                    <td>@makinton</td>
-                    <td>Ducky</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Madeleine</td>
-                    <td>Hollaway</td>
-                    <td>@hollway</td>
-                    <td>Cheese</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Sebastian</td>
-                    <td>Johnston</td>
-                    <td>@sebastian</td>
-                    <td>Jaycee</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Mitchell</td>
-                    <td>Christin</td>
-                    <td>@mitchell4u</td>
-                    <td>AdskiDeAnus</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Elizabeth</td>
-                    <td>Belkitt</td>
-                    <td>@belkitt</td>
-                    <td>Goat</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Benjamin</td>
-                    <td>Parnell</td>
-                    <td>@wayne234</td>
-                    <td>Pokie</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>Katherine</td>
-                    <td>Buckland</td>
-                    <td>@anitabelle</td>
-                    <td>Wokie</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Nicholas</td>
-                    <td>Walmart</td>
-                    <td>@mwalmart</td>
-                    <td>Spike</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
-    <div class="card">
-        <div class="card-header">
-            <h2>Contextual classes
-                <small>Use contextual classes to color table rows or individual cells.</small>
-            </h2>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                    <th>Nickname</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="active">
-                    <td>1</td>
-                    <td>Alexandra</td>
-                    <td>Christopher</td>
-                    <td>@makinton</td>
-                    <td>Ducky</td>
-                </tr>
-                <tr class="info">
-                    <td>3</td>
-                    <td>Sebastian</td>
-                    <td>Johnston</td>
-                    <td>@sebastian</td>
-                    <td>Jaycee</td>
-                </tr>
-                <tr class="warning">
-                    <td>4</td>
-                    <td>Mitchell</td>
-                    <td>Christin</td>
-                    <td>@mitchell4u</td>
-                    <td>AdskiDeAnus</td>
-                </tr>
-                <tr class="success">
-                    <td>2</td>
-                    <td>Madeleine</td>
-                    <td>Hollaway</td>
-                    <td>@hollway</td>
-                    <td>Cheese</td>
-                </tr>
-                <tr class="danger">
-                    <td>5</td>
-                    <td>Elizabeth</td>
-                    <td>Belkitt</td>
-                    <td>@belkitt</td>
-                    <td>Goat</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
 </div>
+<script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
+<script type="text/javascript" src="${ctx}/common/common.js"></script>
+<script type="text/javascript" src="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.js"/>
+<script type="text/javascript"
+        src="${ctx}/vendors/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"/>
+<script type="text/javascript">
+    $(document).ready(function () {
+        console.log("hhh");
+        var ids = [];
+
+        /*查询按钮点击事件绑定,向后台传参数,请求数据,刷新table*/
+        $('#search').click(function () {
+            var $accountName = $('#accountName').val();
+            var queryObject = new Object();
+            /*当参数不为空字符串时,传给后台,避免accountname值为"",导致结果为空*/
+            if ($accountName.length) {
+                queryObject.accountname = $accountName;
+            }
+            console.log($accountName);
+            $('#personalUserTable').bootstrapTable().bootstrapTable('refresh', {
+                query: queryObject
+            });
+
+        });
+
+        /*刷新按钮点击事件绑定,刷新table,不传参数*/
+        $('#refreshBtn').click(function () {
+            $('#personalUserTable').bootstrapTable('refresh');
+        });
+
+        /*新增按钮点击事件绑定,打开新增窗口*/
+        $('#newBtn').click(function(){
+//            var $w = $(document).width();
+//            window.open('user/addUI.shtml',"",'height=600,width=800,top=200,left='+($w/2-400)+','+'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
+            $('#npcForm').attr('src','user/addUI.shtml');
+            $('#npcForm').css({
+                'display':'block'
+            });
+        });
+
+        /*修改按钮点击事件绑定,打开修改窗口*/
+        $('#modifyBtn').click(function(){
+            if (ids.length==0){
+                alert("请选中一条记录");
+                return;
+            }
+            if(ids.length>1){
+                alert("最多选中一条记录");
+                return;
+            }
+//            var $w = $(document).width();
+//            window.open('user/modifyUI.shtml?id='+ids[0],"",'height=600,width=800,top=200,left='+($w/2-400)+','+'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
+            $('#npcForm').attr('src','user/modifyUI.shtml?id='+ids[0]);
+            $('#npcForm').css({
+                'display':'block'
+            });
+        });
+
+        /*删除按钮点击事件绑定*/
+        $('#deleteBtn').click(function(){
+            if (ids.length==0){
+                alert("请选中一条记录");
+                return;
+            }
+            console.log(ids.join(","));
+            if(window.confirm("确认删除?")){
+                $.ajax({
+                    url:"user/delete.shtml",
+                    data:{ids:ids.join(",")},
+                    type:"post",
+                    success:function(data){
+                        alert("删除成功!");
+                        $('#userTable').bootstrapTable('refresh');
+                    },
+                    error:function(){
+                        alert("删除失败!");
+                    }
+
+                });
+            }
+
+
+        });
+
+        /*checkbox选中事件*/
+        $('#personalUserTable').on('check.bs.table',function(e,row,$element){
+            ids.push(row.id);
+        });
+
+        /*checkbox取消选中事件*/
+        $('#personalUserTable').on('uncheck.bs.table',function(e,row,$element){
+            ids.splice(ids.indexOf(row.id),1);
+        });
+
+        /*checkbox选中所有事件*/
+        $('#personalUserTable').on('check-all.bs.table',function(e,rows){
+            ids = [];
+            $.each(rows,function(index,item){
+                ids.push(item.id);
+            });
+        });
+
+        /*checkbox取消选中所有事件*/
+        $('#personalUserTable').on('uncheck-all.bs.table',function(e){
+            ids = [];
+        });
+
+
+        /*排序触发事件*/
+        $('#personalUserTable').on('sort.bs.table',function(e,name,order){
+            console.log(name,'=====',order);
+            var $accountName = $('#accountName').val();
+            var queryObject = new Object();
+            /*当参数不为空字符串时,传给后台,避免accountname值为"",导致结果为空*/
+            if ($accountName.length) {
+                queryObject.accountname = $accountName;
+
+            }
+            queryObject.sortName = name;
+            queryObject.sortOrder = order;
+            $('#personalUserTable').bootstrapTable().bootstrapTable('refresh', {
+                query: queryObject
+            });
+        });
+
+
+
+
+
+    });
+    function dateTimeFormatter(value) {
+        if (!!value) {
+            var date = new Date();
+            date.setTime(value);
+            return date.toLocaleString();
+        } else {
+            return "--";
+        }
+
+//        return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours()
+//                + ":" + date.getMinutes() + ":" + date.getSeconds();
+    }
+    function lockedFormatter(value) {
+        if (!!value) {
+            if (value == 1) {
+                return "否";
+            }
+            if (value == 0) {
+                return "是";
+            }
+        }
+        return "--";
+    }
+</script>

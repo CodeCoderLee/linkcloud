@@ -1,22 +1,38 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-table.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/app.css">
-<iframe id="npcForm"></iframe>
-<div class="m-b-md">
-    <form class="form-inline" role="form" id="searchForm"
-          name="searchForm">
-        <div class="form-group">
-            <label class="control-label"> <span
-                    class="h4 font-thin v-middle">账号:</span></label>
-            <input class="input-medium ui-autocomplete-input" id="accountName"/>
+<%@page language="java"  pageEncoding="UTF-8" %>
+<link rel="stylesheet" href="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.css">
+<%--<div class="m-b-md">--%>
+    <%--<form class="form-inline" role="form" id="searchForm"--%>
+          <%--name="searchForm">--%>
+        <%--<div class="form-group">--%>
+            <%--<label class="control-label"> <span--%>
+                    <%--class="h4 font-thin v-middle">账号:</span></label>--%>
+            <%--<input class="input-medium ui-autocomplete-input" id="accountName"/>--%>
+        <%--</div>--%>
+        <%--<a class="btn btn-default" id="search">查询</a>--%>
+    <%--</form>--%>
+<%--</div>--%>
+<%--<div id="log" class="container-fluid">--%>
+    <%--<div class="row">--%>
+
+<div class="container">
+    <div class="block-header">
+        <h2>用户操作日志</h2>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <div class="m-b-md" style="margin-bottom: 18px">
+                <form class="form-inline" role="form" id="searchForm"
+                      name="searchForm">
+                    <div class="form-group">
+                        <label class="control-label"> <span
+                                class="h4 font-thin v-middle">账号:</span></label>
+                        <input class="input-medium ui-autocomplete-input" id="accountName"/>
+                    </div>
+                    <a class="btn btn-default" id="search">查询</a>
+                </form>
+            </div>
         </div>
-        <a class="btn btn-default" id="search">查询</a>
-    </form>
-</div>
-<div id="log" class="container-fluid">
-    <div class="row">
+        <div class="card-body table-responsive">
         <table id="logTable"
                data-toggle="table"
                data-sort-order="desc"
@@ -34,11 +50,10 @@
                data-url="logs/search.shtml"
                data-refresh="true"
                data-click-to-select="true"
-               data-height="300"
+               data-locate="zh-CN"
         >
             <thead>
             <tr>
-                <th data-checkbox="true"></th>
                 <th data-field="accountname">帐号</th>
                 <th data-field="module">模块</th>
                 <th data-field="methods">方法</th>
@@ -51,17 +66,13 @@
             </thead>
         </table>
     </div>
-
 </div>
 
-<script charset="utf-8" src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
-<script charset="utf-8" src="${pageContext.request.contextPath}/assets/js/bootstrap.js"></script>
-<script charset="utf-8" src="${pageContext.request.contextPath}/assets/js/bootstrap-table.js"></script>
-<script charset="utf-8"
-        src="${pageContext.request.contextPath}/assets/js/components/extensions/export/bootstrap-table-export.js"></script>
-<script charset="utf-8"
-        src="${pageContext.request.contextPath}/assets/js/components/extensions/filter/bootstrap-table-filter.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/components/extensions/mobile/bootstrap-table-mobile.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
+<script type="text/javascript" src="${ctx}/common/common.js"></script>
+<script type="text/javascript" src="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.js"/>
+<script type="text/javascript"
+        src="${ctx}/vendors/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"/>
 <script type="text/javascript">
     $('#search').click(function () {
         var $accountName = $('#accountName').val();
@@ -79,7 +90,7 @@
         console.log(value);
         if (!!value) {
             var date = new Date();
-            date.setTime(value.time);
+            date.setTime(value);
             return date.toLocaleString();
         } else {
             return "--";

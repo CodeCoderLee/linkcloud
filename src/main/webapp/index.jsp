@@ -24,11 +24,7 @@
         var rootPath = "${ctx}"
         //
         var tb = $("#content");
-        tb.html('<div class="alert alert-warning">'
-                + '<button type="button" class="close" data-dismiss="alert">'
-                + '<i class="ace-icon fa fa-times"></i></button><div style="text-align:center">'
-                + '<img src="' + rootPath + '/images/loading.gif"/><div>'
-                + '</div>');
+        tb.html(loadingHtml());
         /*获取菜单栏中active菜单的url，进行加载*/
         if($("#menuList ul li.active a.active").length>0){
             //判断是否有权限
@@ -46,17 +42,23 @@
                 var nav = $(this).attr("nav-n");
                 var sn = nav.split(",");
                 var tb = $("#content");
-                tb.html('<div class="alert alert-warning">'
-                        + '<button type="button" class="close" data-dismiss="alert">'
-                        + '<i class="ace-icon fa fa-times"></i></button><div style="text-align:center">'
-                        + '<img src="' + rootPath + '/images/loading.gif"/><div>'
-                        + '</div>');
-                console.log("path==",rootPath + sn[2]);
+                tb.html(loadingHtml());
                 tb.load(rootPath + sn[2]);
+                $($("#menuList ul a.active")).removeClass("active");
+                $(this).addClass("active");
             });
         });
-
-
+        
+//        $("li.level_1").bind("click",function () {
+//            console.log($(this));
+//            console.log($("li.level_1").children("ul"));
+////            $("li.level_1").children("ul").css("display","none");
+//            $("li.level_1.toggled").removeClass("toggled");
+//            $("li.level_1").removeClass("active");
+//            $(this).addClass("toggled");
+//            $(this).addClass("active");
+//            $(this).children("ul").css("display","block");
+//        });
     });
 </script>
 <body>
@@ -103,7 +105,7 @@
                         1.有二级目录,那么class添加sub-menu类
                         2.是第一个目录,那么class添加active类,默认选中
                         3.如果有二级目录,并且是第一个目录,那么默认展开,选中二级目录中的第一个--%>
-                        <li class="<c:if test="${key.children.size()>0}"> sub-menu </c:if>
+                        <li class="level_1 <c:if test="${key.children.size()>0}"> sub-menu </c:if>
                                 <c:if test="${s.index==0}"> active </c:if>
                                 <c:if test="${key.children.size()>0&&s.index==0}"> toggled </c:if>" >
                         <%--为菜单栏中的<a>标签,添加load的class,只有拥有load类的标签的点击事件才会加载页面--%>
@@ -149,7 +151,15 @@
 
 <script src="${ctx}/js/functions.js"></script>
 <script src="${ctx}/js/demo.js"></script>
-
-
+<script type="text/javascript">
+    var rootPath = "${ctx}"
+    function loadingHtml() {
+        return '<div class="alert alert-info">'
+                + '<button type="button" class="close" data-dismiss="alert">'
+                + '<i class="ace-icon fa fa-times"></i></button><div style="text-align:center">'
+                + '<img src="' + rootPath + '/images/loading.gif"/><div>'
+                + '</div>';
+    }
+</script>
 </body>
 </html>

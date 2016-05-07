@@ -6,10 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <footer id="footer">
     Copyright &copy; 2015 Material Admin
-
     <ul class="f-menu">
         <li><a href="">Home</a></li>
         <li><a href="">Dashboard</a></li>
