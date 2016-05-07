@@ -1,4 +1,6 @@
 <%@page language="java"  pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <link href="${ctx}/css/lanyuan.css" rel="stylesheet">
 <link rel="stylesheet" href="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.css">
 <script type="text/javascript" src="${ctx}/common/lyGrid.js"></script>
