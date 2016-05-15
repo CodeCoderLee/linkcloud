@@ -69,13 +69,13 @@ LOCK TABLES `bcc_ad_report` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bcc_advertisment`
+-- Table structure for table `bcc_advertisement`
 --
 
-DROP TABLE IF EXISTS `bcc_advertisment`;
+DROP TABLE IF EXISTS `bcc_advertisement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bcc_advertisment` (
+CREATE TABLE `bcc_advertisement` (
   `id` int(11) NOT NULL,
   `file_path` varchar(45) DEFAULT NULL COMMENT '文件路径',
   `file_name` varchar(45) DEFAULT NULL COMMENT '文件名称',
@@ -90,12 +90,12 @@ CREATE TABLE `bcc_advertisment` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bcc_advertisment`
+-- Dumping data for table `bcc_advertisement`
 --
 
-LOCK TABLES `bcc_advertisment` WRITE;
-/*!40000 ALTER TABLE `bcc_advertisment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bcc_advertisment` ENABLE KEYS */;
+LOCK TABLES `bcc_advertisement` WRITE;
+/*!40000 ALTER TABLE `bcc_advertisement` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bcc_advertisement` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
