@@ -90,10 +90,11 @@ function addFun() {
 	// 	area : [ "600px", "80%" ],
 	// 	content : rootPath + '/resources/addUI.shtml'
 	// });
-	$('#npcForm').attr('src','resources/addUI.shtml');
-	$('#npcForm').css({
-		'display':'block'
-	});
+	//$('#npcForm').attr('src','resources/addUI.shtml');
+	//$('#npcForm').css({
+	//	'display':'block'
+	//});
+	$("#content").load("resources/addUI.shtml");
 }
 function delFun() {
 	var cbox = grid.getSelectedCheckbox();

@@ -175,7 +175,7 @@ public class ResourcesController extends BaseController {
 		r.setType(type);
 		r.setIcon(icon);
 		r.setDescription(description);
-		r.setLevel(resourcesService.getMaxLevel() + 1);
+//		r.setLevel(resourcesService.getMaxLevel() + 1);
 
 		if("2".equals(r.getType())){
 			r.setDescription(Common.htmltoString(r.getDescription()+""));
@@ -185,7 +185,7 @@ public class ResourcesController extends BaseController {
 			r.setIshide(0);
 		}
 		
-		resourcesService.insert(r);
+		resourcesService.insertSelective(r);
 		return "success";
 	}
 

@@ -70,15 +70,15 @@ $(function() {
 			$(".l_err").css('display', 'none');
 		}
 	});
-	// var url = rootPath + '/resources/reslists.shtml';
-	// var data = CommnUtil.ajax(url, null,"json");
-	// if (data != null) {
-	// 	var h = "<option value='0'>------顶级目录------</option>";
-	// 	for ( var i = 0; i < data.length; i++) {
-	// 		h+="<option value='" + data[i].id + "'>"+ data[i].name + "</option>";
-	// 	}
-	// 	$("#parentId").html(h);
-	// } else {
-	// 	layer.msg("获取菜单信息错误，请联系管理员！");
-	// }
+	 var url = rootPath + '/resources/reslists.shtml';
+	 var data = CommnUtil.ajax(url, null,"json");
+	 if (data != null) {
+	 	var h = "<option value='0'>------顶级目录------</option>";
+	 	for ( var i = 0; i < data.length; i++) {
+	 		h+="<option value='" + data[i].id + "'>"+ data[i].name + "</option>";
+	 	}
+	 	$("#parentId").html(h);
+	 } else {
+	 	layer.msg("获取菜单信息错误，请联系管理员！");
+	 }
 });

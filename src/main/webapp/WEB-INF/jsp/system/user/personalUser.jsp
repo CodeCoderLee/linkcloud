@@ -22,8 +22,8 @@
             <button type="button" class="btn btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-plus"></i>新增
             </button>
-            <button type="button" class="btn btn-success" id="modifyBtn">
-                <i class="glyphicon glyphicon-plus"></i>修改
+            <button type="button" class="btn btn-info" id="modifyBtn">
+                <i class="glyphicon glyphicon-minus"></i>修改
             </button>
             <button type="button" class="btn btn-success" id="deleteBtn">
                 <i class="glyphicon glyphicon-plus"></i>删除
@@ -102,10 +102,13 @@
         $('#newBtn').click(function(){
 //            var $w = $(document).width();
 //            window.open('user/addUI.shtml',"",'height=600,width=800,top=200,left='+($w/2-400)+','+'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
-            $('#npcForm').attr('src','user/addUI.shtml');
-            $('#npcForm').css({
-                'display':'block'
-            });
+//            $('#npcForm').attr('src','user/addUI.shtml');
+//            $('#npcForm').css({
+//                'display':'block'
+//            });
+            console.log("content==",$("#content"));
+            $("#content").load("role/list.shtml");
+
         });
 
         /*修改按钮点击事件绑定,打开修改窗口*/

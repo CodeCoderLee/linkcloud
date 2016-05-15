@@ -31,13 +31,13 @@
 					<a class="btn btn-default" id="search">查询</a>
 				</form>
 			</div>
-			<button type="button" class="btn btn-success" id="newBtn">
+			<button type="button" class="btn btn-success" id="addFun">
 				<i class="glyphicon glyphicon-plus"></i>新增
 			</button>
-			<button type="button" class="btn btn-success" id="modifyBtn">
+			<button type="button" class="btn btn-success" id="editFun">
 				<i class="glyphicon glyphicon-plus"></i>修改
 			</button>
-			<button type="button" class="btn btn-success" id="deleteBtn">
+			<button type="button" class="btn btn-success" id="delFun">
 				<i class="glyphicon glyphicon-plus"></i>删除
 			</button>
 		</div>

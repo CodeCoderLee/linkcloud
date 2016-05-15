@@ -82,7 +82,8 @@ public class LogAopAction {
 		logs.setOpertime(new Date());
 
 		try {
-			logService.insertLog(logs);
+//			logService.insertLog(logs);
+			logService.insertSelective(logs);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

@@ -52,7 +52,7 @@ public class UserController extends BaseController<User> {
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
-        return Common.BACKGROUND_PATH + "/system/user/personalUser";
+        return Common.BACKGROUND_PATH + "/system/user/list";
     }
 
     @RequestMapping("addUI")

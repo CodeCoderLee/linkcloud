@@ -131,4 +131,10 @@
 	<insert id="addRoleRes">
 		insert into bcc_res_roles (role_id,resc_id) value (#{roleId},#{resId})
 	</insert>
+
+	<select id="getMaxLevel" resultType="java.lang.Integer">
+		SELECT max(resources_level) FROM bcc_resources
+	</select>
+
+
 </mapper>

@@ -16,6 +16,7 @@
     <result column="locked" property="locked" jdbcType="VARCHAR" />
     <result column="unit_id" property="unitId" jdbcType="INTEGER" />
     <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
     <result column="delete_status" property="deleteStatus" jdbcType="INTEGER" />
   </resultMap>
 
@@ -53,10 +54,13 @@
       and u.unit_id = #{user.unitId}
     </if>
     <if test="user.createtime != null and user.createtime!=''">
-      and u.createTime = #user.createtime
+      and u.createTime = #{user.createtime}
     </if>
     <if test="user.deleteStatus != null ">
       and u.delete_status = #{user.deleteStatus}
+    </if>
+    <if test="user.sex != null ">
+      and u.sex = #{user.sex}
     </if>
     <choose>
       <when test="order != null and order !=''">
