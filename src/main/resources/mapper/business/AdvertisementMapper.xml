@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ac.bcc.mapper.business.AdvertisementMapper">
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.Advertisement">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="industry_id" jdbcType="INTEGER" property="industryId" />
+    <result column="is_third_party" jdbcType="VARCHAR" property="isThirdParty" />
+    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
+</mapper>

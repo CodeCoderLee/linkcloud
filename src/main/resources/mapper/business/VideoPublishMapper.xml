@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ac.bcc.mapper.business.VideoPublishMapper">
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.VideoPublish">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="video_id" jdbcType="INTEGER" property="videoId" />
+    <result column="device_id" jdbcType="INTEGER" property="deviceId" />
+    <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+</mapper>

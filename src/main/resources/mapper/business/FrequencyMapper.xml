@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ac.bcc.mapper.business.FrequencyMapper">
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.Frequency">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="freq_port" jdbcType="INTEGER" property="freqPort" />
+    <result column="available_program" jdbcType="VARCHAR" property="availableProgram" />
+    <result column="progarm_name" jdbcType="VARCHAR" property="progarmName" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+  </resultMap>
+</mapper>
