@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.core.RoleMapper">
+    <resultMap id="BaseResultMap" type="cn.ac.bcc.model.core.Role">
+        <!--
+          WARNING - @mbggenerated
+        -->
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="state" property="state" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="roleKey" property="rolekey" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!-- 根据roleIds获取role -->
+    <select id="findRoleListByRoleIds" parameterType="java.util.List"
+            resultMap="BaseResultMap">
+        select * from bcc_role
+        <where>
+            id in (
+              <foreach item="ids" index="index" collection="array" separator=",">
+                #{ids}
+              </foreach>
+            )
+        </where>
+    </select>
+</mapper>

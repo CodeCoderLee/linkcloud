@@ -42,7 +42,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动匹配Mapper映射文件 -->
-		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+		<property name="mapperLocations" value="classpath:mapper/*/*Mapper.xml"/>
 		<property name="typeAliasesPackage" value="cn.ac.bcc.model"/>
 		<property name="plugins">
 			<array>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.core.LogMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.core.Log" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="accountName" property="accountname" jdbcType="VARCHAR" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+    <result column="methods" property="methods" jdbcType="VARCHAR" />
+    <result column="actionTime" property="actiontime" jdbcType="INTEGER" />
+    <result column="userIP" property="userip" jdbcType="VARCHAR" />
+    <result column="operTime" property="opertime" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
