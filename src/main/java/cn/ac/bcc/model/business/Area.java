@@ -28,7 +28,8 @@ public class Area {
     /**
      * 排序用
      */
-    private Integer sort;
+    @Column(name = "sort_order")
+    private Integer sortOrder;
 
     /**
      * @return id
@@ -111,18 +112,18 @@ public class Area {
     /**
      * 获取排序用
      *
-     * @return sort - 排序用
+     * @return sort_order - 排序用
      */
-    public Integer getSort() {
-        return sort;
+    public Integer getSortOrder() {
+        return sortOrder;
     }
 
     /**
      * 设置排序用
      *
-     * @param sort 排序用
+     * @param sortOrder 排序用
      */
-    public void setSort(Integer sort) {
-        this.sort = sort;
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 }

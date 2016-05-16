@@ -111,7 +111,7 @@ CREATE TABLE `bcc_area` (
   `name` varchar(45) DEFAULT NULL,
   `post_code` varchar(6) DEFAULT NULL COMMENT '邮编',
   `area_code` varchar(4) DEFAULT NULL COMMENT '区号',
-  `sort` int(11) DEFAULT NULL COMMENT '排序用',
+  `sort_order` int(11) DEFAULT NULL COMMENT '排序用',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

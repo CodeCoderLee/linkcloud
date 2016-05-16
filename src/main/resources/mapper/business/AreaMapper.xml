@@ -10,6 +10,6 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="post_code" jdbcType="VARCHAR" property="postCode" />
     <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
   </resultMap>
 </mapper>
