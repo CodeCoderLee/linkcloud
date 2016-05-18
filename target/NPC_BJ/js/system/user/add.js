@@ -11,6 +11,7 @@ $(function() {
 				type : "post",
 				dataType : "json",
 				success : function(data) {
+					alert("12333");
 					if (data == "success") {
 						if(window.confirm('添加成功!是否关闭窗口?')){
 							window.close();
@@ -21,7 +22,10 @@ $(function() {
 						alert('添加失败!');
 						// layer.alert('添加失败！', 3);
 					}
-				}
+				},
+                error:function(XMLResponse){
+                    alert(XMLResponse.responseText);
+                }
 			});
 		},
 		rules : {

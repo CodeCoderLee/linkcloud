@@ -97,7 +97,7 @@ public class UserController extends BaseController<User> {
             passwordHelper.encryptPassword(user);
             user.setCreatetime(new Date());
             user.setDeleteStatus(0);
-            userService.insertUser(user);
+            userService.insert(user);
             /*添加角色*/
             String roleId = getPara("roleId");
             modifyUserRole(user.getId(), roleId);

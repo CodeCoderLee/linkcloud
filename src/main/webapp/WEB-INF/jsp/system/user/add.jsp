@@ -1,27 +1,10 @@
 <%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
-<%@include file="/common/common.jspf" %>
+<script type="text/javascript" src="${ctx}/common/common.js"></script>
 <script type="text/javascript" src="${ctx}/js/system/user/add.js">
-
 </script>
-<style type="text/css">
-    .col-sm-3 {
-        width: 18%;
-        float: left;
-        text-align: right;
-    }
 
-    .col-sm-9 {
-        width: 82%;
-        float: left;
-        text-align: left;
-    }
-
-    label[class^="btn btn-default"] {
-        margin-top: -4px;
-    }
-</style>
 <div class="container">
     <div class="block-header">
         <h2>添加用户信息</h2>
@@ -37,9 +20,8 @@
                     <section class="panel panel-default">
                         <div class="panel-body">
                             <div class="form-group">
-                                <div class="col-sm-3">
-                                    <label class="control-label">用户名</label>
-                                </div>
+
+                                    <label class=" col-sm-3 control-label">用户名</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control"
                                            placeholder="请输入用户名" name="username" id="username">
@@ -96,10 +78,10 @@
                                 </div>
                             </div>
                         </div>
-                        <footer class="panel-footer text-right bg-light lter">
-                            <button type="submit" class="btn btn-success btn-s-xs">提交</button>
-                            <a id="closeBtn" class="btn btn-success btn-s-xs">关闭</a>
-                        </footer>
+                        <div class="footer text-right bg-light lter">
+                            <button  class="btn btn-success btn-s-xs">提交</button>
+                            <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                        </div>
                     </section>
                 </form>
             </div>
@@ -114,4 +96,18 @@
         window.parent.location.reload();
         window.close();
     });
+    function onloadurl(){
+        $("[data-url]").each(function () {
+            var tb = $(this);
+            tb.html(loadingHtml);
+            tb.load(rootPath+tb.attr("data-url"));
+        });
+    }
+    function loadingHtml() {
+        return '<div class="alert alert-info">'
+                + '<button type="button" class="close" data-dismiss="alert">'
+                + '<i class="ace-icon fa fa-times"></i></button><div style="text-align:center">'
+                + '<img src="' + rootPath + '/images/loading.gif"/><div>'
+                + '</div>';
+    }
 </script>

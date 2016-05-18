@@ -69,6 +69,20 @@
         window.parent.location.reload();
         window.close();
     });
+    function onloadurl(){
+        $("[data-url]").each(function () {
+            var tb = $(this);
+            tb.html(loadingHtml);
+            tb.load(rootPath+tb.attr("data-url"));
+        });
+    }
+    function loadingHtml() {
+        return '<div class="alert alert-info">'
+                + '<button type="button" class="close" data-dismiss="alert">'
+                + '<i class="ace-icon fa fa-times"></i></button><div style="text-align:center">'
+                + '<img src="' + rootPath + '/images/loading.gif"/><div>'
+                + '</div>';
+    }
 </script>
 </body>
 </html>

@@ -20,13 +20,13 @@
                 </form>
             </div>
             <button type="button" class="btn btn-success" id="newBtn">
-                <i class="glyphicon glyphicon-plus"></i>新增
+                <i class="glyphicon glyphicon-edit"></i>新增
             </button>
             <button type="button" class="btn btn-info" id="modifyBtn">
-                <i class="glyphicon glyphicon-minus"></i>修改
+                <i class="glyphicon glyphicon-edit"></i>修改
             </button>
-            <button type="button" class="btn btn-success" id="deleteBtn">
-                <i class="glyphicon glyphicon-plus"></i>删除
+            <button type="button" class="btn btn-danger" id="deleteBtn">
+                <i class="glyphicon glyphicon-minus"></i>删除
             </button>
             <button id="refreshBtn" class="btn btn-default">
                 <i class="glyphicon glyphicon-refresh"></i>刷新
@@ -123,10 +123,12 @@
             }
 //            var $w = $(document).width();
 //            window.open('user/modifyUI.shtml?id='+ids[0],"",'height=600,width=800,top=200,left='+($w/2-400)+','+'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
-            $('#npcForm').attr('src','user/modifyUI.shtml?id='+ids[0]);
-            $('#npcForm').css({
-                'display':'block'
-            });
+//            $('#npcForm').attr('src','user/modifyUI.shtml?id='+ids[0]);
+//            $('#npcForm').css({
+//                'display':'block'
+//            });
+            $("#content").load("user/modifyUI.shtml?id="+ids[0]);
+            ids = [];
         });
 
         /*删除按钮点击事件绑定*/
@@ -143,7 +145,7 @@
                     type:"post",
                     success:function(data){
                         alert("删除成功!");
-                        $('#userTable').bootstrapTable('refresh');
+                        $('#personalUserTable').bootstrapTable('refresh');
                     },
                     error:function(){
                         alert("删除失败!");
@@ -151,6 +153,7 @@
 
                 });
             }
+            ids = [];
 
 
         });

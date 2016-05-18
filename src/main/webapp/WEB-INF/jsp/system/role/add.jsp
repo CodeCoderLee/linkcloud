@@ -3,7 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<%@include file="/common/common.jspf" %>
 <script type="text/javascript" src="${ctx}/js/system/role/add.js">
 </script>
 <style type="text/css">
@@ -63,17 +62,26 @@ label[class^="btn btn-default"]{
 							<li class=""><a href="#"><input type="radio"
 									name="state" value="0" checked="checked">是</a></li>
 							<li class="active"><a href="#"><input type="radio"
-									name="roleFormMap.state" value="1">否</a></li>
+									name="state" value="1">否</a></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="line line-dashed line-lg pull-in"></div>
 		</div>
-		<footer class="panel-footer text-right bg-light lter">
+		<div class="panel-footer text-right bg-light lter">
 			<button type="submit" class="btn btn-success btn-s-xs">提交</button>
-		</footer> 
+			<a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+		</div>
 		</section>
 	</form>
+	<script type="text/javascript">
+		onloadurl();
+		$('#closeBtn').click(function () {
+			console.log(window.parent);
+			window.parent.location.reload();
+			window.close();
+		});
+	</script>
 </body>
 </html>

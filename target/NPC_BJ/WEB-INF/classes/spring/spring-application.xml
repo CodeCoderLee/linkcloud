@@ -42,7 +42,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<!-- 自动匹配Mapper映射文件 -->
-		<property name="mapperLocations" value="classpath:mapper/*Mapper.xml"/>
+		<property name="mapperLocations" value="classpath:mapper/*/*Mapper.xml"/>
 		<property name="typeAliasesPackage" value="cn.ac.bcc.model"/>
 		<property name="plugins">
 			<array>
@@ -63,7 +63,7 @@
 	</bean>
 	<!-- 通过扫描的模式，扫描目录在cn.ac.bcc.mapper目录下，所有的mapper都继承SqlMapper接口的接口， 这样一个bean就可以了 -->
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="cn.ac.bcc.mapper.core"/>
+		<property name="basePackage" value="cn.ac.bcc.mapper"/>
 	</bean>
 	<!-- 事务配置 -->
 	<bean id="transactionManager"

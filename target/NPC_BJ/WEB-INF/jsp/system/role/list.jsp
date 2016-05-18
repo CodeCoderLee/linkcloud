@@ -102,12 +102,7 @@
 
             /*新增按钮点击事件绑定,打开新增窗口*/
             $('#newBtn').click(function () {
-//            var $w = $(document).width();
-//            window.open('user/addUI.shtml',"",'height=600,width=800,top=200,left='+($w/2-400)+','+'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
-                $('#npcForm').attr('src', 'role/addUI.shtml');
-                $('#npcForm').css({
-                    'display': 'block'
-                });
+                $("#content").load("role/addUI.shtml");
             });
 
             /*修改按钮点击事件绑定,打开修改窗口*/
@@ -122,10 +117,11 @@
                 }
 //            var $w = $(document).width();
 //            window.open('role/modifyUI.shtml?id=' + ids[0], "", 'height=600,width=800,top=200,left=' + ($w / 2 - 400) + ',' + 'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
-                $('#npcForm').attr('src', 'role/modifyUI.shtml?id=' + ids[0]);
-                $('#npcForm').css({
-                    'display': 'block'
-                });
+//                $('#npcForm').attr('src', 'role/modifyUI.shtml?id=' + ids[0]);
+//                $('#npcForm').css({
+//                    'display': 'block'
+//                });
+                $("#content").load("role/modifyUI.shtml?id=" + ids[0]);
             });
 
             /*删除按钮点击事件绑定*/

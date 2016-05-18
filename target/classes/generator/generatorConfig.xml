@@ -16,10 +16,10 @@
             <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
         </plugin>
 
-        <jdbcConnection driverClass="${jdbc.oracle.driverClass}"
-                        connectionURL="${jdbc.oracle.url}"
-                        userId="${jdbc.oracle.username}"
-                        password="${jdbc.oracle.password}">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="${jdbc.mysql.url}"
+                        userId="${jdbc.mysql.username}"
+                        password="${jdbc.mysql.password}">
         </jdbcConnection>
         <!--  默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
          true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal
@@ -28,15 +28,45 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
+        <javaModelGenerator targetPackage="cn.ac.bcc.model.business" targetProject="${targetJavaProject}"/>
 
-        <sqlMapGenerator targetPackage="${targetXMLPackage}" targetProject="${targetResourcesProject}"/>
+        <sqlMapGenerator targetPackage="mapper.business" targetProject="${targetResourcesProject}"/>
 
-        <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"
+        <javaClientGenerator targetPackage="cn.ac.bcc.mapper.business" targetProject="${targetJavaProject}"
                              type="XMLMAPPER"/>
 
-        <table tableName="bcc_leave" domainObjectName="Leave">
-            <generatedKey column="id" sqlStatement="BCC_LEAVE_SEQ"/>
+        <table tableName="bcc_area" domainObjectName="Area">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_company" domainObjectName="Company">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_industry" domainObjectName="Industry">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_frequency" domainObjectName="Frequency">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_device" domainObjectName="Device">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_advertisement" domainObjectName="Advertisement">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_ad_publish" domainObjectName="AdPublish">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_ad_report" domainObjectName="AdReport">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_video" domainObjectName="Video">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_video_publish" domainObjectName="VideoPublish">
+            <generatedKey column="id" sqlStatement="Mysql"/>
+        </table>
+        <table tableName="bcc_video_report" domainObjectName="VideoReport">
+            <generatedKey column="id" sqlStatement="Mysql"/>
         </table>
     </context>
 </generatorConfiguration>

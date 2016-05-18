@@ -16,6 +16,8 @@
     <!-- CSS -->
     <link href="${ctx}/css/app.min.1.css" rel="stylesheet">
     <link href="${ctx}/css/app.min.2.css" rel="stylesheet">
+
+
 </head>
 <script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
 <script type="text/javascript" src="${ctx}/common/common.js"></script>
