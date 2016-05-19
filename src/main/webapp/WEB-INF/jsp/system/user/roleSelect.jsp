@@ -84,9 +84,9 @@ function unselectedAll() {
 			id="groups_tweenbox" cellspacing="0" cellpadding="0">
 			<tbody>
 				<tr>
-					<td>已角色</td>
+					<td>已选角色</td>
 					<td></td>
-					<td>可角色</td>
+					<td>可用角色</td>
 				</tr>
 				<tr>
 					<td><select id="selectGroups" multiple="multiple"

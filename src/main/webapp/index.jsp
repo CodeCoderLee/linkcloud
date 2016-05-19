@@ -21,6 +21,7 @@
 </head>
 <script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
 <script type="text/javascript" src="${ctx}/common/common.js"></script>
+<%--<script type="text/javascript" src="${ctx}/js/common/common.js"/>--%>
 <script type="text/javascript">
     $(function () {
         var rootPath = "${ctx}"
