@@ -51,17 +51,7 @@
                 $(this).addClass("active");
             });
         });
-        
-//        $("li.level_1").bind("click",function () {
-//            console.log($(this));
-//            console.log($("li.level_1").children("ul"));
-////            $("li.level_1").children("ul").css("display","none");
-//            $("li.level_1.toggled").removeClass("toggled");
-//            $("li.level_1").removeClass("active");
-//            $(this).addClass("toggled");
-//            $(this).addClass("active");
-//            $(this).children("ul").css("display","block");
-//        });
+
     });
 </script>
 <body>

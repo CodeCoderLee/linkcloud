@@ -1,6 +1,10 @@
 /**
  * Created by bcc on 16/5/19.
  */
+
+(function ($) {
+})(jQuery);
+
 /**/
 function onLoadUrl() {
     $("[data-url]").each(function () {

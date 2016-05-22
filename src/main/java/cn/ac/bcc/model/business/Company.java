@@ -31,6 +31,12 @@ public class Company {
      */
     private String remark;
 
+    @Column(name = "area_name")
+    private String areaName;
+
+    @Column(name = "industry_name")
+    private String industryName;
+
     /**
      * @return ID
      */
@@ -125,5 +131,33 @@ public class Company {
      */
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * @return area_name
+     */
+    public String getAreaName() {
+        return areaName;
+    }
+
+    /**
+     * @param areaName
+     */
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    /**
+     * @return industry_name
+     */
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    /**
+     * @param industryName
+     */
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
     }
 }

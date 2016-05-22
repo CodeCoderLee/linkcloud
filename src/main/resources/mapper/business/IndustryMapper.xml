@@ -5,13 +5,15 @@
     <!--
       WARNING - @mbggenerated
     -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="grand_code" jdbcType="VARCHAR" property="grandCode" />
+    <result column="grand_name" jdbcType="VARCHAR" property="grandName" />
     <result column="parent_code" jdbcType="VARCHAR" property="parentCode" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_Time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="version" jdbcType="INTEGER" property="version" />
-    <result column="descrition" jdbcType="LONGVARCHAR" property="descrition" />
+    <result column="parent_name" jdbcType="VARCHAR" property="parentName" />
+    <result column="full_code" jdbcType="VARCHAR" property="fullCode" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
 </mapper>

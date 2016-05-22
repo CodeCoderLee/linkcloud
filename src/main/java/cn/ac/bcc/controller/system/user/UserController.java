@@ -75,7 +75,7 @@ public class UserController extends BaseController<User> {
     public ResponseData search(User user, Integer limit, Integer offset) throws Exception {
         /*查询未删除的数据*/
         user.setDeleteStatus(0);
-        PageHelper.startPage(offset+1, limit);
+        PageHelper.offsetPage(offset, limit);
         Example example = getEqualsToExample(user);
         List<User> list = userService.selectByExample(example);
         PageInfo<User> pageInfo = new PageInfo<User>(list);

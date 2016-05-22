@@ -6,10 +6,12 @@
       WARNING - @mbggenerated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="post_code" jdbcType="VARCHAR" property="postCode" />
-    <result column="area_code" jdbcType="VARCHAR" property="areaCode" />
-    <result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+    <result column="area_code" jdbcType="INTEGER" property="areaCode" />
+    <result column="post_code" jdbcType="INTEGER" property="postCode" />
+    <result column="level" jdbcType="BIT" property="level" />
+    <result column="sort_order" jdbcType="TINYINT" property="sortOrder" />
   </resultMap>
 </mapper>

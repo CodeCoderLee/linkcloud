@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.css">
 <div class="container">
     <div class="block-header">
-        <h2>区域管理</h2>
+        <h2>企业(归属)管理</h2>
     </div>
     <div class="card">
         <div class="card-header">
@@ -13,8 +13,8 @@
                       name="searchForm">
                     <div class="form-group">
                         <label class="control-label"> <span
-                                class="h4 font-thin v-middle">区域名称:</span></label>
-                        <input class="input-medium ui-autocomplete-input" name="areaName" id="areaName"/>
+                                class="h4 font-thin v-middle">企业全称:</span></label>
+                        <input class="input-medium ui-autocomplete-input" name="fullName" id="fullName"/>
                     </div>
                     <a class="btn btn-default" id="search">查询</a>
                 </form>
@@ -33,10 +33,10 @@
             </button>
         </div>
         <div class="card-body table-responsive">
-            <table id="areaTable"
+            <table id="companyTable"
                    data-toggle="table"
                    data-sort-name="id"
-                   data-sort-order="asc"
+                   data-sort-order="desc"
                    data-pagination="true"
                    data-pagination-v-align="bottom"
                    data-pagination-h-align="right"
@@ -48,7 +48,7 @@
                    data-page-size="10"
                    data-page-list="[10,25,50,100]"
                    data-side-pagination="server"
-                   data-url="area/search.shtml"
+                   data-url="company/search.shtml"
                    data-refresh="true"
                    data-click-to-select="true"
                    data-locale="zh-CN"
@@ -57,11 +57,11 @@
                 <thead>
                 <tr>
                     <th data-checkbox="true"></th>
-                    <th data-field="id" data-sortable="true">区域Id</th>
-                    <th data-field="areaName" data-sortable="true">区域全称</th>
-                    <th data-field="shortName" data-sortable="true">区域简称</th>
-                    <th data-field="postCode" data-sortable="true">邮编</th>
-                    <th data-field="areaCode" data-sortable="true">区号</th>
+                    <th data-field="name" data-sortable="true">企业简称</th>
+                    <th data-field="fullName" >企业全称</th>
+                    <th data-field="areaName" data-sortable="true">所属区域</th>
+                    <th data-field="industryName">所属行业</th>
+                    <th data-field="remark">备注</th>
                 </tr>
                 </thead>
             </table>
@@ -75,19 +75,18 @@
         src="${ctx}/vendors/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"/>
 <script type="text/javascript">
     $(document).ready(function () {
-        console.log("hhh");
         var ids = [];
 
         /*查询按钮点击事件绑定,向后台传参数,请求数据,刷新table*/
         $('#search').click(function () {
-            var $areaName = $('#areaName').val();
+            var $fullName = $('#fullName').val();
             var queryObject = new Object();
             /*当参数不为空字符串时,传给后台,避免accountname值为"",导致结果为空*/
-            if ($areaName.length) {
-                queryObject.areaName = $areaName;
+            if ($fullName.length) {
+                queryObject.fullName = $fullName;
             }
-            console.log($areaName);
-            $('#areaTable').bootstrapTable().bootstrapTable('refresh', {
+            console.log($fullName);
+            $('#companyTable').bootstrapTable().bootstrapTable('refresh', {
                 query: queryObject
             });
 
@@ -95,7 +94,7 @@
 
         /*刷新按钮点击事件绑定,刷新table,不传参数*/
         $('#refreshBtn').click(function () {
-            $('#areaTable').bootstrapTable('refresh');
+            $('#companyTable').bootstrapTable('refresh');
         });
 
         /*新增按钮点击事件绑定,打开新增窗口*/
@@ -107,7 +106,7 @@
 //                'display':'block'
 //            });
             console.log("content==",$("#content"));
-            $("#content").load("area/addUI.shtml");
+            $("#content").load("company/addUI.shtml");
 
         });
 
@@ -123,7 +122,7 @@
             }
 //            var $w = $(document).width();
 //            window.open('user/modifyUI.shtml?id='+ids[0],"",'height=600,width=800,top=200,left='+($w/2-400)+','+'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
-            $('#npcForm').attr('src','user/modifyUI.shtml?id='+ids[0]);
+            $('#npcForm').attr('src','company/modifyUI.shtml?id='+ids[0]);
             $('#npcForm').css({
                 'display':'block'
             });
@@ -138,7 +137,7 @@
             console.log(ids.join(","));
             if(window.confirm("确认删除?")){
                 $.ajax({
-                    url:"user/delete.shtml",
+                    url:"company/delete.shtml",
                     data:{ids:ids.join(",")},
                     type:"post",
                     success:function(data){
@@ -156,17 +155,17 @@
         });
 
         /*checkbox选中事件*/
-        $('#areaTable').on('check.bs.table',function(e,row,$element){
+        $('#companyTable').on('check.bs.table',function(e,row,$element){
             ids.push(row.id);
         });
 
         /*checkbox取消选中事件*/
-        $('#areaTable').on('uncheck.bs.table',function(e,row,$element){
+        $('#companyTable').on('uncheck.bs.table',function(e,row,$element){
             ids.splice(ids.indexOf(row.id),1);
         });
 
         /*checkbox选中所有事件*/
-        $('#areaTable').on('check-all.bs.table',function(e,rows){
+        $('#companyTable').on('check-all.bs.table',function(e,rows){
             ids = [];
             $.each(rows,function(index,item){
                 ids.push(item.id);
@@ -174,24 +173,24 @@
         });
 
         /*checkbox取消选中所有事件*/
-        $('#areaTable').on('uncheck-all.bs.table',function(e){
+        $('#companyTable').on('uncheck-all.bs.table',function(e){
             ids = [];
         });
 
 
         /*排序触发事件*/
-        $('#areaTable').on('sort.bs.table',function(e,name,order){
+        $('#companyTable').on('sort.bs.table',function(e,name,order){
             console.log(name,'=====',order);
-            var $areaName = $('#areaName').val();
+            var $fullName = $('#fullName').val();
             var queryObject = new Object();
             /*当参数不为空字符串时,传给后台,避免accountname值为"",导致结果为空*/
-            if ($areaName.length) {
-                queryObject.accountname = $areaName;
+            if ($fullName.length) {
+                queryObject.accountname = $fullName;
 
             }
             queryObject.sortName = name;
             queryObject.sortOrder = order;
-            $('#areaTable').bootstrapTable().bootstrapTable('refresh', {
+            $('#companyTable').bootstrapTable().bootstrapTable('refresh', {
                 query: queryObject
             });
         });

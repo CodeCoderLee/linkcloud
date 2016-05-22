@@ -29,6 +29,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
+import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.ac.bcc.annotation.Model;
@@ -711,6 +712,22 @@ public class Common {
 			}
 		}
 	}
+
+	/**
+	 * 获取column的name
+	 *
+	 */
+	public static String getClassFieldColumnName(Class<?> clazz, String fieldName) {
+		try {
+			Field field = clazz.getDeclaredField(fieldName);
+			return field.getAnnotation(Column.class).name();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
 	/**
 	 * 获取model英文field
 	 * 

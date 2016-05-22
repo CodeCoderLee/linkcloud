@@ -8,10 +8,12 @@ import javax.persistence.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     @Model(name = "ID")
     private Integer id;
 
     @Model(name = "名称")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "roleKey")
@@ -19,9 +21,11 @@ public class Role {
     private String rolekey;
 
     @Model(name = "状态")
+    @Column(name = "state")
     private String state;
 
     @Model(name = "描述")
+    @Column(name = "description")
     private String description;
 
     /**

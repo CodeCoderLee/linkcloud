@@ -1,8 +1,8 @@
-package cn.ac.bcc.controller.business.area;
+package cn.ac.bcc.controller.business.industry;
 
 import cn.ac.bcc.controller.base.BaseController;
-import cn.ac.bcc.model.business.Area;
-import cn.ac.bcc.service.business.area.AreaService;
+import cn.ac.bcc.model.business.Industry;
+import cn.ac.bcc.service.business.industry.IndustryService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.PageHelper;
@@ -16,29 +16,29 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.List;
 
 /**
- * Created by bcc on 16/5/16.
+ * Created by bcc on 16/5/22.
  */
 @Controller
-@RequestMapping("/area/")
-public class AreaController extends BaseController<Area>{
+@RequestMapping("/industry/")
+public class IndustryController extends BaseController<Industry> {
 
     @Autowired
-    private AreaService areaService;
+    private IndustryService industryService;
 
 
     @RequestMapping("list")
     public String listUI() throws Exception {
-        return Common.BACKGROUND_PATH + "/business/area/list";
+        return Common.BACKGROUND_PATH + "/business/industry/list";
     }
 
     @ResponseBody
     @RequestMapping("search")
-    public ResponseData search(Area area, Integer limit, Integer offset) throws Exception {
+    public ResponseData search(Industry industry, Integer limit, Integer offset) throws Exception {
         /*查询未删除的数据*/
         PageHelper.offsetPage(offset, limit);
-        Example example = getEqualsToExample(area);
-        List<Area> list = areaService.selectByExample(example);
-        PageInfo<Area> pageInfo = new PageInfo<Area>(list);
+        Example example = getEqualsToExample(industry);
+        List<Industry> list = industryService.selectByExample(example);
+        PageInfo<Industry> pageInfo = new PageInfo<Industry>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
         responseData.setRows(list);

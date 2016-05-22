@@ -250,7 +250,11 @@ public abstract class BaseController<T> {
         String sortName = getPara("sort");
         if (Common.isNotEmpty(sortOrder)) {
             if (Common.isNotEmpty(sortName)) {
-                example.setOrderByClause(sortName + " " + sortOrder);
+                String columnName = Common.getClassFieldColumnName(object.getClass(),sortName);
+                if (columnName != null) {
+                    example.setOrderByClause(columnName + " " + sortOrder);
+                }else
+                    example.setOrderByClause("id " + sortOrder);
             } else
                 example.setOrderByClause("id " + sortOrder);
         } else {

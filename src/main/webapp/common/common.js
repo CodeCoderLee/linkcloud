@@ -1,6 +1,6 @@
 /**
  * 工具组件 对原有的工具进行封装，自定义某方法统一处理
- * 
+ *
  * @author lanyuan 2014-12-12
  * @Email: mmm333zzz520@163.com
  * @version 3.0v
@@ -42,7 +42,7 @@
 		/**
 		 * ajax同步请求 返回一个html内容 dataType=html. 默认为html格式 如果想返回json.
 		 * CommnUtil.ajax(url, data,"json")
-		 * 
+		 *
 		 */
 		ajax : function(url, data, dataType) {
 			if (!CommnUtil.notNull(dataType)) {

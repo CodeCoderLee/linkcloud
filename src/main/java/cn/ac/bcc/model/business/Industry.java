@@ -6,191 +6,243 @@ import javax.persistence.*;
 @Table(name = "bcc_industry")
 public class Industry {
     /**
-     * 流水号
+     * 主键
      */
     @Id
+    @Column(name = "ID")
     @SequenceGenerator(name="",sequenceName="SELECT LAST_INSERT_ID()")
-    private Long id;
+    private Integer id;
 
     /**
-     * 行业代码
+     * 顶级代码
      */
-    private String code;
+    @Column(name = "grand_code")
+    private String grandCode;
 
     /**
-     * 行业类别名称
+     * 顶级名称
      */
-    private String name;
+    @Column(name = "grand_name")
+    private String grandName;
 
     /**
-     * 上一级行业代码
+     * 上级代码
      */
     @Column(name = "parent_code")
     private String parentCode;
 
     /**
+     * 上级名称
+     */
+    @Column(name = "parent_name")
+    private String parentName;
+
+    /**
+     * 国民经济行业代码
+     */
+    @Column(name = "full_code")
+    private String fullCode;
+
+    /**
+     * 国民经济行业名称
+     */
+    @Column(name = "full_name")
+    private String fullName;
+
+    /**
+     * 描述
+     */
+    private String description;
+
+    /**
      * 创建时间
      */
-    @Column(name = "create_time")
-    private Date createTime;
+    @Column(name = "create_date")
+    private Date createDate;
 
     /**
-     * 更改时间
+     * 修改时间
      */
-    @Column(name = "update_Time")
-    private Date updateTime;
+    @Column(name = "update_date")
+    private Date updateDate;
 
     /**
-     * 版本号
-     */
-    private Integer version;
-
-    /**
-     * 行业描述
-     */
-    private String descrition;
-
-    /**
-     * 获取流水号
+     * 获取主键
      *
-     * @return id - 流水号
+     * @return ID - 主键
      */
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
     /**
-     * 设置流水号
+     * 设置主键
      *
-     * @param id 流水号
+     * @param id 主键
      */
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     /**
-     * 获取行业代码
+     * 获取顶级代码
      *
-     * @return code - 行业代码
+     * @return grand_code - 顶级代码
      */
-    public String getCode() {
-        return code;
+    public String getGrandCode() {
+        return grandCode;
     }
 
     /**
-     * 设置行业代码
+     * 设置顶级代码
      *
-     * @param code 行业代码
+     * @param grandCode 顶级代码
      */
-    public void setCode(String code) {
-        this.code = code;
+    public void setGrandCode(String grandCode) {
+        this.grandCode = grandCode;
     }
 
     /**
-     * 获取行业类别名称
+     * 获取顶级名称
      *
-     * @return name - 行业类别名称
+     * @return grand_name - 顶级名称
      */
-    public String getName() {
-        return name;
+    public String getGrandName() {
+        return grandName;
     }
 
     /**
-     * 设置行业类别名称
+     * 设置顶级名称
      *
-     * @param name 行业类别名称
+     * @param grandName 顶级名称
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setGrandName(String grandName) {
+        this.grandName = grandName;
     }
 
     /**
-     * 获取上一级行业代码
+     * 获取上级代码
      *
-     * @return parent_code - 上一级行业代码
+     * @return parent_code - 上级代码
      */
     public String getParentCode() {
         return parentCode;
     }
 
     /**
-     * 设置上一级行业代码
+     * 设置上级代码
      *
-     * @param parentCode 上一级行业代码
+     * @param parentCode 上级代码
      */
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
     }
 
     /**
+     * 获取上级名称
+     *
+     * @return parent_name - 上级名称
+     */
+    public String getParentName() {
+        return parentName;
+    }
+
+    /**
+     * 设置上级名称
+     *
+     * @param parentName 上级名称
+     */
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    /**
+     * 获取国民经济行业代码
+     *
+     * @return full_code - 国民经济行业代码
+     */
+    public String getFullCode() {
+        return fullCode;
+    }
+
+    /**
+     * 设置国民经济行业代码
+     *
+     * @param fullCode 国民经济行业代码
+     */
+    public void setFullCode(String fullCode) {
+        this.fullCode = fullCode;
+    }
+
+    /**
+     * 获取国民经济行业名称
+     *
+     * @return full_name - 国民经济行业名称
+     */
+    public String getFullName() {
+        return fullName;
+    }
+
+    /**
+     * 设置国民经济行业名称
+     *
+     * @param fullName 国民经济行业名称
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    /**
+     * 获取描述
+     *
+     * @return description - 描述
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 设置描述
+     *
+     * @param description 描述
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
      * 获取创建时间
      *
-     * @return create_time - 创建时间
+     * @return create_date - 创建时间
      */
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreateDate() {
+        return createDate;
     }
 
     /**
      * 设置创建时间
      *
-     * @param createTime 创建时间
+     * @param createDate 创建时间
      */
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     /**
-     * 获取更改时间
+     * 获取修改时间
      *
-     * @return update_Time - 更改时间
+     * @return update_date - 修改时间
      */
-    public Date getUpdateTime() {
-        return updateTime;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
     /**
-     * 设置更改时间
+     * 设置修改时间
      *
-     * @param updateTime 更改时间
+     * @param updateDate 修改时间
      */
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    /**
-     * 获取版本号
-     *
-     * @return version - 版本号
-     */
-    public Integer getVersion() {
-        return version;
-    }
-
-    /**
-     * 设置版本号
-     *
-     * @param version 版本号
-     */
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    /**
-     * 获取行业描述
-     *
-     * @return descrition - 行业描述
-     */
-    public String getDescrition() {
-        return descrition;
-    }
-
-    /**
-     * 设置行业描述
-     *
-     * @param descrition 行业描述
-     */
-    public void setDescrition(String descrition) {
-        this.descrition = descrition;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
