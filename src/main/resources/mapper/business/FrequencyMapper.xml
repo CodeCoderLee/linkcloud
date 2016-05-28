@@ -6,9 +6,7 @@
       WARNING - @mbggenerated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="freq_port" jdbcType="INTEGER" property="freqPort" />
-    <result column="available_program" jdbcType="VARCHAR" property="availableProgram" />
-    <result column="progarm_name" jdbcType="VARCHAR" property="progarmName" />
+    <result column="freq_port" jdbcType="VARCHAR" property="freqPort" />
     <result column="area_id" jdbcType="INTEGER" property="areaId" />
   </resultMap>
 </mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.business.DeviceFreqMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.DeviceFreq" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="device_id" property="deviceId" jdbcType="INTEGER" />
+    <id column="freq_id" property="freqId" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>
