@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/ws/device/")
-public class DeviceController extends BaseController{
+public class DeviceApiController extends BaseController{
     private final static String COOKIE = Common.COOKIE;
     @ResponseBody
     @RequestMapping(value = "linkHello")
