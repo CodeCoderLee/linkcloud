@@ -1,60 +1,58 @@
-//单独验证某一个input  class="checkpass"
-jQuery.validator.addMethod("checkacc", function(value, element) {
-	return this.optional(element)
-			|| ((value.length <= 30) && (value.length >= 3));
-}, "账号由3至30位字符组合构成");
-$(function() {
-	// parent.layer.iframeAuto(parent.pageii);
-	$("form").validate({
-		submitHandler : function(form) {// 必须写在验证前面，否则无法ajax提交
-			ly.ajaxSubmit(form, {// 验证新增是否成功
-				type : "post",
-				dataType : "json",
-				success : function(data) {
-					alert("12333");
-					if (data == "success") {
-						if(window.confirm('添加成功!是否关闭窗口?')){
-							window.close();
-							return;
-						}
-						$("#form")[0].reset();
-					} else {
-						alert('添加失败!');
-						// layer.alert('添加失败！', 3);
-					}
+$(function () {
+	onLoadUrl();
+	$('#closeBtn').click(function () {
+		$("#content").load(rootPath + "/user/list.shtml");
+	});
+	$('#form').validate({
+		submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
+			$(form).ajaxSubmit({
+				type: "post",
+				dataType: "json",
+				success: function (data) {
+					notify('success', '     用户添加成功      ');
+					$("#content").load(rootPath + "/user/list.shtml");
 				},
-                error:function(XMLResponse){
-                    alert(XMLResponse.responseText);
-                }
+				error: function (XMLResponse) {
+					alert(XMLResponse.responseText);
+				}
 			});
 		},
-		rules : {
-			"accountname" : {
-				required : true,
-				remote : { // 异步验证是否存在
-					type : "POST",
-					url : 'isExist.shtml',
-					data : {
-						name : function() {
+		rules: {
+			"accountname": {
+				required: true,
+				rangelength: [3, 30],
+				remote: { // 异步验证是否存在
+					type: "POST",
+					url: 'user/isExist.shtml',
+					data: {
+						name: function () {
 							return $("#accountname").val();
 						}
 					}
 				}
+			},
+			"username": {
+				required: true,
+				rangelength: [3, 30]
 			}
 		},
-		messages : {
-			"accountname" : {
-				required : "请输入账号",
-				remote : "该账号已经存在"
+		messages: {
+			"accountname": {
+				required: "请输入账号",
+				rangelength: "帐号长度为3~30个字符",
+				remote: "该账号已经存在"
+			},
+			"username": {
+				required: "请输入用户名",
+				rangelength: "用户名长度为3~30个字符"
 			}
 		},
-		errorPlacement : function(error, element) {// 自定义提示错误位置
-			$(".l_err").css('display', 'block');
-			// element.css('border','3px solid #FFCCCC');
-			$(".l_err").html(error.html());
+		errorPlacement: function (error, element) {// 自定义提示错误位置
+			$(".alert-danger").removeClass("hidden");
+			$(".alert-danger").html(error.html());
 		},
-		success : function(label) {// 验证通过后
-			$(".l_err").css('display', 'none');
+		success: function (label) {// 验证通过后
+			$(".alert-danger").addClass("hidden");
 		}
 	});
 });

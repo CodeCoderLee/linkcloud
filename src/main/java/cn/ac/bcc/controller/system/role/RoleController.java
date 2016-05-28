@@ -51,7 +51,7 @@ public class RoleController extends BaseController<Role> {
     @ResponseBody
     @RequestMapping(value = "search")
     public ResponseData search(Role role, Integer limit, Integer offset) {
-        PageHelper.startPage(offset + 1, limit);
+        PageHelper.offsetPage(offset , limit);
         Example example = getEqualsToExample(role);
         List<Role> list = roleService.selectByExample(example);
         PageInfo<Role> pageInfo = new PageInfo<Role>(list);
