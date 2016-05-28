@@ -8,11 +8,12 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
     <result column="private_key" jdbcType="VARCHAR" property="privateKey" />
-    <result column="register_time" jdbcType="DATE" property="registerTime" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
     <result column="register_account" jdbcType="INTEGER" property="registerAccount" />
     <result column="bind_account" jdbcType="INTEGER" property="bindAccount" />
     <result column="bind_phone" jdbcType="VARCHAR" property="bindPhone" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="debug_account" jdbcType="INTEGER" property="debugAccount" />
   </resultMap>
 </mapper>

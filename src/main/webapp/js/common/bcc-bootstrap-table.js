@@ -144,7 +144,19 @@ function dateTimeFormatter(value) {
     if (!!value) {
         var date = new Date();
         date.setTime(value);
-        return date.toLocaleString();
+        var year = date.getFullYear();
+        var month = date.getMonth();
+        month = month + 1;
+        month = month > 9 ? month : "0" + month;
+        var day = date.getDate() + 1;
+        day = day > 9 ? day : "0" + day;
+        var hour = date.getHours();
+        hour = hour > 9 ? hour : "0" + hour;
+        var minute = date.getMinutes();
+        minute = minute > 9 ? minute : "0" + minute;
+        var second = date.getSeconds();
+        second = second.length > 1 ? second : "0" + second;
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
     } else {
         return "--";
     }

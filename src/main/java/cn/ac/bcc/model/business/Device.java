@@ -10,6 +10,7 @@ public class Device {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     /**
@@ -51,6 +52,7 @@ public class Device {
     /**
      * 设备状态
      */
+    @Column(name = "status")
     private Integer status;
 
     /**
@@ -58,6 +60,12 @@ public class Device {
      */
     @Column(name = "area_id")
     private Integer areaId;
+
+    /**
+     * 调试账户
+     */
+    @Column(name = "debug_account")
+    private Integer debugAccount;
 
     /**
      * 获取主键
@@ -219,5 +227,23 @@ public class Device {
      */
     public void setAreaId(Integer areaId) {
         this.areaId = areaId;
+    }
+
+    /**
+     * 获取调试账户
+     *
+     * @return debug_account - 调试账户
+     */
+    public Integer getDebugAccount() {
+        return debugAccount;
+    }
+
+    /**
+     * 设置调试账户
+     *
+     * @param debugAccount 调试账户
+     */
+    public void setDebugAccount(Integer debugAccount) {
+        this.debugAccount = debugAccount;
     }
 }
