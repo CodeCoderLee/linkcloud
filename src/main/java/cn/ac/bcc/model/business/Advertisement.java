@@ -5,7 +5,8 @@ import javax.persistence.*;
 @Table(name = "bcc_advertisement")
 public class Advertisement {
     @Id
-    @SequenceGenerator(name="",sequenceName="SELECT LAST_INSERT_ID()")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     /**

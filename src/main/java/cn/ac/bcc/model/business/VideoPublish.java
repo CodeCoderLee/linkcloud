@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "bcc_video_publish")
 public class VideoPublish {
     @Id
-    @SequenceGenerator(name="",sequenceName="SELECT LAST_INSERT_ID()")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**

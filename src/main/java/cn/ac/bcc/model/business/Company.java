@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Company {
     @Id
     @Column(name = "ID")
-    @SequenceGenerator(name="",sequenceName="SELECT LAST_INSERT_ID()")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
