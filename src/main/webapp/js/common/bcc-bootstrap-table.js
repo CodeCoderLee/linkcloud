@@ -7,16 +7,27 @@ $(document).ready(function () {
     var ids = [];
     /*查询按钮点击事件绑定,向后台传参数,请求数据,刷新table*/
     $('#search').click(function () {
-        var $accountName = $('#accountName').val();
+
+        console.log("search::");
         var queryObject = new Object();
-        /*当参数不为空字符串时,传给后台,避免accountname值为"",导致结果为空*/
-        if ($accountName.length) {
-            queryObject.accountname = $accountName;
-        }
-        console.log($accountName);
-        $('#bccTable').bootstrapTable().bootstrapTable('refresh', {
+        console.log($("#searchParam").attr("name"));
+        var paraName = $("#searchParam").attr("name");
+        var paraValue = $("#searchParam").val();
+        queryObject[paraName] = paraValue;
+        $('#bccTable').bootstrapTable('refresh', {
             query: queryObject
         });
+
+        //var self = this;
+        //$('#searchParam').on('input',function(event) {
+        //    console.log("event log:::"+event.target)
+        //    if(event.target.value.length>0) {
+        //        self.queryObject[event.target.name] = event.target.value;
+        //        $('#bccTable').bootstrapTable('refresh', {
+        //            query: self.queryObject
+        //        });
+        //    }
+        //});
 
     });
 
@@ -26,43 +37,43 @@ $(document).ready(function () {
     });
 
     /*新增按钮点击事件绑定,打开新增窗口*/
-    $('#newBtn').click(function(){
-        console.log("content==",$("#content"));
-        $("#content").load("user/addUI.shtml");
+    $('#newBtn').click(function () {
+        console.log("content==", $("#content"));
+        $("#content").load(addUrl);
 
     });
 
     /*修改按钮点击事件绑定,打开修改窗口*/
-    $('#modifyBtn').click(function(){
-        if (ids.length==0){
+    $('#modifyBtn').click(function () {
+        if (ids.length == 0) {
             alert("请选中一条记录");
             return;
         }
-        if(ids.length>1){
+        if (ids.length > 1) {
             alert("最多选中一条记录");
             return;
         }
-        $("#content").load("user/modifyUI.shtml?id="+ids[0]);
+        $("#content").load(modifyUrl + ids[0]);
         ids = [];
     });
 
     /*删除按钮点击事件绑定*/
-    $('#deleteBtn').click(function(){
-        if (ids.length==0){
+    $('#deleteBtn').click(function () {
+        if (ids.length == 0) {
             alert("请选中一条记录");
             return;
         }
         console.log(ids.join(","));
-        if(window.confirm("确认删除?")){
+        if (window.confirm("确认删除?")) {
             $.ajax({
-                url:"user/delete.shtml",
-                data:{ids:ids.join(",")},
-                type:"post",
-                success:function(data){
+                url: deleteUrl,
+                data: {ids: ids.join(",")},
+                type: "post",
+                success: function (data) {
                     alert("删除成功!");
                     $('#bccTable').bootstrapTable('refresh');
                 },
-                error:function(){
+                error: function () {
                     alert("删除失败!");
                 }
 
@@ -72,34 +83,47 @@ $(document).ready(function () {
 
 
     });
+    /*分配权限按钮点击事件绑定*/
+    $('#permissionBtn').click(function () {
+        if (ids.length == 0) {
+            alert("请选中一条记录");
+            return;
+        }
+        if (ids.length > 1) {
+            alert("最多选中一条记录");
+            return;
+        }
+        var $w = $(document).width();
+        window.open(permissionsUrl + ids[0], "", 'height=600,width=800,top=200,left=' + ($w / 2 - 400) + ',' + 'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
+    });
 
     /*checkbox选中事件*/
-    $('#bccTable').on('check.bs.table',function(e,row,$element){
+    $('#bccTable').on('check.bs.table', function (e, row, $element) {
         ids.push(row.id);
     });
 
     /*checkbox取消选中事件*/
-    $('#bccTable').on('uncheck.bs.table',function(e,row,$element){
-        ids.splice(ids.indexOf(row.id),1);
+    $('#bccTable').on('uncheck.bs.table', function (e, row, $element) {
+        ids.splice(ids.indexOf(row.id), 1);
     });
 
     /*checkbox选中所有事件*/
-    $('#bccTable').on('check-all.bs.table',function(e,rows){
+    $('#bccTable').on('check-all.bs.table', function (e, rows) {
         ids = [];
-        $.each(rows,function(index,item){
+        $.each(rows, function (index, item) {
             ids.push(item.id);
         });
     });
 
     /*checkbox取消选中所有事件*/
-    $('#bccTable').on('uncheck-all.bs.table',function(e){
+    $('#bccTable').on('uncheck-all.bs.table', function (e) {
         ids = [];
     });
 
 
     /*排序触发事件*/
-    $('#bccTable').on('sort.bs.table',function(e,name,order){
-        console.log(name,'=====',order);
+    $('#bccTable').on('sort.bs.table', function (e, name, order) {
+        console.log(name, '=====', order);
         var $accountName = $('#accountName').val();
         var queryObject = new Object();
         /*当参数不为空字符串时,传给后台,避免accountname值为"",导致结果为空*/
@@ -113,9 +137,6 @@ $(document).ready(function () {
             query: queryObject
         });
     });
-
-
-
 
 
 });
