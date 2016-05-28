@@ -29,10 +29,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.Cookie;
 import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.ac.bcc.annotation.Model;
+import cn.ac.bcc.model.core.User;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,6 +53,9 @@ public class Common {
 	private static final String ZH_NAME = "zh_name";
 	
 	private static final String ZB_NAME = "zb_name";
+
+	public final static String COOKIE = "PHPSESSIONID";
+
 	// 默认除法运算精度
 	private static final int DEF_DIV_SCALE = 10;
 	
@@ -345,10 +350,10 @@ public class Common {
 	 * @param request
 	 * @return
 	 */
-	public static String findUserSessionId(HttpServletRequest request) {
+	public static Integer findUserSessionId(HttpServletRequest request) {
 		Object obj = request.getSession().getAttribute("userSessionId");
 		if (obj != null) {
-			return obj.toString();
+			return (Integer)obj;
 		}
 		return null;
 	}
@@ -362,6 +367,7 @@ public class Common {
 	public static Object findUserSession(HttpServletRequest request) {
 		return (Object) request.getSession().getAttribute("userSession");
 	}
+
 
 	/**
 	 * 提供精确的减法运算。
@@ -760,5 +766,15 @@ public class Common {
 		}
 		return names;
 	}
-	
+
+	public static boolean validateToken(Cookie[] cookies, String token){
+		String cookieValue = "";
+		for(Cookie cookie : cookies){
+			String cookieName =  cookie.getName();// get the cookie name
+			if(cookieName.equalsIgnoreCase(COOKIE)){
+				cookieValue = cookie.getValue();
+			}
+		}
+		return token.equals(cookieValue);
+	}
 }
