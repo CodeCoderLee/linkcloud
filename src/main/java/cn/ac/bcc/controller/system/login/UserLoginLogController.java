@@ -34,7 +34,7 @@ public class UserLoginLogController extends BaseController<UserLogin>{
     @RequestMapping("search")
     public ResponseData search(UserLogin userLogin, Integer limit, Integer offset) throws Exception {
         System.out.println("test");
-        PageHelper.startPage(offset + 1, limit);
+        PageHelper.offsetPage(offset , limit);
         Example example = getEqualsToExample(userLogin);
         List<UserLogin> list = userLoginService.selectByExample(example);
         PageInfo<UserLogin> pageInfo = new PageInfo<UserLogin>(list);

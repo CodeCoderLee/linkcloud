@@ -42,7 +42,7 @@ public class LogController extends BaseController<Log> {
 	@ResponseBody
 	@RequestMapping("search")
 	public ResponseData search(Log log, Integer limit, Integer offset) throws Exception {
-		PageHelper.startPage(offset + 1, limit);
+		PageHelper.offsetPage(offset, limit);
 		Example example = getEqualsToExample(log);
 		List<Log> list = logService.selectByExample(example);
 		PageInfo<Log> pageInfo = new PageInfo<Log>(list);
