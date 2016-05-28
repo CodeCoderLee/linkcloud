@@ -5,72 +5,219 @@ import javax.persistence.*;
 
 @Table(name = "bcc_device")
 public class Device {
+    /**
+     * 主键
+     */
     @Id
-    @SequenceGenerator(name="",sequenceName="SELECT LAST_INSERT_ID()")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    /**
+     * 序列号
+     */
     @Column(name = "serial_number")
     private String serialNumber;
 
+    /**
+     * 私钥
+     */
     @Column(name = "private_key")
     private String privateKey;
 
+    /**
+     * 注册时间
+     */
     @Column(name = "register_time")
     private Date registerTime;
 
     /**
-     * @return id
+     * 注册帐号
+     */
+    @Column(name = "register_account")
+    private Integer registerAccount;
+
+    /**
+     * 绑定帐号
+     */
+    @Column(name = "bind_account")
+    private Integer bindAccount;
+
+    /**
+     * 绑定电话
+     */
+    @Column(name = "bind_phone")
+    private String bindPhone;
+
+    /**
+     * 设备状态
+     */
+    private Integer status;
+
+    /**
+     * 区域id
+     */
+    @Column(name = "area_id")
+    private Integer areaId;
+
+    /**
+     * 获取主键
+     *
+     * @return id - 主键
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * @param id
+     * 设置主键
+     *
+     * @param id 主键
      */
     public void setId(Integer id) {
         this.id = id;
     }
 
     /**
-     * @return serial_number
+     * 获取序列号
+     *
+     * @return serial_number - 序列号
      */
     public String getSerialNumber() {
         return serialNumber;
     }
 
     /**
-     * @param serialNumber
+     * 设置序列号
+     *
+     * @param serialNumber 序列号
      */
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 
     /**
-     * @return private_key
+     * 获取私钥
+     *
+     * @return private_key - 私钥
      */
     public String getPrivateKey() {
         return privateKey;
     }
 
     /**
-     * @param privateKey
+     * 设置私钥
+     *
+     * @param privateKey 私钥
      */
     public void setPrivateKey(String privateKey) {
         this.privateKey = privateKey;
     }
 
     /**
-     * @return register_time
+     * 获取注册时间
+     *
+     * @return register_time - 注册时间
      */
     public Date getRegisterTime() {
         return registerTime;
     }
 
     /**
-     * @param registerTime
+     * 设置注册时间
+     *
+     * @param registerTime 注册时间
      */
     public void setRegisterTime(Date registerTime) {
         this.registerTime = registerTime;
+    }
+
+    /**
+     * 获取注册帐号
+     *
+     * @return register_account - 注册帐号
+     */
+    public Integer getRegisterAccount() {
+        return registerAccount;
+    }
+
+    /**
+     * 设置注册帐号
+     *
+     * @param registerAccount 注册帐号
+     */
+    public void setRegisterAccount(Integer registerAccount) {
+        this.registerAccount = registerAccount;
+    }
+
+    /**
+     * 获取绑定帐号
+     *
+     * @return bind_account - 绑定帐号
+     */
+    public Integer getBindAccount() {
+        return bindAccount;
+    }
+
+    /**
+     * 设置绑定帐号
+     *
+     * @param bindAccount 绑定帐号
+     */
+    public void setBindAccount(Integer bindAccount) {
+        this.bindAccount = bindAccount;
+    }
+
+    /**
+     * 获取绑定电话
+     *
+     * @return bind_phone - 绑定电话
+     */
+    public String getBindPhone() {
+        return bindPhone;
+    }
+
+    /**
+     * 设置绑定电话
+     *
+     * @param bindPhone 绑定电话
+     */
+    public void setBindPhone(String bindPhone) {
+        this.bindPhone = bindPhone;
+    }
+
+    /**
+     * 获取设备状态
+     *
+     * @return status - 设备状态
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置设备状态
+     *
+     * @param status 设备状态
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
+     * 获取区域id
+     *
+     * @return area_id - 区域id
+     */
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    /**
+     * 设置区域id
+     *
+     * @param areaId 区域id
+     */
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 }

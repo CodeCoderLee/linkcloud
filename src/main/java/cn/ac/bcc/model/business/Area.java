@@ -8,7 +8,8 @@ public class Area {
      * ID
      */
     @Id
-    @SequenceGenerator(name="",sequenceName="SELECT LAST_INSERT_ID()")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     /**

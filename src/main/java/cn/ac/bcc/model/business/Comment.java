@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "bcc_comment")
 public class Comment {
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
