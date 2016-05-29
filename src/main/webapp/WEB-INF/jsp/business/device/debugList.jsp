@@ -82,6 +82,7 @@
                         currentPage: data.pageNum,
                         totalPages: data.totalPages,
                         onPageChanged: function (e, oldPage, newPage) {
+                            scrollTo(0,0);
                             loadDevice(newPage, 6);
                         }
                     }
