@@ -6,6 +6,8 @@ import cn.ac.bcc.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 设备管理service
  * Created by bcc on 16/5/28.
@@ -14,4 +16,8 @@ import org.springframework.stereotype.Service;
 public class DeviceService extends BaseService<Device> {
     @Autowired
     private DeviceMapper deviceMapper;
+
+    public List<Device> selectDebugDevice(Device device){
+        return deviceMapper.selectDebugDevice(device);
+    }
 }

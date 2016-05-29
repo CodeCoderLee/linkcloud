@@ -155,7 +155,7 @@ function dateTimeFormatter(value) {
         var minute = date.getMinutes();
         minute = minute > 9 ? minute : "0" + minute;
         var second = date.getSeconds();
-        second = second.length > 1 ? second : "0" + second;
+        second = second > 9 ? second : "0" + second;
         return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
     } else {
         return "--";

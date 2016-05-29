@@ -67,6 +67,9 @@ public class Device {
     @Column(name = "debug_account")
     private Integer debugAccount;
 
+    @Transient
+    private String registerName;
+
     /**
      * 获取主键
      *
@@ -245,5 +248,13 @@ public class Device {
      */
     public void setDebugAccount(Integer debugAccount) {
         this.debugAccount = debugAccount;
+    }
+
+    public String getRegisterName() {
+        return registerName;
+    }
+
+    public void setRegisterName(String registerName) {
+        this.registerName = registerName;
     }
 }
