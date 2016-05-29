@@ -65,6 +65,7 @@ public class DeviceController extends BaseController<Device> {
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
+
         responseData.setRows(list);
         return responseData;
     }
