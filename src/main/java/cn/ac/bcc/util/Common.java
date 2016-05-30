@@ -54,7 +54,7 @@ public class Common {
 	
 	private static final String ZB_NAME = "zb_name";
 
-	public final static String COOKIE = "PHPSESSIONID";
+	public final static String COOKIE = "PHPSESSID";
 
 	// 默认除法运算精度
 	private static final int DEF_DIV_SCALE = 10;

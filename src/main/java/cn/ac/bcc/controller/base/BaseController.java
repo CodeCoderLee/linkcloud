@@ -7,7 +7,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.logging.Logger;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -35,7 +37,6 @@ import tk.mybatis.mapper.entity.Example;
  * Created by lifm on 2016/2/1.
  */
 public abstract class BaseController<T> {
-
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
 
@@ -44,6 +45,24 @@ public abstract class BaseController<T> {
 
     @Autowired
     public ResourcesService resourcesService;
+
+
+    public String readRequestInputStream(){
+        String content = null;
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(getRequest().getInputStream()));
+            String line = null;
+            StringBuffer sb = new StringBuffer();
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            content = sb.toString();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return content;
+    }
+
 
     /**
      * 获取返回某一页面的按扭组

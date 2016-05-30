@@ -27,7 +27,7 @@ public class SpaceDeivceController extends BaseController<Comment>{
     private UserService userService;
 
     @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
-    public String index(Model mode){
+    public String index(Model mode,String openId){
 
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }

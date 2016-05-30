@@ -14,7 +14,7 @@ import javax.servlet.http.Cookie;
  */
 @Controller
 @RequestMapping("/ws/stream/")
-public class StreamController extends BaseController{
+public class StreamApiController extends BaseController{
 
     @ResponseBody
     @RequestMapping(value = "remoteCheck")
@@ -25,11 +25,11 @@ public class StreamController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(1);
+            rj.setResult(ResponseJson.Status.Fail);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(0);
+            rj.setResult(ResponseJson.Status.Success);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
