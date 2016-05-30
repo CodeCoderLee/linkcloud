@@ -22,6 +22,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.json.Json;
 import javax.servlet.http.Cookie;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +39,12 @@ public class DeviceApiController extends BaseController{
     private ProgramService programService;
 
     private final static String COOKIE = Common.COOKIE;
-    @ResponseBody
     @RequestMapping(value = "linkHello")
-    public ResponseJson linkHello(Integer seq) {
+    public void linkHello(Integer seq)  {
         // 获取设备授权令牌
         String token = getRequest().getSession(true).getId();
         getResponse().addCookie(new Cookie(COOKIE,token));
+
 
         ResponseJson rj = new ResponseJson();
         rj.setResult(ResponseJson.RESULT_SUCCESS);
@@ -51,12 +52,13 @@ public class DeviceApiController extends BaseController{
         rj.setDescription("no error.");
         rj.setTime(System.currentTimeMillis()/1000);
         rj.setToken(token);
-        return rj;
+        JSONObject obj = JSONObject.fromObject(rj);
+        String json = obj.toString();
+        printJson(json);
     }
 
-    @ResponseBody
     @RequestMapping(value = "authen")
-    public Map<String,Object> authen(Integer seq,String authen) {
+    public void authen(Integer seq,String authen) {
         String token = getRequest().getSession(true).getId();
         boolean validation = Common.validateToken(getRequest().getCookies(),token);
         System.out.println("authen-----\r\n" + authen);
@@ -95,8 +97,10 @@ public class DeviceApiController extends BaseController{
             map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
         }
         getResponse().addCookie(new Cookie(COOKIE,token));
-        return map;
-    }
+        JSONObject obj = JSONObject.fromObject(map);
+        String jsonStr = obj.toString();
+        printJson(jsonStr);
+     }
 
 
     @ResponseBody
@@ -222,7 +226,6 @@ public class DeviceApiController extends BaseController{
     @ResponseBody
     @RequestMapping(value = "setAd")
     public ResponseJson setAd(Integer seq,String content) {
-        //TODO 方便测试，暂用固定值
         String token = "12312sdfgsdgfegrfger";
         boolean validation = Common.validateToken(getRequest().getCookies(),token);
 
@@ -281,9 +284,8 @@ public class DeviceApiController extends BaseController{
         }
     }
 
-    @ResponseBody
     @RequestMapping(value = "reportPrograms")
-    public Map<String,Object> reportPrograms(Integer seq) {
+    public void reportPrograms(Integer seq) {
         String token = "12312sdfgsdgfegrfger";
         boolean validation = Common.validateToken(getRequest().getCookies(),token);
 
@@ -302,7 +304,10 @@ public class DeviceApiController extends BaseController{
             map.put(ResponseJson.KEY_DESCRIPTION, "");
         }
         getResponse().addCookie(new Cookie(COOKIE,token));
-        return map;
+
+        JSONObject obj = JSONObject.fromObject(map);
+        String jsonStr = obj.toString();
+        printJson(jsonStr);
     }
 
     @ResponseBody

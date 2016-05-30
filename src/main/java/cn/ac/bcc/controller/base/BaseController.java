@@ -46,6 +46,23 @@ public abstract class BaseController<T> {
     @Autowired
     public ResourcesService resourcesService;
 
+    /**
+     * 设置一个较大的size，防止响应头变成 "Transfer-Encoding: chunked"，设备端不支持
+     */
+    public void printJson(String json) {
+//        getResponse().setContentLength(json.getBytes().length);
+        PrintWriter out = null;
+        try{
+            out = getResponse().getWriter();
+            out.print(json);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if(out != null)out.close();
+        }
+    }
+
+
 
     public String readRequestInputStream(){
         String content = null;
