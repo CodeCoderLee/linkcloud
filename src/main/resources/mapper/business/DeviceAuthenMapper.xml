@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.business.DeviceAuthenMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.DeviceAuthen" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="private_key" property="privateKey" jdbcType="VARCHAR" />
+    <result column="ip1" property="ip1" jdbcType="VARCHAR" />
+    <result column="ip2" property="ip2" jdbcType="VARCHAR" />
+    <result column="mac1" property="mac1" jdbcType="VARCHAR" />
+    <result column="mac2" property="mac2" jdbcType="VARCHAR" />
+    <result column="version1" property="version1" jdbcType="VARCHAR" />
+    <result column="version2" property="version2" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
