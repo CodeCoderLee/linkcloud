@@ -43,12 +43,12 @@ public class ResponseJson {
     public static final String KEY_RP_PTYPE = "ptype";              //节目分类，规划用于点播节目的组织
     public static final String KEY_RP_PURL = "purl";                //表示流媒体服务的本地连接地址，用于播放
 
-    public static final int RESULT_FAIL = 1;                        //失败
-    public static final int RESULT_SUCCESS = 0;                     //成功
-    private  int result;
+    public static final String RESULT_FAIL = "1";                        //失败
+    public static final String RESULT_SUCCESS = "0";                     //成功
+    private  String result;
     private String command;
     private String description;
-    private long time;
+    private String time;
     private String token ;
 
 
@@ -79,12 +79,12 @@ public class ResponseJson {
         this.description = description;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
     public void setTime(long time) {
-        this.time = time;
+        this.time = String.valueOf(time);
     }
 
     public String getToken() {
@@ -95,11 +95,11 @@ public class ResponseJson {
         this.token = token;
     }
 
-    public int getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(String result) {
         this.result = result;
     }
 }

@@ -95,6 +95,7 @@
                 /user/getRoles.shtml = anon
                 /chenyf/** = anon
                 /vendors/** = anon
+                /ws/** = anon
             </value>
         </property>
     </bean>

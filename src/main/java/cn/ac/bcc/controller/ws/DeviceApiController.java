@@ -59,6 +59,7 @@ public class DeviceApiController extends BaseController{
     public Map<String,Object> authen(Integer seq,String authen) {
         String token = getRequest().getSession(true).getId();
         boolean validation = Common.validateToken(getRequest().getCookies(),token);
+        System.out.println("authen-----\r\n" + authen);
 
         JSONObject json = JSONObject.fromObject(authen);
         DeviceAuthen deviceAuthen = new DeviceAuthen();
@@ -84,13 +85,13 @@ public class DeviceApiController extends BaseController{
             map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_FAIL);
             map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
             map.put(ResponseJson.KEY_DESCRIPTION,"error.");
-            map.put(ResponseJson.KEY_FRQ,626);
+            map.put(ResponseJson.KEY_FRQ,"626");
             map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
         }else{
             map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_SUCCESS);
             map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
             map.put(ResponseJson.KEY_DESCRIPTION,"");
-            map.put(ResponseJson.KEY_FRQ,626);
+            map.put(ResponseJson.KEY_FRQ,"626");
             map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
         }
         getResponse().addCookie(new Cookie(COOKIE,token));
@@ -283,13 +284,13 @@ public class DeviceApiController extends BaseController{
     @ResponseBody
     @RequestMapping(value = "reportPrograms")
     public Map<String,Object> reportPrograms(Integer seq) {
-        //TODO 方便测试，暂用固定值
         String token = "12312sdfgsdgfegrfger";
         boolean validation = Common.validateToken(getRequest().getCookies(),token);
 
         String content = readRequestInputStream();
+        System.out.println("reportPrograms-----\r\n" + content);
         parseReportProgram(content);
-
+        //TODO
         Map<String,Object> map  = new HashMap<String,Object>();
         if(!validation){
             map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
@@ -352,6 +353,4 @@ public class DeviceApiController extends BaseController{
         JSONObject obj = JSONObject.fromObject(rj);
         System.out.println("obj---------------" + obj.toString());
     }
-
-
 }
