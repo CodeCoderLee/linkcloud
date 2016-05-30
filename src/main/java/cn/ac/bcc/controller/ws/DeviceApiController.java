@@ -16,6 +16,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tk.mybatis.mapper.entity.Example;
@@ -39,8 +40,9 @@ public class DeviceApiController extends BaseController{
     private ProgramService programService;
 
     private final static String COOKIE = Common.COOKIE;
+    @ResponseBody
     @RequestMapping(value = "linkHello")
-    public void linkHello(Integer seq)  {
+    public ResponseJson linkHello(Integer seq)  {
         // 获取设备授权令牌
         String token = getRequest().getSession(true).getId();
         getResponse().addCookie(new Cookie(COOKIE,token));
@@ -52,15 +54,17 @@ public class DeviceApiController extends BaseController{
         rj.setDescription("no error.");
         rj.setTime(System.currentTimeMillis()/1000);
         rj.setToken(token);
-        JSONObject obj = JSONObject.fromObject(rj);
-        String json = obj.toString();
-        printJson(json);
+
+        getResponse().setHeader("connection", "keep-alive");
+        return rj;
     }
 
+    @ResponseBody
     @RequestMapping(value = "authen")
-    public void authen(Integer seq,String authen) {
+    public Map<String,Object> authen(Integer seq) {
         String token = getRequest().getSession(true).getId();
-        boolean validation = Common.validateToken(getRequest().getCookies(),token);
+        boolean validation = true;//Common.validateToken(getRequest().getCookies(),token);
+        String authen = readRequestInputStream();
         System.out.println("authen-----\r\n" + authen);
 
         JSONObject json = JSONObject.fromObject(authen);
@@ -97,9 +101,7 @@ public class DeviceApiController extends BaseController{
             map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
         }
         getResponse().addCookie(new Cookie(COOKIE,token));
-        JSONObject obj = JSONObject.fromObject(map);
-        String jsonStr = obj.toString();
-        printJson(jsonStr);
+        return map;
      }
 
 
@@ -284,8 +286,9 @@ public class DeviceApiController extends BaseController{
         }
     }
 
+    @ResponseBody
     @RequestMapping(value = "reportPrograms")
-    public void reportPrograms(Integer seq) {
+    public Map<String,Object> reportPrograms(Integer seq) {
         String token = "12312sdfgsdgfegrfger";
         boolean validation = Common.validateToken(getRequest().getCookies(),token);
 
@@ -305,9 +308,7 @@ public class DeviceApiController extends BaseController{
         }
         getResponse().addCookie(new Cookie(COOKIE,token));
 
-        JSONObject obj = JSONObject.fromObject(map);
-        String jsonStr = obj.toString();
-        printJson(jsonStr);
+        return map;
     }
 
     @ResponseBody
