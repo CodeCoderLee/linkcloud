@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.css">
 <div class="container">
     <div class="block-header">
-        <h2>设备管理</h2>
+        <h2>设备注册</h2>
     </div>
     <div class="card">
         <div class="card-header">
@@ -22,9 +22,9 @@
             <button type="button" class="btn btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-edit"></i>注册
             </button>
-            <button type="button" class="btn btn-info" id="modifyBtn">
-                <i class="glyphicon glyphicon-edit"></i>调试
-            </button>
+            <%--<button type="button" class="btn btn-info" id="modifyBtn">--%>
+                <%--<i class="glyphicon glyphicon-edit"></i>调试--%>
+            <%--</button>--%>
             <button type="button" class="btn btn-danger" id="deleteBtn">
                 <i class="glyphicon glyphicon-minus"></i>删除
             </button>

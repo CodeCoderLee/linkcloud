@@ -94,6 +94,7 @@
                 /framejson/** = anon
                 /user/getRoles.shtml = anon
                 /chenyf/** = anon
+                /vendors/** = anon
             </value>
         </property>
     </bean>

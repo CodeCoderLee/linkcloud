@@ -4,12 +4,10 @@ import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.exception.SystemException;
 import cn.ac.bcc.model.business.Device;
-import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.Common;
-import cn.ac.bcc.util.Constants;
-import cn.ac.bcc.util.PasswordHelper;
 import cn.ac.bcc.util.ResponseData;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +38,12 @@ public class DeviceController extends BaseController<Device> {
         return Common.BACKGROUND_PATH + "/business/device/list";
     }
 
+    @RequestMapping("debugList")
+    public String debugListUI(Model model) throws Exception {
+        model.addAttribute("res", findByRes());
+        return Common.BACKGROUND_PATH + "/business/device/debugList";
+    }
+
     @RequestMapping("addUI")
     public String addUI() {
         return Common.BACKGROUND_PATH + "/business/device/add";
@@ -65,9 +69,28 @@ public class DeviceController extends BaseController<Device> {
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
-
         responseData.setRows(list);
         return responseData;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("searchDebug")
+    public ResponseData searchDebug(Device device, Integer pageNum, Integer pageSize) throws Exception {
+        Integer userId = Common.findUserSessionId(getRequest());
+        device.setRegisterAccount(userId);
+        device.setDebugAccount(userId);
+        device.setStatus(1);
+        PageHelper.startPage(pageNum, pageSize);
+        List<Device> list = deviceService.selectDebugDevice(device);
+        PageInfo<Device> pageInfo = new PageInfo<Device>(list);
+        ResponseData responseData = new ResponseData();
+        responseData.setTotal(pageInfo.getTotal());
+        responseData.setRows(list);
+        responseData.setPageNum(pageInfo.getPageNum());
+        responseData.setTotalPages(pageInfo.getPages());
+        return responseData;
+//        return responseData;
     }
 
 
@@ -76,12 +99,14 @@ public class DeviceController extends BaseController<Device> {
     @SystemLog(module = "设备管理", methods = "设备管理-设备注册")//凡需要处理业务逻辑的.都需要记录操作日志
     public String add(Device device) {
         try {
-            if (device.getPrivateKey() == null) {
+            if (Common.isEmpty(device.getPrivateKey())) {
                 device.setPrivateKey(new Date().getTime() + new Random().nextInt(100000) + "");
             }
             device.setRegisterTime(new Date());
             Integer userId = Common.findUserSessionId(getRequest());
             device.setRegisterAccount(userId);
+            device.setDebugAccount(userId);
+            device.setStatus(1);
             deviceService.insert(device);
             return SUCCESS;
         } catch (Exception e) {
@@ -104,8 +129,6 @@ public class DeviceController extends BaseController<Device> {
         }
         return SUCCESS;
     }
-
-
 
 
     @ResponseBody
