@@ -46,7 +46,7 @@ public class DeviceApiController extends BaseController{
         getResponse().addCookie(new Cookie(COOKIE,token));
 
         ResponseJson rj = new ResponseJson();
-        rj.setResult(ResponseJson.Status.Success);
+        rj.setResult(ResponseJson.RESULT_SUCCESS);
         rj.setCommand(ResponseJson.Command.Nothing);
         rj.setDescription("no error.");
         rj.setTime(System.currentTimeMillis()/1000);
@@ -81,13 +81,13 @@ public class DeviceApiController extends BaseController{
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(!validation){
-            map.put(ResponseJson.KEY_RESULT,ResponseJson.Status.Fail);
+            map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_FAIL);
             map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
             map.put(ResponseJson.KEY_DESCRIPTION,"error.");
             map.put(ResponseJson.KEY_FRQ,626);
             map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
         }else{
-            map.put(ResponseJson.KEY_RESULT,ResponseJson.Status.Success);
+            map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_SUCCESS);
             map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
             map.put(ResponseJson.KEY_DESCRIPTION,"");
             map.put(ResponseJson.KEY_FRQ,626);
@@ -110,11 +110,11 @@ public class DeviceApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
@@ -134,11 +134,11 @@ public class DeviceApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
@@ -158,11 +158,11 @@ public class DeviceApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
@@ -182,11 +182,11 @@ public class DeviceApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
@@ -206,11 +206,11 @@ public class DeviceApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
@@ -230,11 +230,11 @@ public class DeviceApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
@@ -292,11 +292,11 @@ public class DeviceApiController extends BaseController{
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(!validation){
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.Status.Fail);
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
             map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
             map.put(ResponseJson.KEY_DESCRIPTION, "");
         }else{
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.Status.Success);
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
             map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
             map.put(ResponseJson.KEY_DESCRIPTION, "");
         }
@@ -316,11 +316,11 @@ public class DeviceApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }
@@ -329,19 +329,29 @@ public class DeviceApiController extends BaseController{
     }
 
     public static void main(String[] args){
-        Map<String,String> map = new HashMap<String, String>();
-        map.put("id","88888888");
-        map.put("key","asdasertert");
-        map.put("ip1","192.168.0.10");
-        map.put("ip2","192.168.0.11");
-        map.put("mac1","80:80:88:88:88:88");
-        map.put("mac2","81:81:88:88:88:88");
-        map.put("version1","1.16.0413.1");
-        map.put("version2","1.16.0413.1");
-        Object obj = JSONObject.fromObject(map);
-        System.out.print(obj);
-//        JSONObject json = JSONObject.fromObject(content);
-//        json.containsKey()
-//        System.out.print("json::" + json);
+//        Map<String,String> map = new HashMap<String, String>();
+//        map.put("id","88888888");
+//        map.put("key","asdasertert");
+//        map.put("ip1","192.168.0.10");
+//        map.put("ip2","192.168.0.11");
+//        map.put("mac1","80:80:88:88:88:88");
+//        map.put("mac2","81:81:88:88:88:88");
+//        map.put("version1","1.16.0413.1");
+//        map.put("version2","1.16.0413.1");
+//        Object obj = JSONObject.fromObject(map);
+//        System.out.print(obj);
+
+
+        ResponseJson rj = new ResponseJson();
+        rj.setResult(ResponseJson.RESULT_SUCCESS);
+        rj.setCommand(ResponseJson.Command.Nothing);
+        rj.setDescription("no error.");
+        rj.setTime(System.currentTimeMillis()/1000);
+        rj.setToken("000000000000000000");
+
+        JSONObject obj = JSONObject.fromObject(rj);
+        System.out.println("obj---------------" + obj.toString());
     }
+
+
 }

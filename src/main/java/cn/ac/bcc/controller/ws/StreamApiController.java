@@ -25,11 +25,11 @@ public class StreamApiController extends BaseController{
 
         ResponseJson rj = new ResponseJson();
         if(!validation){
-            rj.setResult(ResponseJson.Status.Fail);
+            rj.setResult(ResponseJson.RESULT_FAIL);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("error.");
         }else{
-            rj.setResult(ResponseJson.Status.Success);
+            rj.setResult(ResponseJson.RESULT_SUCCESS);
             rj.setCommand(ResponseJson.Command.Nothing);
             rj.setDescription("no error.");
         }

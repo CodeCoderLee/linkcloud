@@ -42,22 +42,16 @@ public class ResponseJson {
     public static final String KEY_RP_PNAME = "pname";              //节目名称
     public static final String KEY_RP_PTYPE = "ptype";              //节目分类，规划用于点播节目的组织
     public static final String KEY_RP_PURL = "purl";                //表示流媒体服务的本地连接地址，用于播放
-    private  Status result;
+
+    public static final int RESULT_FAIL = 1;                        //失败
+    public static final int RESULT_SUCCESS = 0;                     //成功
+    private  int result;
     private String command;
     private String description;
     private long time;
     private String token ;
 
-    public enum Status{
-        Success(0),Fail(1);
-        private Integer statusCode = 0;
-        private Status(Integer num){
-            this.statusCode = num;
-        }
-        public String toString(){
-            return this.statusCode.toString();
-        }
-    }
+
     public enum Command{
         Nothing("nothing"),Shock("shock"),ScanFrq("scanfrq"),SetFrq("setfrq"),Updatead("updatedad"),RemoteWatch("remotewatch");
         private final String cmd;
@@ -101,11 +95,11 @@ public class ResponseJson {
         this.token = token;
     }
 
-    public Status getResult() {
+    public int getResult() {
         return result;
     }
 
-    public void setResult(Status result) {
+    public void setResult(int result) {
         this.result = result;
     }
 }
