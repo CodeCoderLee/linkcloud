@@ -73,7 +73,7 @@
     $(document).ready(function () {
         if ($("ul li").length > 0) {
             /*若是session超时，导致login页面嵌入到index页面中（通过判断页面中是否有<li>元素判断即可），重新定位到login页面*/
-            window.location.href = "login.shtml";
+            window.location.href = "toLogin.shtml";
         };
     });
     if ("${error}" != "") {

@@ -54,7 +54,7 @@
     <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.shtml"/>
+        <property name="loginUrl" value="/toLogin.shtml"/>
         <property name="successUrl" value="/index.shtml"/>
         <property name="unauthorizedUrl" value="/denied.jsp"/>
         <!-- 自定义权限配置 -->
@@ -96,6 +96,8 @@
                 /chenyf/** = anon
                 /vendors/** = anon
                 /ws/** = anon
+                /wechat/token.shtml = anon
+                /wechat/getOpenId.shtml = anon
             </value>
         </property>
     </bean>
