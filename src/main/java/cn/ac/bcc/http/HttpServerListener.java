@@ -30,7 +30,7 @@ public class HttpServerListener implements ServletContextListener {
         // 得到Service的实例对象
         httpServer = new HttpServer(springContext);
         try {
-            httpServer.start(8000);
+            httpServer.start(8080);
         } catch (Exception e) {
             e.printStackTrace();
         }
