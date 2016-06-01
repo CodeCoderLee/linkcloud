@@ -153,8 +153,7 @@ public class WechatController {
             return "/login";
         }
         //TODO 普通权限的用户仅能进入前台页面
-        return "redirect:/index.shtml";
-//        return "redirect:login.shtml?username="+user.getAccountname()+"&password="+user.getPassword();
+        return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
     }
 
 

@@ -8,8 +8,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by lenovo on 2016-05-31.
@@ -49,7 +47,7 @@ public class HttpServerListener implements ServletContextListener {
                 // 得到Service的实例对象
                 httpServer = new HttpServer(springContext);
                 try {
-                    httpServer.start(8000);
+                    httpServer.start(8080);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
