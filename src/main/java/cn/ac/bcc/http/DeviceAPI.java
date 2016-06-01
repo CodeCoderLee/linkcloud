@@ -1,28 +1,26 @@
 package cn.ac.bcc.http;
 
 import cn.ac.bcc.model.business.DeviceAuthen;
-import cn.ac.bcc.model.business.Program;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
-import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseJson;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.*;
-import net.sf.json.JSONArray;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.ServerCookieEncoder;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import tk.mybatis.mapper.entity.Example;
 
-import javax.servlet.http.*;
-import javax.servlet.http.Cookie;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -34,7 +32,7 @@ public class DeviceAPI {
     public static final String SET_COOKIE = "Set-Cookie";
     public static final String URI_LINKHELLO = "/device/linkHello.shtml";
     public static final String URI_AUTHEN = "/device/authen.shtml";
-    public static final String URI_REPORT_PROGRAMS = "/device/reportPrograms.shtml";
+    public static final String URI_REPORT_PROGRAMS = "/device/reportprograms.shtml";
 
     private static Log log = LogFactory.getLog(DeviceAPI.class);
     private ApplicationContext ctx;
@@ -54,10 +52,11 @@ public class DeviceAPI {
         }
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
-        System.out.println("Uri:" + uri);
+        log.info("Uri:" + uri + "\r\n" + "data:::" +postData);
         String jsonStr = "";
         String sessionID = null;
         String token = null;
+        uri = uri.toLowerCase();
         if(uri.contains(URI_LINKHELLO)){
             UUID uuid  =  UUID.randomUUID();
             token = uuid.toString();
