@@ -20,13 +20,20 @@ import org.springframework.context.ApplicationContext;
 public class HttpServer {
     private static Log log = LogFactory.getLog(HttpServer.class);
     private ApplicationContext applicationContext;
-
+    private ChannelFuture f;
     public HttpServer(ApplicationContext applicationContext){
         this.applicationContext =  applicationContext;
     }
 
     public HttpServer(){
 
+    }
+
+    public void close(){
+        if(f != null){
+            log.info("Http Server Close....");
+            f.channel().close();
+        }
     }
 
     public void start(int port) throws Exception {
@@ -46,7 +53,7 @@ public class HttpServer {
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture f = b.bind(port).sync();
+            f = b.bind(port).sync();
             f.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();

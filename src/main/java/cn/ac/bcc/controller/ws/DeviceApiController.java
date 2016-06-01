@@ -65,7 +65,6 @@ public class DeviceApiController extends BaseController{
         String token = getRequest().getSession(true).getId();
         boolean validation = true;//Common.validateToken(getRequest().getCookies(),token);
         String authen = readRequestInputStream();
-        System.out.println("authen-----\r\n" + authen);
 
         JSONObject json = JSONObject.fromObject(authen);
         DeviceAuthen deviceAuthen = new DeviceAuthen();

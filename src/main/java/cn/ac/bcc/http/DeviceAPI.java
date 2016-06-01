@@ -2,6 +2,7 @@ package cn.ac.bcc.http;
 
 import cn.ac.bcc.model.business.DeviceAuthen;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
+import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseJson;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -15,6 +16,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.context.ApplicationContext;
 
+import javax.servlet.http.Cookie;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -33,6 +35,14 @@ public class DeviceAPI {
     public static final String URI_LINKHELLO = "/device/linkHello.shtml";
     public static final String URI_AUTHEN = "/device/authen.shtml";
     public static final String URI_REPORT_PROGRAMS = "/device/reportprograms.shtml";
+    public static final String URI_ANALYSISV = "/device/analysisv.shtml";
+    public static final String URI_SHOCK = "/device/shock.shtml";
+    public static final String URI_SCANFRQ = "/device/scanfrq.shtml";
+    public static final String URI_SETFRQ = "/device/setfrq.shtml";
+    public static final String URI_UPDATEAD = "/device/updatead.shtml";
+    public static final String URI_SETAD = "/device/setad.shtml";
+    public static final String URI_REMOTEWATCH = "/device/remotewatch.shtml";
+    public static final String URI_REMOTECHECK = "/device/remotecheck.shtml";
 
     private static Log log = LogFactory.getLog(DeviceAPI.class);
     private ApplicationContext ctx;
@@ -40,8 +50,6 @@ public class DeviceAPI {
     public DeviceAPI(ApplicationContext applicationContext){
         this.ctx = applicationContext;
     }
-
-
 
     public FullHttpResponse dispatcher(HttpRequest request,String postData) throws UnsupportedEncodingException {
         String uri = request.getUri();
@@ -52,7 +60,7 @@ public class DeviceAPI {
         }
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
-        log.info("Uri:" + uri + "\r\n" + "data:::" +postData);
+        log.info("uri:" + uri + "\r\n" + "data:::" + postData);
         String jsonStr = "";
         String sessionID = null;
         String token = null;
@@ -61,11 +69,27 @@ public class DeviceAPI {
             UUID uuid  =  UUID.randomUUID();
             token = uuid.toString();
             sessionID = ServerCookieEncoder.encode("PHPSESSID",token);
-            jsonStr = linkHello(request,postData,token);
+            jsonStr = linkHello(request,postData,nvList,token);
         }else if(uri.contains(URI_AUTHEN)){
-            jsonStr = authen(request,postData);
+            jsonStr = authen(request,postData,nvList);
         }else if(uri.contains(URI_REPORT_PROGRAMS)){
-            jsonStr = reportPrograms(request,postData);
+            jsonStr = reportPrograms(request,postData,nvList);
+        }else if(uri.contains(URI_ANALYSISV)){
+            jsonStr = analysisv(request,postData,nvList);
+        }else if(uri.contains(URI_REMOTECHECK)){
+            jsonStr = remoteCheck(request,postData,nvList);
+        }else if(uri.contains(URI_REMOTEWATCH)){
+            jsonStr = remoteWatch(request,postData,nvList);
+        }else if(uri.contains(URI_SCANFRQ)){
+            jsonStr = scanFrq(request,postData,nvList);
+        }else if (uri.contains(URI_SETAD)) {
+            jsonStr = setAd(request,postData,nvList);
+        }else if(uri.contains(URI_UPDATEAD)){
+            jsonStr = updateAd(request,postData,nvList);
+        }else if(uri.contains(URI_SETFRQ)){
+            jsonStr = setFrq(request,postData,nvList);
+        }else if(uri.contains(URI_SHOCK)){
+            jsonStr = shock(request,postData,nvList);
         }
 
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,OK, Unpooled.wrappedBuffer(jsonStr.getBytes("UTF-8")));
@@ -85,7 +109,7 @@ public class DeviceAPI {
         return value;
     }
 
-    public String  linkHello(HttpRequest request,String postData,String token)  {
+    public String  linkHello(HttpRequest request,String postData,List<NameValuePair> nvList,String token)  {
         // 获取设备授权令牌
         ResponseJson rj = new ResponseJson();
         rj.setResult(ResponseJson.RESULT_SUCCESS);
@@ -98,7 +122,7 @@ public class DeviceAPI {
         return jsonObject.toString();
     }
 
-    public String authen(HttpRequest request,String postData) {
+    public String authen(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
         log.debug("authen --postData::\r\n" + postData);
@@ -124,19 +148,16 @@ public class DeviceAPI {
 //        }
 
         Map<String,Object> map  = new HashMap<String,Object>();
-        if(!validation){
-            map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
-            map.put(ResponseJson.KEY_DESCRIPTION,"error.");
-            map.put(ResponseJson.KEY_FRQ,"626");
-            map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
-        }else{
+        if(validation){
             map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
-            map.put(ResponseJson.KEY_DESCRIPTION,"");
-            map.put(ResponseJson.KEY_FRQ,"626");
-            map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
+        }else{
+            map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_FAIL);
         }
+        map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
+        map.put(ResponseJson.KEY_DESCRIPTION,"error.");
+        map.put(ResponseJson.KEY_FRQ,"626");
+        map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
+
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
     }
@@ -180,45 +201,181 @@ public class DeviceAPI {
 //        }
     }
 
-    public String reportPrograms(HttpRequest request,String postData) {
-        String token = "12312sdfgsdgfegrfger";
-        boolean validation = true;//Common.validateToken(getRequest().getCookies(),token);
+    public String reportPrograms(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
         log.debug("reportPrograms --postData::\r\n" + postData);
         parseReportProgram(postData);
         //TODO
         Map<String,Object> map  = new HashMap<String,Object>();
-        if(!validation){
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
-        }else{
+        if(validation) {
             map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
         }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(ResponseJson.KEY_DESCRIPTION, "");
+
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
     }
 
-//    public String analysisv(HttpRequest request,String postData) {
-//        //TODO 方便测试，暂用固定值
-//        String token = "12312sdfgsdgfegrfger";
-//        boolean validation = true; //Common.validateToken(getRequest().getCookies(),token);
-//
-//        JSONObject json = JSONObject.fromObject(content);
-//        System.out.print("json::" + json);
-//
-//        ResponseJson rj = new ResponseJson();
-//        if(!validation){
-//            rj.setResult(ResponseJson.RESULT_FAIL);
-//            rj.setCommand(ResponseJson.Command.Nothing);
-//            rj.setDescription("error.");
-//        }else{
-//            rj.setResult(ResponseJson.RESULT_SUCCESS);
-//            rj.setCommand(ResponseJson.Command.Nothing);
-//            rj.setDescription("no error.");
-//        }
-//        getResponse().addCookie(new Cookie(COOKIE,token));
-//        return rj;
-//    }
+    public String analysisv(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+        JSONObject json = JSONObject.fromObject(postData);
+        ResponseJson rj = new ResponseJson();
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String shock(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        JSONObject json = JSONObject.fromObject(postData);
+        System.out.print("json::" + json);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String scanFrq(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        JSONObject json = JSONObject.fromObject(postData);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String setFrq(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        JSONObject json = JSONObject.fromObject(postData);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String updateAd(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        JSONObject json = JSONObject.fromObject(postData);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String setAd(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        JSONObject json = JSONObject.fromObject(postData);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String remoteWatch(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        JSONObject json = JSONObject.fromObject(postData);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String remoteCheck(HttpRequest request,String postData,List<NameValuePair> nvList) {
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        JSONObject json = JSONObject.fromObject(postData);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(ResponseJson.KEY_DESCRIPTION, "");
+        }else {
+            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+        }
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
 }

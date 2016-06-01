@@ -14,10 +14,12 @@ import javax.servlet.ServletContextListener;
  */
 public class HttpServerListener implements ServletContextListener {
 
+    HttpServer httpServer;
     public void contextDestroyed(ServletContextEvent arg0)
     {
-        System.out.println(arg0.toString());
-
+        if(httpServer != null){
+            httpServer.close();
+        }
     }
 
 
@@ -26,7 +28,7 @@ public class HttpServerListener implements ServletContextListener {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
         // 得到Service的实例对象
-        HttpServer httpServer = new HttpServer(springContext);
+        httpServer = new HttpServer(springContext);
         try {
             httpServer.start(8000);
         } catch (Exception e) {
