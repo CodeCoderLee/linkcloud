@@ -1,13 +1,13 @@
 package cn.ac.bcc.http;
 
-import cn.ac.bcc.service.business.device.DeviceAuthenService;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by lenovo on 2016-05-31.
@@ -28,15 +28,15 @@ public class HttpServerListener implements ServletContextListener {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
         Timer timer = new Timer();
-        timer.schedule(new DccTask(springContext, sc, timer), 3000);
+        timer.schedule(new MyTask(springContext, sc, timer), 3000);
     }
 
-    class DccTask extends TimerTask {
+    class MyTask extends TimerTask {
         WebApplicationContext springContext;
         ServletContext sc;
         Timer timer;
 
-        public DccTask(WebApplicationContext springContext, ServletContext sc, Timer timer) {
+        public MyTask(WebApplicationContext springContext, ServletContext sc, Timer timer) {
             this.springContext = springContext;
             this.sc = sc;
             this.timer = timer;
