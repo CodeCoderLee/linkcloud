@@ -2,10 +2,14 @@ package cn.ac.bcc.controller.business.devicespace;
 
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.Comment;
+import cn.ac.bcc.model.business.Program;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.service.business.comment.CommentService;
+import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.Common;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,21 +18,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lenovo on 2016-05-26.
  */
 @Controller
 @RequestMapping("/space/device/")
-public class SpaceDeivceController extends BaseController<Comment>{
+public class DeviceSpaceController extends BaseController<Comment>{
     @Autowired
     private CommentService commentService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProgramService programService;
+
+    private static Log log = LogFactory.getLog(DeviceSpaceController.class);
 
     @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
     public String index(Model mode,String openId){
-
+        log.info("openId:::" + openId);
+        Map<String,List<Program>> map = programService.findTop3Program("AAAAA");
+        mode.addAttribute("map",map);
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }
 

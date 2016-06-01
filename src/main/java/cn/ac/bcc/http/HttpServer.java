@@ -8,6 +8,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import org.apache.commons.logging.Log;
@@ -45,11 +46,13 @@ public class HttpServer {
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         public void initChannel(SocketChannel ch) throws Exception {
-                            // server端发送的是httpResponse，所以要使用HttpResponseEncoder进行编码
-                            ch.pipeline().addLast(new HttpResponseEncoder());
                             // server端接收到的是httpRequest，所以要使用HttpRequestDecoder进行解码
-                            ch.pipeline().addLast(new HttpRequestDecoder());
-                            ch.pipeline().addLast(new HttpServerInboundHandler(applicationContext));
+                            ch.pipeline().addLast("decoder",new HttpRequestDecoder());
+                            ch.pipeline().addLast("aggregator", new HttpObjectAggregator(1048576));
+                            // server端发送的是httpResponse，所以要使用HttpResponseEncoder进行编码
+                            ch.pipeline().addLast("encoder",new HttpResponseEncoder());
+
+                            ch.pipeline().addLast("handler",new HttpRequestHandler(applicationContext));
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);

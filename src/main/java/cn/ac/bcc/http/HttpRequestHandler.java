@@ -21,30 +21,26 @@ import org.springframework.context.ApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpServerInboundHandler extends ChannelHandlerAdapter {
+public class HttpRequestHandler extends ChannelHandlerAdapter {
 
-    private static Log log = LogFactory.getLog(HttpServerInboundHandler.class);
+    private static Log log = LogFactory.getLog(HttpRequestHandler.class);
     private ApplicationContext applicationContext;
 
-    public HttpServerInboundHandler(){}
+    public HttpRequestHandler(){}
 
-    public HttpServerInboundHandler(ApplicationContext applicationContext){
+    public HttpRequestHandler(ApplicationContext applicationContext){
         this.applicationContext = applicationContext;
     }
 
-    private ThreadLocal<DefaultHttpRequest> requestThreadLocal = new ThreadLocal<DefaultHttpRequest>();
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof HttpRequest) {
-            DefaultHttpRequest request = (DefaultHttpRequest) msg;
-            requestThreadLocal.set(request);
-        }
-        if (msg instanceof HttpContent) {
-            DefaultHttpRequest request = requestThreadLocal.get();
+
+            DefaultFullHttpRequest request = (DefaultFullHttpRequest) msg;
+
             DeviceAPI deviceAPI = new DeviceAPI(applicationContext);
 
             HttpContent content = (HttpContent) msg;
+
             ByteBuf buf = content.content();
             String data = buf.toString(io.netty.util.CharsetUtil.UTF_8);
             buf.release();
@@ -58,7 +54,6 @@ public class HttpServerInboundHandler extends ChannelHandlerAdapter {
             }
             ctx.write(response);
             ctx.flush();
-        }
     }
 
     @Override
@@ -76,7 +71,7 @@ public class HttpServerInboundHandler extends ChannelHandlerAdapter {
         List list = new ArrayList();
         list.add("------------------------------------");
         System.out.println("list--" + list);
-        HttpServerInboundHandler hih = new HttpServerInboundHandler();
+        HttpRequestHandler hih = new HttpRequestHandler();
         hih.test(list);
         System.out.println("lst--" + list);
         list.add("------------------------------------");

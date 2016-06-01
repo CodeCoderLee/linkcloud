@@ -1,28 +1,27 @@
 package cn.ac.bcc.http;
 
 import cn.ac.bcc.model.business.DeviceAuthen;
+import cn.ac.bcc.model.business.Program;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
-import cn.ac.bcc.util.Common;
-import cn.ac.bcc.util.ResponseJson;
+import cn.ac.bcc.service.business.program.ProgramService;
+import cn.ac.bcc.util.HelperUtils;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.ServerCookieEncoder;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.context.ApplicationContext;
+import tk.mybatis.mapper.entity.Example;
 
-import javax.servlet.http.Cookie;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -32,7 +31,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  */
 public class DeviceAPI {
     public static final String SET_COOKIE = "Set-Cookie";
-    public static final String URI_LINKHELLO = "/device/linkHello.shtml";
+    public static final String URI_LINKHELLO = "/device/linkhello.shtml";
     public static final String URI_AUTHEN = "/device/authen.shtml";
     public static final String URI_REPORT_PROGRAMS = "/device/reportprograms.shtml";
     public static final String URI_ANALYSISV = "/device/analysisv.shtml";
@@ -60,7 +59,7 @@ public class DeviceAPI {
         }
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
-        log.info("uri:" + uri + "\r\n" + "data:::" + postData);
+        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "  data:::" + postData);
         String jsonStr = "";
         String sessionID = null;
         String token = null;
@@ -111,35 +110,39 @@ public class DeviceAPI {
 
     public String  linkHello(HttpRequest request,String postData,List<NameValuePair> nvList,String token)  {
         // 获取设备授权令牌
-        ResponseJson rj = new ResponseJson();
-        rj.setResult(ResponseJson.RESULT_SUCCESS);
-        rj.setCommand(ResponseJson.Command.Nothing);
-        rj.setDescription("no error.");
-        rj.setTime(System.currentTimeMillis()/1000);
-        rj.setToken(token);
+        boolean validation = true;
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation){
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+        }else{
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+        }
+        map.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_NOTHING);
+        map.put(HelperUtils.KEY_DESCRIPTION,"");
+        map.put(HelperUtils.KEY_TIME,""+System.currentTimeMillis()/1000);
+        map.put(HelperUtils.KEY_TOKEN,token);
 
-        JSONObject jsonObject = JSONObject.fromObject(rj);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
     public String authen(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
-        log.debug("authen --postData::\r\n" + postData);
         JSONObject json = JSONObject.fromObject(postData);
         DeviceAuthen deviceAuthen = new DeviceAuthen();
-        deviceAuthen.setSerialNumber(json.getString(ResponseJson.KEY_ID));
+        deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
 
         boolean validation = false;
 //
-//        deviceAuthen.setPrivateKey(json.getString(ResponseJson.KEY_KEY));
-//        deviceAuthen.setIp1(json.getString(ResponseJson.KEY_IP1));
-//        deviceAuthen.setIp2(json.getString(ResponseJson.KEY_IP2));
-//        deviceAuthen.setMac1(json.getString(ResponseJson.KEY_MAC1));
-//        deviceAuthen.setMac2(json.getString(ResponseJson.KEY_MAC2));
-//        deviceAuthen.setVersion1(json.getString(ResponseJson.KEY_VERSION1));
-//        deviceAuthen.setVersion2(json.getString(ResponseJson.KEY_VERSION2));
+//        deviceAuthen.setPrivateKey(json.getString(HelperUtils.KEY_KEY));
+//        deviceAuthen.setIp1(json.getString(HelperUtils.KEY_IP1));
+//        deviceAuthen.setIp2(json.getString(HelperUtils.KEY_IP2));
+//        deviceAuthen.setMac1(json.getString(HelperUtils.KEY_MAC1));
+//        deviceAuthen.setMac2(json.getString(HelperUtils.KEY_MAC2));
+//        deviceAuthen.setVersion1(json.getString(HelperUtils.KEY_VERSION1));
+//        deviceAuthen.setVersion2(json.getString(HelperUtils.KEY_VERSION2));
 //        deviceAuthen.setToken(token);
 //        if(deviceAuthen != null){
 //            deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
@@ -149,72 +152,72 @@ public class DeviceAPI {
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation){
-            map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
         }else{
-            map.put(ResponseJson.KEY_RESULT,ResponseJson.RESULT_FAIL);
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
         }
-        map.put(ResponseJson.KEY_COMMAND,ResponseJson.Command.Nothing);
-        map.put(ResponseJson.KEY_DESCRIPTION,"error.");
-        map.put(ResponseJson.KEY_FRQ,"626");
-        map.put(ResponseJson.KEY_PROGRAMS,"1,3,5,7,9");
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
+        map.put(HelperUtils.KEY_DESCRIPTION,"error.");
+        map.put(HelperUtils.KEY_FRQ,"626");
+        map.put(HelperUtils.KEY_PROGRAMS,"1,3,5,7,9");
 
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
     }
 
 
-    private void parseReportProgram(String content){
-//        JSONObject jsonObject = JSONObject.fromObject(content);
-//
-//        Integer srcnumber = jsonObject.getInt(ResponseJson.KEY_RP_SCRNUMBER);
-//        Example example = new Example(Program.class);
-//        example.createCriteria().andEqualTo("srcnumber",srcnumber);
-//        programService.deleteByExample(example);
-//
-//        JSONArray array = jsonObject.getJSONArray(ResponseJson.KEY_RP_SRCLIST);
-//        int len = array.size();
-//        for(int i = 0;i<len;i++){
-//            JSONObject obj = (JSONObject) array.get(i);
-//            String srcid = obj.getString(ResponseJson.KEY_RP_SRCID);
-//            String stype = obj.getString(ResponseJson.KEY_RP_STYPE);
-//            Integer pnumber = obj.getInt(ResponseJson.KEY_RP_PNUMBER);
-//            JSONArray plist = obj.getJSONArray(ResponseJson.KEY_RP_PLIST);
-//            int size = plist.size();
-//            for(int j = 0;j<size;j++){
-//                JSONObject jobj = (JSONObject) plist.get(j);
-//                String pid = jobj.getString(ResponseJson.KEY_RP_PID);
-//                String pname = jobj.getString(ResponseJson.KEY_RP_PNAME);
-//                String ptype = jobj.getString(ResponseJson.KEY_RP_PTYPE);
-//                String purl = jobj.getString(ResponseJson.KEY_RP_PURL);
-//
-//                Program program = new Program();
-//                program.setSrcNumber(srcnumber);
-//                program.setSrcId(srcid);
-//                program.setStype(stype);
-//                program.setPnumber(pnumber);
-//                program.setPid(pid);
-//                program.setPname(pname);
-//                program.setPtype(ptype);
-//                program.setPurl(purl);
-//                programService.insertSelective(program);
-//            }
-//        }
+    private void parseReportProgram(String content,String token){
+        JSONObject jsonObject = JSONObject.fromObject(content);
+        ProgramService programService = ctx.getBean(ProgramService.class);
+        Integer srcnumber = jsonObject.getInt(HelperUtils.KEY_RP_SCRNUMBER);
+        Example example = new Example(Program.class);
+        example.createCriteria().andEqualTo("deviceSerialNumber","AAAAA");
+        programService.deleteByExample(example);
+
+        JSONArray array = jsonObject.getJSONArray(HelperUtils.KEY_RP_SRCLIST);
+        int len = array.size();
+        for(int i = 0;i<len;i++){
+            JSONObject obj = (JSONObject) array.get(i);
+            String srcid = obj.getString(HelperUtils.KEY_RP_SRCID);
+            String stype = obj.getString(HelperUtils.KEY_RP_STYPE);
+            Integer pnumber = obj.getInt(HelperUtils.KEY_RP_PNUMBER);
+            JSONArray plist = obj.getJSONArray(HelperUtils.KEY_RP_PLIST);
+            int size = plist.size();
+            for(int j = 0;j<size;j++){
+                JSONObject jobj = (JSONObject) plist.get(j);
+                String pid = jobj.getString(HelperUtils.KEY_RP_PID);
+                String pname = jobj.getString(HelperUtils.KEY_RP_PNAME);
+                String ptype = jobj.getString(HelperUtils.KEY_RP_PTYPE);
+                String purl = jobj.getString(HelperUtils.KEY_RP_PURL);
+
+                Program program = new Program();
+                program.setSrcNumber(srcnumber);
+                program.setSrcId(srcid);
+                program.setStype(stype);
+                program.setPnumber(pnumber);
+                program.setPid(pid);
+                program.setPname(pname);
+                program.setPtype(ptype);
+                program.setPurl(purl);
+                program.setDeviceSerialNumber("AAAAA");
+                programService.insertSelective(program);
+            }
+        }
     }
 
     public String reportPrograms(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
-        log.debug("reportPrograms --postData::\r\n" + postData);
-        parseReportProgram(postData);
+        parseReportProgram(postData,token);
         //TODO
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
-        map.put(ResponseJson.KEY_DESCRIPTION, "");
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
+        map.put(HelperUtils.KEY_DESCRIPTION, "");
 
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
@@ -224,17 +227,17 @@ public class DeviceAPI {
         String token = getCookieValue(request);
         boolean validation = true;
         JSONObject json = JSONObject.fromObject(postData);
-        ResponseJson rj = new ResponseJson();
+        HelperUtils rj = new HelperUtils();
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -245,17 +248,16 @@ public class DeviceAPI {
         boolean validation = true;
 
         JSONObject json = JSONObject.fromObject(postData);
-        System.out.print("json::" + json);
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -269,13 +271,13 @@ public class DeviceAPI {
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -289,13 +291,13 @@ public class DeviceAPI {
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -309,13 +311,13 @@ public class DeviceAPI {
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -329,13 +331,13 @@ public class DeviceAPI {
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -349,13 +351,13 @@ public class DeviceAPI {
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(ResponseJson.KEY_COMMAND, ResponseJson.Command.Nothing);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -369,11 +371,11 @@ public class DeviceAPI {
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_SUCCESS);
-            map.put(ResponseJson.KEY_DESCRIPTION, "");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
         }else {
-            map.put(ResponseJson.KEY_RESULT, ResponseJson.RESULT_FAIL);
-            map.put(ResponseJson.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
