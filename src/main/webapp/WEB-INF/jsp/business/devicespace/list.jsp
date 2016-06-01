@@ -41,6 +41,7 @@
   <link rel="stylesheet" href="${ctx}/assets/css/mobile.css">
 </head>
 <body class="vi-mobile vi-mobileList">
+<c:if test="${not empty(list)}">
   <div data-am-widget="header"
         class="am-header am-header-default">
     <div class="am-header-left am-header-nav">
@@ -50,154 +51,23 @@
     </div>
     <h1 class="am-header-title">
         <a href="#title-link" class="">
-          电视直播
+          ${title}
         </a>
     </h1>
-    <div class="am-header-right am-header-nav">
-        <!-- <a href="#right-link" class="">
-            <i class="am-header-icon am-icon-bars"></i>
-        </a> -->
-        <!-- <a href="#right-link" class="">
-            <i class="am-header-icon am-icon-history"></i>
-        </a>
-        <a href="#right-link" class="">
-            <i class="am-header-icon am-icon-user"></i>
-        </a> -->
-    </div>
-</div>
+  </div>
   <ul class="mindex-ul">
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员2·CP</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员2·辰</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
-    <li>
-      <div class="mindex-avatar">
-          <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="#">全员</a></p>
-          <p class="mindex-intro">29集 不许动我的男儿身！</p>
-          <p class="mindex-time">2016-5-24</p>
-        </div>
-    </li>
+    <c:forEach items="${list}" var="item">
+      <li>
+        <div class="mindex-avatar">
+            <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
+          </div>
+          <div class="mindex-detail">
+            <p class="mindex-title"><a href="${ctx}/space/device/play.shtml?programId=${item.id}">${item.pname}</a></p>
+          </div>
+      </li>
+    </c:forEach>
   </ul>
-</div>
+</c:if>
 <footer data-am-widget="footer"
         class="am-footer am-footer-default"
          data-am-footer="{  }">

@@ -26,22 +26,19 @@ public class ProgramService extends BaseService<Program> {
     public Map<String,List<Program>> findTop3Program(String deviceSerialNumber){
         Map<String,List<Program>> map = new HashMap<String,List<Program>>();
         Example example = new Example(Program.class);
-        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber);
-        example.createCriteria().andEqualTo("stype",STYPE_DTMB);
+        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber).andEqualTo("stype",STYPE_DTMB);
         RowBounds rowBounds = new RowBounds(0,4);
         List<Program> tvList = programMapper.selectByExampleAndRowBounds(example,rowBounds);
         map.put("tv",tvList);
 
         example = new Example(Program.class);
-        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber);
-        example.createCriteria().andEqualTo("stype",STYPE_NETDISK);
+        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber).andEqualTo("stype",STYPE_NETDISK);
         rowBounds = new RowBounds(0,4);
         List<Program> vedioList = programMapper.selectByExampleAndRowBounds(example,rowBounds);
         map.put("vedio",vedioList);
 
         example = new Example(Program.class);
-        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber);
-        example.createCriteria().andEqualTo("stype",STYPE_CAMERA);
+        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber).andEqualTo("stype",STYPE_CAMERA);
         rowBounds = new RowBounds(0,4);
         List<Program> cameraList = programMapper.selectByExampleAndRowBounds(example,rowBounds);
         map.put("camera",cameraList);

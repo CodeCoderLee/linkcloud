@@ -44,44 +44,14 @@
   <link rel="stylesheet" href="${ctx}/assets/css/app.css">
 </head>
 <body class="vi">
-  <div class="vi-header">
-    <input type="text" class="vi-search" placeholder="查找你喜欢的视频"/>
-    <button class="vi-searchBtn am-btn">
-      搜索
-    </button>
-    <div class="vi-header-right">
-      <ul class="vi-header-nav am-nav am-nav-pills">
-    <li><a href="#">消息</a></li>
-    <li><a href="#">播放记录</a></li>
-    <li class="am-dropdown" data-am-dropdown>
-        <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
-            会员<span class="am-icon-caret-down"></span>
-        </a>
-        <ul class="am-dropdown-content">
-            <!-- <li class="am-dropdown-header">Header</li> -->
-            <li><a href="#">活动消息</a></li>
-            <li class="am-active"><a href="#">与我相关</a></li>
-          </ul>
-    </li>
-</ul>
-    </div>
-  </div>
-  <ul class="am-nav vi-nav am-nav-pills am-nav-justify">
-    <li class="am-active"><a href="#">电影</a></li>
-    <li><a href="#">电视剧</a></li>
-    <li><a href="#">综艺</a></li>
-    <li><a href="#">自制</a></li>
-    <li><a href="#">体育</a></li>
-    <li><a href="#">娱乐</a></li>
-    <li><a href="#">动画</a></li>
-  </ul>
+
 <div class="vi-main">
   <ol class="am-breadcrumb">
-  <li><a href="#">首页</a></li>
-  <li><a href="#">电影</a></li>
-  <li class="am-active">老炮</li>
-</ol>
-<h3>20160502：独家专访：宋小宝带病上场 第一个被抓很委屈</h3>
+    <li><a href="#">首页</a></li>
+    <li><a href="#">电影</a></li>
+    <li class="am-active">老炮</li>
+  </ol>
+<h3>${program.pname}</h3>
 <div class="vi-video">
   <div class="vi-videoPlayer">
     <div class="vi-videoWrapper">
@@ -91,7 +61,7 @@
              data-setup="{}">
         <%--<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />--%>
         <%--<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />--%>
-        <source src="http://www.w3school.com.cn/i/movie.ogg" type='video/ogg' />
+        <source src="${program.purl}" type='video/ogg' />
         <track kind="captions" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
         <track kind="subtitles" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
         <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
@@ -104,6 +74,7 @@
   <form method="post" id="commentForm">
     <div class="vi-comarea">
       <textarea class="vi-textarea" rows="10" name="text"></textarea>
+      <input type="hidden" name="programId" value="${program.id}"/>
       <button class="am-btn am-btn-primary am-fr vi-videoSubBtn" id="commentFormBtn">提交评论</button>
     </div>
   </form>
