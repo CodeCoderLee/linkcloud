@@ -150,6 +150,14 @@
 			<version>${mysql.version}</version>
 		</dependency>
 
+		<!--轻量级http服务,jodd-http-->
+		<dependency>
+			<groupId>org.jodd</groupId>
+			<artifactId>jodd-http</artifactId>
+			<version>3.7</version>
+			<scope>compile</scope>
+		</dependency>
+
 
 
 
