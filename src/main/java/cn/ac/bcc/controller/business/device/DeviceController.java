@@ -4,6 +4,7 @@ import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.exception.SystemException;
 import cn.ac.bcc.model.business.Device;
+import cn.ac.bcc.model.business.DeviceUseApply;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
@@ -139,4 +140,6 @@ public class DeviceController extends BaseController<Device> {
         }
         return true;
     }
+
+
 }
