@@ -10,7 +10,8 @@
     <result column="industry_id" property="industryId" jdbcType="INTEGER" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
-    <result column="contant_phone" property="contantPhone" jdbcType="VARCHAR" />
+    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <select id="selectDeviceUseApply" resultType="cn.ac.bcc.model.business.DeviceUseApply" parameterType="cn.ac.bcc.model.business.DeviceUseApply">
     select t1.id id, t1.area_id areaId, t2.area_name areaName,

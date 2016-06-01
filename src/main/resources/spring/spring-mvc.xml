@@ -15,7 +15,6 @@
      http://www.springframework.org/schema/aop/spring-aop-4.1.xsd"
 	default-lazy-init="true">
 	<tx:annotation-driven />
-	<context:component-scan base-package="cn.ac.bcc.service.*" />
 	<context:component-scan base-package="cn.ac.bcc.controller.*" />
 	<context:component-scan base-package="cn.ac.bcc.logAop" />
 	<!-- 启动对@AspectJ注解的支持 -->

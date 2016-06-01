@@ -9,4 +9,9 @@ public class Constants {
 
     /*增加管理单位时默认的管理单位联系人所拥有的角色*/
     public final static int[] MANAGEMENT_CONTACT_DEFAULT_ROLE = {4};
+
+    public static final String ACCESS_TOKEN = "access_token";
+
+    /*用于微信的token验证*/
+    public static final String TOKEN = "linkcloud";
 }

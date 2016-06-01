@@ -114,8 +114,8 @@ public class UserLoginController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "login", method = RequestMethod.GET, produces = "text/html; charset=utf-8")
-    public String login(HttpServletRequest request) {
+    @RequestMapping(value = "toLogin", produces = "text/html; charset=utf-8")
+    public String toLogin(HttpServletRequest request) {
         request.removeAttribute("error");
         return "/login";
     }

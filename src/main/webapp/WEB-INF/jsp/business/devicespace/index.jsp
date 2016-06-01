@@ -1,4 +1,4 @@
-<%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<%@page language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!doctype html>
@@ -8,8 +8,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="">
   <meta name="keywords" content="">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>视频</title>
   <!-- Set render engine for 360 browser -->
   <meta name="renderer" content="webkit">
@@ -83,172 +82,91 @@
     </ul>
   </div>
 </div>
-<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-  <h2 class="am-titlebar-title ">
-      电视直播
-  </h2>
-  <nav class="am-titlebar-nav">
-      <a href="#more" class="">更多</a>
-</nav>
-</div>
 
-<ul class="mindex-ul">
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"></p>
-        <p class="mindex-intro"><a href="#">CCTV1</a></p>
-        <p class="mindex-time"></p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv2.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"></p>
-        <p class="mindex-intro"><a href="#">CCTV2</a></p>
-        <p class="mindex-time"></p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-      <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv5.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"></p>
-        <p class="mindex-intro"><a href="#">CCTV5</a></p>
-        <p class="mindex-time"></p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-      <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv9.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"></p>
-        <p class="mindex-intro"><a href="#">CCTV9</a></p>
-        <p class="mindex-time"></p>
-        <p class="mindex-enter">>></p>
-      </div>
-  </li>
+<c:if test="${not empty(map)}">
+  <c:forEach items="${map}" var="entry">
+    <c:if test="${entry.key eq 'tv'}">
+         <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
+           <h2 class="am-titlebar-title ">
+             电视直播
+           </h2>
+           <nav class="am-titlebar-nav">
+             <a href="${ctx}/space/device/list.shtml?stype=dtmb" class="">更多</a>
+           </nav>
+         </div>
+         <c:if test="${not empty(map[entry.key])}">
+            <ul class="mindex-ul">
+              <c:forEach items="${map[entry.key]}" var="item">
+                <li>
+                  <div class="mindex-avatar">
+                    <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
+                  </div>
+                  <div class="mindex-detail">
+                    <p class="mindex-title"></p>
+                    <p class="mindex-intro"><a href="${item.purl}">${item.pname}</a></p>
+                    <p class="mindex-time"></p>
+                  </div>
+                </li>
+              </c:forEach>
+            </ul>
+         </c:if>
 
-</ul>
-</div>
-<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-  <h2 class="am-titlebar-title ">
-      视频点播
-  </h2>
-  <nav class="am-titlebar-nav">
-      <a href="#more" class="">更多</a>
-</nav>
-</div>
-<ul class="mindex-ul">
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员2上天</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员3</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员2·辰涛CP上天</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员2·辰涛CP上天</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-</ul>
-</div>
-<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-  <h2 class="am-titlebar-title ">
-      远程监控
-  </h2>
-  <nav class="am-titlebar-nav">
-      <a href="#more" class="">更多</a>
-</nav>
-</div>
-<ul class="mindex-ul">
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员2·CP</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i1.letvimg.com/lc07_iscms/201605/08/10/03/3522b05bc17e48eeab7112d63da921ce.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员2·辰</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-  <li>
-    <div class="mindex-avatar">
-        <img class="mindex-ulImg" src="http://i3.letvimg.com/lc06_isvrs/201605/06/21/27/47442541-5743-4b16-aecd-091246203be1.jpg"  alt=""/>
-      </div>
-      <div class="mindex-detail">
-        <p class="mindex-title"><a href="#">全员</a></p>
-        <p class="mindex-intro">29集 不许动我的男儿身！</p>
-        <p class="mindex-time">2016-5-24</p>
-      </div>
-  </li>
-</ul>
-</div>
+    </c:if>
+    <c:if test="${entry.key eq 'vedio'}">
+         <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
+           <h2 class="am-titlebar-title ">
+             视频点播
+           </h2>
+           <nav class="am-titlebar-nav">
+             <a href="${ctx}/space/device/list.shtml?stype=netdisk" class="">更多</a>
+           </nav>
+         </div>
+         <c:if test="${not empty(map[entry.key])}">
+         <ul class="mindex-ul">
+           <c:forEach items="${map[entry.key]}" var="item">
+             <li>
+               <div class="mindex-avatar">
+                 <img class="mindex-ulImg" src="${ctx}/assets/i/video/file.jpg"  alt=""/>
+               </div>
+               <div class="mindex-detail">
+                 <p class="mindex-title"></p>
+                 <p class="mindex-intro"><a href="${item.purl}">${item.pname}</a></p>
+                 <p class="mindex-time"></p>
+               </div>
+             </li>
+           </c:forEach>
+         </ul>
+         </c:if>
+    </c:if>
+    <c:if test="${entry.key eq 'camera' and not empty(map[entry.key])}">
+         <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
+           <h2 class="am-titlebar-title ">
+             远程监控
+           </h2>
+           <nav class="am-titlebar-nav">
+             <a href="${ctx}/space/device/list.shtml?stype=camera" class="">更多</a>
+           </nav>
+         </div>
+         <c:if test="${not empty(map[entry.key])}">
+         <ul class="mindex-ul">
+           <c:forEach items="${map[entry.key]}" var="item">
+             <li>
+               <div class="mindex-avatar">
+                 <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
+               </div>
+               <div class="mindex-detail">
+                 <p class="mindex-title"></p>
+                 <p class="mindex-intro"><a href="${item.purl}">${item.pname}</a></p>
+                 <p class="mindex-time"></p>
+               </div>
+             </li>
+           </c:forEach>
+         </ul>
+         </c:if>
+    </c:if>
+  </c:forEach>
+</c:if>
+
 <footer data-am-widget="footer"
         class="am-footer am-footer-default"
          data-am-footer="{  }">

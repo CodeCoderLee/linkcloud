@@ -3,7 +3,10 @@ package cn.ac.bcc.util;
 /**
  * Created by lenovo on 2016-05-23.
  */
-public class ResponseJson {
+public class HelperUtils {
+    public static final String KEY_TIME = "time";
+    public static final String KEY_TOKEN = "token";
+
     public static final String KEY_ID = "id";
     public static final String KEY_KEY = "key";
     public static final String KEY_IP1 = "ip1";
@@ -45,31 +48,19 @@ public class ResponseJson {
 
     public static final String RESULT_FAIL = "1";                        //失败
     public static final String RESULT_SUCCESS = "0";                     //成功
+
+    public static final String CMD_NOTHING = "nothing";
+    public static final String CMD_SHOCK = "shock";
+    public static final String CMD_SCANFRQ = "scanfrq";
+    public static final String CMD_SETFRQ = "setfrq";
+    public static final String CMD_UPDATEAD = "updatead";
+    public static final String CMD_REMOTEWATCH = "remotewatch";
+
     private  String result;
     private String command;
     private String description;
     private String time;
     private String token ;
-
-
-    public enum Command{
-        Nothing("nothing"),Shock("shock"),ScanFrq("scanfrq"),SetFrq("setfrq"),Updatead("updatedad"),RemoteWatch("remotewatch");
-        private final String cmd;
-        private Command(String cmd){
-            this.cmd = cmd;
-        }
-
-        public String toString(){
-            return cmd;
-        }
-    }
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(Command cmd) {
-        this.command = cmd.toString();
-    }
 
     public String getDescription() {
         return description;
