@@ -24,7 +24,7 @@
                                         <div class="col-sm-3">
                                             <div class="fg-line">
                                                 <div class="select">
-                                                    <select class="form-control">
+                                                    <select class="form-control" id="province" onchange="showCity(this.options[this.options.selectedIndex].value,1)" >
                                                         <option value="">省</option>
                                                     </select>
                                                 </div>
@@ -33,7 +33,7 @@
                                         <div class="col-sm-3">
                                             <div class="fg-line">
                                                 <div class="select">
-                                                    <select class="form-control" disabled>
+                                                    <select class="form-control" id="city" onchange="showCity(this.options[this.options.selectedIndex].value,2)">
                                                         <option value="">市</option>
                                                     </select>
                                                 </div>
@@ -42,7 +42,7 @@
                                         <div class="col-sm-3">
                                             <div class="fg-line">
                                                 <div class="select">
-                                                    <select class="form-control" disabled>
+                                                    <select class="form-control" id="county">
                                                         <option value="">县</option>
                                                     </select>
                                                 </div>
@@ -117,4 +117,8 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
+<script type="text/javascript">
+    var rootPath = "${ctx}";
+</script>
+
 <script type="text/javascript" src="${ctx}/js/business/device/addUseApply.js"/>

@@ -94,7 +94,7 @@ $(document).ready(function () {
             return;
         }
         var $w = $(document).width();
-        window.open(permissionsUrl + ids[0], "", 'height=600,width=800,top=200,left=' + ($w / 2 - 400) + ',' + 'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
+        window.open(rootPath +'/resources/permissions.shtml?roleId=' + ids[0], "", 'height=600,width=800,top=200,left=' + ($w / 2 - 400) + ',' + 'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
     });
 
     /*checkbox选中事件*/
@@ -144,19 +144,7 @@ function dateTimeFormatter(value) {
     if (!!value) {
         var date = new Date();
         date.setTime(value);
-        var year = date.getFullYear();
-        var month = date.getMonth();
-        month = month + 1;
-        month = month > 9 ? month : "0" + month;
-        var day = date.getDate() + 1;
-        day = day > 9 ? day : "0" + day;
-        var hour = date.getHours();
-        hour = hour > 9 ? hour : "0" + hour;
-        var minute = date.getMinutes();
-        minute = minute > 9 ? minute : "0" + minute;
-        var second = date.getSeconds();
-        second = second > 9 ? second : "0" + second;
-        return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+        return date.toLocaleString();
     } else {
         return "--";
     }
