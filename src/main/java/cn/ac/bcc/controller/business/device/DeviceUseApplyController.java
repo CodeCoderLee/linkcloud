@@ -2,7 +2,12 @@ package cn.ac.bcc.controller.business.device;
 
 import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
+import cn.ac.bcc.mapper.business.DeviceApplyMapper;
+import cn.ac.bcc.model.business.Device;
+import cn.ac.bcc.model.business.DeviceApply;
 import cn.ac.bcc.model.business.DeviceUseApply;
+import cn.ac.bcc.service.business.device.DeviceApplyService;
+import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.service.business.device.DeviceUseApplyService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
@@ -10,9 +15,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +33,12 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
     @Autowired
     private DeviceUseApplyService deviceUseApplyService;
 
+    @Autowired
+    private DeviceService deviceService;
+
+    @Autowired
+    private DeviceApplyService deviceApplyService;
+
     @RequestMapping("list")
     public String listUI() {
         return Common.BACKGROUND_PATH + "/business/device/useApplyList";
@@ -33,6 +47,37 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
     @RequestMapping("addUI")
     public String addUI() {
         return Common.BACKGROUND_PATH + "/business/device/addUseApply";
+    }
+
+    @RequestMapping("stockOutUI")
+    public String stockOutUI(Model model,HttpServletRequest request) {
+        List<Device> deviceList = deviceService.selectAll();
+        int applyId = Integer.parseInt(request.getParameter("id"));
+
+        model.addAttribute("deviceList",deviceList);
+        model.addAttribute("applyId",applyId);
+        return Common.BACKGROUND_PATH + "/business/device/deviceStockOut";
+    }
+
+    /**
+     * 设备出库
+     * @return
+     */
+    @RequestMapping("stockOut")
+    @ResponseBody
+    public String stockOut(HttpServletRequest request){
+        int applyId = Integer.parseInt(request.getParameter("id"));
+        String[] deviceNumbers = request.getParameterValues("deviceNumbers");
+        for(int i=0;i<deviceNumbers.length;i++){
+            DeviceApply deviceApply = new DeviceApply();
+            String deviceNumber = deviceNumbers[i];
+            deviceApply.setApplyId(applyId);
+            deviceApply.setSerialNumber(deviceNumber);
+
+            deviceApplyService.insertSelective(deviceApply);
+        }
+
+        return SUCCESS;
     }
 
     @ResponseBody
@@ -56,4 +101,7 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
         deviceUseApplyService.insert(deviceUseApply);
         return SUCCESS;
     }
+
+
+
 }

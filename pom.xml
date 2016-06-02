@@ -31,11 +31,11 @@
 		<!--  MyBatis Generator  -->
 		<!--  Java接口和实体类  -->
 		<targetJavaProject>${basedir}/src/main/java</targetJavaProject>
-		<targetMapperPackage>cn.ac.bcc.mapper.core</targetMapperPackage>
-		<targetModelPackage>cn.ac.bcc.model.core</targetModelPackage>
+		<targetMapperPackage>cn.ac.bcc.mapper.business</targetMapperPackage>
+		<targetModelPackage>cn.ac.bcc.model.business</targetModelPackage>
 		<!--  XML生成路径  -->
 		<targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
-		<targetXMLPackage>mapper</targetXMLPackage>
+		<targetXMLPackage>mapper/business</targetXMLPackage>
 		<!--  依赖版本  -->
 		<mapper.version>3.3.4</mapper.version>
 	</properties>

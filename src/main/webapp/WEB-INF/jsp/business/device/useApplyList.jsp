@@ -133,12 +133,20 @@
                     "<dt>联系电话</dt>" +
                     "<dd>"+item.contactPhone+"</dd>" +
                     "</dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dd><button class='btn btn-info' onclick='stockOutBtn("+item.id+")' >出库</button></dd>" +
+//                    "<dd><button class='btn btn-info' onclick='cancleBtn("+item.id+")' >取消出库</button></dd>" +
+                    "</dl>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
                     "</div>";
             $('#dataDiv').append(html);
         })
+    }
+
+    function stockOutBtn(id){
+        $("#content").load("deviceUseApply/stockOutUI.shtml?id="+id);
     }
 
 </script>
