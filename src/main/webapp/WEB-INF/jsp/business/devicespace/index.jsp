@@ -91,7 +91,7 @@
              电视直播
            </h2>
            <nav class="am-titlebar-nav">
-             <a href="${ctx}/space/device/list.shtml?stype=dtmb" class="">更多</a>
+             <a href="${ctx}/space/device/list.shtml?stype=dtmb&openId=${openId}" class="">更多</a>
            </nav>
          </div>
          <c:if test="${not empty(map[entry.key])}">
@@ -99,11 +99,11 @@
               <c:forEach items="${map[entry.key]}" var="item">
                 <li>
                   <div class="mindex-avatar">
-                    <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
+                      <a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}"><img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/></a>
                   </div>
                   <div class="mindex-detail">
                     <p class="mindex-title"></p>
-                    <p class="mindex-intro"><a href="${item.purl}">${item.pname}</a></p>
+                    <p class="mindex-intro"><a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
                     <p class="mindex-time"></p>
                   </div>
                 </li>
@@ -118,7 +118,7 @@
              视频点播
            </h2>
            <nav class="am-titlebar-nav">
-             <a href="${ctx}/space/device/list.shtml?stype=netdisk" class="">更多</a>
+             <a href="${ctx}/space/device/list.shtml?stype=netdisk&openId=${openId}" class="">更多</a>
            </nav>
          </div>
          <c:if test="${not empty(map[entry.key])}">
@@ -126,11 +126,11 @@
            <c:forEach items="${map[entry.key]}" var="item">
              <li>
                <div class="mindex-avatar">
-                 <img class="mindex-ulImg" src="${ctx}/assets/i/video/file.jpg"  alt=""/>
+                   <a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}"><img class="mindex-ulImg" src="${ctx}/assets/i/video/video.jpg"  alt=""/></a>
                </div>
                <div class="mindex-detail">
                  <p class="mindex-title"></p>
-                 <p class="mindex-intro"><a href="${item.purl}">${item.pname}</a></p>
+                 <p class="mindex-intro"><a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
                  <p class="mindex-time"></p>
                </div>
              </li>
@@ -144,7 +144,7 @@
              远程监控
            </h2>
            <nav class="am-titlebar-nav">
-             <a href="${ctx}/space/device/list.shtml?stype=camera" class="">更多</a>
+             <a href="${ctx}/space/device/list.shtml?stype=camera&openId=${openId}" class="">更多</a>
            </nav>
          </div>
          <c:if test="${not empty(map[entry.key])}">
@@ -152,11 +152,11 @@
            <c:forEach items="${map[entry.key]}" var="item">
              <li>
                <div class="mindex-avatar">
-                 <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
+                   <a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}"><img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/></a>
                </div>
                <div class="mindex-detail">
                  <p class="mindex-title"></p>
-                 <p class="mindex-intro"><a href="${item.purl}">${item.pname}</a></p>
+                 <p class="mindex-intro"><a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
                  <p class="mindex-time"></p>
                </div>
              </li>
