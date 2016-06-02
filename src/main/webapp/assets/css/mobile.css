@@ -161,7 +161,7 @@ textarea.mobile-vi-textarea {
   border-bottom: 1px dashed #eee;
 }
 .mindex-ulImg {
-  width: 100%;
+  max-width: 100%;
 }
 .mindex-avatar {
   float:left;
@@ -170,12 +170,14 @@ textarea.mobile-vi-textarea {
 .mindex-avatar img {
   border-radius: 5px;
   height: 58px;
+  text-align: center;
 }
 .mindex-detail {
   position: relative;
+  width: 100%;
   padding: 0;
   margin-left: 120px;
-  width: 100%;
+  line-height: 60px;
 }
 .mindex-detail p {
   margin: 0;
@@ -194,4 +196,13 @@ p.mindex-intro,p.mindex-time {
   position: absolute;
   top: 20px;
   right: 10px;
+}
+@media (min-width:640px) {
+  .am-slider .am-slides img {
+    max-width: 100%;
+    height: 420px;
+  }
+  #vjs_video_3 {
+    height: 350px!important;
+  }
 }

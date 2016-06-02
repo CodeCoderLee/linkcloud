@@ -1,8 +1,4 @@
 $(document).ready(function () {
-    //$("#commentFormBtn").click(function(){
-    //    $('#commentForm').submit();
-    //});
-
     $("#commentForm").submit(function () {
         jQuery.ajax({
             url:'comment.shtml',
@@ -17,16 +13,16 @@ $(document).ready(function () {
             {
                 var comments = jQuery.parseJSON(data);
                 $('#commentFormBtn').show();
-                var li0 = $('.am-comments-list li:first-child');
-                $('.am-comments-list').empty();
-                $('.am-comments-list').append(li0);
+                var li0 = $('article:first');
+                $('#comment-list').empty();
+                $('#comment-list').append(li0);
                 for(var index in comments){
                     var idx = parseInt(index) + 1;
                     var comment = comments[index];
-                    $('.am-comments-list').append(li0.clone());
-                    $('.am-comments-list li:nth-child(' + idx + ')').attr("style","display:block");
-                    $('.am-comments-list li:nth-child(' + idx + ') .am-comment-author').text(comment.user.accountname);
-                    $('.am-comments-list li:nth-child(' + idx + ') .comment-text').text(comment.comment);
+                    $('#comment-list').append(li0.clone());
+                    $('article:eq(' + idx + ')').attr("style","display:block");
+                    //$('article:eq(' + idx + ')').text(comment.user.accountname);
+                    $('article:eq(' + idx + ') .am-comment-bd').text(comment.comment);
                 }
             }
         });
