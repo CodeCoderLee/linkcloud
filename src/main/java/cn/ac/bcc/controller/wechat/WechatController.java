@@ -5,7 +5,6 @@ import cn.ac.bcc.model.core.UserLogin;
 import cn.ac.bcc.service.system.login.UserLoginService;
 import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.*;
-import com.sun.tools.internal.jxc.apt.Const;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
