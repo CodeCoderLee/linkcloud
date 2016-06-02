@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "userName")
@@ -15,6 +16,7 @@ public class User {
     @Column(name = "accountName")
     private String accountname;
 
+    @Column(name = "password")
     private String password;
 
     @Column(name = "credentialsSalt")
@@ -23,15 +25,19 @@ public class User {
     /**
      * 邮箱
      */
+    @Column(name = "email")
     private String email;
 
     /**
      * 电话
      */
+    @Column(name = "telephone")
     private String telephone;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "locked")
     private String locked;
 
     /**
@@ -52,6 +58,7 @@ public class User {
     /**
      * 性别，1男，0女
      */
+    @Column(name = "sex")
     private Integer sex;
 
     /**
@@ -69,16 +76,19 @@ public class User {
     /**
      * 从微信获取到的城市
      */
+    @Column(name = "city")
     private String city;
 
     /**
      * 从微信获取到的国家
      */
+    @Column(name = "country")
     private String country;
 
     /**
      * 从微信获取到省份
      */
+    @Column(name = "province")
     private String province;
 
     /**
@@ -96,6 +106,7 @@ public class User {
     /**
      * 公众号对用户的备注
      */
+    @Column(name = "remark")
     private String remark;
 
     /**

@@ -5,7 +5,6 @@ import cn.ac.bcc.model.core.UserLogin;
 import cn.ac.bcc.service.system.login.UserLoginService;
 import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.*;
-import com.sun.tools.internal.jxc.apt.Const;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -81,9 +80,11 @@ public class WechatController {
         JSONObject jsonObject = WechatUtil.getOauthAccessToken(code);
         JSONObject userInfo = WechatUtil.getOauthUserInfo(jsonObject.getString("access_token"), jsonObject.getString("openid"));
         User user = new User();
+        /*通过openId获取user信息*/
         user.setOpenId(userInfo.getString("openid"));
         List<User> users = userService.select(user);
         if (users.size() < 1) {
+            /*如果不存在该用户,那么添加新用户*/
             user.setCity(userInfo.containsKey("city") ? userInfo.getString("city") : null);
             user.setCountry(userInfo.containsKey("country") ? userInfo.getString("country") : null);
             user.setCreatetime(new Date());

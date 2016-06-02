@@ -5,6 +5,7 @@ import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.exception.SystemException;
 import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceUseApply;
+import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
@@ -42,6 +43,7 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("debugList")
     public String debugListUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
+        model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/debugList";
     }
 
