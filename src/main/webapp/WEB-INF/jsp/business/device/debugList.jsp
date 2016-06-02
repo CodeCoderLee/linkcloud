@@ -1,9 +1,12 @@
 <%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+
+
 <div class="container">
     <div class="block-header">
         <h2>设备调试</h2>
+        <input type="hidden" id="openId" name="openId" value="${openId}"/>
     </div>
     <div class="card">
         <div class="card-header">
@@ -123,7 +126,7 @@
             "<dd>是</dd>" +
             "</dl>" +
             "<dl class=\"dl-horizontal\">" +
-            "<dt><a href=\"http://www.baidu.com\" target='_blank'>设备空间</a></dt>" +
+            "<dt><a href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">设备空间</a></dt>" +
             "</dl>" +
             "</div>" +
             "</div>" +

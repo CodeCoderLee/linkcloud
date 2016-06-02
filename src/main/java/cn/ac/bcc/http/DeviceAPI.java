@@ -65,8 +65,9 @@ public class DeviceAPI {
         String token = null;
         uri = uri.toLowerCase();
         if(uri.contains(URI_LINKHELLO)){
-            UUID uuid  =  UUID.randomUUID();
-            token = uuid.toString();
+//            UUID uuid  =  UUID.randomUUID();
+//            token = uuid.toString();
+            token = "9acd5102-b150-45fc-afad-331bb51d6b79";
             sessionID = ServerCookieEncoder.encode("PHPSESSID",token);
             jsonStr = linkHello(request,postData,nvList,token);
         }else if(uri.contains(URI_AUTHEN)){
@@ -129,26 +130,32 @@ public class DeviceAPI {
     public String authen(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
+
         JSONObject json = JSONObject.fromObject(postData);
         DeviceAuthen deviceAuthen = new DeviceAuthen();
         deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
 
         boolean validation = false;
-//
-//        deviceAuthen.setPrivateKey(json.getString(HelperUtils.KEY_KEY));
-//        deviceAuthen.setIp1(json.getString(HelperUtils.KEY_IP1));
-//        deviceAuthen.setIp2(json.getString(HelperUtils.KEY_IP2));
-//        deviceAuthen.setMac1(json.getString(HelperUtils.KEY_MAC1));
-//        deviceAuthen.setMac2(json.getString(HelperUtils.KEY_MAC2));
-//        deviceAuthen.setVersion1(json.getString(HelperUtils.KEY_VERSION1));
-//        deviceAuthen.setVersion2(json.getString(HelperUtils.KEY_VERSION2));
-//        deviceAuthen.setToken(token);
-//        if(deviceAuthen != null){
-//            deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
-//        }else{
-//            deviceAuthenService.insertSelective(deviceAuthen);
-//        }
+        boolean update = true;
+        if(deviceAuthen == null){
+            deviceAuthen = new DeviceAuthen();
+            update = false;
+        }
+        deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
+        deviceAuthen.setPrivateKey(json.getString(HelperUtils.KEY_KEY));
+        deviceAuthen.setIp1(json.getString(HelperUtils.KEY_IP_S));
+        deviceAuthen.setIp2(json.getString(HelperUtils.KEY_IP_T));
+        deviceAuthen.setMac1(json.getString(HelperUtils.KEY_MAC_S));
+        deviceAuthen.setMac2(json.getString(HelperUtils.KEY_MAC_T));
+        deviceAuthen.setVersion1(json.getString(HelperUtils.KEY_VERSION_S));
+        deviceAuthen.setVersion2(json.getString(HelperUtils.KEY_VERSION_T));
+        deviceAuthen.setToken(token);
+        if(update){
+            deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
+        }else{
+            deviceAuthenService.insertSelective(deviceAuthen);
+        }
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation){
@@ -166,12 +173,12 @@ public class DeviceAPI {
     }
 
 
-    private void parseReportProgram(String content,String token){
+    private void parseReportProgram(String content,String token,String serialNumber){
         JSONObject jsonObject = JSONObject.fromObject(content);
         ProgramService programService = ctx.getBean(ProgramService.class);
         Integer srcnumber = jsonObject.getInt(HelperUtils.KEY_RP_SCRNUMBER);
         Example example = new Example(Program.class);
-        example.createCriteria().andEqualTo("deviceSerialNumber","AAAAA");
+        example.createCriteria().andEqualTo("deviceSerialNumber",serialNumber);
         programService.deleteByExample(example);
 
         JSONArray array = jsonObject.getJSONArray(HelperUtils.KEY_RP_SRCLIST);
@@ -199,16 +206,32 @@ public class DeviceAPI {
                 program.setPname(pname);
                 program.setPtype(ptype);
                 program.setPurl(purl);
-                program.setDeviceSerialNumber("AAAAA");
+                program.setDeviceSerialNumber(serialNumber);
                 programService.insertSelective(program);
             }
         }
     }
 
+    private String getDeviceSerialNumber(String token){
+        DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
+        Example example = new Example(DeviceAuthen.class);
+        example.createCriteria().andEqualTo("token");
+        List<DeviceAuthen> dvList = deviceAuthenService.selectByExample(example);
+        String serialNumber = null;
+        if(dvList != null && dvList.size() > 0){
+            DeviceAuthen deviceAuthen = dvList.get(0);
+            serialNumber = deviceAuthen.getSerialNumber();
+        }
+        return  serialNumber;
+    }
+
     public String reportPrograms(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
-        boolean validation = true;
-        parseReportProgram(postData,token);
+        String serialNumber = getDeviceSerialNumber(token);
+        boolean validation = false;
+        if(serialNumber != null){
+            parseReportProgram(postData,token,serialNumber);
+        }
         //TODO
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {

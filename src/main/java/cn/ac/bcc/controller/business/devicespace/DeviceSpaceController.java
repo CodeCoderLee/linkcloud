@@ -40,8 +40,9 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
     public String index(Model mode,String openId){
         log.info("openId:::" + openId);
-        Map<String,List<Program>> map = programService.findTop3Program("AAAAA");
+        Map<String,List<Program>> map = programService.findTop3Program("9acd5102-b150-45fc-afad-331bb51d6b79");
         mode.addAttribute("map",map);
+        mode.addAttribute("openId",openId);
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }
 
@@ -56,6 +57,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         if(stype.equals("netdisk"))title= "视频点播";
         if(stype.equals("camera"))title= "远程监控";
         mode.addAttribute("title",title);
+        mode.addAttribute("stype",stype);
         return Common.BACKGROUND_PATH + "/business/devicespace/list";
     }
 

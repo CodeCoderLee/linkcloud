@@ -9,12 +9,12 @@ public class HelperUtils {
 
     public static final String KEY_ID = "id";
     public static final String KEY_KEY = "key";
-    public static final String KEY_IP1 = "ip1";
-    public static final String KEY_IP2 = "ip2";
-    public static final String KEY_MAC1 = "mac1";
-    public static final String KEY_MAC2 = "mac2";
-    public static final String KEY_VERSION1 = "version1";
-    public static final String KEY_VERSION2 = "version2";
+    public static final String KEY_IP_S = "ip_s";
+    public static final String KEY_IP_T = "ip_t";
+    public static final String KEY_MAC_S = "mac_s";
+    public static final String KEY_MAC_T = "mac_t";
+    public static final String KEY_VERSION_S = "vesion_s";
+    public static final String KEY_VERSION_T = "vesion_t";
     public static final String KEY_RESULT = "result";
     public static final String KEY_COMMAND = "command";
     public static final String KEY_DESCRIPTION = "description";
