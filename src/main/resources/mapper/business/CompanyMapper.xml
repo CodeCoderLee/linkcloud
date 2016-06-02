@@ -9,7 +9,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="full_name" jdbcType="VARCHAR" property="fullName" />
     <result column="area_id" jdbcType="INTEGER" property="areaId" />
-    <result column="industry_id" jdbcType="VARCHAR" property="industryId" />
+    <result column="industry_code" jdbcType="VARCHAR" property="industryCode" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="area_name" jdbcType="VARCHAR" property="areaName" />
     <result column="industry_name" jdbcType="VARCHAR" property="industryName" />

@@ -1,5 +1,6 @@
 package cn.ac.bcc.controller.business.device;
 
+import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.DeviceUseApply;
 import cn.ac.bcc.service.business.device.DeviceUseApplyService;
@@ -25,18 +26,18 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
     private DeviceUseApplyService deviceUseApplyService;
 
     @RequestMapping("list")
-    public String listUI(){
+    public String listUI() {
         return Common.BACKGROUND_PATH + "/business/device/useApplyList";
     }
 
     @RequestMapping("addUI")
-    public String addUI(){
+    public String addUI() {
         return Common.BACKGROUND_PATH + "/business/device/addUseApply";
     }
 
     @ResponseBody
     @RequestMapping("search")
-    public ResponseData search(DeviceUseApply deviceUseApply, Integer pageNum, Integer pageSize){
+    public ResponseData search(DeviceUseApply deviceUseApply, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<DeviceUseApply> list = deviceUseApplyService.selectDeviceUseApply(deviceUseApply);
         PageInfo<DeviceUseApply> pageInfo = new PageInfo<DeviceUseApply>(list);
@@ -46,5 +47,13 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
         responseData.setPageNum(pageInfo.getPageNum());
         responseData.setTotalPages(pageInfo.getPages());
         return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping("add")
+    @SystemLog(module = "使用申请", methods = "使用申请-添加申请")//凡需要处理业务逻辑的.都需要记录操作日志
+    public String add(DeviceUseApply deviceUseApply) {
+        deviceUseApplyService.insert(deviceUseApply);
+        return SUCCESS;
     }
 }

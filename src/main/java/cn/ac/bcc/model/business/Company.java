@@ -23,8 +23,8 @@ public class Company {
     /**
      * 所属行业
      */
-    @Column(name = "industry_id")
-    private String industryId;
+    @Column(name = "industry_code")
+    private String industryCode;
 
     /**
      * 备注
@@ -100,19 +100,19 @@ public class Company {
     /**
      * 获取所属行业
      *
-     * @return industry_id - 所属行业
+     * @return industry_code - 所属行业
      */
-    public String getIndustryId() {
-        return industryId;
+    public String getIndustryCode() {
+        return industryCode;
     }
 
     /**
      * 设置所属行业
      *
-     * @param industryId 所属行业
+     * @param industryCode 所属行业
      */
-    public void setIndustryId(String industryId) {
-        this.industryId = industryId;
+    public void setIndustryCode(String industryCode) {
+        this.industryCode = industryCode;
     }
 
     /**

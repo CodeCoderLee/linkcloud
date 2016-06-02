@@ -7,7 +7,7 @@
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="area_id" property="areaId" jdbcType="INTEGER" />
-    <result column="industry_id" property="industryId" jdbcType="INTEGER" />
+    <result column="industry_code" property="industryCode" jdbcType="VARCHAR" />
     <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
     <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
@@ -15,12 +15,12 @@
   </resultMap>
   <select id="selectDeviceUseApply" resultType="cn.ac.bcc.model.business.DeviceUseApply" parameterType="cn.ac.bcc.model.business.DeviceUseApply">
     select t1.id id, t1.area_id areaId, t2.area_name areaName,
-      t1.industry_id industryId, t3.full_name industryName,
+      t1.industry_code industryCode, t3.full_name industryName,
       t1.company_id companyId, t4.`name` companyName, t1.contact_name contactName,
       t1.contact_phone contactPhone, t1.apply_time applyTime
     from bcc_device_use_apply t1
     left join bcc_area t2 on t1.area_id=t2.id
-	left join bcc_industry t3 on t1.industry_id = t3.ID
+	left join bcc_industry t3 on t1.industry_code = t3.full_code
 	left join bcc_company t4 on t1.company_id = t4.ID where 1=1
     <if test="deviceUseApply.contactName != null and deviceUseApply.contactName != ''">
       and t1.contact_name = #{deviceUseApply.contactName}

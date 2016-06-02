@@ -16,4 +16,22 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+  <select id="getIndustryByParentCode" resultType="cn.ac.bcc.model.business.Industry" parameterType="cn.ac.bcc.model.business.Industry">
+    select b.id id, b.grand_code grandCode, b.grand_name grandName, b.parent_code parentCode,b.parent_name parentName,
+          b.full_code fullCode, b.full_name fullName, b.description description, b.create_date createDate, b.update_date updateDate
+    from bcc_industry b where 1=1
+    <if test="industry.grandCode == null or industry.grandCode == ''">
+      and b.grand_code is null
+    </if>
+    <if test="industry.grandCode != null and industry.grandCode != ''">
+      and b.grand_code = #{industry.grandCode}
+    </if>
+    <if test="industry.parentCode == null or industry.parentCode == ''">
+      and b.parent_code is null
+    </if>
+    <if test="industry.parentCode != null and industry.parentCode != ''">
+      and b.parent_code = #{industry.parentCode}
+    </if>
+    ORDER BY b.full_code asc
+  </select>
 </mapper>

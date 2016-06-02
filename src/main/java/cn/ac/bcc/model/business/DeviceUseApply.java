@@ -18,17 +18,26 @@ public class DeviceUseApply {
     @Column(name = "area_id")
     private Integer areaId;
 
+    @Transient
+    private String areaName;
+
     /**
      * 行业id
      */
-    @Column(name = "industry_id")
-    private Integer industryId;
+    @Column(name = "industry_code")
+    private String industryCode;
+
+    @Transient
+    private String industryName;
 
     /**
      * 企业id
      */
     @Column(name = "company_id")
     private Integer companyId;
+
+    @Transient
+    private String companyName;
 
     /**
      * 联系人
@@ -87,19 +96,19 @@ public class DeviceUseApply {
     /**
      * 获取行业id
      *
-     * @return industry_id - 行业id
+     * @return industry_code - 行业编码
      */
-    public Integer getIndustryId() {
-        return industryId;
+    public String getIndustryCode() {
+        return industryCode;
     }
 
     /**
      * 设置行业id
      *
-     * @param industryId 行业id
+     * @param industryCode 行业id
      */
-    public void setIndustryId(Integer industryId) {
-        this.industryId = industryId;
+    public void setIndustryCode(String industryCode) {
+        this.industryCode = industryCode;
     }
 
     /**
@@ -172,5 +181,29 @@ public class DeviceUseApply {
      */
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

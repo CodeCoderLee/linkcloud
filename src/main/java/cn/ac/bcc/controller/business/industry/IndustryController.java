@@ -44,4 +44,11 @@ public class IndustryController extends BaseController<Industry> {
         responseData.setRows(list);
         return responseData;
     }
+
+    @ResponseBody
+    @RequestMapping("getIndustryByParentCode")
+    public List<Industry> getIndustryByParentCode(Industry industry){
+        return industryService.getIndustryByParentCode(industry);
+    }
+
 }

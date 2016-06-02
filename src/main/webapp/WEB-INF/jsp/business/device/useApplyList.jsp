@@ -108,33 +108,30 @@
     function refreshData(data) {
         $('#dataDiv').html("");
         $.each(data, function (i, item) {
+            console.log(item);
             var html = "<div class=\"col-sm-4\">" +
                     "<div class=\"card\">" +
                     "<div class=\"card-body card-padding\">" +
                     "<div class=\"pmbb-view\">" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>区域</dt>" +
-                    "<dd>" + item.serialNumber + "</dd>" +
+                    "<dd>" + item.areaName + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>行业</dt>" +
-                    "<dd>" + item.privateKey + "</dd>" +
+                    "<dd>" + item.industryName + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>企业</dt>" +
-                    "<dd>" + dateTimeFormatter(item.registerTime) + "</dd>" +
+                    "<dd>" + item.companyName + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>联系人</dt>" +
-                    "<dd>" + item.registerName + "</dd>" +
+                    "<dd>" + item.contactName + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>联系电话</dt>" +
-                    "<dd>是</dd>" +
-                    "</dl>" +
-                    "<dl class=\"dl-horizontal\">" +
-                    "<dt>申请时间</dt>" +
-                    "<dd>2015-05-31 23:59:59</dd>" +
+                    "<dd>"+item.contactPhone+"</dd>" +
                     "</dl>" +
                     "</div>" +
                     "</div>" +
