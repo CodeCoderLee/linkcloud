@@ -8,33 +8,27 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="">
   <meta name="keywords" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>视频</title>
-  <!-- Set render engine for 360 browser -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>设备空间</title>
+
   <meta name="renderer" content="webkit">
-  <!-- No Baidu Siteapp-->
+
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
 
   <link rel="icon" type="image/png" href="${ctx}/assets/i/favicon.png">
 
-  <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="icon" sizes="192x192" href="${ctx}/assets/i/app-icon72x72@2x.png">
 
-  <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="视频"/>
   <link rel="apple-touch-icon-precomposed" href="${ctx}/assets/i/app-icon72x72@2x.png">
 
-  <!-- Tile icon for Win8 (144x144 + tile color) -->
   <meta name="msapplication-TileImage" content="${ctx}/assets/i/app-icon72x72@2x.png">
   <meta name="msapplication-TileColor" content="#0e90d2">
 
-  <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
-  <!--
-  <link rel="canonical" href="http://www.example.com/">
-  -->
   <link rel="stylesheet" href="${ctx}/assets/css/base.min.css">
   <link rel="stylesheet" href="${ctx}/assets/css/mobile.css">
 </head>
@@ -42,13 +36,17 @@
   <div data-am-widget="header"
         class="am-header am-header-default">
     <div class="am-header-left am-header-nav">
-        <a href="#left-link" class="">
+        <c:set var="hasRole" value="true"/>
+        <c:if test="${hasRole}">
+        <a href="${ctx}/index.shtml" class="">
             <i class="am-header-icon am-icon-home"></i>
         </a>
+        管理员
+        </c:if>
     </div>
     <h1 class="am-header-title">
         <a href="#title-link" class="">
-          视频
+          设备空间
         </a>
     </h1>
     <div class="am-header-right am-header-nav">
@@ -63,11 +61,10 @@
         </a> -->
     </div>
 </div>
-
  <div class="mobile-main">
-   <form class="mobile-search">
+   <!-- <form class="mobile-search">
      <input type="search" placeholder="请输入你要查找的视频"/>
-   </form>
+   </form> -->
    <div class="mobile-sliderWrapper">
    <div data-am-widget="slider" class="mobile-slider am-slider am-slider-c2" data-am-slider='{"directionNav":false}' >
     <ul class="am-slides">
@@ -83,89 +80,87 @@
   </div>
 </div>
 
-<c:if test="${not empty(map)}">
-  <c:forEach items="${map}" var="entry">
-    <c:if test="${entry.key eq 'tv'}">
-         <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-           <h2 class="am-titlebar-title ">
-             电视直播
-           </h2>
-           <nav class="am-titlebar-nav">
-             <a href="${ctx}/space/device/list.shtml?stype=dtmb&openId=${openId}" class="">更多</a>
-           </nav>
-         </div>
-         <c:if test="${not empty(map[entry.key])}">
-            <ul class="mindex-ul">
-              <c:forEach items="${map[entry.key]}" var="item">
-                <li>
-                  <div class="mindex-avatar">
-                      <a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}"><img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/></a>
-                  </div>
-                  <div class="mindex-detail">
-                    <p class="mindex-title"></p>
-                    <p class="mindex-intro"><a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
-                    <p class="mindex-time"></p>
-                  </div>
-                </li>
-              </c:forEach>
-            </ul>
-         </c:if>
+     <c:if test="${not empty(map)}">
+         <c:forEach items="${map}" var="entry">
+             <c:if test="${entry.key eq 'tv'}">
+                 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
+                     <h2 class="am-titlebar-title ">
+                         电视直播
+                     </h2>
+                     <nav class="am-titlebar-nav">
+                         <a href="${ctx}/space/list/${serialNumber}.shtml?stype=dtmb&openId=${openId}" class="">更多</a>
+                     </nav>
+                 </div>
+                 <c:if test="${not empty(map[entry.key])}">
+                 <ul class="mindex-ul">
+                     <c:forEach items="${map[entry.key]}" var="item">
+                     <li>
+                         <div class="mindex-avatar">
+                             <img class="mindex-ulImg" src="${ctx}/assets/i/live.png"  alt=""/>
+                         </div>
+                         <div class="mindex-detail">
+                             <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
+                         </div>
+                     </li>
+                     </c:forEach>
 
-    </c:if>
-    <c:if test="${entry.key eq 'vedio'}">
-         <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-           <h2 class="am-titlebar-title ">
-             视频点播
-           </h2>
-           <nav class="am-titlebar-nav">
-             <a href="${ctx}/space/device/list.shtml?stype=netdisk&openId=${openId}" class="">更多</a>
-           </nav>
-         </div>
-         <c:if test="${not empty(map[entry.key])}">
-         <ul class="mindex-ul">
-           <c:forEach items="${map[entry.key]}" var="item">
-             <li>
-               <div class="mindex-avatar">
-                   <a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}"><img class="mindex-ulImg" src="${ctx}/assets/i/video/video.jpg"  alt=""/></a>
-               </div>
-               <div class="mindex-detail">
-                 <p class="mindex-title"></p>
-                 <p class="mindex-intro"><a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
-                 <p class="mindex-time"></p>
-               </div>
-             </li>
-           </c:forEach>
-         </ul>
-         </c:if>
-    </c:if>
-    <c:if test="${entry.key eq 'camera' and not empty(map[entry.key])}">
-         <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-           <h2 class="am-titlebar-title ">
-             远程监控
-           </h2>
-           <nav class="am-titlebar-nav">
-             <a href="${ctx}/space/device/list.shtml?stype=camera&openId=${openId}" class="">更多</a>
-           </nav>
-         </div>
-         <c:if test="${not empty(map[entry.key])}">
-         <ul class="mindex-ul">
-           <c:forEach items="${map[entry.key]}" var="item">
-             <li>
-               <div class="mindex-avatar">
-                   <a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}"><img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/></a>
-               </div>
-               <div class="mindex-detail">
-                 <p class="mindex-title"></p>
-                 <p class="mindex-intro"><a href="${ctx}/space/device/play.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
-                 <p class="mindex-time"></p>
-               </div>
-             </li>
-           </c:forEach>
-         </ul>
-         </c:if>
-    </c:if>
-  </c:forEach>
-</c:if>
+                 </ul>
+                 </c:if>
+             </c:if>
+
+
+             <c:if test="${entry.key eq 'vedio'}">
+                 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
+                     <h2 class="am-titlebar-title ">
+                         视频点播
+                     </h2>
+                     <nav class="am-titlebar-nav">
+                         <a href="${ctx}/space/device/list.shtml?stype=netdisk&openId=${openId}" class="">更多</a>
+                     </nav>
+                 </div>
+
+                 <c:if test="${not empty(map[entry.key])}">
+                     <ul class="mindex-ul">
+                         <c:forEach items="${map[entry.key]}" var="item">
+                             <li>
+                                 <div class="mindex-avatar">
+                                     <img class="mindex-ulImg" src="${ctx}/assets/i/demand.png"  alt=""/>
+                                 </div>
+                                 <div class="mindex-detail">
+                                     <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
+                                 </div>
+                             </li>
+                         </c:forEach>
+                     </ul>
+                 </c:if>
+             </c:if>
+
+             <c:if test="${entry.key eq 'camera' and not empty(map[entry.key])}">
+                 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
+                     <h2 class="am-titlebar-title ">
+                         远程监控
+                     </h2>
+                     <nav class="am-titlebar-nav">
+                         <a href="${ctx}/space/device/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="">更多</a>
+                     </nav>
+                 </div>
+                 <c:if test="${not empty(map[entry.key])}">
+                     <ul class="mindex-ul">
+                         <c:forEach items="${map[entry.key]}" var="item">
+                             <li>
+                                 <div class="mindex-avatar">
+                                     <img class="mindex-ulImg" src="${ctx}/assets/i/remote.png"  alt=""/>
+                                 </div>
+                                 <div class="mindex-detail">
+                                     <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
+                                 </div>
+                             </li>
+                         </c:forEach>
+                     </ul>
+                 </c:if>
+             </c:if>
+         </c:forEach>
+     </c:if>
 
 <footer data-am-widget="footer"
         class="am-footer am-footer-default"

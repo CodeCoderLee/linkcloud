@@ -39,12 +39,12 @@
 <body class="vi-mobile vi-mobileList">
 <div data-am-widget="header" class="am-header am-header-default">
   <div class="am-header-left am-header-nav">
-    <a href="#left-link" class="">
+    <a href="${ctx}/space/device/${serialNumber}.shtml?openId=${openId}" class="">
       <i class="am-header-icon am-icon-home"></i>
     </a>
   </div>
   <h1 class="am-header-title">
-    <a href="#title-link" class="">
+    <a href="javascript:void(0)" class="">
       ${program.pname}
     </a>
   </h1>

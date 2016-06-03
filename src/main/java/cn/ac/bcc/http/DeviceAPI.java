@@ -42,6 +42,7 @@ public class DeviceAPI {
     public static final String URI_SETAD = "/device/setad.shtml";
     public static final String URI_REMOTEWATCH = "/device/remotewatch.shtml";
     public static final String URI_REMOTECHECK = "/device/remotecheck.shtml";
+    public static final String URI_HEARTBEAT = "/device/heartbeat.shtml";
 
     private static Log log = LogFactory.getLog(DeviceAPI.class);
     private ApplicationContext ctx;
@@ -90,6 +91,8 @@ public class DeviceAPI {
             jsonStr = setFrq(request,postData,nvList);
         }else if(uri.contains(URI_SHOCK)){
             jsonStr = shock(request,postData,nvList);
+        }else if(uri.contains(URI_HEARTBEAT)){
+            jsonStr = heartBeat(request,postData,nvList);
         }
 
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,OK, Unpooled.wrappedBuffer(jsonStr.getBytes("UTF-8")));
@@ -236,7 +239,7 @@ public class DeviceAPI {
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
-        }else {
+        }else{
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
@@ -400,6 +403,25 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
+        JSONObject jsonObject =  JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    public String heartBeat(HttpRequest request,String postData,List<NameValuePair> nvList){
+        String token = getCookieValue(request);
+        boolean validation = true;
+
+        //JSONObject json = JSONObject.fromObject(postData);
+
+        Map<String,Object> map  = new HashMap<String,Object>();
+        if(validation) {
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
+        }else {
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
+        }
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
     }
