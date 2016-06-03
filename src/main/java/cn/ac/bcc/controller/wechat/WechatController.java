@@ -101,7 +101,6 @@ public class WechatController {
             PasswordHelper passwordHelper = new PasswordHelper();
             passwordHelper.encryptPassword(user);
             userService.insert(user);
-
         }else {
             user = users.get(0);
         }
@@ -154,7 +153,9 @@ public class WechatController {
             return "/login";
         }
         //TODO 普通权限的用户仅能进入前台页面
-        return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
+        //return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
+        model.addAttribute("openId",user.getOpenId());
+        return Common.BACKGROUND_PATH + "/wechat/index";
     }
 
 
