@@ -39,4 +39,12 @@
         </if>
         ORDER BY id desc
   </select>
+    <update id="updateStatusByNum" parameterType="String">
+        update BCC_DEVICE d SET d.STATUS = #{status}
+        where d.serial_number = #{serialNumber}
+    </update>
+
+
+
+
 </mapper>

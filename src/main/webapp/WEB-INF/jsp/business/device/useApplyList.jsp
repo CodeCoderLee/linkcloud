@@ -146,6 +146,7 @@
     }
 
     function stockOutBtn(id){
+        alert("id:::"+id);
         $("#content").load("deviceUseApply/stockOutUI.shtml?id="+id);
     }
 
