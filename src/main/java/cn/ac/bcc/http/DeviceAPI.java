@@ -2,6 +2,7 @@ package cn.ac.bcc.http;
 
 import cn.ac.bcc.model.business.DeviceAuthen;
 import cn.ac.bcc.model.business.Program;
+import cn.ac.bcc.model.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.util.HelperUtils;
@@ -12,6 +13,7 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.ServerCookieEncoder;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
@@ -231,7 +233,7 @@ public class DeviceAPI {
     public String reportPrograms(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
-        boolean validation = false;
+        boolean validation = true;
         if(serialNumber != null){
             parseReportProgram(postData,token,serialNumber);
         }
@@ -289,11 +291,76 @@ public class DeviceAPI {
         return jsonObject.toString();
     }
 
+    private void parseScanFreq(String postData,String serialNumber){
+        JSONObject json = JSONObject.fromObject(postData);
+        String scanEndedStr = json.getString("scan_ended");
+        boolean scanEnded = "1".equals(scanEndedStr)?true:false;
+        String progressStr = json.getString("progress");
+        int progress = Integer.parseInt(progressStr);
+
+        ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
+        if(scanFreqInfos == null){
+            scanFreqInfos = new ScanFreqInfos();
+            MemoryMap.add(serialNumber,scanFreqInfos);
+        }else{
+            scanFreqInfos.setFreqList(null);
+        }
+        scanFreqInfos.setScanEnded(scanEnded);
+        scanFreqInfos.setProgress(progress);
+
+        JSONArray freqsArray = json.getJSONArray("frqs_list");
+        int size = freqsArray.size();
+        List<Freq> freqList = new ArrayList<Freq>();
+        scanFreqInfos.setFreqList(freqList);
+
+        for(int i = 0;i<size;i++){
+            JSONObject freqObject =  (JSONObject)freqsArray.get(i);
+            String freq = freqObject.getString("frq");
+            String strengthStr = freqObject.getString("strenght");
+            String snrStr = freqObject.getString("snr");
+            int strength = Integer.parseInt(strengthStr);
+            int snr = Integer.parseInt(snrStr);
+
+            Freq freqObj = new Freq();
+            freqObj.setFrq(freq);
+            freqObj.setStrength(strength);
+            freqObj.setSnr(snr);
+            freqList.add(freqObj);
+
+            JSONArray programsArray = freqObject.getJSONArray("progs_list");
+            int len = programsArray.size();
+            List<ScanFreqProgram> fpList = new ArrayList<ScanFreqProgram>();
+            freqObj.setProgramList(fpList);
+            for(int j=0 ;j<len ;j++){
+                JSONObject programObject =  (JSONObject)programsArray.get(j);
+                String pid = programObject.getString("pid");
+                String name = programObject.getString("name");
+                String ca = programObject.getString("ca");
+                String vpid = programObject.getString("vpid");
+                String venc = programObject.getString("venc");
+                String apid = programObject.getString("apid");
+                String aenc = programObject.getString("aenc");
+
+                ScanFreqProgram fp = new ScanFreqProgram();
+                fp.setPid(pid);
+                fp.setName(name);
+                fp.setCa(ca);
+                fp.setVpid(vpid);
+                fp.setVenc(venc);
+                fp.setApid(apid);
+                fp.setAenc(aenc);
+                fpList.add(fp);
+            }
+        }
+    }
+
     public String scanFrq(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
+        String serialNumber = getDeviceSerialNumber(token);
         boolean validation = true;
-
-        JSONObject json = JSONObject.fromObject(postData);
+        if(serialNumber != null){
+            parseScanFreq(postData,serialNumber);
+        }
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
@@ -312,8 +379,14 @@ public class DeviceAPI {
     public String setFrq(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
+        String serialNumber = getDeviceSerialNumber(token);
+        Map<String,String> cmmd =  CommandMap.getCommand(serialNumber);
+        String keyFreq = CommandMap.get(cmmd,HelperUtils.KEY_FRQ);
+        String keyPrograms = CommandMap.get(cmmd,HelperUtils.KEY_PROGRAMS);
 
-        JSONObject json = JSONObject.fromObject(postData);
+        //TODO for Test
+        if(StringUtils.isEmpty(keyFreq))keyFreq = "626";
+        if(StringUtils.isEmpty(keyPrograms))keyPrograms = "1,3,5,7,9";
 
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
@@ -324,6 +397,8 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
+        map.put(HelperUtils.KEY_FRQ, keyFreq);
+        map.put(HelperUtils.KEY_PROGRAMS, keyPrograms);
 
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
@@ -412,7 +487,6 @@ public class DeviceAPI {
         boolean validation = true;
 
         //JSONObject json = JSONObject.fromObject(postData);
-
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);

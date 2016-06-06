@@ -43,7 +43,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private static Log log = LogFactory.getLog(DeviceSpaceController.class);
 
     @RequestMapping(value = "device/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String index(@PathVariable String serialNumber, String openId, String appId,Model mode){
+    public String index(@PathVariable String serialNumber,String openId,Model mode){
         log.info("openId:::" + openId);
         boolean hasRole = false;
         if(openId != null){
