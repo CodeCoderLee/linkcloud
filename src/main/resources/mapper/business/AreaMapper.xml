@@ -13,5 +13,6 @@
     <result column="post_code" jdbcType="INTEGER" property="postCode" />
     <result column="level" jdbcType="BIT" property="level" />
     <result column="sort_order" jdbcType="TINYINT" property="sortOrder" />
+    <result column="default_frequency" jdbcType="VARCHAR" property="default_frequency" />
   </resultMap>
 </mapper>

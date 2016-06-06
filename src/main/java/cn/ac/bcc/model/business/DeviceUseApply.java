@@ -57,6 +57,10 @@ public class DeviceUseApply {
     @Column(name = "apply_time")
     private Date applyTime;
 
+
+    @Column(name = "status")
+    private Integer status;
+
     /**
      * 获取主键，自增
      *
@@ -205,5 +209,14 @@ public class DeviceUseApply {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

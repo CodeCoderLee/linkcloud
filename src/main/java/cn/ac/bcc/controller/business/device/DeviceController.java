@@ -47,6 +47,13 @@ public class DeviceController extends BaseController<Device> {
         return Common.BACKGROUND_PATH + "/business/device/debugList";
     }
 
+    @RequestMapping("showList")
+    public String showListUI(Model model) throws Exception {
+        model.addAttribute("res", findByRes());
+        model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
+        return Common.BACKGROUND_PATH + "/business/device/showList";
+    }
+
     @RequestMapping("addUI")
     public String addUI() {
         return Common.BACKGROUND_PATH + "/business/device/add";
@@ -78,12 +85,11 @@ public class DeviceController extends BaseController<Device> {
 
 
     @ResponseBody
-    @RequestMapping("searchDebug")
-    public ResponseData searchDebug(Device device, Integer pageNum, Integer pageSize) throws Exception {
+    @RequestMapping("searchByPage")
+    public ResponseData searchByPage(Device device, Integer pageNum, Integer pageSize) throws Exception {
         Integer userId = Common.findUserSessionId(getRequest());
         device.setRegisterAccount(userId);
         device.setDebugAccount(userId);
-        device.setStatus(1);
         PageHelper.startPage(pageNum, pageSize);
         List<Device> list = deviceService.selectDebugDevice(device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);

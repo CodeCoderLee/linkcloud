@@ -22,17 +22,22 @@ public class Advertisement {
     private String fileName;
 
     /**
-     * 来源
+     * 状态,1上线,0下线
      */
+    @Column(name = "state")
     private Integer state;
+
 
     private String source;
 
     /**
      * 行业分类
      */
-    @Column(name = "industry_id")
-    private Integer industryId;
+    @Column(name = "industry_code")
+    private String industryCode;
+
+    @Transient
+    private String industryName;
 
     /**
      * 是否来自第三方
@@ -45,6 +50,9 @@ public class Advertisement {
      */
     @Column(name = "company_id")
     private String companyId;
+
+    @Transient
+    private String companyName;
 
     /**
      * 外链
@@ -138,17 +146,17 @@ public class Advertisement {
      *
      * @return industry_id - 行业分类
      */
-    public Integer getIndustryId() {
-        return industryId;
+    public String getIndustryCode() {
+        return industryCode;
     }
 
     /**
      * 设置行业分类
      *
-     * @param industryId 行业分类
+     * @param industryCode 行业分类
      */
-    public void setIndustryId(Integer industryId) {
-        this.industryId = industryId;
+    public void setIndustryCode(String industryCode) {
+        this.industryCode = industryCode;
     }
 
     /**
@@ -203,5 +211,23 @@ public class Advertisement {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

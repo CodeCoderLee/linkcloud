@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="block-header">
-        <h2>设备调试</h2>
+        <h2>设备演示</h2>
         <input type="hidden" id="openId" name="openId" value="${openId}"/>
     </div>
     <div class="card">
@@ -49,7 +49,7 @@
                             <dd>是</dd>
                         </dl>
                         <dl class="dl-horizontal">
-                            <dt><a href="">设备空间</a></dt>
+                            <dt><a href="">演示</a></dt>
                         </dl>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
             method: 'get',
             url: 'device/searchByPage.shtml',
             dataType: 'json',
-            data: {status: 2,pageNum: pageNum, pageSize: pageSize},
+            data: {status:3,pageNum: pageNum, pageSize: pageSize},
             success: function (data) {
                 /*刷新数据*/
                 refreshData(data.rows);
@@ -119,19 +119,19 @@
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>注册人</dt>" +
-            "<dd>" + item.registerName + "</dd>" +
-            "</dl>" +
-            "<dl class=\"dl-horizontal\">" +
-            "<dt>是否上线</dt>" +
-            "<dd>是</dd>" +
-            "</dl>" +
-            "<dl class=\"dl-horizontal\">" +
-            "<dt><a class=\"btn btn-info\" href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">设备空间</a></dt>" +
-            "</dl>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "</div>";
+                    "<dd>" + item.registerName + "</dd>" +
+                    "</dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>是否上线</dt>" +
+                    "<dd>是</dd>" +
+                    "</dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dd><a class='btn btn-info' href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">演示</a></dd>" +
+                    "</dl>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>";
             $('#dataDiv').append(html);
         })
     }
