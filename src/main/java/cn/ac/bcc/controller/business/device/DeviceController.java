@@ -54,6 +54,13 @@ public class DeviceController extends BaseController<Device> {
         return Common.BACKGROUND_PATH + "/business/device/showList";
     }
 
+    @RequestMapping("deviceSetting")
+    public String deviceSetting(Model model) throws Exception {
+        model.addAttribute("res", findByRes());
+        model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
+        return Common.BACKGROUND_PATH + "/business/device/deviceSetting";
+    }
+
     @RequestMapping("addUI")
     public String addUI() {
         return Common.BACKGROUND_PATH + "/business/device/add";
