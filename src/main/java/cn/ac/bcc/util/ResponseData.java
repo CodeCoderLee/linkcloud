@@ -18,6 +18,16 @@ public class ResponseData {
 
     private int totalPages;
 
+    private boolean hasNextPage;
+
+    public boolean isHasNextPage() {
+        return hasNextPage;
+    }
+
+    public void setHasNextPage(boolean hasNextPage) {
+        this.hasNextPage = hasNextPage;
+    }
+
     public long getTotal() {
         return total;
     }

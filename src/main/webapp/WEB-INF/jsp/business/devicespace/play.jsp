@@ -1,5 +1,6 @@
 <%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!doctype html>
 <html class="no-js">
@@ -70,35 +71,35 @@
   </div>
 
   <div id="comment-list">
-  <article class="am-comment mobile-comment" style="display: none;">
-    <a href="#link-to-user-home">
-      <img src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/96/h/96" alt="" class="am-comment-avatar" width="48" height="48">
-    </a>
-    <div class="am-comment-main">
-      <header class="am-comment-hd">
-        <div class="am-comment-meta">
-          <a href="#link-to-user" class="am-comment-author">${comment.user.accountname}</a> 评论于
-          <time datetime="2016-05-16T04:54:29-07:00" title="2016年05月16日 下午7:54 格林尼治标准时间+0800">"2016年05月16日 下午7:54</time>
+    <article class="am-comment mobile-comment" style="display: none;">
+      <a href="#link-to-user-home">
+        <img src="http://s.amazeui.org/media/i/demos/bw-2014-06-19.jpg?imageView/1/w/96/h/96" alt="" class="am-comment-avatar" width="48" height="48">
+      </a>
+      <div class="am-comment-main">
+        <header class="am-comment-hd">
+          <div class="am-comment-meta">
+            <a href="#link-to-user" class="am-comment-author">${comment.accountname}</a> 评论于
+            <span class="am-comment-time">${comment.publishDateStr}</span>
+          </div>
+          <div class="am-comment-actions">
+            <a href=""><i class="am-icon-pencil"></i></a>
+            <a href=""><i class="am-icon-close"></i></a>
+          </div>
+        </header>
+        <div class="am-comment-bd">
+          <p>这部电影不错</p>
+          <%--<blockquote>是的,非常不错,很有价值</blockquote>--%>
         </div>
-        <div class="am-comment-actions">
-          <a href=""><i class="am-icon-pencil"></i></a>
-          <a href=""><i class="am-icon-close"></i></a>
-        </div>
-      </header>
-      <div class="am-comment-bd">
-        <p>这部电影不错</p>
-        <%--<blockquote>是的,非常不错,很有价值</blockquote>--%>
+        <%--<footer class="am-comment-footer">--%>
+          <%--<div class="am-comment-actions">--%>
+            <%--<a href=""><i class="am-icon-thumbs-up"></i></a>--%>
+            <%--<a href=""><i class="am-icon-thumbs-down"></i></a>--%>
+            <%--<a href=""><i class="am-icon-reply"></i></a>--%>
+          <%--</div>--%>
+        <%--</footer>--%>
       </div>
-      <%--<footer class="am-comment-footer">--%>
-        <%--<div class="am-comment-actions">--%>
-          <%--<a href=""><i class="am-icon-thumbs-up"></i></a>--%>
-          <%--<a href=""><i class="am-icon-thumbs-down"></i></a>--%>
-          <%--<a href=""><i class="am-icon-reply"></i></a>--%>
-        <%--</div>--%>
-      <%--</footer>--%>
-    </div>
-  </article>
-
+    </article>
+    <c:set var="commentList" value="${responseData.rows}" />
   <c:forEach items="${commentList}" var="comment"  varStatus="status">
     <article class="am-comment mobile-comment">
         <a href="#link-to-user-home">
@@ -107,15 +108,24 @@
         <div class="am-comment-main">
           <header class="am-comment-hd">
             <div class="am-comment-meta">
-              <a href="#link-to-user" class="am-comment-author">${comment.user.accountname}</a> 评论于
-              <time datetime="2016-05-16T04:54:29-07:00" title="2016年05月16日 下午7:54 格林尼治标准时间+0800">"2016年05月16日 下午7:54</time>
+              <a href="#link-to-user" class="am-comment-author">${comment.accountname}</a> 评论于
+              <%--<fmt:formatDate value="${comment.publishDate}" pattern="yyyy-MM-dd  HH:mm:ss" var="time" type="both" />--%>
+             <span class="am-comment-time">${comment.publishDateStr}</span>
             </div>
             <div class="am-comment-actions">
-              <a href=""><i class="am-icon-pencil"></i></a>
-              <a href=""><i class="am-icon-close"></i></a>
+              <c:if test="${comment.update}">
+                <a href="javascript:void(0);" class="am-comment-update"><i class="am-icon-pencil"></i></a>
+                <a href="javascript:void(0);" class="am-comment-delete"><i class="am-icon-close"></i></a>
+              </c:if>
             </div>
           </header>
           <div class="am-comment-bd">
+            <div class="am-comment-edit-text" style="display: none;">
+              <textarea class="mobile-vi-textarea" rows="2" name="text" readonly>${comment.comment}</textarea>
+              <input type="hidden" name="commentId" value="${comment.id}"/>
+              <button class="am-btn am-btn-primary am-fr commentSub okBtn">确定</button>
+              <button class="am-btn am-btn-primary am-fr commentSub cancelBtn">取消</button>
+            </div>
             <p>${comment.comment}</p>
             <%--<blockquote>是的,非常不错,很有价值</blockquote>--%>
           </div>
@@ -123,6 +133,12 @@
       </article>
     </c:forEach>
   </div>
+
+  <c:if test="${responseData.hasNextPage}">
+  <div id="more" style="margin-left: auto;margin-right: auto;width: 100px;">
+      <span style="display:block;"><a href="javascript:void(0)" class="more-comment">显示更多</a></span>
+  </div>
+  </c:if>
 </div>
 </div>
 <footer data-am-widget="footer"
@@ -143,6 +159,10 @@
   videojs.options.flash.swf = "${ctx}/assets/js/video.js/video-js.swf";
   var player = videojs('play-video');
   player.play();
+
+  var commentMoreUrl = '${ctx}/space/commentList.shtml';
+  var pageNum = ${responseData.pageNum};
+  var videoId = ${program.id};
 </script>
 </body>
 </html>

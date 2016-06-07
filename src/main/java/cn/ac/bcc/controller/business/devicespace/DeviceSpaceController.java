@@ -1,18 +1,23 @@
 package cn.ac.bcc.controller.business.devicespace;
 
 import cn.ac.bcc.controller.base.BaseController;
+import cn.ac.bcc.model.business.Area;
 import cn.ac.bcc.model.business.Comment;
+import cn.ac.bcc.model.business.CommentUser;
 import cn.ac.bcc.model.business.Program;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.model.core.UserRole;
 import cn.ac.bcc.service.business.comment.CommentService;
+import cn.ac.bcc.service.business.comment.CommentUserService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.service.system.user.UserRoleService;
 import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.Common;
+import cn.ac.bcc.util.ResponseData;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +26,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tk.mybatis.mapper.entity.Example;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +45,9 @@ import java.util.Map;
 public class DeviceSpaceController extends BaseController<Comment>{
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private CommentUserService commentUserService;
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -89,40 +104,105 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
     public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
         Program program = programService.selectByPrimaryKey(programId);
-        List<Comment> commentList = getCommentList(programId);
-        mode.addAttribute("commentList",commentList);
+        ResponseData responseData = getCommentList(programId,1);
+        mode.addAttribute("responseData",responseData);
         mode.addAttribute("program",program);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         return Common.BACKGROUND_PATH + "/business/devicespace/play";
     }
 
-    @RequestMapping(value = "comment/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String comment(@PathVariable String serialNumber,Model mode,String text,Integer programId){
+    @RequestMapping(value = "comment", produces = "text/html; charset=utf-8")
+    public String comment(String serialNumber,Model mode,String text,Integer programId,Integer pageNum){
+        if(pageNum == null) pageNum = 1;
         Comment comment = new Comment();
         comment.setVideoId(programId);
         comment.setUserId(Common.findUserSessionId(getRequest()));
         User user = userService.selectByPrimaryKey(comment.getUserId());
         comment.setComment(text);
         comment.setUser(user);
-
+        comment.setPublishDate(new Date());
         commentService.insertSelective(comment);
 //        commentList.add(comment);
         mode.addAttribute("programId",programId);
-        return "redirect:/space/device/commentList.shtml";
+        mode.addAttribute("pageNum",pageNum);
+        return "redirect:/space/commentList.shtml";
     }
 
     @RequestMapping(value = "commentList", produces = "text/html; charset=utf-8")
     @ResponseBody
-    public List<Comment> commentList(Model mode,Integer videoId){
-        return getCommentList(1);
+    public ResponseData commentList(Model mode,Integer videoId,Integer pageNum){
+        return getCommentList(1, pageNum);
     }
 
-    private List<Comment> getCommentList(Integer programId){
-        List<Comment> commentList = new ArrayList<Comment>();
-        Comment comment = new Comment();
-        comment.setVideoId(programId);
-        commentList = commentService.select(comment);
-        return commentList;
+//    private List<Comment> getCommentList(Integer programId,Integer pageNum,Integer pageSize){
+//        List<Comment> commentList = new ArrayList<Comment>();
+//        Example example = new Example(Comment.class);
+//        Example.Criteria criteria = example.createCriteria();
+//        criteria.andEqualTo("videoId",programId);
+//        example.setOrderByClause("publishDate desc");
+//        PageInfo<Comment> pageInfo = commentService.selectByPage(pageNum,pageSize);
+//        return pageInfo.getList();// commentList;
+//    }
+
+    private ResponseData getCommentList(Integer programId,Integer pageNum){
+        int pageSize = 5;
+        CommentUser commentUser = new CommentUser();
+        PageHelper.offsetPage((pageNum - 1) * pageSize, pageSize);
+        getRequest().setAttribute("order","desc");
+        getRequest().setAttribute("sort","publishDate");
+
+        Example example = new Example(CommentUser.class);
+        example = getEqualsToExample(example);
+        User user = (User) Common.findUserSession(getRequest());
+
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("videoId",programId);
+        List<CommentUser> commentList = commentUserService.selectByExample(example);
+        for(CommentUser cu: commentList){
+            Date pd = cu.getPublishDate();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd H:m:s");
+            cu.setPublishDateStr(format.format(pd));
+            if(user.getId() == cu.getUserId()){
+                //可以删除修改
+                cu.setUpdate(true);
+            }else{
+                //不能删除修改
+                cu.setUpdate(false);
+            }
+        }
+        PageInfo<CommentUser> pageInfo = new PageInfo<CommentUser>(commentList);
+        ResponseData responseData = new ResponseData();
+        responseData.setRows(pageInfo.getList());
+        responseData.setTotal(pageInfo.getTotal());
+        responseData.setPageNum(pageInfo.getNextPage());
+        responseData.setHasNextPage(pageInfo.isHasNextPage());
+        return responseData;
+    }
+
+
+    /**
+     * 获取object中不为空的属性相等的查询条件及order规则的Example
+     *
+     * @return 返回带有查询条件约束和排序规则的Example
+     */
+    public Example getEqualsToExample(Example example) {
+
+        /*增加排序*/
+        String sortOrder = getPara("order");
+        String sortName = getPara("sort");
+        if (Common.isNotEmpty(sortOrder)) {
+            if (Common.isNotEmpty(sortName)) {
+                String columnName = Common.getClassFieldColumnName(CommentUser.class,sortName);
+                if (columnName != null) {
+                    example.setOrderByClause(columnName + " " + sortOrder);
+                }else
+                    example.setOrderByClause("id " + sortOrder);
+            } else
+                example.setOrderByClause("id " + sortOrder);
+        } else {
+            example.setOrderByClause("id desc");
+        }
+        return example;
     }
 }
