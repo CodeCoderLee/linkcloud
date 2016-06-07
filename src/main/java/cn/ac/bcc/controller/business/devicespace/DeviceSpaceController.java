@@ -109,6 +109,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("program",program);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
+        int k = 0;
         return Common.BACKGROUND_PATH + "/business/devicespace/play";
     }
 
