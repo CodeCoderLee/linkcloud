@@ -11,6 +11,6 @@ public interface DeviceMapper extends Mapper<Device> {
     List<Device> selectDebugDevice(@Param("device") Device device);
 
     /*根据设备序号修改设备类型*/
-    int updateStatusByNum(String serialNumber,int status);
+    int updateStatusByNum(@Param("serialNumber") String serialNumber,@Param("status") Integer status);
 
 }

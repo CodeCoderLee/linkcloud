@@ -63,7 +63,8 @@
 </div>
 <script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
 <script charset="utf-8" src="${ctx}/js/bootstrap-paginator.min.js"/>
-<script charset="utf-8" src="${ctx}/js/common/bcc-bootstrap-table.js"/>
+<script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/common/common.js"/>
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         loadDevice(1, 6);
@@ -73,19 +74,19 @@
             method: 'get',
             url: 'device/searchByPage.shtml',
             dataType: 'json',
-            data: {status: 1,pageNum: pageNum, pageSize: pageSize},
+            data: {status: 1, pageNum: pageNum, pageSize: pageSize},
             success: function (data) {
                 /*刷新数据*/
                 refreshData(data.rows);
                 console.log(data.pageNum);
                 console.log(data.totalPages);
                 /*分页*/
-                if(data.totalPages>0){
+                if (data.totalPages > 0) {
                     var options = {
                         currentPage: data.pageNum,
                         totalPages: data.totalPages,
                         onPageChanged: function (e, oldPage, newPage) {
-                            scrollTo(0,0);
+                            scrollTo(0, 0);
                             loadDevice(newPage, 6);
                         }
                     }
@@ -119,21 +120,36 @@
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>注册人</dt>" +
-            "<dd>" + item.registerName + "</dd>" +
-            "</dl>" +
-            "<dl class=\"dl-horizontal\">" +
-            "<dt>是否上线</dt>" +
-            "<dd>是</dd>" +
-            "</dl>" +
-            "<dl class=\"dl-horizontal\">" +
-            "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?openId="+$('#openId').val()+"\">设备空间</a></dd>" +
-            "</dl>" +
-            "</div>" +
-            "</div>" +
-            "</div>" +
-            "</div>";
+                    "<dd>" + item.registerName + "</dd>" +
+                    "</dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>是否上线</dt>" +
+                    "<dd>是</dd>" +
+                    "</dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('"+item.id+"','"+item.serialNumber+"')\">设为可用</a></dt>" +
+                    "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?openId=" + $('#openId').val() + "\">设备空间</a></dd>" +
+                    "</dl>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>" +
+                    "</div>";
             $('#dataDiv').append(html);
         })
     }
 
+    function setAvailable(id,serialNumber) {
+        $.ajax({
+            url:'device/updateDevice.shtml',
+            data:{id:id,status:4,serialNumber:serialNumber},
+            dataType:'json',
+            success:function () {
+                notify('success', '     调试完成      ');
+                loadDevice(1, 6);
+            },
+            error: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest);
+            }
+        });
+    }
 </script>

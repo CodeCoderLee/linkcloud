@@ -61,6 +61,9 @@ public class DeviceUseApply {
     @Column(name = "status")
     private Integer status;
 
+    @Column(name = "is_stock_out")
+    private Integer isStockOut;
+
     /**
      * 获取主键，自增
      *
@@ -218,5 +221,13 @@ public class DeviceUseApply {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getIsStockOut() {
+        return isStockOut;
+    }
+
+    public void setIsStockOut(Integer isStockOut) {
+        this.isStockOut = isStockOut;
     }
 }

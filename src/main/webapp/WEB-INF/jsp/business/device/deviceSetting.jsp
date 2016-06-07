@@ -127,7 +127,7 @@
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class='btn btn-info' href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">连通性测试</a></dt>" +
-                    "<dd><a class='btn btn-info' href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">扫频</a></dd>" +
+                    "<dd><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a></dd>" +
                     "</dl>" +
                     "</div>" +
                     "</div>" +
@@ -135,6 +135,10 @@
                     "</div>";
             $('#dataDiv').append(html);
         })
+    }
+
+    function scanFrequency(serialNumber) {
+        alert(serialNumber);
     }
 
 </script>

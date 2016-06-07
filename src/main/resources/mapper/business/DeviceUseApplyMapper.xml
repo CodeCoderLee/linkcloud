@@ -13,12 +13,13 @@
     <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
     <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_stock_out" property="isStockOut" jdbcType="INTEGER" />
   </resultMap>
   <select id="selectDeviceUseApply" resultType="cn.ac.bcc.model.business.DeviceUseApply" parameterType="cn.ac.bcc.model.business.DeviceUseApply">
     select t1.id id, t1.area_id areaId, t2.area_name areaName,
       t1.industry_code industryCode, t3.full_name industryName,
       t1.company_id companyId, t4.`name` companyName, t1.contact_name contactName,
-      t1.contact_phone contactPhone, t1.apply_time applyTime
+      t1.contact_phone contactPhone, t1.apply_time applyTime, t1.is_stock_out isStockOut
     from bcc_device_use_apply t1
     left join bcc_area t2 on t1.area_id=t2.id
 	left join bcc_industry t3 on t1.industry_code = t3.full_code

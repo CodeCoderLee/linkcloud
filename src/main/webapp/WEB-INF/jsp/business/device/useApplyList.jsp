@@ -131,11 +131,17 @@
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>联系电话</dt>" +
-                    "<dd>"+item.contactPhone+"</dd>" +
+                    "<dd>" + item.contactPhone + "</dd>" +
                     "</dl>" +
-                    "<dl class=\"dl-horizontal\">" +
-                    "<dd><button class='btn btn-info' onclick='stockOutBtn("+item.id+")' >出库</button></dd>" +
+                    "<dl class=\"dl-horizontal\">";
+            if (item.isStockOut == 0) {
+                html = html + "<dd><a class='btn btn-info' onclick='stockOutBtn(" + item.id + ")' >出库</a></dd>";
+            } else {
+                html = html + "<dd>已出库</dd>";
+            }
+//                    "<dd><button class='btn btn-info' onclick='stockOutBtn("+item.id+")' >出库</button></dd>" +
 //                    "<dd><button class='btn btn-info' onclick='cancleBtn("+item.id+")' >取消出库</button></dd>" +
+            html = html +
                     "</dl>" +
                     "</div>" +
                     "</div>" +
@@ -145,9 +151,8 @@
         })
     }
 
-    function stockOutBtn(id){
-        alert("id:::"+id);
-        $("#content").load("deviceUseApply/stockOutUI.shtml?id="+id);
+    function stockOutBtn(id) {
+        $("#content").load("deviceUseApply/stockOutUI.shtml?id=" + id);
     }
 
 </script>

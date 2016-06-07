@@ -56,6 +56,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-validation/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
@@ -71,7 +72,7 @@
         });
 
         $("#sub").click(function () {
-            $(form).ajaxSubmit({
+            $('#form').ajaxSubmit({
                 type: "post",
                 dataType: "json",
                 success: function (data) {
@@ -82,6 +83,7 @@
                     alert(XMLResponse.responseText);
                 }
             });
+            return false;
         });
 
 

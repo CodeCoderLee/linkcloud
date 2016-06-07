@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,7 +52,9 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
 
     @RequestMapping("stockOutUI")
     public String stockOutUI(Model model,HttpServletRequest request) {
-        List<Device> deviceList = deviceService.selectAll();
+        Device device = new Device();
+        device.setStatus(4);
+        List<Device> deviceList = deviceService.select(device);
         int applyId = Integer.parseInt(request.getParameter("id"));
 
         model.addAttribute("deviceList",deviceList);
@@ -77,11 +80,13 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
 
                 deviceApplyService.insertSelective(deviceApply);
 
-                DeviceUseApply deviceUseApply = deviceUseApplyService.selectByPrimaryKey(deviceApply.getId());
+
+                DeviceUseApply deviceUseApply = deviceUseApplyService.selectByPrimaryKey(applyId);
+                deviceUseApply.setIsStockOut(1);
+                deviceUseApplyService.updateByPrimaryKeySelective(deviceUseApply);
                 int status = deviceUseApply.getStatus()==null?0:deviceUseApply.getStatus();
                 if(status!=0){
                     String number = deviceApply.getSerialNumber();
-
                     deviceService.updateStatusByNum(number,status);
                 }
             }
@@ -108,6 +113,8 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
     @RequestMapping("add")
     @SystemLog(module = "使用申请", methods = "使用申请-添加申请")//凡需要处理业务逻辑的.都需要记录操作日志
     public String add(DeviceUseApply deviceUseApply) {
+        deviceUseApply.setIsStockOut(0);
+        deviceUseApply.setApplyTime(new Date());
         deviceUseApplyService.insert(deviceUseApply);
         return SUCCESS;
     }
