@@ -133,6 +133,15 @@
                     "<dt>联系电话</dt>" +
                     "<dd>" + item.contactPhone + "</dd>" +
                     "</dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>用途</dt>";
+            if (item.status == 2) {
+                html = html + "<dd>正式使用</dd>";
+            } else {
+                html = html + "<dd>演示使用</dd>";
+            }
+            html = html +
+                    "</dl>" +
                     "<dl class=\"dl-horizontal\">";
             if (item.isStockOut == 0) {
                 html = html + "<dd><a class='btn btn-info' onclick='stockOutBtn(" + item.id + ")' >出库</a></dd>";
