@@ -118,7 +118,4 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
         deviceUseApplyService.insert(deviceUseApply);
         return SUCCESS;
     }
-
-
-
 }
