@@ -73,7 +73,7 @@
             method: 'get',
             url: 'device/searchByPage.shtml',
             dataType: 'json',
-            data: {status: 2,pageNum: pageNum, pageSize: pageSize},
+            data: {status: 1,pageNum: pageNum, pageSize: pageSize},
             success: function (data) {
                 /*刷新数据*/
                 refreshData(data.rows);
@@ -126,7 +126,7 @@
             "<dd>是</dd>" +
             "</dl>" +
             "<dl class=\"dl-horizontal\">" +
-            "<dt><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?openId="+$('#openId').val()+"\">设备空间</a></dt>" +
+            "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?openId="+$('#openId').val()+"\">设备空间</a></dd>" +
             "</dl>" +
             "</div>" +
             "</div>" +
