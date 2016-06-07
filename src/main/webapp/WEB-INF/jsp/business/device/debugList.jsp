@@ -126,7 +126,7 @@
             "<dd>是</dd>" +
             "</dl>" +
             "<dl class=\"dl-horizontal\">" +
-            "<dt><a class=\"btn btn-info\" href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">设备空间</a></dt>" +
+            "<dt><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?openId="+$('#openId').val()+"\">设备空间</a></dt>" +
             "</dl>" +
             "</div>" +
             "</div>" +

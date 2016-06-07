@@ -487,6 +487,10 @@ public class DeviceAPI {
         boolean validation = true;
 
         //JSONObject json = JSONObject.fromObject(postData);
+        //{"dstat":"0","line":"480","temper":"68","locked":"1","frq":"786000000","strength":"179","snr":"13","dprogs":"3","ndisks":"0","camers":"0","sessions":"0"}
+        String serialNumber = getDeviceSerialNumber(token);
+        HeartBeatMap.add(serialNumber,postData);
+
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
