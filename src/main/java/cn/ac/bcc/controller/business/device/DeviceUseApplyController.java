@@ -68,13 +68,23 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
     public String stockOut(HttpServletRequest request){
         int applyId = Integer.parseInt(request.getParameter("id"));
         String[] deviceNumbers = request.getParameterValues("deviceNumbers");
-        for(int i=0;i<deviceNumbers.length;i++){
-            DeviceApply deviceApply = new DeviceApply();
-            String deviceNumber = deviceNumbers[i];
-            deviceApply.setApplyId(applyId);
-            deviceApply.setSerialNumber(deviceNumber);
+        if(deviceNumbers!=null || deviceNumbers.length>0){
+            for(int i=0;i<deviceNumbers.length;i++){
+                DeviceApply deviceApply = new DeviceApply();
+                String deviceNumber = deviceNumbers[i];
+                deviceApply.setApplyId(applyId);
+                deviceApply.setSerialNumber(deviceNumber);
 
-            deviceApplyService.insertSelective(deviceApply);
+                deviceApplyService.insertSelective(deviceApply);
+
+                DeviceUseApply deviceUseApply = deviceUseApplyService.selectByPrimaryKey(deviceApply.getId());
+                int status = deviceUseApply.getStatus()==null?0:deviceUseApply.getStatus();
+                if(status!=0){
+                    String number = deviceApply.getSerialNumber();
+
+                    deviceService.updateStatusByNum(number,status);
+                }
+            }
         }
 
         return SUCCESS;

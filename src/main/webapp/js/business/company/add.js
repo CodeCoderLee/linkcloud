@@ -7,10 +7,12 @@ $(function () {
     onLoadUrl();
 
     $('#industry').change(function () {
+        console.log($(this).find('option:selected').text());
         $('#industryName').val($(this).find('option:selected').text());
     });
 
     $('#county').change(function () {
+        console.log($(this).find('option:selected').text());
         $('#areaName').val($(this).find('option:selected').text());
     });
 

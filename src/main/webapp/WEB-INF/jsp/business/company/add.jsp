@@ -12,13 +12,14 @@
         <div class="card-header">
             <div class="m-b-md" style="margin-bottom: 18px">
                 <input type="hidden" name="entrance" value="${entrance}" id="entrance"/>
-                <input type="hidden" name="industryName" id="industryName"/>
-                <input type="hidden" name="areaName" id="areaName"/>
+
                 <div class="alert alert-danger hidden" role="alert">
                 </div>
                 <div class="card-body">
                     <form id="form" name="form" class="form-horizontal" method="post"
                           action="${ctx}/company/add.shtml">
+                        <input type="hidden" name="industryName" id="industryName"/>
+                        <input type="hidden" name="areaName" id="areaName"/>
                         <section class="panel panel-default">
                             <div class="panel-body">
                                 <div class="form-group">

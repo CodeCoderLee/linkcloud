@@ -18,6 +18,13 @@ public class DeviceService extends BaseService<Device> {
     private DeviceMapper deviceMapper;
 
     public List<Device> selectDebugDevice(Device device){
+
         return deviceMapper.selectDebugDevice(device);
     }
+
+    public int updateStatusByNum(String serialNumber,int status){
+
+        return deviceMapper.updateStatusByNum(serialNumber,status);
+    }
+
 }

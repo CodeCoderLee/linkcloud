@@ -5,7 +5,8 @@ import javax.persistence.*;
 @Table(name = "bcc_device_apply")
 public class DeviceApply {
     @Id
-    @SequenceGenerator(name="",sequenceName="SELECT LAST_INSERT_ID()")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "apply_id")

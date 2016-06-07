@@ -45,6 +45,7 @@ public class Area {
     /**
      * 等级
      */
+    @Column(name = "level")
     private Boolean level;
 
     /**
@@ -52,6 +53,9 @@ public class Area {
      */
     @Column(name = "sort_order")
     private Byte sortOrder;
+
+    @Column(name = "default_frequency")
+    private String defaultFrequency;
 
     /**
      * 获取ID
@@ -195,5 +199,13 @@ public class Area {
      */
     public void setSortOrder(Byte sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public String getDefaultFrequency() {
+        return defaultFrequency;
+    }
+
+    public void setDefaultFrequency(String defaultFrequency) {
+        this.defaultFrequency = defaultFrequency;
     }
 }

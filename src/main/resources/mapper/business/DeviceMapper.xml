@@ -15,6 +15,7 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="area_id" jdbcType="INTEGER" property="areaId"/>
         <result column="debug_account" jdbcType="INTEGER" property="debugAccount"/>
+        <result column="work_frequency" jdbcType="VARCHAR" property="workFrequency"/>
     </resultMap>
 
     <select id="selectDebugDevice" resultType="cn.ac.bcc.model.business.Device" parameterType="cn.ac.bcc.model.business.Device">
@@ -38,4 +39,12 @@
         </if>
         ORDER BY id desc
   </select>
+    <update id="updateStatusByNum" parameterType="String">
+        update BCC_DEVICE d SET d.STATUS = #{status}
+        where d.serial_number = #{serialNumber}
+    </update>
+
+
+
+
 </mapper>

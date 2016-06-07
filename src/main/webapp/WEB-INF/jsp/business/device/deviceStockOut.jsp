@@ -35,8 +35,7 @@
                                         <div class="fg-line">
                                             <div class="select">
                                                 <select class="form-control" id="example-multiple-selected"
-                                                        multiple="multiple" name="deviceIds">
-                                                    <option value="">请选择设备</option>
+                                                        multiple="multiple" name="deviceNumbers">
                                                     <c:forEach var="device" items="${deviceList}" varStatus="de">
                                                         <option value="${device.serialNumber}">${device.serialNumber}</option>
                                                     </c:forEach>
@@ -76,7 +75,7 @@
                 type: "post",
                 dataType: "json",
                 success: function (data) {
-                    notify('success', '     设备出库成功      ');
+                    notify('success', '     设备出库成功     ');
                     $("#content").load(rootPath + "/deviceUseApply/list.shtml");
                 },
                 error: function (XMLResponse) {

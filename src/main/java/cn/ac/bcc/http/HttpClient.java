@@ -37,7 +37,7 @@ public class HttpClient {
             // Start the client.
             ChannelFuture f = b.connect(host, port).sync();
 
-            URI uri = new URI("http://127.0.0.1:8000/ws/linkHello.shtml?seq=1");
+            URI uri = new URI("http://127.0.0.1:8080/ws/linkHello.shtml?seq=1");
             String msg = "Are you ok?";
             DefaultFullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET,
                     uri.toASCIIString(), Unpooled.wrappedBuffer(msg.getBytes("UTF-8")));
@@ -51,7 +51,7 @@ public class HttpClient {
             f.channel().flush();
 
 
-            uri = new URI("http://127.0.0.1:8000/ws/authen.shtml?seq=2");
+            uri = new URI("http://127.0.0.1:8080/ws/authen.shtml?seq=2");
             msg = "Are you ok?";
             request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST,uri.toASCIIString(), Unpooled.wrappedBuffer(msg.getBytes("UTF-8")));
 

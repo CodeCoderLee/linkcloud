@@ -123,6 +123,19 @@
                                                name="contactPhone" id="contactPhone">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">用途</label>
+                                    <div class="col-sm-9">
+                                        <div class="fg-line">
+                                            <div class="select">
+                                                <select class="form-control" id="status" name="status">
+                                                    <option value="2">正式使用</option>
+                                                    <option value="3">演示使用</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="footer text-right bg-light lter">
                                 <button class="btn btn-success btn-s-xs">提交</button>

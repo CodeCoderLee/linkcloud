@@ -71,9 +71,9 @@
     function loadDevice(pageNum, pageSize) {
         $.ajax({
             method: 'get',
-            url: 'device/searchDebug.shtml',
+            url: 'device/searchByPage.shtml',
             dataType: 'json',
-            data: {pageNum: pageNum, pageSize: pageSize},
+            data: {status: 2,pageNum: pageNum, pageSize: pageSize},
             success: function (data) {
                 /*刷新数据*/
                 refreshData(data.rows);
@@ -126,7 +126,7 @@
             "<dd>是</dd>" +
             "</dl>" +
             "<dl class=\"dl-horizontal\">" +
-            "<dt><a href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">设备空间</a></dt>" +
+            "<dt><a class=\"btn btn-info\" href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">设备空间</a></dt>" +
             "</dl>" +
             "</div>" +
             "</div>" +

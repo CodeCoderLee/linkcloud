@@ -9,4 +9,8 @@ import java.util.List;
 public interface DeviceMapper extends Mapper<Device> {
     /*查询可调试的设备*/
     List<Device> selectDebugDevice(@Param("device") Device device);
+
+    /*根据设备序号修改设备类型*/
+    int updateStatusByNum(String serialNumber,int status);
+
 }

@@ -67,6 +67,9 @@ public class Device {
     @Column(name = "debug_account")
     private Integer debugAccount;
 
+    @Column(name = "work_frequency")
+    private String workFrequency;
+
     @Transient
     private String registerName;
 
@@ -256,5 +259,13 @@ public class Device {
 
     public void setRegisterName(String registerName) {
         this.registerName = registerName;
+    }
+
+    public String getWorkFrequency() {
+        return workFrequency;
+    }
+
+    public void setWorkFrequency(String workFrequency) {
+        this.workFrequency = workFrequency;
     }
 }
