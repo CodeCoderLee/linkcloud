@@ -68,8 +68,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
         if(pageNum == null)pageNum = 1;
         Integer userId = Common.findUserSessionId(getRequest());
         device.setStatus(3);
-        device.setRegisterAccount(userId);
-        device.setDebugAccount(userId);
+//        device.setRegisterAccount(userId);
+//        device.setDebugAccount(userId);
         PageHelper.startPage(pageNum, pageSize);
         List<Device> list = deviceService.selectDebugDevice(device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
