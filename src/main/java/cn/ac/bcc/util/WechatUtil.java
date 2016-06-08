@@ -13,14 +13,16 @@ import java.io.UnsupportedEncodingException;
  * Created by bcc on 16/4/17.
  */
 public class WechatUtil {
-    private static final String APP_ID = "wxe98ab8ed7aa9d5fd";
-    private static final String APP_SECRET = "6f552046c2b55b9da5287c4a410afb57";
+    //    private static final String APP_ID = "wxe98ab8ed7aa9d5fd";
+//    private static final String APP_SECRET = "6f552046c2b55b9da5287c4a410afb57";
+    private static final String APP_ID = "wx39a8f82b7430dfec";
+    private static final String APP_SECRET = "bcf1b2a698eeec133e7ef6823277871a";
     private static final String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
     private static final String MENU_CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create";
     private static final String GET_USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info";
     private static final String OAUTH_AUTHORIZE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize";
-    private static final String REDIRECT_URL = "http://38f35fde.ngrok.natapp.cn/wechat/getOpenId.shtml";
-//    private static final String REDIRECT_URL = "http://hehe.tunnel.qydev.com/wechat/getOpenId.shtml";
+    //    private static final String REDIRECT_URL = "http://38f35fde.ngrok.natapp.cn/wechat/getOpenId.shtml";
+    private static final String REDIRECT_URL = "http://linkcloud.tunnel.qydev.com/wechat/getOpenId.shtml";
     private static final String GET_OAUTH_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token";
     private static final String GET_OAUTH_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo";
 

@@ -1,9 +1,11 @@
 package cn.ac.bcc.http;
 
+import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceAuthen;
 import cn.ac.bcc.model.business.Program;
 import cn.ac.bcc.model.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
+import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.util.HelperUtils;
 import io.netty.buffer.Unpooled;
@@ -60,17 +62,18 @@ public class DeviceAPI {
         if(index != -1){
             query = uri.substring(index+1);
         }
+        String token = getCookieValue(request);
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
-        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "  data:::" + postData);
+        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::"  + token +  "   data:::" + postData);
         String jsonStr = "";
         String sessionID = null;
-        String token = null;
+
         uri = uri.toLowerCase();
         if(uri.contains(URI_LINKHELLO)){
-//            UUID uuid  =  UUID.randomUUID();
-//            token = uuid.toString();
-            token = "9acd5102-b150-45fc-afad-331bb51d6b79";
+            UUID uuid  =  UUID.randomUUID();
+            token = uuid.toString();
+//            token = "9acd5102-b150-45fc-afad-331bb51d6b79";
             sessionID = ServerCookieEncoder.encode("PHPSESSID",token);
             jsonStr = linkHello(request,postData,nvList,token);
         }else if(uri.contains(URI_AUTHEN)){
@@ -105,11 +108,15 @@ public class DeviceAPI {
     }
 
     private String getCookieValue(HttpRequest request){
-        String cookieStr = request.headers().get("Cookie");
-        String[] args = cookieStr.split("=");
-        String value = "";
-        if(args.length >= 2 && args[0].equals("PHPSESSID")){
-            value = args[1];
+        String value = null;
+        try {
+            String cookieStr = request.headers().get("Cookie");
+            String[] args = cookieStr.split("=");
+            if (args.length >= 2 && args[0].equals("PHPSESSID")) {
+                value = args[1];
+            }
+        }catch (Exception e){
+
         }
         return value;
     }
@@ -136,12 +143,15 @@ public class DeviceAPI {
         String token = getCookieValue(request);
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
 
+        //TODO 还没有判断是否进行了设备注册操作，检查bcc_device设备表中
+
+
         JSONObject json = JSONObject.fromObject(postData);
         DeviceAuthen deviceAuthen = new DeviceAuthen();
         deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
 
-        boolean validation = false;
+        boolean validation = true;
         boolean update = true;
         if(deviceAuthen == null){
             deviceAuthen = new DeviceAuthen();
@@ -165,11 +175,12 @@ public class DeviceAPI {
         Map<String,Object> map  = new HashMap<String,Object>();
         if(validation){
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION,"");
         }else{
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION,"error.");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
-        map.put(HelperUtils.KEY_DESCRIPTION,"error.");
         map.put(HelperUtils.KEY_FRQ,"626");
         map.put(HelperUtils.KEY_PROGRAMS,"1,3,5,7,9");
 

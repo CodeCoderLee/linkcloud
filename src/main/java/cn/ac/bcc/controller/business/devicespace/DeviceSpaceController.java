@@ -1,14 +1,12 @@
 package cn.ac.bcc.controller.business.devicespace;
 
 import cn.ac.bcc.controller.base.BaseController;
-import cn.ac.bcc.model.business.Area;
-import cn.ac.bcc.model.business.Comment;
-import cn.ac.bcc.model.business.CommentUser;
-import cn.ac.bcc.model.business.Program;
+import cn.ac.bcc.model.business.*;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.model.core.UserRole;
 import cn.ac.bcc.service.business.comment.CommentService;
 import cn.ac.bcc.service.business.comment.CommentUserService;
+import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.service.system.user.UserRoleService;
 import cn.ac.bcc.service.system.user.UserService;
@@ -54,12 +52,68 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private ProgramService programService;
     @Autowired
     private UserRoleService userRoleService;
+    @Autowired
+    private DeviceService deviceService;
 
     private static Log log = LogFactory.getLog(DeviceSpaceController.class);
 
-    @RequestMapping(value = "device/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String index(@PathVariable String serialNumber,String openId,Model mode){
+    @RequestMapping(value = "showList", produces = "text/html; charset=utf-8")
+    @ResponseBody
+    public ResponseData showList(Device device,Integer pageNum){
+        return searchByPage(device, pageNum);
+    }
+
+    private ResponseData searchByPage(Device device, Integer pageNum) {
+        int pageSize = 3;
+        if(pageNum == null)pageNum = 1;
+        Integer userId = Common.findUserSessionId(getRequest());
+        device.setStatus(3);
+        device.setRegisterAccount(userId);
+        device.setDebugAccount(userId);
+        PageHelper.startPage(pageNum, pageSize);
+        List<Device> list = deviceService.selectDebugDevice(device);
+        PageInfo<Device> pageInfo = new PageInfo<Device>(list);
+        ResponseData responseData = new ResponseData();
+        responseData.setRows(list);
+        responseData.setTotal(pageInfo.getTotal());
+        responseData.setPageNum(pageInfo.getNextPage());
+        responseData.setHasNextPage(pageInfo.isHasNextPage());
+        return responseData;
+    }
+
+    @RequestMapping(value = "show", produces = "text/html; charset=utf-8")
+    public String show(Model mode,String openId,String type, Integer pageNum){
         log.info("openId:::" + openId);
+
+        boolean hasRole = false;
+        if(openId != null){
+            User user = new User();
+            /*通过openId获取user信息*/
+            user.setAccountname(openId);
+            user = userService.selectOne(user);
+            if(user != null){
+                Integer userId = user.getId();
+                UserRole userRole = new UserRole();
+                userRole.setUserid(userId);
+                List<UserRole> urList = userRoleService.select(userRole);
+                if(urList != null && urList.size() > 0){
+                    hasRole = true;
+                }
+            }
+        }
+        Device device = new Device();
+        ResponseData rd = searchByPage(device,pageNum);
+        mode.addAttribute("rd",rd);
+        mode.addAttribute("openId",openId);
+        mode.addAttribute("hasRole",hasRole);
+        mode.addAttribute("type",type);
+        return Common.BACKGROUND_PATH + "/business/devicespace/show";
+    }
+
+    @RequestMapping(value = "device/{serialNumber}", produces = "text/html; charset=utf-8")
+    public String index(@PathVariable String serialNumber,String openId,String type,Model mode){
+        log.info("openId:::" + openId);
+
         boolean hasRole = false;
         if(openId != null){
             User user = new User();
@@ -81,6 +135,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("hasRole",hasRole);
+        mode.addAttribute("type",type);
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }
 
