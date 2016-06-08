@@ -10,7 +10,7 @@
   <meta name="keywords" content="">
   <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>设备空间</title>
+  <title>演示空间</title>
 
   <meta name="renderer" content="webkit">
 
@@ -46,7 +46,7 @@
     </div>
     <h1 class="am-header-title">
         <a href="#title-link" class="">
-          设备<c:if test="${empty(type)}">空间</c:if><c:if test="${type eq 'debug'}">调试空间（${serialNumber}）</c:if><c:if test="${type eq 'show'}">演示空间（${serialNumber}）</c:if>
+          演示空间
         </a>
     </h1>
     <div class="am-header-right am-header-nav">
@@ -80,88 +80,45 @@
   </div>
 </div>
 
-     <c:if test="${not empty(map)}">
-         <c:forEach items="${map}" var="entry">
-             <c:if test="${entry.key eq 'tv'}">
                  <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
                      <h2 class="am-titlebar-title ">
-                         电视直播
+                         设备列表
                      </h2>
                      <nav class="am-titlebar-nav">
-                         <a href="${ctx}/space/list/${serialNumber}.shtml?stype=dtmb&openId=${openId}" class="">更多</a>
+
                      </nav>
                  </div>
-                 <c:if test="${not empty(map[entry.key])}">
-                 <ul class="mindex-ul">
-                     <c:forEach items="${map[entry.key]}" var="item">
-                     <li>
+                <div>
+                 <ul class="mindex-ul device-list">
+                     <li style="display: none;">
                          <div class="mindex-avatar">
-                             <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
+                             <img class="mindex-ulImg" src="${ctx}/assets/i/live.png"  alt=""/>
                          </div>
                          <div class="mindex-detail">
-                             <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
+                             <p class="mindex-title"><a class="a-space-device-cls" >${item.serialNumber}</a></p>
                          </div>
                      </li>
-                     </c:forEach>
 
-                 </ul>
-                 </c:if>
-             </c:if>
-
-
-             <c:if test="${entry.key eq 'vedio'}">
-                 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-                     <h2 class="am-titlebar-title ">
-                         视频点播
-                     </h2>
-                     <nav class="am-titlebar-nav">
-                         <a href="${ctx}/space/device/list.shtml?stype=netdisk&openId=${openId}" class="">更多</a>
-                     </nav>
-                 </div>
-
-                 <c:if test="${not empty(map[entry.key])}">
-                     <ul class="mindex-ul">
-                         <c:forEach items="${map[entry.key]}" var="item">
-                             <li>
-                                 <div class="mindex-avatar">
-                                     <img class="mindex-ulImg" src="${ctx}/assets/i/demand.png"  alt=""/>
-                                 </div>
-                                 <div class="mindex-detail">
-                                     <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
-                                 </div>
-                             </li>
+                     <c:if test="${not empty(rd.rows)}">
+                     <c:set var="list" value="${rd.rows}"/>
+                         <c:forEach items="${list}" var="item">
+                          <li>
+                             <div class="mindex-avatar">
+                                 <img class="mindex-ulImg" src="${ctx}/assets/i/live.png"  alt=""/>
+                             </div>
+                             <div class="mindex-detail">
+                                 <p class="mindex-title"><a class="a-space-device-cls" href="${ctx}/space/device/${item.serialNumber}.shtml?type=show&openId=${openId}">${item.serialNumber}</a></p>
+                             </div>
+                         </li>
                          </c:forEach>
-                     </ul>
-                 </c:if>
-             </c:if>
-
-             <c:if test="${entry.key eq 'camera' and not empty(map[entry.key])}">
-                 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
-                     <h2 class="am-titlebar-title ">
-                         远程监控
-                     </h2>
-                     <nav class="am-titlebar-nav">
-                         <a href="${ctx}/space/device/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="">更多</a>
-                     </nav>
-                 </div>
-                 <c:if test="${not empty(map[entry.key])}">
-                     <ul class="mindex-ul">
-                         <c:forEach items="${map[entry.key]}" var="item">
-                             <li>
-                                 <div class="mindex-avatar">
-                                     <img class="mindex-ulImg" src="${ctx}/assets/i/remote.png"  alt=""/>
-                                 </div>
-                                 <div class="mindex-detail">
-                                     <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>
-                                 </div>
-                             </li>
-                         </c:forEach>
-                     </ul>
-                 </c:if>
-             </c:if>
-         </c:forEach>
+                     </c:if>
+                  </ul>
+                </div>
+     <c:if test="${rd.hasNextPage}">
+     <div id="more" style="margin-left: auto;margin-right: auto;width: 100px;">
+         <span style="display:block;"><a href="javascript:void(0)" class="more-comment">显示更多</a></span>
+     </div>
      </c:if>
-
 <footer data-am-widget="footer"
         class="am-footer am-footer-default"
          data-am-footer="{  }">
@@ -173,5 +130,47 @@
   <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
+
+     <script type="text/javascript" charset="utf-8">
+         var baseUrl = '${ctx}/space/device/';
+         var openId = '${openId}';
+         var postUrl = '${ctx}/space/showList.shtml';
+         var pageNum = ${rd.pageNum};
+         $("#more .more-comment").on("click",function(){
+             //alert('pageNum------' + pageNum);
+             jQuery.ajax({
+                 url:postUrl,
+                 data:{'pageNum':pageNum},
+                 type:"POST",
+                 beforeSend:function()
+                 {
+                     $('#more').hide();
+                 },
+                 success:function(data)
+                 {
+                     var pageInfo = jQuery.parseJSON(data);
+                     $('#more').show();
+                     var li0 = $('.device-list li:first');
+                     for(var index in pageInfo.rows){
+                         var idx = parseInt(index) + 1;
+                         var device = pageInfo.rows[index];
+                         $('.device-list').append(li0.clone());
+                         $('.device-list li:last').attr("style","display:block");
+                         //$('article:eq(' + idx + ')').text(comment.user.accountname);
+                         //${item.serialNumber}.shtml?type=show&openId=${openId}
+                         $('.device-list li:last .a-space-device-cls').attr("href",baseUrl + device.serialNumber + ".shtml?type=show&openId" + openId ) ;
+                         $('.device-list li:last .a-space-device-cls').text(device.serialNumber);
+                     }
+                     pageNum = pageInfo.pageNum ;
+                     var h = $(document).height()-$(window).height();
+                     $(document).scrollTop(h);
+                     if(!pageInfo.hasNextPage) {
+                         $("#more").attr("style", "display:none;");
+                     }
+                 }
+             });
+             return false;
+         })
+     </script>
 </body>
 </html>

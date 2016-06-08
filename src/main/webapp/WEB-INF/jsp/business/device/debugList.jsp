@@ -128,7 +128,7 @@
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('"+item.id+"','"+item.serialNumber+"')\">设为可用</a></dt>" +
-                    "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?openId=" + $('#openId').val() + "\">设备空间</a></dd>" +
+                    "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?type=debug&openId=" + $('#openId').val() + "\">设备空间</a></dd>" +
                     "</dl>" +
                     "</div>" +
                     "</div>" +
