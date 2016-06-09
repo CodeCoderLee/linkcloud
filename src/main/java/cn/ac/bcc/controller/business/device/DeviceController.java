@@ -6,8 +6,10 @@ import cn.ac.bcc.exception.SystemException;
 import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceUseApply;
 import cn.ac.bcc.model.core.User;
+import cn.ac.bcc.model.helper.*;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.Common;
+import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -20,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * 设备管理
@@ -55,12 +55,24 @@ public class DeviceController extends BaseController<Device> {
         return Common.BACKGROUND_PATH + "/business/device/showList";
     }
 
-    @RequestMapping("deviceSetting")
-    public String deviceSetting(Model model) throws Exception {
+    @RequestMapping("settingList")
+    public String settingListUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
-        return Common.BACKGROUND_PATH + "/business/device/deviceSetting";
+        return Common.BACKGROUND_PATH + "/business/device/deviceSettingList";
     }
+
+    @RequestMapping("scanFrequency")
+    public String settingListUI(Model model,String serialNumber) throws Exception {
+        model.addAttribute("res", findByRes());
+        model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
+        model.addAttribute("serialNumber", serialNumber);
+        Map<String, String> map = new HashMap<String,String>();
+        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
+        CommandMap.addCommand(serialNumber,map);
+        return Common.BACKGROUND_PATH + "/business/device/scanFrequency";
+    }
+
 
     @RequestMapping("addUI")
     public String addUI() {
@@ -112,6 +124,22 @@ public class DeviceController extends BaseController<Device> {
 //        return responseData;
     }
 
+    @ResponseBody
+    @RequestMapping("searchDeviceSettingList")
+    public ResponseData searchDeviceSettingList(Device device, Integer pageNum, Integer pageSize){
+        Integer userId = Common.findUserSessionId(getRequest());
+        device.setRegisterAccount(userId);
+        device.setDebugAccount(userId);
+        List<Device> list = deviceService.selectSettingDevice(userId, device);
+        PageInfo<Device> pageInfo = new PageInfo<Device>(list);
+        ResponseData responseData = new ResponseData();
+        responseData.setTotal(pageInfo.getTotal());
+        responseData.setRows(list);
+        responseData.setPageNum(pageInfo.getPageNum());
+        responseData.setTotalPages(pageInfo.getPages());
+        return responseData;
+    }
+
 
     @ResponseBody
     @RequestMapping("add")
@@ -133,6 +161,7 @@ public class DeviceController extends BaseController<Device> {
         }
 
     }
+
 
 
     @ResponseBody
@@ -165,5 +194,87 @@ public class DeviceController extends BaseController<Device> {
     public String updateDevice(Device device){
         deviceService.updateByPrimaryKeySelective(device);
         return SUCCESS;
+    }
+
+
+    @ResponseBody
+    @RequestMapping("setFrequency")
+    public String setFrequency(String serialNumber, String frequency, String programIds){
+        deviceService.updateWorkFrequency(serialNumber,frequency);
+        //TODO 下发设置节目号
+        return SUCCESS;
+    }
+
+    @ResponseBody
+    @RequestMapping("getScanFrequency")
+    public ScanFreqInfos getScanFrequency(String serialNumber){
+        ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
+        scanFreqInfos.setFrqsNum(3);
+        scanFreqInfos.setProgress(20);
+        scanFreqInfos.setScanEnded(true);
+        List<Freq> freqs = new ArrayList<Freq>();
+        Freq freq = new Freq();
+        freq.setFrq("111");
+        freq.setSnr(10);
+        freq.setStrength(80);
+        List<ScanFreqProgram> scanFreqPrograms = new ArrayList<ScanFreqProgram>();
+        ScanFreqProgram scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-1");
+        scanFreqProgram.setPid("CCTV-1");
+        scanFreqPrograms.add(scanFreqProgram);
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-2");
+        scanFreqProgram.setPid("CCTV-2");
+        scanFreqPrograms.add(scanFreqProgram);
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-3");
+        scanFreqProgram.setPid("CCTV-3");
+        scanFreqPrograms.add(scanFreqProgram);
+        freq.setProgramList(scanFreqPrograms);
+        freqs.add(freq);
+
+        freq = new Freq();
+        freq.setFrq("222");
+        freq.setSnr(11);
+        freq.setStrength(88);
+        scanFreqPrograms = new ArrayList<ScanFreqProgram>();
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-4");
+        scanFreqProgram.setPid("CCTV-4");
+        scanFreqPrograms.add(scanFreqProgram);
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-5");
+        scanFreqProgram.setPid("CCTV-5");
+        scanFreqPrograms.add(scanFreqProgram);
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-6");
+        scanFreqProgram.setPid("CCTV-6");
+        scanFreqPrograms.add(scanFreqProgram);
+        freq.setProgramList(scanFreqPrograms);
+        freqs.add(freq);
+
+        freq = new Freq();
+        freq.setFrq("333");
+        freq.setSnr(12);
+        freq.setStrength(78);
+        scanFreqPrograms = new ArrayList<ScanFreqProgram>();
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-7");
+        scanFreqProgram.setPid("CCTV-7");
+        scanFreqPrograms.add(scanFreqProgram);
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-8");
+        scanFreqProgram.setPid("CCTV-8");
+        scanFreqPrograms.add(scanFreqProgram);
+        scanFreqProgram = new ScanFreqProgram();
+        scanFreqProgram.setName("CCTV-9");
+        scanFreqProgram.setPid("CCTV-9");
+        scanFreqPrograms.add(scanFreqProgram);
+        freq.setProgramList(scanFreqPrograms);
+        freqs.add(freq);
+
+        scanFreqInfos.setFreqList(freqs);
+//        scanFreqInfos = MemoryMap.get("serialNumber");
+        return scanFreqInfos;
     }
 }

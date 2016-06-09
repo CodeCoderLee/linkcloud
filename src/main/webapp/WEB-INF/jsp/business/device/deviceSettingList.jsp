@@ -71,7 +71,7 @@
     function loadDevice(pageNum, pageSize) {
         $.ajax({
             method: 'get',
-            url: 'device/searchByPage.shtml',
+            url: 'device/searchDeviceSettingList.shtml',
             dataType: 'json',
             data: {pageNum: pageNum, pageSize: pageSize},
             success: function (data) {
@@ -138,7 +138,7 @@
     }
 
     function scanFrequency(serialNumber) {
-        alert(serialNumber);
+        $('#content').load("/device/scanFrequency.shtml?serialNumber="+serialNumber);
     }
 
 </script>
