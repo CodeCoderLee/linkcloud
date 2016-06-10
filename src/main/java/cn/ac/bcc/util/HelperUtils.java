@@ -55,6 +55,8 @@ public class HelperUtils {
     public static final String CMD_SETFRQ = "setfrq";
     public static final String CMD_UPDATEAD = "updatead";
     public static final String CMD_REMOTEWATCH = "remotewatch";
+//
+//    public static final String CMD_TYPE = "cmd_type";
 
     private  String result;
     private String command;

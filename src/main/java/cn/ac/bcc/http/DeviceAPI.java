@@ -391,10 +391,14 @@ public class DeviceAPI {
         String token = getCookieValue(request);
         boolean validation = true;
         String serialNumber = getDeviceSerialNumber(token);
-        Map<String,String> cmmd =  CommandMap.getCommand(serialNumber);
-        String keyFreq = CommandMap.get(cmmd,HelperUtils.KEY_FRQ);
-        String keyPrograms = CommandMap.get(cmmd,HelperUtils.KEY_PROGRAMS);
 
+        String keyFreq = null;
+        String keyPrograms = null;
+        JSONObject cmmd =  CommandMap.getCommand(serialNumber);
+        if(cmmd != null) {
+            keyFreq = (String)cmmd.get(HelperUtils.KEY_FRQ);
+            keyPrograms = (String)cmmd.get(HelperUtils.KEY_PROGRAMS);
+        }
         //TODO for Test
         if(StringUtils.isEmpty(keyFreq))keyFreq = "626";
         if(StringUtils.isEmpty(keyPrograms))keyPrograms = "1,3,5,7,9";
@@ -510,7 +514,26 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
+
+        //TODO 从CommandMap中获取
+        JSONObject obj = CommandMap.getCommand(serialNumber);
+        String cmd = obj != null?obj.getString(HelperUtils.KEY_COMMAND):"";
+        if(HelperUtils.CMD_SCANFRQ.equals(cmd)){
+            map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SCANFRQ);
+        }else if(HelperUtils.CMD_SETFRQ.equals(cmd)){
+            map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SETFRQ);
+            map.put(HelperUtils.KEY_FRQ,obj.getString(HelperUtils.KEY_FRQ));
+            map.put(HelperUtils.KEY_PROGRAMS,obj.getString(HelperUtils.KEY_PROGRAMS));
+        }else if(HelperUtils.CMD_SHOCK.equals(cmd)){
+            map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SHOCK);
+        }else if(HelperUtils.CMD_REMOTEWATCH.equals(cmd)){
+            map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_REMOTEWATCH);
+        }else if(HelperUtils.CMD_UPDATEAD.equals(cmd)){
+            map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_UPDATEAD);
+        }else{
+            map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
+        }
+
         JSONObject jsonObject =  JSONObject.fromObject(map);
         return jsonObject.toString();
     }
