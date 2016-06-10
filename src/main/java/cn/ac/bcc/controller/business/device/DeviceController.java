@@ -217,6 +217,10 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("setFrequency")
     public String setFrequency(String serialNumber, String frequency, String programIds){
         deviceService.updateWorkFrequency(serialNumber,frequency);
+
+
+
+
         //TODO 下发设置节目号
         return SUCCESS;
     }
@@ -225,9 +229,9 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("getScanFrequency")
     public ScanFreqInfos getScanFrequency(String serialNumber){
         ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
-        scanFreqInfos.setFrqsNum(3);
-        scanFreqInfos.setProgress(20);
-        scanFreqInfos.setScanEnded(true);
+//        scanFreqInfos.setFrqsNum(3);
+//        scanFreqInfos.setProgress(20);
+//        scanFreqInfos.setScanEnded(true);
 //        List<Freq> freqs = new ArrayList<Freq>();
 //        Freq freq = new Freq();
 //        freq.setFrq("111");
