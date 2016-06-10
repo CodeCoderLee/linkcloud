@@ -4,9 +4,14 @@ import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.exception.SystemException;
 import cn.ac.bcc.model.business.Device;
+import cn.ac.bcc.model.business.DeviceAuthen;
 import cn.ac.bcc.model.business.DeviceUseApply;
 import cn.ac.bcc.model.core.User;
-import cn.ac.bcc.model.helper.*;
+import cn.ac.bcc.model.helper.CommandMap;
+import cn.ac.bcc.model.helper.Freq;
+import cn.ac.bcc.model.helper.ScanFreqInfos;
+import cn.ac.bcc.model.helper.ScanFreqProgram;
+import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.HelperUtils;
@@ -15,7 +20,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +38,9 @@ public class DeviceController extends BaseController<Device> {
 
     @Autowired
     private DeviceService deviceService;
+
+    @Autowired
+    DeviceAuthenService deviceAuthenService;
 
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
@@ -72,7 +79,12 @@ public class DeviceController extends BaseController<Device> {
         CommandMap.addCommand(serialNumber,map);
         return Common.BACKGROUND_PATH + "/business/device/scanFrequency";
     }
-
+    @RequestMapping("deviceSetting")
+    public String deviceSetting(Model model) throws Exception {
+        model.addAttribute("res", findByRes());
+        model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
+        return Common.BACKGROUND_PATH + "/business/device/deviceSetting";
+    }
 
     @RequestMapping("addUI")
     public String addUI() {
@@ -155,6 +167,13 @@ public class DeviceController extends BaseController<Device> {
             device.setDebugAccount(userId);
             device.setStatus(1);
             deviceService.insert(device);
+
+            //设备注册之后往设备认证里添加一条数据
+            DeviceAuthen deviceAuthen = new DeviceAuthen();
+            deviceAuthen.setSerialNumber(device.getSerialNumber());
+
+            deviceAuthenService.insertSelective(deviceAuthen);
+
             return SUCCESS;
         } catch (Exception e) {
             throw new SystemException("注册设备异常");

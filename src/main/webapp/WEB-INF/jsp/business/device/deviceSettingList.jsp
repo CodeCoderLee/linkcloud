@@ -138,7 +138,7 @@
     }
 
     function scanFrequency(serialNumber) {
-        $('#content').load("/device/scanFrequency.shtml?serialNumber="+serialNumber);
+        $('#content').load("device/scanFrequency.shtml?serialNumber="+serialNumber);
     }
 
 </script>
