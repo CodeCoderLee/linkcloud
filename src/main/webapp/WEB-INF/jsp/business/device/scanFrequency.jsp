@@ -11,7 +11,7 @@
             <div class="progress progress-striped active">
                 <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"
                      style="width: 1%">
-                    <span class="sr-only">45% Complete</span>
+                    <span class="sr-only">0% Complete</span>
                 </div>
             </div>
             <div style="margin-top: 10px" id="info">
@@ -28,72 +28,62 @@
                 <input type="hidden" id="frequency" name="frequency" value=""/>
                 <input type="hidden" id="programIds" name="programIds" value=""/>
                 <div role="tabpanel" id="freqTab">
-                    <ul class="tab-nav scan-tab" role="tablist">
-                        <li class="active"><a href="#home11" aria-controls="home11" role="tab"
-                                              data-toggle="tab">Home</a>
-                        </li>
-                        <li><a href="#profile11" aria-controls="profile11" role="tab" data-toggle="tab">Profile</a></li>
-                        <li><a href="#messages11" aria-controls="messages11" role="tab" data-toggle="tab">Messages</a>
-                        </li>
-                        <li><a href="#settings11" aria-controls="settings11" role="tab" data-toggle="tab">Settings</a>
-                        </li>
-                    </ul>
 
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="home11">
-                            <div class="checkbox m-b-15">
-                                <label>
-                                    <input type="checkbox" value="节目1">
-                                    <i class="input-helper"></i>
-                                    节目1
-                                </label>
-                            </div>
-                            <div class="checkbox m-b-15">
-                                <label>
-                                    <input type="checkbox" value="节目2">
-                                    <i class="input-helper"></i>
-                                    节目2
-                                </label>
-                            </div>
-                            <div class="checkbox m-b-15">
-                                <label>
-                                    <input type="checkbox" value="节目3">
-                                    <i class="input-helper"></i>
-                                    节目3
-                                </label>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="profile11">
-                            <div class="checkbox m-b-15">
-                                <label>
-                                    <input type="checkbox" value="节目1">
-                                    <i class="input-helper"></i>
-                                    节目1
-                                </label>
-                            </div>
-                            <div class="checkbox m-b-15">
-                                <label>
-                                    <input type="checkbox" value="节目2">
-                                    <i class="input-helper"></i>
-                                    节目2
-                                </label>
-                            </div>
-                            <div class="checkbox m-b-15">
-                                <label>
-                                    <input type="checkbox" value="节目3">
-                                    <i class="input-helper"></i>
-                                    节目3
-                                </label>
-                            </div>
-                            <div class="checkbox m-b-15">
-                                <label>
-                                    <input type="checkbox" value="节目4">
-                                    <i class="input-helper"></i>
-                                    节目4
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="tab-content">--%>
+                        <%--<div role="tabpanel" class="tab-pane active" id="home11">--%>
+                            <%--<div class="checkbox m-b-15">--%>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" value="节目1">--%>
+                                    <%--<i class="input-helper"></i>--%>
+                                    <%--节目1--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="checkbox m-b-15">--%>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" value="节目2">--%>
+                                    <%--<i class="input-helper"></i>--%>
+                                    <%--节目2--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="checkbox m-b-15">--%>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" value="节目3">--%>
+                                    <%--<i class="input-helper"></i>--%>
+                                    <%--节目3--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<div role="tabpanel" class="tab-pane" id="profile11">--%>
+                            <%--<div class="checkbox m-b-15">--%>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" value="节目1">--%>
+                                    <%--<i class="input-helper"></i>--%>
+                                    <%--节目1--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="checkbox m-b-15">--%>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" value="节目2">--%>
+                                    <%--<i class="input-helper"></i>--%>
+                                    <%--节目2--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="checkbox m-b-15">--%>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" value="节目3">--%>
+                                    <%--<i class="input-helper"></i>--%>
+                                    <%--节目3--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                            <%--<div class="checkbox m-b-15">--%>
+                                <%--<label>--%>
+                                    <%--<input type="checkbox" value="节目4">--%>
+                                    <%--<i class="input-helper"></i>--%>
+                                    <%--节目4--%>
+                                <%--</label>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
                 <div class="footer text-right bg-light lter">
                     <button id="subBtn" class="btn btn-success btn-s-xs">确定</button>
