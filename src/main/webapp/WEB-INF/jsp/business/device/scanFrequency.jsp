@@ -28,65 +28,9 @@
                 <input type="hidden" id="frequency" name="frequency" value=""/>
                 <input type="hidden" id="programIds" name="programIds" value=""/>
                 <div role="tabpanel" id="freqTab">
-
-                    <%--<div class="tab-content">--%>
-                        <%--<div role="tabpanel" class="tab-pane active" id="home11">--%>
-                            <%--<div class="checkbox m-b-15">--%>
-                                <%--<label>--%>
-                                    <%--<input type="checkbox" value="节目1">--%>
-                                    <%--<i class="input-helper"></i>--%>
-                                    <%--节目1--%>
-                                <%--</label>--%>
-                            <%--</div>--%>
-                            <%--<div class="checkbox m-b-15">--%>
-                                <%--<label>--%>
-                                    <%--<input type="checkbox" value="节目2">--%>
-                                    <%--<i class="input-helper"></i>--%>
-                                    <%--节目2--%>
-                                <%--</label>--%>
-                            <%--</div>--%>
-                            <%--<div class="checkbox m-b-15">--%>
-                                <%--<label>--%>
-                                    <%--<input type="checkbox" value="节目3">--%>
-                                    <%--<i class="input-helper"></i>--%>
-                                    <%--节目3--%>
-                                <%--</label>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div role="tabpanel" class="tab-pane" id="profile11">--%>
-                            <%--<div class="checkbox m-b-15">--%>
-                                <%--<label>--%>
-                                    <%--<input type="checkbox" value="节目1">--%>
-                                    <%--<i class="input-helper"></i>--%>
-                                    <%--节目1--%>
-                                <%--</label>--%>
-                            <%--</div>--%>
-                            <%--<div class="checkbox m-b-15">--%>
-                                <%--<label>--%>
-                                    <%--<input type="checkbox" value="节目2">--%>
-                                    <%--<i class="input-helper"></i>--%>
-                                    <%--节目2--%>
-                                <%--</label>--%>
-                            <%--</div>--%>
-                            <%--<div class="checkbox m-b-15">--%>
-                                <%--<label>--%>
-                                    <%--<input type="checkbox" value="节目3">--%>
-                                    <%--<i class="input-helper"></i>--%>
-                                    <%--节目3--%>
-                                <%--</label>--%>
-                            <%--</div>--%>
-                            <%--<div class="checkbox m-b-15">--%>
-                                <%--<label>--%>
-                                    <%--<input type="checkbox" value="节目4">--%>
-                                    <%--<i class="input-helper"></i>--%>
-                                    <%--节目4--%>
-                                <%--</label>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                 </div>
                 <div class="footer text-right bg-light lter">
-                    <button id="subBtn" class="btn btn-success btn-s-xs">确定</button>
+                    <button id="subBtn" class="btn btn-success btn-s-xs hidden">确定</button>
                     <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
                 </div>
             </form>
@@ -102,6 +46,13 @@
     var int = setInterval("getScanFrequency()", 3000);
     $(document).ready(function () {
 
+
+        /*返回按钮单击事件绑定*/
+        $('#closeBtn').click(function () {
+            /*关闭定时扫频请求*/
+            clearInterval(int);
+            $("#content").load(rootPath + "/device/settingList.shtml");
+        });
 
         $('ul.scan-tab >li').click(function () {
             $('input[type="checkbox"]').attr("checked", false);
@@ -197,6 +148,7 @@
                             })
 
                             divHtml = divHtml + '</div>';
+                            $('#subBtn').removeClass('hidden');
                         });
                         divHtml = divHtml + '</div>';
                         ulHtml = ulHtml + '</ul>';
@@ -223,6 +175,7 @@
                         });
                     }
                     clearInterval(int);
+
                 } else {
                     $('#info').html("扫描到" + data.frqsNum + "个可用频点");
                     $('div.progress-bar').attr("aria-valuenow", data.progress);

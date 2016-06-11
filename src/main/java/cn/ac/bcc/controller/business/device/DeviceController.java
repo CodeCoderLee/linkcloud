@@ -144,6 +144,7 @@ public class DeviceController extends BaseController<Device> {
         Integer userId = Common.findUserSessionId(getRequest());
         device.setRegisterAccount(userId);
         device.setDebugAccount(userId);
+        PageHelper.startPage(pageNum, pageSize);
         List<Device> list = deviceService.selectSettingDevice(userId, device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
         ResponseData responseData = new ResponseData();
