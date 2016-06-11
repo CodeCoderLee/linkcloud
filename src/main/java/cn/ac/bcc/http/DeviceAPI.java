@@ -231,7 +231,7 @@ public class DeviceAPI {
     private String getDeviceSerialNumber(String token){
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
         Example example = new Example(DeviceAuthen.class);
-        example.createCriteria().andEqualTo("token");
+        example.createCriteria().andEqualTo("token",token);
         List<DeviceAuthen> dvList = deviceAuthenService.selectByExample(example);
         String serialNumber = null;
         if(dvList != null && dvList.size() > 0){
