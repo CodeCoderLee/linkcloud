@@ -74,9 +74,11 @@ public class DeviceController extends BaseController<Device> {
         model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         model.addAttribute("serialNumber", serialNumber);
-        Map<String, String> map = new HashMap<String,String>();
-        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
-        CommandMap.addCommand(serialNumber,map);
+//        Map<String, String> map = new HashMap<String,String>();
+//        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
+        JSONObject object = new JSONObject();
+        object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SCANFRQ);
+        CommandMap.addCommand(serialNumber,object);
         return Common.BACKGROUND_PATH + "/business/device/scanFrequency";
     }
     @RequestMapping("deviceSetting")
@@ -218,13 +220,15 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("setFrequency")
-    public String setFrequency(String serialNumber, String frequency, String programIds){
+    public String setFrequency(String serialNumber, String frequency, String programIds) throws InterruptedException {
         deviceService.updateWorkFrequency(serialNumber,frequency);
 
-
-
-
         //TODO 下发设置节目号
+        JSONObject object = new JSONObject();
+        object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SETFRQ);
+        object.put(HelperUtils.KEY_FRQ,frequency);
+        object.put(HelperUtils.KEY_PROGRAMS,programIds);
+        CommandMap.addCommand(serialNumber,object);
         return SUCCESS;
     }
 

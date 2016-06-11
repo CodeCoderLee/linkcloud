@@ -13,6 +13,11 @@ public class MemoryMap {
         map.put(key,scanFreqInfos);
     }
 
+    /**
+     *
+     * @param key 设备序列号，返回扫频指令信息
+     * @return
+     */
     public static ScanFreqInfos get(String key){
         if(map.containsKey(key)){
             return map.get(key);
