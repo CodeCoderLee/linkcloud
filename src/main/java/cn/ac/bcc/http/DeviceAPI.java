@@ -308,6 +308,9 @@ public class DeviceAPI {
         boolean scanEnded = "1".equals(scanEndedStr)?true:false;
         String progressStr = json.getString("progress");
         int progress = Integer.parseInt(progressStr);
+        String frqsNumStr = json.getString("frqs_num");
+        int frqsNum = frqsNumStr != null?Integer.parseInt(frqsNumStr):0;
+
 
         ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
         if(scanFreqInfos == null){
@@ -316,6 +319,7 @@ public class DeviceAPI {
         }
         scanFreqInfos.setScanEnded(scanEnded);
         scanFreqInfos.setProgress(progress);
+        scanFreqInfos.setFrqsNum(frqsNum);
 
         JSONArray freqsArray = json.getJSONArray("frqs_list");
         int size = freqsArray.size();
