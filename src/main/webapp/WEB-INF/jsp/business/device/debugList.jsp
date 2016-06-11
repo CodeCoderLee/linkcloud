@@ -3,7 +3,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 
-<div class="container">
+<div class="container" id="myContainer">
     <div class="block-header">
         <h2>设备调试</h2>
         <input type="hidden" id="openId" name="openId" value="${openId}"/>
@@ -56,6 +56,8 @@
             </div>
         </div>
     </div>
+
+    <%--<a class="btn btn-info" href="javascript:getHeartBeatInfo('4','serialNumber')">设备详情</a>--%>
     <div class="card">
         <div class="card-body" id="pagination">
         </div>
@@ -129,6 +131,8 @@
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('"+item.id+"','"+item.serialNumber+"')\">设为可用</a></dt>" +
                     "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?type=debug&openId=" + $('#openId').val() + "\">设备空间</a></dd>" +
+                    "<dd><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('"+item.id+"','"+item.serialNumber+"')\">设备详情</a></dd>" +
+
                     "</dl>" +
                     "</div>" +
                     "</div>" +
@@ -152,4 +156,13 @@
             }
         });
     }
+
+    function getHeartBeatInfo(id,serialNumber ){
+        var url='device/getHeartBeatInfoPage.shtml';
+        $("#myContainer").load(url+"?id="+id+"&serialNumber="+serialNumber);
+
+    }
+
+
+
 </script>

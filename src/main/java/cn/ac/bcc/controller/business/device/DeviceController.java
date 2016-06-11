@@ -16,6 +16,7 @@ import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -47,6 +49,7 @@ public class DeviceController extends BaseController<Device> {
 
     @RequestMapping("debugList")
     public String debugListUI(Model model) throws Exception {
+
         model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/debugList";
@@ -297,4 +300,41 @@ public class DeviceController extends BaseController<Device> {
         scanFreqInfos = MemoryMap.get("serialNumber");
         return scanFreqInfos;
     }
+
+    @RequestMapping("getHeartBeatInfoPage")
+    public String getHeartBeatInfoPage(Model model,HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        String serialNumber = request.getParameter("serialNumber");
+
+        //获取HeartBeatMap中的心跳数据包,默认情况下隐藏,点击详情显示
+        //JSONObject json = JSONObject.fromObject(postData);
+        //{"dstat":"0","line":"480","temper":"68","locked":"1",
+        // "frq":"786000000","strength":"179","snr":"13","dprogs":"3",
+        // "ndisks":"0","camers":"0","sessions":"0"}
+
+//        JSONObject json = new JSONObject();
+//        json.put("dstat","0");
+//        json.put("line","480");
+//        json.put("temper","68");
+//        json.put("locked","1");
+//        json.put("frq","78600000");
+//        json.put("strength","179");
+//        json.put("snr","13");
+//        json.put("dprogs","3");
+//        json.put("ndisks","0");
+//
+//        json.put("camers","0");
+//        json.put("sessions","0");
+
+        String postData = HeartBeatMap.get("serialNumber");
+        JSONObject json = JSONObject.fromObject(postData);
+
+
+        model.addAttribute("postData",json);
+        model.addAttribute("serialNumber",serialNumber);
+        return Common.BACKGROUND_PATH + "/business/device/deviceHeartBeatInfoPage";
+    }
+
+
+
 }
