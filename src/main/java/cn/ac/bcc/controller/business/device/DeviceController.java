@@ -233,6 +233,16 @@ public class DeviceController extends BaseController<Device> {
     }
 
     @ResponseBody
+    @RequestMapping("connectTest")
+    public String connectTest(String serialNumber){
+        //TODO 下发连通性测试指令
+
+        return SUCCESS;
+    }
+
+
+
+    @ResponseBody
     @RequestMapping("getScanFrequency")
     public ScanFreqInfos getScanFrequency(String serialNumber){
         ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
