@@ -313,8 +313,6 @@ public class DeviceAPI {
         if(scanFreqInfos == null){
             scanFreqInfos = new ScanFreqInfos();
             MemoryMap.add(serialNumber,scanFreqInfos);
-        }else{
-            scanFreqInfos.setFreqList(null);
         }
         scanFreqInfos.setScanEnded(scanEnded);
         scanFreqInfos.setProgress(progress);
@@ -322,7 +320,6 @@ public class DeviceAPI {
         JSONArray freqsArray = json.getJSONArray("frqs_list");
         int size = freqsArray.size();
         List<Freq> freqList = new ArrayList<Freq>();
-        scanFreqInfos.setFreqList(freqList);
 
         for(int i = 0;i<size;i++){
             JSONObject freqObject =  (JSONObject)freqsArray.get(i);
@@ -363,6 +360,7 @@ public class DeviceAPI {
                 fpList.add(fp);
             }
         }
+        scanFreqInfos.setFreqList(freqList);
     }
 
     public String scanFrq(HttpRequest request,String postData,List<NameValuePair> nvList) {

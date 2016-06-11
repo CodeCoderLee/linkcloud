@@ -319,7 +319,7 @@ public class DeviceController extends BaseController<Device> {
 //        JSONObject json = new JSONObject();
 //        json.put("dstat","0");
 //        json.put("line","480");
-//        json.put("temper","68");
+//       json.put("temper","68");
 //        json.put("locked","1");
 //        json.put("frq","78600000");
 //        json.put("strength","179");
