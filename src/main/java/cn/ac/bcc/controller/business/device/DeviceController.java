@@ -331,8 +331,12 @@ public class DeviceController extends BaseController<Device> {
 //        json.put("sessions","0");
 
         String postData = HeartBeatMap.get("serialNumber");
-        JSONObject json = JSONObject.fromObject(postData);
-
+        JSONObject json = null;
+        if(postData == null){
+            JSONObject.fromObject(postData);
+        }else{
+            json = new JSONObject();
+        }
 
         model.addAttribute("postData",json);
         model.addAttribute("serialNumber",serialNumber);
