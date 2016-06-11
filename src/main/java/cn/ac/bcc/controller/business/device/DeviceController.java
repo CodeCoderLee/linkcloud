@@ -301,7 +301,7 @@ public class DeviceController extends BaseController<Device> {
 //        freqs.add(freq);
 
 //        scanFreqInfos.setFreqList(freqs);
-        scanFreqInfos = MemoryMap.get("serialNumber");
+        scanFreqInfos = MemoryMap.get(serialNumber);
         return scanFreqInfos;
     }
 
