@@ -96,7 +96,7 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-validation/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script type="text/javascript" src="${ctx}/common/common.js"></script>
+<script type="text/javascript" src="${ctx}/js/common/common.js"></script>
 <script charset="utf-8">
     var ids = [];
     var int = setInterval("getScanFrequency()", 3000);
