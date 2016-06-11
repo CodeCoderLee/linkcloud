@@ -524,8 +524,6 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SCANFRQ);
         }else if(HelperUtils.CMD_SETFRQ.equals(cmd)){
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SETFRQ);
-            map.put(HelperUtils.KEY_FRQ,obj.getString(HelperUtils.KEY_FRQ));
-            map.put(HelperUtils.KEY_PROGRAMS,obj.getString(HelperUtils.KEY_PROGRAMS));
         }else if(HelperUtils.CMD_SHOCK.equals(cmd)){
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SHOCK);
         }else if(HelperUtils.CMD_REMOTEWATCH.equals(cmd)){
