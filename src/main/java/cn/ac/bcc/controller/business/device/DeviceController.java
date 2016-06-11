@@ -144,6 +144,7 @@ public class DeviceController extends BaseController<Device> {
         Integer userId = Common.findUserSessionId(getRequest());
         device.setRegisterAccount(userId);
         device.setDebugAccount(userId);
+        PageHelper.startPage(pageNum, pageSize);
         List<Device> list = deviceService.selectSettingDevice(userId, device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
         ResponseData responseData = new ResponseData();
@@ -222,13 +223,19 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("setFrequency")
     public String setFrequency(String serialNumber, String frequency, String programIds) throws InterruptedException {
         deviceService.updateWorkFrequency(serialNumber,frequency);
-
+        //设置后清空MemroyMap中的相关数据
+        MemoryMap.clear(serialNumber);
         //TODO 下发设置节目号
+        //心跳包下发指令
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SETFRQ);
-        object.put(HelperUtils.KEY_FRQ,frequency);
-        object.put(HelperUtils.KEY_PROGRAMS,programIds);
         CommandMap.addCommand(serialNumber,object);
+        //设备再次请求SetFrq指令时需要的命令数据
+        JSONObject obj = new JSONObject();
+        obj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SETFRQ);
+        obj.put(HelperUtils.KEY_FRQ,frequency);
+        obj.put(HelperUtils.KEY_PROGRAMS,programIds);
+        CommandMap.addCommand(serialNumber,obj);
         return SUCCESS;
     }
 
@@ -312,6 +319,9 @@ public class DeviceController extends BaseController<Device> {
 
 //        scanFreqInfos.setFreqList(freqs);
         scanFreqInfos = MemoryMap.get(serialNumber);
+        if(scanFreqInfos == null){
+            scanFreqInfos = new ScanFreqInfos();
+        }
         return scanFreqInfos;
     }
 
