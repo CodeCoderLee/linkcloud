@@ -222,12 +222,13 @@
                             $('#programIds').trigger("input");
                         });
                     }
+                    clearInterval(int);
                 } else {
                     $('#info').html("扫描到" + data.frqsNum + "个可用频点");
                     $('div.progress-bar').attr("aria-valuenow", data.progress);
                     $('div.progress-bar').attr("style", "width:" + data.progress + "%");
                 }
-                clearInterval(int);
+
 
             },
             error: function (XMLHttpRequest) {
