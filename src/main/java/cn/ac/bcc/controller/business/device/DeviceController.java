@@ -65,6 +65,8 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("settingList")
     public String settingListUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
+        /*向前台传递资源id,为了传递给扫频页面,在扫频页面判断是否有设置默认频点的权限*/
+        model.addAttribute("resId", getPara("id"));
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/deviceSettingList";
     }
@@ -74,6 +76,10 @@ public class DeviceController extends BaseController<Device> {
         model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         model.addAttribute("serialNumber", serialNumber);
+        Device device = new Device();
+        device.setSerialNumber(serialNumber);
+        List<Device> devices = deviceService.select(device);
+        model.addAttribute("areaId", devices.size() > 0 ? devices.get(0).getAreaId() : null);
 //        Map<String, String> map = new HashMap<String,String>();
 //        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
         JSONObject object = new JSONObject();
@@ -250,15 +256,6 @@ public class DeviceController extends BaseController<Device> {
         return SUCCESS;
     }
 
-    @ResponseBody
-    @RequestMapping("connectTest")
-    public String connectTest(String serialNumber){
-        //TODO 下发连通性测试指令
-
-        return SUCCESS;
-    }
-
-
 
     @ResponseBody
     @RequestMapping("getScanFrequency")
@@ -373,6 +370,7 @@ public class DeviceController extends BaseController<Device> {
         model.addAttribute("serialNumber",serialNumber);
         return Common.BACKGROUND_PATH + "/business/device/deviceHeartBeatInfoPage";
     }
+
 
 
 

@@ -24,13 +24,21 @@
             <div class="alert alert-danger hidden" role="alert"></div>
             <form id="form" name="form" class="form-horizontal" method="post"
                   action="${ctx}/device/setFrequency.shtml">
-                <input type="hidden" name="serialNumber" value="${serialNumber}"/>
+                <input type="hidden" id="serialNumber" name="serialNumber" value="${serialNumber}"/>
                 <input type="hidden" id="frequency" name="frequency" value=""/>
                 <input type="hidden" id="programIds" name="programIds" value=""/>
+                <input type="hidden" id="areaId" name="areaId" value="${areaId}"/>
                 <div role="tabpanel" id="freqTab">
                 </div>
                 <div class="footer text-right bg-light lter">
-                    <button id="subBtn" class="btn btn-success btn-s-xs hidden">确定</button>
+                    <button id="subBtn" class="btn btn-success btn-s-xs hidden">设为工作频点</button>
+                    <c:if test="${areaId != null && areaId != ''}">
+                        <c:forEach items="${res}" var="key">
+                            <a id="setDefaultFrequencyBtn" onclick="javascript:setDefaultFrequency('${key.resurl}')" class="btn btn-success btn-s-xs hidden">设为默认频点</a>
+                        </c:forEach>
+                    </c:if>
+
+                    <%--<a id="setDefaultFrequencyBtn" class="btn btn-success btn-s-xs hidden">设为默认频点</a>--%>
                     <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
                 </div>
             </form>
@@ -110,6 +118,8 @@
         });
     });
 
+
+
     function getScanFrequency() {
         $.ajax({
             method: "post",
@@ -149,6 +159,7 @@
 
                             divHtml = divHtml + '</div>';
                             $('#subBtn').removeClass('hidden');
+                            $('#setDefaultFrequencyBtn').removeClass('hidden');
                         });
                         divHtml = divHtml + '</div>';
                         ulHtml = ulHtml + '</ul>';
@@ -186,6 +197,21 @@
             },
             error: function (XMLHttpRequest) {
                 console.log(XMLHttpRequest);
+            }
+        });
+    }
+
+    function setDefaultFrequency(url) {
+        var serialNumber = $('#serialNumber').val();
+        var frequency = $('ul.scan-tab > li.active').find('a').text();
+        var areaId = $('#areaId').val();
+        $.ajax({
+            method:'post',
+            url:url,
+            data:{areaId:areaId,frequency:frequency},
+            dataType:'json',
+            success:function (data) {
+                notify('success', '     默认频点设置成功      ');
             }
         });
     }

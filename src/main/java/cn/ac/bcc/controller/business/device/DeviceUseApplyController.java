@@ -85,9 +85,10 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
                 deviceUseApply.setIsStockOut(1);
                 deviceUseApplyService.updateByPrimaryKeySelective(deviceUseApply);
                 int status = deviceUseApply.getStatus()==null?0:deviceUseApply.getStatus();
+                int areaId = deviceUseApply.getAreaId();
                 if(status!=0){
                     String number = deviceApply.getSerialNumber();
-                    deviceService.updateStatusByNum(number,status);
+                    deviceService.updateStatusByNum(number,status,areaId);
                 }
             }
         }
