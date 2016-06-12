@@ -23,9 +23,9 @@ public class DeviceService extends BaseService<Device> {
         return deviceMapper.selectDebugDevice(device);
     }
 
-    public int updateStatusByNum(String serialNumber,int status){
+    public int updateStatusByNum(String serialNumber,int status, int areaId){
 
-        return deviceMapper.updateStatusByNum(serialNumber,status);
+        return deviceMapper.updateStatusByNum(serialNumber,status, areaId);
     }
 
 
@@ -33,7 +33,7 @@ public class DeviceService extends BaseService<Device> {
         return deviceMapper.selectSettingDevice(userId, device);
     }
 
-    public void updateWorkFrequency(String serialNumber, String frequency){
-        deviceMapper.updateWorkFrequency(frequency,serialNumber);
+    public void updateWorkFrequencyAndProgramIds(String serialNumber, String frequency, String programIds){
+        deviceMapper.updateWorkFrequencyAndProgramIds(frequency,programIds,serialNumber);
     }
 }

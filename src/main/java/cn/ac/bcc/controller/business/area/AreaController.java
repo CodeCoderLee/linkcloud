@@ -91,4 +91,15 @@ public class AreaController extends BaseController<Area>{
     }
 
 
+    @ResponseBody
+    @RequestMapping("setDefaultFrequency")
+    public String setDefaultFrequency(Integer areaId, String frequency){
+        Area area = new Area();
+        area.setId(areaId);
+        area.setDefaultFrequency(frequency);
+        areaService.updateByPrimaryKeySelective(area);
+        return SUCCESS;
+    }
+
+
 }
