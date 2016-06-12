@@ -45,6 +45,7 @@ public class HelperUtils {
     public static final String KEY_RP_PNAME = "pname";              //节目名称
     public static final String KEY_RP_PTYPE = "ptype";              //节目分类，规划用于点播节目的组织
     public static final String KEY_RP_PURL = "purl";                //表示流媒体服务的本地连接地址，用于播放
+    public static final String KEY_RP_PIMG = "pimg";                //直播节目缩略图
 
     public static final String RESULT_FAIL = "1";                        //失败
     public static final String RESULT_SUCCESS = "0";                     //成功

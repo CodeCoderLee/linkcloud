@@ -72,13 +72,13 @@
     <li>
       <div class="mindex-avatar">
           <c:if test="${stype == 'dtmb'}">
-            <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
+            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/tv_.png'"  alt=""/>
           </c:if>
           <c:if test="${stype == 'netdisk'}">
-            <img class="mindex-ulImg" src="${ctx}/assets/i/video/video.jpg"  alt=""/>
+            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/video.jpg'"  alt=""/>
           </c:if>
           <c:if test="${stype == 'camera'}">
-            <img class="mindex-ulImg" src="${ctx}/assets/i/video/file.jpg"  alt=""/>
+            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/file.jpg'"  alt=""/>
           </c:if>
         </div>
         <div class="mindex-detail">

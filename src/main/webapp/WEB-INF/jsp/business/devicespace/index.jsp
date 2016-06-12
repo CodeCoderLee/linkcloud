@@ -96,7 +96,7 @@
                      <c:forEach items="${map[entry.key]}" var="item">
                      <li>
                          <div class="mindex-avatar">
-                             <img class="mindex-ulImg" src="${ctx}/assets/i/tv/cctv1.jpg"  alt=""/>
+                             <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/tv_.png'"  alt=""/>
                          </div>
                          <div class="mindex-detail">
                              <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a></p>

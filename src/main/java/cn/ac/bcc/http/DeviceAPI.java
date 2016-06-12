@@ -212,6 +212,12 @@ public class DeviceAPI {
                 String pname = jobj.getString(HelperUtils.KEY_RP_PNAME);
                 String ptype = jobj.getString(HelperUtils.KEY_RP_PTYPE);
                 String purl = jobj.getString(HelperUtils.KEY_RP_PURL);
+                String pimg = "";
+                try{
+                    pimg = jobj.getString(HelperUtils.KEY_RP_PIMG);
+                }catch (Exception e){
+
+                }
 
                 Program program = new Program();
                 program.setSrcNumber(srcnumber);
@@ -222,6 +228,7 @@ public class DeviceAPI {
                 program.setPname(pname);
                 program.setPtype(ptype);
                 program.setPurl(purl);
+                program.setPimg(pimg);
                 program.setDeviceSerialNumber(serialNumber);
                 programService.insertSelective(program);
             }

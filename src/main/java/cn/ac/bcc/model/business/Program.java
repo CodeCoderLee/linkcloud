@@ -59,6 +59,8 @@ public class Program {
      */
     private String purl;
 
+    private String pimg;
+
     /**
      * 获取主键，自增id
      *
@@ -75,6 +77,16 @@ public class Program {
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    public String getPimg() {
+        return pimg;
+    }
+
+
+    public void setPimg(String pimg) {
+        this.pimg = pimg;
     }
 
     /**
