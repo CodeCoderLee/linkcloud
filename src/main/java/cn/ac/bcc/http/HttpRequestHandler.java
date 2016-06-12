@@ -42,7 +42,10 @@ public class HttpRequestHandler extends ChannelHandlerAdapter {
             HttpContent content = (HttpContent) msg;
 
             ByteBuf buf = content.content();
-            String data = buf.toString(io.netty.util.CharsetUtil.UTF_8);
+            byte[] req = new byte[buf.readableBytes()];
+            buf.readBytes(req);
+            String data = new String(req,"gb2312");
+//            String data = buf.toString(io.netty.util.CharsetUtil.UTF_8);
             buf.release();
 
             FullHttpResponse response = deviceAPI.dispatcher(request,data);
