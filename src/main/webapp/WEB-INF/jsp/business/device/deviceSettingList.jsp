@@ -126,7 +126,7 @@
                     "<dd>是</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt><a class='btn btn-info' href=\"/space/device/index.shtml?openId="+$('#openId').val()+"\">连通性测试</a></dt>" +
+                    "<dt><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>" +
                     "<dd><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a></dd>" +
                     "</dl>" +
                     "</div>" +
@@ -141,4 +141,19 @@
         $('#content').load("device/scanFrequency.shtml?serialNumber="+serialNumber);
     }
 
+    function shock(serialNumber){
+        $.ajax({
+            method: 'get',
+            url: 'device/shock.shtml',
+            dataType: 'json',
+            data: {serialNumber: serialNumber},
+            success: function (data) {
+                console.log(data);
+                alert("指令已成功下发。");
+            },
+            error: function (XMLHttpRequest) {
+                console.log(XMLHttpRequest);
+            }
+        });
+    }
 </script>
