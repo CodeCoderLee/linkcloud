@@ -144,6 +144,7 @@ public class DeviceController extends BaseController<Device> {
         Integer userId = Common.findUserSessionId(getRequest());
         device.setRegisterAccount(userId);
         device.setDebugAccount(userId);
+        PageHelper.startPage(pageNum, pageSize);
         List<Device> list = deviceService.selectSettingDevice(userId, device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
         ResponseData responseData = new ResponseData();
@@ -248,6 +249,16 @@ public class DeviceController extends BaseController<Device> {
         CommandMap.addCommand(serialNumber, object);
         return SUCCESS;
     }
+
+    @ResponseBody
+    @RequestMapping("connectTest")
+    public String connectTest(String serialNumber){
+        //TODO 下发连通性测试指令
+
+        return SUCCESS;
+    }
+
+
 
     @ResponseBody
     @RequestMapping("getScanFrequency")
