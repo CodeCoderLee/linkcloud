@@ -222,7 +222,7 @@ public class DeviceController extends BaseController<Device> {
     @ResponseBody
     @RequestMapping("setFrequency")
     public String setFrequency(String serialNumber, String frequency, String programIds) throws InterruptedException {
-        deviceService.updateWorkFrequency(serialNumber,frequency);
+        deviceService.updateWorkFrequencyAndProgramIds(serialNumber,frequency,programIds);
         //设置后清空MemroyMap中的相关数据
         MemoryMap.clear(serialNumber);
         //TODO 下发设置节目号

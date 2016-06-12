@@ -70,6 +70,9 @@ public class Device {
     @Column(name = "work_frequency")
     private String workFrequency;
 
+    @Column(name = "program_ids")
+    private String programIds;
+
     @Transient
     private String registerName;
 
@@ -267,5 +270,13 @@ public class Device {
 
     public void setWorkFrequency(String workFrequency) {
         this.workFrequency = workFrequency;
+    }
+
+    public String getProgramIds() {
+        return programIds;
+    }
+
+    public void setProgramIds(String programIds) {
+        this.programIds = programIds;
     }
 }

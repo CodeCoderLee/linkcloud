@@ -16,5 +16,5 @@ public interface DeviceMapper extends Mapper<Device> {
     /*查询可以进行设备配置的设备*/
     List<Device> selectSettingDevice(@Param("userId") Integer userId, @Param("device") Device device);
 
-    void updateWorkFrequency(@Param("frequency") String frequency, @Param("serialNumber") String serialNumber);
+    void updateWorkFrequencyAndProgramIds(@Param("frequency") String frequency,@Param("programIds") String programIds, @Param("serialNumber") String serialNumber);
 }

@@ -33,7 +33,7 @@ public class DeviceService extends BaseService<Device> {
         return deviceMapper.selectSettingDevice(userId, device);
     }
 
-    public void updateWorkFrequency(String serialNumber, String frequency){
-        deviceMapper.updateWorkFrequency(frequency,serialNumber);
+    public void updateWorkFrequencyAndProgramIds(String serialNumber, String frequency, String programIds){
+        deviceMapper.updateWorkFrequencyAndProgramIds(frequency,programIds,serialNumber);
     }
 }

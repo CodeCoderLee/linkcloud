@@ -16,6 +16,7 @@
         <result column="area_id" jdbcType="INTEGER" property="areaId"/>
         <result column="debug_account" jdbcType="INTEGER" property="debugAccount"/>
         <result column="work_frequency" jdbcType="VARCHAR" property="workFrequency"/>
+        <result column="program_ids" jdbcType="VARCHAR" property="programIds"/>
     </resultMap>
 
     <select id="selectDebugDevice" resultType="cn.ac.bcc.model.business.Device"
@@ -61,8 +62,8 @@
         where d.serial_number = #{serialNumber}
     </update>
 
-    <update id="updateWorkFrequency">
-        update BCC_DEVICE d SET d.work_frequency = #{frequency}
+    <update id="updateWorkFrequencyAndProgramIds">
+        update BCC_DEVICE d SET d.work_frequency = #{frequency} , d.program_ids = #{programIds}
         where d.serial_number = #{serialNumber}
     </update>
 

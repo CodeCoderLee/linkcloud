@@ -82,7 +82,7 @@
                     dataType: "json",
                     success: function (data) {
                         notify('success', '     频点设置成功      ');
-                        $("#content").load(rootPath + "/device/list.shtml");
+                        $("#content").load(rootPath + "/device/settingList.shtml");
                     },
                     error: function (XMLResponse) {
                         alert(XMLResponse.responseText);
