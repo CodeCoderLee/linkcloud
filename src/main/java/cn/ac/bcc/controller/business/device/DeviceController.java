@@ -240,6 +240,27 @@ public class DeviceController extends BaseController<Device> {
     }
 
     @ResponseBody
+    @RequestMapping("shock")
+    public String shock(String serialNumber) throws InterruptedException {
+        //TODO 下发设置节目号
+        //心跳包下发指令
+        JSONObject object = new JSONObject();
+        object.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SHOCK);
+        CommandMap.addCommand(serialNumber, object);
+        return SUCCESS;
+    }
+
+    @ResponseBody
+    @RequestMapping("connectTest")
+    public String connectTest(String serialNumber){
+        //TODO 下发连通性测试指令
+
+        return SUCCESS;
+    }
+
+
+
+    @ResponseBody
     @RequestMapping("getScanFrequency")
     public ScanFreqInfos getScanFrequency(String serialNumber){
         ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
