@@ -142,14 +142,21 @@ public class DeviceAPI {
     public String authen(HttpRequest request,String postData,List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
+        DeviceService deviceService = ctx.getBean(DeviceService.class);
 
         //TODO 还没有判断是否进行了设备注册操作，检查bcc_device设备表中
-
-
         JSONObject json = JSONObject.fromObject(postData);
         DeviceAuthen deviceAuthen = new DeviceAuthen();
         deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
+
+        Device device = new Device();
+        device.setSerialNumber(json.getString(HelperUtils.KEY_ID));
+        device = deviceService.selectOne(device);
+        String frq = device.getWorkFrequency();
+        String programIds = device.getProgramIds();
+        if(frq == null)frq = "";
+        if(programIds == null)programIds = "";
 
         boolean validation = true;
         boolean update = true;
@@ -181,8 +188,8 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_DESCRIPTION,"error.");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
-        map.put(HelperUtils.KEY_FRQ,"626");
-        map.put(HelperUtils.KEY_PROGRAMS,"1,3,5,7,9");
+        map.put(HelperUtils.KEY_FRQ,frq);
+        map.put(HelperUtils.KEY_PROGRAMS,programIds);
 
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
