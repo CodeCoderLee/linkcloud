@@ -153,11 +153,12 @@ public class DeviceAPI {
         Device device = new Device();
         device.setSerialNumber(json.getString(HelperUtils.KEY_ID));
         device = deviceService.selectOne(device);
-        String frq = device.getWorkFrequency();
-        String programIds = device.getProgramIds();
-        if(frq == null)frq = "";
-        if(programIds == null)programIds = "";
-
+        String frq = "";
+        String programIds = "";
+        if(device != null) {
+            device.getWorkFrequency();
+            device.getProgramIds();
+        }
         boolean validation = true;
         boolean update = true;
         if(deviceAuthen == null){
