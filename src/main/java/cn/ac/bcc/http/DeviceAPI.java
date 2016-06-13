@@ -156,8 +156,8 @@ public class DeviceAPI {
         String frq = "";
         String programIds = "";
         if(device != null) {
-            device.getWorkFrequency();
-            device.getProgramIds();
+            frq =device.getWorkFrequency();
+            programIds = device.getProgramIds();
         }
         boolean validation = true;
         boolean update = true;
