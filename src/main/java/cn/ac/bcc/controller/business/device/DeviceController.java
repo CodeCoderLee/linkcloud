@@ -167,6 +167,7 @@ public class DeviceController extends BaseController<Device> {
     @SystemLog(module = "设备管理", methods = "设备管理-设备注册")//凡需要处理业务逻辑的.都需要记录操作日志
     public String add(Device device) {
         try {
+            List<Device> deviceList = deviceService.select(device);
             if (Common.isEmpty(device.getPrivateKey())) {
                 device.setPrivateKey(new Date().getTime() + new Random().nextInt(100000) + "");
             }
@@ -175,13 +176,20 @@ public class DeviceController extends BaseController<Device> {
             device.setRegisterAccount(userId);
             device.setDebugAccount(userId);
             device.setStatus(1);
-            deviceService.insert(device);
+            //方便测试,默认区域id为海淀区的...
+            device.setAreaId(110108);
+            if(!(deviceList!=null && deviceList.size()>0)){
+                deviceService.insert(device);
+            }
 
             //设备注册之后往设备认证里添加一条数据
             DeviceAuthen deviceAuthen = new DeviceAuthen();
             deviceAuthen.setSerialNumber(device.getSerialNumber());
 
-            deviceAuthenService.insertSelective(deviceAuthen);
+            List<DeviceAuthen> deviceAuthenList = deviceAuthenService.select(deviceAuthen);
+            if(!(deviceAuthenList != null && deviceAuthenList.size()>0)){
+                deviceAuthenService.insertSelective(deviceAuthen);
+            }
 
             return SUCCESS;
         } catch (Exception e) {
