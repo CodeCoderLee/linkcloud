@@ -212,6 +212,18 @@ public class DeviceSpaceController extends BaseController<Comment>{
         return Common.BACKGROUND_PATH + "/business/devicespace/play";
     }
 
+    @RequestMapping(value = "play2/{serialNumber}", produces = "text/html; charset=utf-8")
+    public String play2(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
+        ProgramNetDisk programNetDisk = programNetDiskService.selectByPrimaryKey(programId);
+        ResponseData responseData = getCommentList(programId,1);
+        mode.addAttribute("responseData",responseData);
+        mode.addAttribute("program",programNetDisk);
+        mode.addAttribute("openId",openId);
+        mode.addAttribute("serialNumber",serialNumber);
+        int k = 0;
+        return Common.BACKGROUND_PATH + "/business/devicespace/netdisk-play";
+    }
+
     @RequestMapping(value = "comment", produces = "text/html; charset=utf-8")
     public String comment(String serialNumber,Model mode,String text,Integer programId,Integer pageNum){
         if(pageNum == null) pageNum = 1;

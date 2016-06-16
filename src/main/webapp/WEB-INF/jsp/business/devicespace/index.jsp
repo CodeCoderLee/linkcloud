@@ -143,7 +143,7 @@
                     </c:if>
                     <c:if test="${item.isDir == 0}">
                         <p class="mindex-title"><a
-                                href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a>
+                                href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a>
                         </p>
                     </c:if>
                 </div>

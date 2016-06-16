@@ -98,7 +98,7 @@
                 <p class="mindex-title"><a href="${ctx}/space/list2/${serialNumber}.shtml?parentId=${item.id}&stype=netdisk&title1=${title2}&title2=${item.pname}">${item.pname}</a></p>
             </c:if>
             <c:if test="${item.isDir == 0}">
-                <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a></p>
+                <p class="mindex-title"><a href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a></p>
             </c:if>
         </div>
     </li>
