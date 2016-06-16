@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.business.ProgramNetDiskMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.ProgramNetDisk" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="device_serial_number" property="deviceSerialNumber" jdbcType="VARCHAR" />
+    <result column="src_number" property="srcNumber" jdbcType="INTEGER" />
+    <result column="src_id" property="srcId" jdbcType="VARCHAR" />
+    <result column="stype" property="stype" jdbcType="VARCHAR" />
+    <result column="pnumber" property="pnumber" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+    <result column="ptype" property="ptype" jdbcType="VARCHAR" />
+    <result column="purl" property="purl" jdbcType="VARCHAR" />
+    <result column="pimg" property="pimg" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="is_dir" property="isDir" jdbcType="INTEGER" />
+  </resultMap>
+</mapper>
