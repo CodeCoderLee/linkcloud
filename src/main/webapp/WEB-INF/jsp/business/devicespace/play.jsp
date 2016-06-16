@@ -53,15 +53,19 @@
   </div>
 </div>
 <div class="mobile-main">
-  <video id="play-video" class="video-js vjs-amazeui vi-video" controls preload="none"
-         data-setup="{}" style="width:100%;height:350px;">
-    <source src="${program.purl}" type='video/mp4' />
-    <%--<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />--%>
-    <%--<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />--%>
-    <track kind="captions" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
-    <track kind="subtitles" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
-    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-  </video>
+  <%--<video id="play-video" class="video-js vjs-amazeui vi-video" controls preload="none"--%>
+         <%--data-setup="{}" style="width:100%;height:350px;">--%>
+    <%--<source src="${program.purl}" type='video/mp4' />--%>
+    <%--&lt;%&ndash;<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />&ndash;%&gt;--%>
+    <%--&lt;%&ndash;<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />&ndash;%&gt;--%>
+    <%--<track kind="captions" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->--%>
+    <%--<track kind="subtitles" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->--%>
+    <%--<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>--%>
+  <%--</video>--%>
+    <video width="100%" height="360" controls="" autoplay="">
+      <!-- MP4 must be first for iPad! -->
+      <source src="${program.purl}" type="video/mp4"><!-- Safari / iOS, IE9 -->
+    </video>
   <div class="mobile-getComment">
     <form method="post" id="commentForm">
       <textarea class="mobile-vi-textarea" rows="5" name="text" placeholder="请输入你的评论^_^"></textarea>

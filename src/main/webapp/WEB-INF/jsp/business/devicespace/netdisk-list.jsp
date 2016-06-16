@@ -46,13 +46,20 @@
   <div data-am-widget="header"
         class="am-header am-header-default">
     <div class="am-header-left am-header-nav">
-        <a href="${ctx}/space/device/${serialNumber}.shtml?openId=${openId}" class="">
-            <i class="am-header-icon am-icon-home"></i>
-        </a>
+        <c:if test="${parentId == 0}">
+            <a href="${ctx}/space/device/${serialNumber}.shtml?openId=${openId}" class="">
+                <i class="am-header-icon am-icon-home"></i>${grandpa.pname}
+            </a>
+        </c:if>
+        <c:if test="${parentId != 0}">
+            <a href="${ctx}/space/list2/${serialNumber}.shtml?parentId=${grandpa.id}&stype=netdisk" class="">
+                <i class="am-header-icon am-icon-chevron-left"></i>${grandpa.pname}
+            </a>
+        </c:if>
     </div>
     <h1 class="am-header-title">
         <a href="javascript:void(0)" class="">
-        ${title}
+        ${parent.pname}
         </a>
     </h1>
     <div class="am-header-right am-header-nav">
@@ -75,14 +82,24 @@
             <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/live.jpg'"  alt=""/>
           </c:if>
           <c:if test="${stype == 'netdisk'}">
-            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/video.jpg'"  alt=""/>
+             <c:if test="${item.isDir == 1}">
+                <img class="mindex-ulImg" src="${ctx}/assets/i/video/file.jpg" alt=""/>
+             </c:if>
+              <c:if test="${item.isDir == 0}">
+                  <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/video.jpg'"  alt=""/>
+              </c:if>
           </c:if>
           <c:if test="${stype == 'camera'}">
             <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/file.jpg'"  alt=""/>
           </c:if>
         </div>
         <div class="mindex-detail">
-          <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a></p>
+            <c:if test="${item.isDir == 1}">
+                <p class="mindex-title"><a href="${ctx}/space/list2/${serialNumber}.shtml?parentId=${item.id}&stype=netdisk&title1=${title2}&title2=${item.pname}">${item.pname}</a></p>
+            </c:if>
+            <c:if test="${item.isDir == 0}">
+                <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a></p>
+            </c:if>
         </div>
     </li>
   </c:forEach>

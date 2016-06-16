@@ -32,12 +32,6 @@ public class ProgramService extends BaseService<Program> {
         map.put("tv",tvList);
 
         example = new Example(Program.class);
-        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber).andEqualTo("stype",STYPE_NETDISK);
-        rowBounds = new RowBounds(0,4);
-        List<Program> vedioList = programMapper.selectByExampleAndRowBounds(example,rowBounds);
-        map.put("vedio",vedioList);
-
-        example = new Example(Program.class);
         example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber).andEqualTo("stype",STYPE_CAMERA);
         rowBounds = new RowBounds(0,4);
         List<Program> cameraList = programMapper.selectByExampleAndRowBounds(example,rowBounds);

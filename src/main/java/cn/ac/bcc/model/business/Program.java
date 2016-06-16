@@ -29,6 +29,8 @@ public class Program {
     @Column(name = "src_id")
     private String srcId;
 
+
+
     /**
      * 信源分类
      */
@@ -250,4 +252,6 @@ public class Program {
     public void setPurl(String purl) {
         this.purl = purl;
     }
+
+
 }

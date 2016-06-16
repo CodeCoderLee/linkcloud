@@ -7,6 +7,7 @@ import cn.ac.bcc.model.core.UserRole;
 import cn.ac.bcc.service.business.comment.CommentService;
 import cn.ac.bcc.service.business.comment.CommentUserService;
 import cn.ac.bcc.service.business.device.DeviceService;
+import cn.ac.bcc.service.business.program.ProgramNetDiskService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.service.system.user.UserRoleService;
 import cn.ac.bcc.service.system.user.UserService;
@@ -50,6 +51,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private UserService userService;
     @Autowired
     private ProgramService programService;
+    @Autowired
+    private ProgramNetDiskService programNetDiskService;
     @Autowired
     private UserRoleService userRoleService;
     @Autowired
@@ -131,7 +134,9 @@ public class DeviceSpaceController extends BaseController<Comment>{
             }
         }
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
+        List<ProgramNetDisk> lst = programNetDiskService.findProgram(serialNumber,0,true);
         mode.addAttribute("map",map);
+        mode.addAttribute("netdiskList",lst);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("hasRole",hasRole);
@@ -154,6 +159,45 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("openId",openId);
         return Common.BACKGROUND_PATH + "/business/devicespace/list";
+    }
+
+    @RequestMapping(value = "list2/{serialNumber}", produces = "text/html; charset=utf-8")
+    public String list2(@PathVariable String serialNumber,Model mode,String stype,int parentId){
+        Example example = new Example(ProgramNetDisk.class);
+        example.createCriteria().andEqualTo("stype",stype).andEqualTo("deviceSerialNumber",serialNumber)
+                .andEqualTo("parentId",parentId);
+        List<ProgramNetDisk> list = programNetDiskService.selectByExample(example);
+        mode.addAttribute("list",list);
+
+        ProgramNetDisk pnd ;
+        ProgramNetDisk grandPnd ;
+        if(parentId != 0) {
+            pnd = programNetDiskService.selectByPrimaryKey(parentId);
+            if (pnd != null) {
+                grandPnd = programNetDiskService.selectByPrimaryKey(pnd.getParentId());
+                if (grandPnd == null) {
+                    grandPnd = new ProgramNetDisk();
+                    grandPnd.setId(0);
+                    grandPnd.setPname("视频点播");
+                }
+            }else{
+                pnd = new ProgramNetDisk();
+                grandPnd = new ProgramNetDisk();
+            }
+        }else{
+            pnd = new ProgramNetDisk();
+            pnd.setPname("视频点播");
+            grandPnd = new ProgramNetDisk();
+            grandPnd.setId(0);
+        }
+        mode.addAttribute("stype",stype);
+        mode.addAttribute("parent",pnd);
+        mode.addAttribute("grandpa",grandPnd);
+        mode.addAttribute("serialNumber",serialNumber);
+        mode.addAttribute("parentId",parentId);
+//        mode.addAttribute("level",level + 1);
+//        mode.addAttribute("openId",openId);
+        return Common.BACKGROUND_PATH + "/business/devicespace/netdisk-list";
     }
 
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")

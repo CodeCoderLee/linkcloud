@@ -3,9 +3,11 @@ package cn.ac.bcc.http;
 import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceAuthen;
 import cn.ac.bcc.model.business.Program;
+import cn.ac.bcc.model.business.ProgramNetDisk;
 import cn.ac.bcc.model.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
+import cn.ac.bcc.service.business.program.ProgramNetDiskService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.util.HelperUtils;
 import io.netty.buffer.Unpooled;
@@ -48,66 +50,69 @@ public class DeviceAPI {
     public static final String URI_REMOTECHECK = "/device/remotecheck.shtml";
     public static final String URI_HEARTBEAT = "/device/heartbeat.shtml";
 
+    public static final int IS_DIR = 1;
+    public static final int IS_NOT_DIR = 0;
+
     private static Log log = LogFactory.getLog(DeviceAPI.class);
     private ApplicationContext ctx;
 
-    public DeviceAPI(ApplicationContext applicationContext){
+    public DeviceAPI(ApplicationContext applicationContext) {
         this.ctx = applicationContext;
     }
 
-    public FullHttpResponse dispatcher(HttpRequest request,String postData) throws UnsupportedEncodingException {
+    public FullHttpResponse dispatcher(HttpRequest request, String postData) throws UnsupportedEncodingException {
         String uri = request.getUri();
         int index = uri.indexOf("?");
         String query = "";
-        if(index != -1){
-            query = uri.substring(index+1);
+        if (index != -1) {
+            query = uri.substring(index + 1);
         }
         String token = getCookieValue(request);
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
-        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::"  + token +  "   data:::" + postData);
+        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::" + token + "   data:::" + postData);
         String jsonStr = "";
         String sessionID = null;
 
         uri = uri.toLowerCase();
-        if(uri.contains(URI_LINKHELLO)){
-            UUID uuid  =  UUID.randomUUID();
+        if (uri.contains(URI_LINKHELLO)) {
+            UUID uuid = UUID.randomUUID();
             token = uuid.toString();
 //            token = "9acd5102-b150-45fc-afad-331bb51d6b79";
-            sessionID = ServerCookieEncoder.encode("PHPSESSID",token);
-            jsonStr = linkHello(request,postData,nvList,token);
-        }else if(uri.contains(URI_AUTHEN)){
-            jsonStr = authen(request,postData,nvList);
-        }else if(uri.contains(URI_REPORT_PROGRAMS)){
-            jsonStr = reportPrograms(request,postData,nvList);
-        }else if(uri.contains(URI_ANALYSISV)){
-            jsonStr = analysisv(request,postData,nvList);
-        }else if(uri.contains(URI_REMOTECHECK)){
-            jsonStr = remoteCheck(request,postData,nvList);
-        }else if(uri.contains(URI_REMOTEWATCH)){
-            jsonStr = remoteWatch(request,postData,nvList);
-        }else if(uri.contains(URI_SCANFRQ)){
-            jsonStr = scanFrq(request,postData,nvList);
-        }else if (uri.contains(URI_SETAD)) {
-            jsonStr = setAd(request,postData,nvList);
-        }else if(uri.contains(URI_UPDATEAD)){
-            jsonStr = updateAd(request,postData,nvList);
-        }else if(uri.contains(URI_SETFRQ)){
-            jsonStr = setFrq(request,postData,nvList);
-        }else if(uri.contains(URI_SHOCK)){
-            jsonStr = shock(request,postData,nvList);
-        }else if(uri.contains(URI_HEARTBEAT)){
-            jsonStr = heartBeat(request,postData,nvList);
+            sessionID = ServerCookieEncoder.encode("PHPSESSID", token);
+            jsonStr = linkHello(request, postData, nvList, token);
+        } else if (uri.contains(URI_AUTHEN)) {
+            jsonStr = authen(request, postData, nvList);
+        } else if (uri.contains(URI_REPORT_PROGRAMS)) {
+            jsonStr = reportPrograms(request, postData, nvList);
+        } else if (uri.contains(URI_ANALYSISV)) {
+            jsonStr = analysisv(request, postData, nvList);
+        } else if (uri.contains(URI_REMOTECHECK)) {
+            jsonStr = remoteCheck(request, postData, nvList);
+        } else if (uri.contains(URI_REMOTEWATCH)) {
+            jsonStr = remoteWatch(request, postData, nvList);
+        } else if (uri.contains(URI_SCANFRQ)) {
+            jsonStr = scanFrq(request, postData, nvList);
+        } else if (uri.contains(URI_SETAD)) {
+            jsonStr = setAd(request, postData, nvList);
+        } else if (uri.contains(URI_UPDATEAD)) {
+            jsonStr = updateAd(request, postData, nvList);
+        } else if (uri.contains(URI_SETFRQ)) {
+            jsonStr = setFrq(request, postData, nvList);
+        } else if (uri.contains(URI_SHOCK)) {
+            jsonStr = shock(request, postData, nvList);
+        } else if (uri.contains(URI_HEARTBEAT)) {
+            jsonStr = heartBeat(request, postData, nvList);
         }
 
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1,OK, Unpooled.wrappedBuffer(jsonStr.getBytes("UTF-8")));
-        if(sessionID != null) {
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(jsonStr.getBytes("UTF-8")));
+        if (sessionID != null) {
             response.headers().set(SET_COOKIE, sessionID);
         }
         return response;
     }
 
-    private String getCookieValue(HttpRequest request){
+    private String getCookieValue(HttpRequest request) {
         String value = null;
         try {
             String cookieStr = request.headers().get("Cookie");
@@ -115,31 +120,31 @@ public class DeviceAPI {
             if (args.length >= 2 && args[0].equals("PHPSESSID")) {
                 value = args[1];
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return value;
     }
 
-    public String  linkHello(HttpRequest request,String postData,List<NameValuePair> nvList,String token)  {
+    public String linkHello(HttpRequest request, String postData, List<NameValuePair> nvList, String token) {
         // 获取设备授权令牌
         boolean validation = true;
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
-        }else{
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
         }
-        map.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_NOTHING);
-        map.put(HelperUtils.KEY_DESCRIPTION,"");
-        map.put(HelperUtils.KEY_TIME,""+System.currentTimeMillis()/1000);
-        map.put(HelperUtils.KEY_TOKEN,token);
+        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
+        map.put(HelperUtils.KEY_DESCRIPTION, "");
+        map.put(HelperUtils.KEY_TIME, "" + System.currentTimeMillis() / 1000);
+        map.put(HelperUtils.KEY_TOKEN, token);
 
         JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String authen(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String authen(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
         DeviceService deviceService = ctx.getBean(DeviceService.class);
@@ -155,13 +160,13 @@ public class DeviceAPI {
         device = deviceService.selectOne(device);
         String frq = "";
         String programIds = "";
-        if(device != null) {
-            frq =device.getWorkFrequency();
+        if (device != null) {
+            frq = device.getWorkFrequency();
             programIds = device.getProgramIds();
         }
         boolean validation = true;
         boolean update = true;
-        if(deviceAuthen == null){
+        if (deviceAuthen == null) {
             deviceAuthen = new DeviceAuthen();
             update = false;
         }
@@ -174,100 +179,153 @@ public class DeviceAPI {
         deviceAuthen.setVersion1(json.getString(HelperUtils.KEY_VERSION_S));
         deviceAuthen.setVersion2(json.getString(HelperUtils.KEY_VERSION_T));
         deviceAuthen.setToken(token);
-        if(update){
+        if (update) {
             deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
-        }else{
+        } else {
             deviceAuthenService.insertSelective(deviceAuthen);
         }
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
-            map.put(HelperUtils.KEY_DESCRIPTION,"");
-        }else{
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
-            map.put(HelperUtils.KEY_DESCRIPTION,"error.");
+            map.put(HelperUtils.KEY_DESCRIPTION, "error.");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
-        map.put(HelperUtils.KEY_FRQ,frq);
-        map.put(HelperUtils.KEY_PROGRAMS,programIds);
+        map.put(HelperUtils.KEY_FRQ, frq);
+        map.put(HelperUtils.KEY_PROGRAMS, programIds);
 
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
     }
 
 
-    private void parseReportProgram(String content,String token,String serialNumber){
+    private void parseReportProgram(String content, String token, String serialNumber) {
         JSONObject jsonObject = JSONObject.fromObject(content);
         ProgramService programService = ctx.getBean(ProgramService.class);
         Integer srcnumber = jsonObject.getInt(HelperUtils.KEY_RP_SCRNUMBER);
         Example example = new Example(Program.class);
-        example.createCriteria().andEqualTo("deviceSerialNumber",serialNumber);
+        example.createCriteria().andEqualTo("deviceSerialNumber", serialNumber);
         programService.deleteByExample(example);
+
+        ProgramNetDiskService programNetDiskService = ctx.getBean(ProgramNetDiskService.class);
+        example = new Example(ProgramNetDisk.class);
+        example.createCriteria().andEqualTo("deviceSerialNumber", serialNumber);
+        programNetDiskService.deleteByExample(example);
 
         JSONArray array = jsonObject.getJSONArray(HelperUtils.KEY_RP_SRCLIST);
         int len = array.size();
-        for(int i = 0;i<len;i++){
+        for (int i = 0; i < len; i++) {
             JSONObject obj = (JSONObject) array.get(i);
             String srcid = obj.getString(HelperUtils.KEY_RP_SRCID);
             String stype = obj.getString(HelperUtils.KEY_RP_STYPE);
             Integer pnumber = obj.getInt(HelperUtils.KEY_RP_PNUMBER);
             JSONArray plist = obj.getJSONArray(HelperUtils.KEY_RP_PLIST);
             int size = plist.size();
-            for(int j = 0;j<size;j++){
+
+            List<MyProp> doList = new ArrayList<MyProp>();
+            for (int j = 0; j < size; j++) {
                 JSONObject jobj = (JSONObject) plist.get(j);
                 String pid = jobj.getString(HelperUtils.KEY_RP_PID);
                 String pname = jobj.getString(HelperUtils.KEY_RP_PNAME);
                 String ptype = jobj.getString(HelperUtils.KEY_RP_PTYPE);
                 String purl = jobj.getString(HelperUtils.KEY_RP_PURL);
                 String pimg = "";
-                try{
+                try {
                     pimg = jobj.getString(HelperUtils.KEY_RP_PIMG);
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
-                Program program = new Program();
-                program.setSrcNumber(srcnumber);
-                program.setSrcId(srcid);
-                program.setStype(stype);
-                program.setPnumber(pnumber);
-                program.setPid(pid);
-                program.setPname(pname);
-                program.setPtype(ptype);
-                program.setPurl(purl);
-                program.setPimg(pimg);
-                program.setDeviceSerialNumber(serialNumber);
-                programService.insertSelective(program);
+                int length = 0;
+                if (stype.equals("netdisk")) {
+                    int parentId = 0;
+                    if(StringUtils.isNotEmpty(ptype)) {
+                        String[] tmps = ptype.split("/");
+                        length = tmps.length;
+                        for (int m = 0; m < length; m++) {
+                            String key = tmps[m] + "_" + m;
+                            MyProp prop = new MyProp();
+                            prop.setKey(key);
+                            int index = doList.indexOf(prop);
+                            if (index == -1) {
+                                doList.add(prop);
+                                ProgramNetDisk programNetDisk = new ProgramNetDisk();
+                                programNetDisk.setIsDir(IS_DIR);
+                                programNetDisk.setLevel(m);
+                                programNetDisk.setPname(tmps[m]);
+                                programNetDisk.setStype("netdisk");
+                                programNetDisk.setDeviceSerialNumber(serialNumber);
+                                programNetDisk.setParentId(parentId);
+                                programNetDiskService.insertSelective(programNetDisk);
+                                parentId = programNetDisk.getId();
+                                prop.setParentId(parentId);
+                            }else{
+                                prop = doList.get(index);
+                                parentId = prop.getParentId();
+                            }
+                        }
+                    }
+                    ProgramNetDisk programNetDisk = new ProgramNetDisk();
+                    programNetDisk.setSrcNumber(srcnumber);
+                    programNetDisk.setSrcId(srcid);
+                    programNetDisk.setStype(stype);
+                    programNetDisk.setPnumber(pnumber);
+                    programNetDisk.setPid(pid);
+                    programNetDisk.setPname(pname);
+                    programNetDisk.setPtype(ptype);
+                    programNetDisk.setPurl(purl);
+                    programNetDisk.setPimg(pimg);
+                    programNetDisk.setDeviceSerialNumber(serialNumber);
+                    programNetDisk.setIsDir(IS_NOT_DIR);
+                    programNetDisk.setLevel(length);
+                    programNetDisk.setParentId(parentId);
+                    programNetDiskService.insertSelective(programNetDisk);
+                }else{
+                    Program program = new Program();
+                    program.setSrcNumber(srcnumber);
+                    program.setSrcId(srcid);
+                    program.setStype(stype);
+                    program.setPnumber(pnumber);
+                    program.setPid(pid);
+                    program.setPname(pname);
+                    program.setPtype(ptype);
+                    program.setPurl(purl);
+                    program.setPimg(pimg);
+                    program.setDeviceSerialNumber(serialNumber);
+                    programService.insertSelective(program);
+                }
             }
         }
     }
 
-    private String getDeviceSerialNumber(String token){
+    private String getDeviceSerialNumber(String token) {
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
         Example example = new Example(DeviceAuthen.class);
-        example.createCriteria().andEqualTo("token",token);
+        example.createCriteria().andEqualTo("token", token);
         List<DeviceAuthen> dvList = deviceAuthenService.selectByExample(example);
         String serialNumber = null;
-        if(dvList != null && dvList.size() > 0){
+        if (dvList != null && dvList.size() > 0) {
             DeviceAuthen deviceAuthen = dvList.get(0);
             serialNumber = deviceAuthen.getSerialNumber();
         }
-        return  serialNumber;
+        return serialNumber;
     }
 
-    public String reportPrograms(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String reportPrograms(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
         boolean validation = true;
-        if(serialNumber != null){
-            parseReportProgram(postData,token,serialNumber);
+        if (serialNumber != null) {
+            parseReportProgram(postData, token, serialNumber);
         }
         //TODO
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
-        }else{
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
@@ -277,60 +335,60 @@ public class DeviceAPI {
         return object.toString();
     }
 
-    public String analysisv(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String analysisv(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
         JSONObject json = JSONObject.fromObject(postData);
         HelperUtils rj = new HelperUtils();
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String shock(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String shock(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
 
         JSONObject json = JSONObject.fromObject(postData);
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    private void parseScanFreq(String postData,String serialNumber){
+    private void parseScanFreq(String postData, String serialNumber) {
         JSONObject json = JSONObject.fromObject(postData);
         String scanEndedStr = json.getString("scan_ended");
-        boolean scanEnded = "1".equals(scanEndedStr)?true:false;
+        boolean scanEnded = "1".equals(scanEndedStr) ? true : false;
         String progressStr = json.getString("progress");
         int progress = Integer.parseInt(progressStr);
         String frqsNumStr = json.getString("frqs_num");
-        int frqsNum = frqsNumStr != null?Integer.parseInt(frqsNumStr):0;
+        int frqsNum = frqsNumStr != null ? Integer.parseInt(frqsNumStr) : 0;
 
 
         ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
-        if(scanFreqInfos == null){
+        if (scanFreqInfos == null) {
             scanFreqInfos = new ScanFreqInfos();
-            MemoryMap.add(serialNumber,scanFreqInfos);
+            MemoryMap.add(serialNumber, scanFreqInfos);
         }
         scanFreqInfos.setScanEnded(scanEnded);
         scanFreqInfos.setProgress(progress);
@@ -340,8 +398,8 @@ public class DeviceAPI {
         int size = freqsArray.size();
         List<Freq> freqList = new ArrayList<Freq>();
 
-        for(int i = 0;i<size;i++){
-            JSONObject freqObject =  (JSONObject)freqsArray.get(i);
+        for (int i = 0; i < size; i++) {
+            JSONObject freqObject = (JSONObject) freqsArray.get(i);
             String freq = freqObject.getString("frq");
             String strengthStr = freqObject.getString("strenght");
             String snrStr = freqObject.getString("snr");
@@ -358,8 +416,8 @@ public class DeviceAPI {
             int len = programsArray.size();
             List<ScanFreqProgram> fpList = new ArrayList<ScanFreqProgram>();
             freqObj.setProgramList(fpList);
-            for(int j=0 ;j<len ;j++){
-                JSONObject programObject =  (JSONObject)programsArray.get(j);
+            for (int j = 0; j < len; j++) {
+                JSONObject programObject = (JSONObject) programsArray.get(j);
                 String pid = programObject.getString("pid");
                 String name = programObject.getString("name");
                 String ca = programObject.getString("ca");
@@ -382,49 +440,49 @@ public class DeviceAPI {
         scanFreqInfos.setFreqList(freqList);
     }
 
-    public String scanFrq(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String scanFrq(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
         boolean validation = true;
-        if(serialNumber != null){
-            parseScanFreq(postData,serialNumber);
+        if (serialNumber != null) {
+            parseScanFreq(postData, serialNumber);
         }
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String setFrq(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String setFrq(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
         String serialNumber = getDeviceSerialNumber(token);
 
         String keyFreq = null;
         String keyPrograms = null;
-        JSONObject cmmd =  CommandMap.getCommand(serialNumber);
-        if(cmmd != null) {
-            keyFreq = (String)cmmd.get(HelperUtils.KEY_FRQ);
-            keyPrograms = (String)cmmd.get(HelperUtils.KEY_PROGRAMS);
+        JSONObject cmmd = CommandMap.getCommand(serialNumber);
+        if (cmmd != null) {
+            keyFreq = (String) cmmd.get(HelperUtils.KEY_FRQ);
+            keyPrograms = (String) cmmd.get(HelperUtils.KEY_PROGRAMS);
         }
         //TODO for Test
-        if(StringUtils.isEmpty(keyFreq))keyFreq = "626";
-        if(StringUtils.isEmpty(keyPrograms))keyPrograms = "1,3,5,7,9";
+        if (StringUtils.isEmpty(keyFreq)) keyFreq = "626";
+        if (StringUtils.isEmpty(keyPrograms)) keyPrograms = "1,3,5,7,9";
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
@@ -432,124 +490,132 @@ public class DeviceAPI {
         map.put(HelperUtils.KEY_FRQ, keyFreq);
         map.put(HelperUtils.KEY_PROGRAMS, keyPrograms);
 
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String updateAd(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String updateAd(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
 
         JSONObject json = JSONObject.fromObject(postData);
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String setAd(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String setAd(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
 
         JSONObject json = JSONObject.fromObject(postData);
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String remoteWatch(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String remoteWatch(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
 
         JSONObject json = JSONObject.fromObject(postData);
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String remoteCheck(HttpRequest request,String postData,List<NameValuePair> nvList) {
+    public String remoteCheck(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
 
         JSONObject json = JSONObject.fromObject(postData);
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    public String heartBeat(HttpRequest request,String postData,List<NameValuePair> nvList){
+    public String heartBeat(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
 
         //JSONObject json = JSONObject.fromObject(postData);
         //{"dstat":"0","line":"480","temper":"68","locked":"1","frq":"786000000","strength":"179","snr":"13","dprogs":"3","ndisks":"0","camers":"0","sessions":"0"}
         String serialNumber = getDeviceSerialNumber(token);
-        HeartBeatMap.add(serialNumber,postData);
+        HeartBeatMap.add(serialNumber, postData);
 
-        Map<String,Object> map  = new HashMap<String,Object>();
-        if(validation) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
-        }else {
+        } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
 
         //TODO 从CommandMap中获取
         JSONObject obj = CommandMap.getCommand(serialNumber);
-        String cmd = obj != null?obj.getString(HelperUtils.KEY_COMMAND):"";
-        if(HelperUtils.CMD_SCANFRQ.equals(cmd)){
+        String cmd = obj != null ? obj.getString(HelperUtils.KEY_COMMAND) : "";
+        if (HelperUtils.CMD_SCANFRQ.equals(cmd)) {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SCANFRQ);
-        }else if(HelperUtils.CMD_SETFRQ.equals(cmd)){
+        } else if (HelperUtils.CMD_SETFRQ.equals(cmd)) {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SETFRQ);
-        }else if(HelperUtils.CMD_SHOCK.equals(cmd)){
+        } else if (HelperUtils.CMD_SHOCK.equals(cmd)) {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SHOCK);
-        }else if(HelperUtils.CMD_REMOTEWATCH.equals(cmd)){
+        } else if (HelperUtils.CMD_REMOTEWATCH.equals(cmd)) {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_REMOTEWATCH);
-        }else if(HelperUtils.CMD_UPDATEAD.equals(cmd)){
+        } else if (HelperUtils.CMD_UPDATEAD.equals(cmd)) {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_UPDATEAD);
-        }else{
+        } else {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
         }
-
-        JSONObject jsonObject =  JSONObject.fromObject(map);
+        JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
+    }
+
+    public static void main(String[] args) {
+        String s = "";
+        if(StringUtils.isNotEmpty(s)) {
+            String[] tmps = s.split("/");
+            int k = tmps.length;
+            int m = 0;
+        }
     }
 }
