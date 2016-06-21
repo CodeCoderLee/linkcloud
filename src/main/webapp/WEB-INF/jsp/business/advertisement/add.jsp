@@ -22,7 +22,7 @@
                 </div>
                 <div class="card-body">
                     <form id="form" name="form" class="form-horizontal" method="post"
-                          action="${ctx}/deviceUseApply/add.shtml" enctype="multipart/form-data" >
+                          action="${ctx}/advertisement/add.shtml" enctype="multipart/form-data" >
                         <section class="panel panel-default">
                             <div class="panel-body">
                                 <div class="form-group">
@@ -159,4 +159,4 @@
     var rootPath = "${ctx}";
 </script>
 
-<script type="text/javascript" src="${ctx}/js/business/device/addUseApply.js"/>
+<script type="text/javascript" src="${ctx}/js/business/advertisement/add.js"/>

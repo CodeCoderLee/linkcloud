@@ -16,10 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +69,7 @@ public class AdvertisementController extends BaseController<Advertisement>{
     @ResponseBody
     @RequestMapping("add")
     @SystemLog(module = "广告管理", methods = "图文广告管理-添加图文广告")//凡需要处理业务逻辑的.都需要记录操作日志
-    public String add(Advertisement advertisement, HttpServletRequest request){
+    public String add(Advertisement advertisement, MultipartFile file, HttpServletRequest request){
         File uploadPath = new File(Common.BACKGROUND_PATH+"/upload");
         if(!uploadPath.exists()){
             uploadPath.mkdir();
@@ -79,7 +82,26 @@ public class AdvertisementController extends BaseController<Advertisement>{
         if(!finalPath.exists()){
             uploadPath.mkdir();
         }
-
+        // 获取图片的文件名
+        String fileName = file.getOriginalFilename();
+        // 获取图片的扩展名
+        String extensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
+        File uploadFile = new File(finalPath, file.getOriginalFilename());
+        try{
+            InputStream is = file.getInputStream();
+            FileOutputStream fos = new FileOutputStream(uploadFile);
+            byte[] tmp = new byte[1024];
+            int len = -1;
+            while ((len = is.read(tmp)) != -1) {
+                fos.write(tmp, 0, len);
+            }
+            is.close();
+            fos.flush();
+            fos.close();
+            System.out.println("文件上传从成功：" + uploadFile.getParent());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
 
