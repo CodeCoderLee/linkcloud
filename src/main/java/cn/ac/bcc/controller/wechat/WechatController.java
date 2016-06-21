@@ -155,6 +155,14 @@ public class WechatController {
         //TODO 普通权限的用户仅能进入前台页面
         //return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
         model.addAttribute("openId",user.getOpenId());
+        String type = request.getParameter("type");
+        if (!Common.isEmpty(type)) {
+            if (type.equals("1")) {
+                return Common.BACKGROUND_PATH + "/wechat/index";
+            } else if (type.equals("2")) {
+                return "redirect:/index.shtml";
+            }
+        }
         return Common.BACKGROUND_PATH + "/wechat/index";
     }
 
