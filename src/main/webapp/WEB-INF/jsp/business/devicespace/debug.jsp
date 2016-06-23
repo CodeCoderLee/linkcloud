@@ -61,24 +61,7 @@
         </a> -->
     </div>
 </div>
- <div class="mobile-main">
-   <!-- <form class="mobile-search">
-     <input type="search" placeholder="请输入你要查找的视频"/>
-   </form> -->
-   <div class="mobile-sliderWrapper">
-   <div data-am-widget="slider" class="mobile-slider am-slider am-slider-c2" data-am-slider='{"directionNav":false}' >
-    <ul class="am-slides">
-        <li>
-            <img src="http://i0.letvimg.com/lc04_iscms/201605/08/00/16/8040034b659f49888ac9aab9f985f94b.jpg">
-            <div class="am-slider-desc">欢乐颂</div>
-        </li>
-        <li>
-            <img src="http://i0.letvimg.com/lc04_iscms/201605/08/00/16/8040034b659f49888ac9aab9f985f94b.jpg">
-            <div class="am-slider-desc">欢乐颂</div>
-        </li>
-    </ul>
-  </div>
-</div>
+
 
                  <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
                      <h2 class="am-titlebar-title ">
