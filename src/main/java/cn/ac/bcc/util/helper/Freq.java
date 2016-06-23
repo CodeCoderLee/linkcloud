@@ -1,4 +1,4 @@
-package cn.ac.bcc.model.helper;
+package cn.ac.bcc.util.helper;
 
 import java.util.List;
 

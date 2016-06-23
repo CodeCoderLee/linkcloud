@@ -4,6 +4,8 @@ package cn.ac.bcc.util;
  * Created by lenovo on 2016-05-23.
  */
 public class HelperUtils {
+    public static final Integer ON_LINE = 1;
+    public static final Integer OFF_LINE = 0;
     public static final String KEY_TIME = "time";
     public static final String KEY_TOKEN = "token";
 
@@ -47,8 +49,15 @@ public class HelperUtils {
     public static final String KEY_RP_PURL = "purl";                //表示流媒体服务的本地连接地址，用于播放
     public static final String KEY_RP_PIMG = "pimg";                //直播节目缩略图
 
-    public static final String RESULT_FAIL = "1";                        //失败
-    public static final String RESULT_SUCCESS = "0";                     //成功
+    public static final String KEY_VER_VERSION_B = "version_b";     //表示引导模块的版本号，如果云端没有升级程序，则为空。
+    public static final String KEY_VER_URL_B = "url_b";              //表示引导模块下载地址, 空为无效
+    public static final String KEY_VER_VERSION_S = "version_s";     //表示流媒体模块的版本号，如果云端没有升级程序，则为空。
+    public static final String KEY_VER_URL_S = "url_s";              //表示流媒体模块下载地址, 空为无效
+    public static final String KEY_VER_VERSION_T = "version_t";     //表示转码模块的版本号，如果云端没有升级程序，则为空。
+    public static final String KEY_VER_URL_T = "url_t";              //表示转码模块下载地址, 空为无效。
+
+    public static final String RESULT_FAIL = "1";                     //失败
+    public static final String RESULT_SUCCESS = "0";                  //成功
 
     public static final String CMD_NOTHING = "nothing";
     public static final String CMD_SHOCK = "shock";

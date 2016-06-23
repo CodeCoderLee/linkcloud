@@ -28,6 +28,17 @@ public class DeviceAuthen {
 
     private String token;
 
+    @Column(name="on_off_line")
+    private Integer onOffLine;
+
+    public Integer getOnOffLine() {
+        return onOffLine;
+    }
+
+    public void setOnOffLine(Integer onOffLine) {
+        this.onOffLine = onOffLine;
+    }
+
     /**
      * @return id
      */

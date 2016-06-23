@@ -61,6 +61,9 @@ public class Device {
     @Column(name = "area_id")
     private Integer areaId;
 
+    @Column(name="on_off_line")
+    private Integer onOffLine;
+
     /**
      * 调试账户
      */
@@ -72,6 +75,7 @@ public class Device {
 
     @Column(name = "program_ids")
     private String programIds;
+
 
     @Transient
     private String registerName;
@@ -278,5 +282,13 @@ public class Device {
 
     public void setProgramIds(String programIds) {
         this.programIds = programIds;
+    }
+
+    public Integer getOnOffLine() {
+        return onOffLine;
+    }
+
+    public void setOnOffLine(Integer onOffLine) {
+        this.onOffLine = onOffLine;
     }
 }

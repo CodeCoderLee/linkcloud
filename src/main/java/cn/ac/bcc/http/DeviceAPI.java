@@ -1,10 +1,8 @@
 package cn.ac.bcc.http;
 
-import cn.ac.bcc.model.business.Device;
-import cn.ac.bcc.model.business.DeviceAuthen;
-import cn.ac.bcc.model.business.Program;
-import cn.ac.bcc.model.business.ProgramNetDisk;
-import cn.ac.bcc.model.helper.*;
+import cn.ac.bcc.model.business.*;
+import cn.ac.bcc.service.business.version.VersionService;
+import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.service.business.program.ProgramNetDiskService;
@@ -49,6 +47,7 @@ public class DeviceAPI {
     public static final String URI_REMOTEWATCH = "/device/remotewatch.shtml";
     public static final String URI_REMOTECHECK = "/device/remotecheck.shtml";
     public static final String URI_HEARTBEAT = "/device/heartbeat.shtml";
+    public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
@@ -77,8 +76,8 @@ public class DeviceAPI {
         uri = uri.toLowerCase();
         if (uri.contains(URI_LINKHELLO)) {
             UUID uuid = UUID.randomUUID();
-            token = uuid.toString();
-//            token = "9acd5102-b150-45fc-afad-331bb51d6b79";
+            //token = uuid.toString();
+            token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
             sessionID = ServerCookieEncoder.encode("PHPSESSID", token);
             jsonStr = linkHello(request, postData, nvList, token);
         } else if (uri.contains(URI_AUTHEN)) {
@@ -103,6 +102,8 @@ public class DeviceAPI {
             jsonStr = shock(request, postData, nvList);
         } else if (uri.contains(URI_HEARTBEAT)) {
             jsonStr = heartBeat(request, postData, nvList);
+        }else if(uri.contains(URI_GETUPDATEINFO)){
+            jsonStr = getUpdateInfo(request,postData,nvList);
         }
 
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(jsonStr.getBytes("UTF-8")));
@@ -149,11 +150,14 @@ public class DeviceAPI {
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
         DeviceService deviceService = ctx.getBean(DeviceService.class);
 
+
         //TODO 还没有判断是否进行了设备注册操作，检查bcc_device设备表中
         JSONObject json = JSONObject.fromObject(postData);
         DeviceAuthen deviceAuthen = new DeviceAuthen();
         deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
+
+        TokenNumMap.add(token,json.getString(HelperUtils.KEY_ID));
 
         Device device = new Device();
         device.setSerialNumber(json.getString(HelperUtils.KEY_ID));
@@ -163,6 +167,8 @@ public class DeviceAPI {
         if (device != null) {
             frq = device.getWorkFrequency();
             programIds = device.getProgramIds();
+            device.setOnOffLine(HelperUtils.ON_LINE);
+            deviceService.updateByPrimaryKeySelective(device);
         }
         boolean validation = true;
         boolean update = true;
@@ -179,6 +185,7 @@ public class DeviceAPI {
         deviceAuthen.setVersion1(json.getString(HelperUtils.KEY_VERSION_S));
         deviceAuthen.setVersion2(json.getString(HelperUtils.KEY_VERSION_T));
         deviceAuthen.setToken(token);
+        deviceAuthen.setOnOffLine(HelperUtils.ON_LINE);
         if (update) {
             deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
         } else {
@@ -196,6 +203,8 @@ public class DeviceAPI {
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
         map.put(HelperUtils.KEY_FRQ, frq);
         map.put(HelperUtils.KEY_PROGRAMS, programIds);
+
+        System.out.print("on-line");
 
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
@@ -302,15 +311,7 @@ public class DeviceAPI {
     }
 
     private String getDeviceSerialNumber(String token) {
-        DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
-        Example example = new Example(DeviceAuthen.class);
-        example.createCriteria().andEqualTo("token", token);
-        List<DeviceAuthen> dvList = deviceAuthenService.selectByExample(example);
-        String serialNumber = null;
-        if (dvList != null && dvList.size() > 0) {
-            DeviceAuthen deviceAuthen = dvList.get(0);
-            serialNumber = deviceAuthen.getSerialNumber();
-        }
+        String serialNumber = TokenNumMap.get(token);
         return serialNumber;
     }
 
@@ -333,6 +334,67 @@ public class DeviceAPI {
 
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
+    }
+
+    public String getUpdateInfo(HttpRequest request,String postData,List<NameValuePair> nvList){
+        boolean validation = true;
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
+        } else {
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
+        }
+        map.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_NOTHING);
+
+        VersionService versionService = ctx.getBean(VersionService.class);
+        Example example = new Example(Version.class);
+        example.createCriteria().andEqualTo("type",1);//引导模块
+        example.setOrderByClause("id desc");
+        List<Version> versionList = versionService.selectByExample(example);
+        Version version = getVersion(versionList);
+        if(version == null) {
+            map.put(HelperUtils.KEY_VER_VERSION_B, "");
+            map.put(HelperUtils.KEY_VER_URL_B, "");
+        }else{
+            map.put(HelperUtils.KEY_VER_VERSION_B, version.getVersion());
+            map.put(HelperUtils.KEY_VER_URL_B, version.getUrl());
+        }
+
+        example = new Example(Version.class);
+        example.createCriteria().andEqualTo("type",2);//转码模块
+        example.setOrderByClause("id desc");
+        versionList = versionService.selectByExample(example);
+        version = getVersion(versionList);
+        if(version == null) {
+            map.put(HelperUtils.KEY_VER_VERSION_T,"");
+            map.put(HelperUtils.KEY_VER_URL_T,"");
+        }else{
+            map.put(HelperUtils.KEY_VER_VERSION_T, version.getVersion());
+            map.put(HelperUtils.KEY_VER_URL_T, version.getUrl());
+        }
+
+
+        example = new Example(Version.class);
+        example.createCriteria().andEqualTo("type",3);//流媒体模块
+        example.setOrderByClause("id desc");
+        versionList = versionService.selectByExample(example);
+        version = getVersion(versionList);
+        if(version == null) {
+            map.put(HelperUtils.KEY_VER_VERSION_S,"");
+            map.put(HelperUtils.KEY_VER_URL_S,"");
+        }else{
+            map.put(HelperUtils.KEY_VER_VERSION_S, version.getVersion());
+            map.put(HelperUtils.KEY_VER_URL_S, version.getUrl());
+        }
+
+        JSONObject jsonObject = JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
+    private Version getVersion(List<Version> list){
+        return list != null && list.size() > 0?list.get(0):null;
     }
 
     public String analysisv(HttpRequest request, String postData, List<NameValuePair> nvList) {
@@ -575,10 +637,14 @@ public class DeviceAPI {
     public String heartBeat(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
+        long currentTime = System.currentTimeMillis();
 
-        //JSONObject json = JSONObject.fromObject(postData);
+        JSONObject json = JSONObject.fromObject(postData);
+        json.put("time",currentTime);
+        postData = json.toString();
         //{"dstat":"0","line":"480","temper":"68","locked":"1","frq":"786000000","strength":"179","snr":"13","dprogs":"3","ndisks":"0","camers":"0","sessions":"0"}
         String serialNumber = getDeviceSerialNumber(token);
+        long oldTime = HeartBeatMap.getTimestamp(serialNumber);
         HeartBeatMap.add(serialNumber, postData);
 
         Map<String, Object> map = new HashMap<String, Object>();

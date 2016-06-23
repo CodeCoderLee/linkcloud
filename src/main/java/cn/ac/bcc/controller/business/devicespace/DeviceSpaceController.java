@@ -58,19 +58,55 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @Autowired
     private DeviceService deviceService;
 
+    private final int PAGE_SIZE = 10;
+    private final int SHOW_STATUS = 3;
+    private final int DEBUG_STATUS = 1;
     private static Log log = LogFactory.getLog(DeviceSpaceController.class);
+
+    @RequestMapping(value = "debug", produces = "text/html; charset=utf-8")
+    public String debug(Model mode,String openId,String type, Integer pageNum){
+        boolean hasRole = false;
+        if(openId != null){
+            User user = new User();
+            /*通过openId获取user信息*/
+            user.setAccountname(openId);
+            user = userService.selectOne(user);
+            if(user != null){
+                Integer userId = user.getId();
+                UserRole userRole = new UserRole();
+                userRole.setUserid(userId);
+                List<UserRole> urList = userRoleService.select(userRole);
+                if(urList != null && urList.size() > 0){
+                    hasRole = true;
+                }
+            }
+        }
+        Device device = new Device();
+        ResponseData rd = searchByPage(device,pageNum,DEBUG_STATUS);
+        mode.addAttribute("rd",rd);
+        mode.addAttribute("openId",openId);
+        mode.addAttribute("hasRole",hasRole);
+        mode.addAttribute("type",type);
+        return Common.BACKGROUND_PATH + "/business/devicespace/debug";
+    }
+
+    @RequestMapping(value = "debugList", produces = "text/html; charset=utf-8")
+    @ResponseBody
+    public ResponseData debugList(Device device,Integer pageNum){
+        return searchByPage(device, pageNum,DEBUG_STATUS);
+    }
 
     @RequestMapping(value = "showList", produces = "text/html; charset=utf-8")
     @ResponseBody
     public ResponseData showList(Device device,Integer pageNum){
-        return searchByPage(device, pageNum);
+        return searchByPage(device, pageNum,SHOW_STATUS);
     }
 
-    private ResponseData searchByPage(Device device, Integer pageNum) {
-        int pageSize = 3;
+    private ResponseData searchByPage(Device device, Integer pageNum,int status) {
+        int pageSize = PAGE_SIZE;
         if(pageNum == null)pageNum = 1;
         Integer userId = Common.findUserSessionId(getRequest());
-        device.setStatus(3);
+        device.setStatus(status);
 //        device.setRegisterAccount(userId);
 //        device.setDebugAccount(userId);
         PageHelper.startPage(pageNum, pageSize);
@@ -105,7 +141,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
             }
         }
         Device device = new Device();
-        ResponseData rd = searchByPage(device,pageNum);
+        ResponseData rd = searchByPage(device,pageNum,SHOW_STATUS);
         mode.addAttribute("rd",rd);
         mode.addAttribute("openId",openId);
         mode.addAttribute("hasRole",hasRole);

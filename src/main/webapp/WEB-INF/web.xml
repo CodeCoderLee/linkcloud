@@ -21,6 +21,10 @@
 		<listener-class>cn.ac.bcc.http.HttpServerListener</listener-class>
 	</listener>
 	<listener>
+		<listener-class>cn.ac.bcc.http.StatusListener</listener-class>
+	</listener>
+
+	<listener>
 	        <listener-class>  
 	            org.springframework.web.context.request.RequestContextListener  
 	        </listener-class>  

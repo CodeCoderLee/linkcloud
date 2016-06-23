@@ -19,15 +19,16 @@ public class DeviceService extends BaseService<Device> {
     private DeviceMapper deviceMapper;
 
     public List<Device> selectDebugDevice(Device device){
-
         return deviceMapper.selectDebugDevice(device);
     }
 
     public int updateStatusByNum(String serialNumber,int status, int areaId){
-
         return deviceMapper.updateStatusByNum(serialNumber,status, areaId);
     }
 
+    public int updateOnOffLineByNum(String serialNumber,Integer onOffLine){
+        return deviceMapper.updateOnOffLineByNum(serialNumber,onOffLine);
+    }
 
     public List<Device> selectSettingDevice(Integer userId, Device device) {
         return deviceMapper.selectSettingDevice(userId, device);

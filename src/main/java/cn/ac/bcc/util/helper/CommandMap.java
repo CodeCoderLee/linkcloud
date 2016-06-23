@@ -1,6 +1,5 @@
-package cn.ac.bcc.model.helper;
+package cn.ac.bcc.util.helper;
 
-import cn.ac.bcc.util.HelperUtils;
 import net.sf.json.JSONObject;
 
 import java.util.*;

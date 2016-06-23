@@ -16,4 +16,9 @@
     <result column="version2" property="version2" jdbcType="VARCHAR" />
     <result column="token" property="token" jdbcType="VARCHAR" />
   </resultMap>
+
+  <update id="updateOnOffLineByNum">
+    update bcc_device_authen d SET d.on_off_line = #{onOffLine}
+    where d.serial_number = #{serialNumber}
+  </update>
 </mapper>

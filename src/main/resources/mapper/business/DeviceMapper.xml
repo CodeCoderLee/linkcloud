@@ -17,6 +17,7 @@
         <result column="debug_account" jdbcType="INTEGER" property="debugAccount"/>
         <result column="work_frequency" jdbcType="VARCHAR" property="workFrequency"/>
         <result column="program_ids" jdbcType="VARCHAR" property="programIds"/>
+        <result column="on_off_line" jdbcType="INTEGER" property="onOffLine"/>
     </resultMap>
 
     <select id="selectDebugDevice" resultType="cn.ac.bcc.model.business.Device"
@@ -59,6 +60,11 @@
     </select>
     <update id="updateStatusByNum">
         update BCC_DEVICE d SET d.STATUS = #{status}, d.area_id = #{areaId}
+        where d.serial_number = #{serialNumber}
+    </update>
+
+    <update id="updateOnOffLineByNum">
+        update BCC_DEVICE d SET d.on_off_line = #{onOffLine}
         where d.serial_number = #{serialNumber}
     </update>
 
