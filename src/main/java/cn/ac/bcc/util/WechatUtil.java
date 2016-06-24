@@ -15,10 +15,10 @@ import java.util.List;
  * Created by bcc on 16/4/17.
  */
 public class WechatUtil {
-    private static final String APP_ID = "wxe98ab8ed7aa9d5fd";
-    private static final String APP_SECRET = "6f552046c2b55b9da5287c4a410afb57";
-    //    private static final String APP_ID = "wx17d50b2c25786690";
-//    private static final String APP_SECRET = "d237d3fc0ecd175ee1d3a0bdb6adda9d";
+//    private static final String APP_ID = "wxe98ab8ed7aa9d5fd";
+//    private static final String APP_SECRET = "6f552046c2b55b9da5287c4a410afb57";
+    private static final String APP_ID = "wx17d50b2c25786690";
+    private static final String APP_SECRET = "d237d3fc0ecd175ee1d3a0bdb6adda9d";
     private static final String GET_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token";
     private static final String MENU_CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create";
     private static final String GET_USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info";
@@ -31,6 +31,10 @@ public class WechatUtil {
 //    private static final String PERSONAL_SPACE_REDIRECT_URL = "http://linkcloud.tunnel.qydev.com/wechat/getOpenId.shtml?type=2";
     private static final String GET_OAUTH_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token";
     private static final String GET_OAUTH_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo";
+
+    public static String getAppId(){
+        return APP_ID;
+    }
 
     public static String getAccessToken() {
         HttpResponse response = HttpRequest.get(GET_ACCESS_TOKEN_URL)
