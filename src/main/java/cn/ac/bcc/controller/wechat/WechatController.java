@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +53,7 @@ public class WechatController {
 
     public static boolean flag = true;
 
+    private final String domain = "http://bccac.tunnel.qydev.com/";
 
     /*验证微信接口*/
     @RequestMapping(value = "token", method = RequestMethod.GET)
@@ -70,6 +73,16 @@ public class WechatController {
                 e.printStackTrace();
             }
         }
+    }
+
+    @RequestMapping(value = "authen",method = RequestMethod.GET)
+    public String authen(HttpServletRequest request,Model model,String uri) throws UnsupportedEncodingException {
+        StringBuilder url = new StringBuilder();
+        url.append("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx17d50b2c25786690&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+        url.append("&redirect_uri=");//http%3a%2f%2flinkcloud.tunnel.qydev.com%2fwechat%2findex.shtml%3furl%3d%2findex
+        url.append(URLEncoder.encode(domain,"utf-8"));
+        url.append(URLEncoder.encode("wechat/index.shtml?url=","utf-8")).append(URLEncoder.encode(uri,"utf-8")).append(".shtml");
+        return "redirect:" + url;
     }
 
     /**

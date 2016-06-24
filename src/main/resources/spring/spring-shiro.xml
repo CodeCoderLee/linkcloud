@@ -98,6 +98,8 @@
                 /ws/** = anon
                 /wechat/token.shtml = anon
                 /wechat/getOpenId.shtml = anon
+                /wechat/index.shtml = anon
+                /wechat/authen.shtml = anon
             </value>
         </property>
     </bean>
