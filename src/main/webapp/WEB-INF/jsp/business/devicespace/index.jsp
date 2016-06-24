@@ -156,7 +156,7 @@
     <c:if test="${entry.key eq 'camera' and not empty(map[entry.key])}">
     <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header">
         <h2 class="am-titlebar-title ">
-            远程监控
+            摄像头
         </h2>
         <nav class="am-titlebar-nav">
             <a href="${ctx}/space/device/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="">更多</a>

@@ -152,7 +152,6 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "device/{serialNumber}", produces = "text/html; charset=utf-8")
     public String index(@PathVariable String serialNumber,String openId,String type,Model mode){
         log.info("openId:::" + openId);
-
         boolean hasRole = false;
         if(openId != null){
             User user = new User();
