@@ -49,6 +49,8 @@ public class DeviceAPI {
     public static final String URI_HEARTBEAT = "/device/heartbeat.shtml";
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
+    public static final String DOMAIN = "http://linkcloud.tunnel.qydev.com";
+
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
 
@@ -359,7 +361,7 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_VER_URL_B, "");
         }else{
             map.put(HelperUtils.KEY_VER_VERSION_B, version.getVersion());
-            map.put(HelperUtils.KEY_VER_URL_B, version.getUrl());
+            map.put(HelperUtils.KEY_VER_URL_B, DeviceAPI.DOMAIN +version.getUrl());
         }
 
         example = new Example(Version.class);
@@ -372,7 +374,7 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_VER_URL_T,"");
         }else{
             map.put(HelperUtils.KEY_VER_VERSION_T, version.getVersion());
-            map.put(HelperUtils.KEY_VER_URL_T, version.getUrl());
+            map.put(HelperUtils.KEY_VER_URL_T, DeviceAPI.DOMAIN +version.getUrl());
         }
 
 
@@ -386,7 +388,7 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_VER_URL_S,"");
         }else{
             map.put(HelperUtils.KEY_VER_VERSION_S, version.getVersion());
-            map.put(HelperUtils.KEY_VER_URL_S, version.getUrl());
+            map.put(HelperUtils.KEY_VER_URL_S, DeviceAPI.DOMAIN +version.getUrl());
         }
 
         JSONObject jsonObject = JSONObject.fromObject(map);
