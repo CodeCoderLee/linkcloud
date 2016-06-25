@@ -9,7 +9,7 @@ $(function () {
 
     $('#closeBtn').click(function () {
         alert($('#entrance'));
-            $("#content").load(rootPath + "/device/list.shtml");
+            $("#content").load(rootPath + "/version/list.shtml");
     });
     $('#form').validate({
         submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
@@ -18,7 +18,7 @@ $(function () {
                 dataType: "json",
                 success: function (data) {
                     notify('success', '     版本信息添加成功      ');
-                        $("#content").load(rootPath + "/device/list.shtml");
+                        $("#content").load(rootPath + "/version/list.shtml");
                 },
                 error: function (XMLResponse) {
                     alert(XMLResponse.responseText);
