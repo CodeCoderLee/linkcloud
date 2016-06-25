@@ -40,6 +40,9 @@ public class Version {
     @Column(name = "add_time")
     private Date addTime;
 
+    @Column(name = "file_path")
+    private String filePath;
+
     /**
      * @return id
      */
@@ -142,5 +145,19 @@ public class Version {
      */
     public void setAddTime(Date addTime) {
         this.addTime = addTime;
+    }
+
+    /**
+     * @return file_path
+     */
+    public String getFilePath() {
+        return filePath;
+    }
+
+    /**
+     * @param filePath
+     */
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
