@@ -78,7 +78,7 @@ public class WechatController {
     @RequestMapping(value = "authen",method = RequestMethod.GET)
     public String authen(HttpServletRequest request,Model model,String uri) throws UnsupportedEncodingException {
         StringBuilder url = new StringBuilder();
-        url.append("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx17d50b2c25786690");
+        url.append("https://open.weixin.qq.com/connect/oauth2/authorize?appid=").append(WechatUtil.getAppId());
         url.append("&redirect_uri=");//http%3a%2f%2flinkcloud.tunnel.qydev.com%2fwechat%2findex.shtml%3furl%3d%2findex
         url.append(URLEncoder.encode(domain,"utf-8"));
         url.append(URLEncoder.encode("/wechat/index.shtml?url=","utf-8")).append(URLEncoder.encode(uri,"utf-8"));
