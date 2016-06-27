@@ -6,6 +6,8 @@ import cn.ac.bcc.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by bcc on 16/6/21.
  */
@@ -13,4 +15,8 @@ import org.springframework.stereotype.Service;
 public class VersionService extends BaseService<Version> {
     @Autowired
     private VersionMapper versionMapper;
+
+    public List<Version> searchVersionList(){
+        return versionMapper.searchVersionList();
+    }
 }

@@ -6,7 +6,6 @@
 $(function () {
     onLoadUrl();
 
-
     $('#closeBtn').click(function () {
         alert($('#entrance'));
             $("#content").load(rootPath + "/version/list.shtml");
@@ -57,4 +56,8 @@ $(function () {
             $(".alert-danger").addClass("hidden");
         }
     });
+    
+    // $.ajax({
+    //     url:rooPath
+    // });
 });

@@ -43,6 +43,12 @@ public class Version {
     @Column(name = "file_path")
     private String filePath;
 
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Transient
+    private String modelName;
+
     /**
      * @return id
      */
@@ -159,5 +165,21 @@ public class Version {
      */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
     }
 }

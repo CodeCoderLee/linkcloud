@@ -12,5 +12,9 @@
     <result column="version" jdbcType="VARCHAR" property="version" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
   </resultMap>
+  <select id="searchVersionList" resultType="cn.ac.bcc.model.business.Version">
+     select t1.*,t2.value modelName from bcc_version t1 left join bcc_dictionary t2 on t1.type = t2.`key` and t2.tag = 'VT' order by type asc ,id desc
+  </select>
 </mapper>
