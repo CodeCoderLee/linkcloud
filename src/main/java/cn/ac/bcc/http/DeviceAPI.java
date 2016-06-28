@@ -1,6 +1,7 @@
 package cn.ac.bcc.http;
 
 import cn.ac.bcc.model.business.*;
+import cn.ac.bcc.service.business.device.DeviceUpdateService;
 import cn.ac.bcc.service.business.version.VersionService;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
@@ -49,7 +50,8 @@ public class DeviceAPI {
     public static final String URI_HEARTBEAT = "/device/heartbeat.shtml";
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
-    public static final String DOMAIN = "http://linkcloud.tunnel.qydev.com";
+    //public static final String DOMAIN = "http://linkcloud.tunnel.qydev.com";
+    public static final String DOMAIN = "http://101.201.38.228:8000";
 
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
@@ -339,6 +341,8 @@ public class DeviceAPI {
     }
 
     public String getUpdateInfo(HttpRequest request,String postData,List<NameValuePair> nvList){
+        String token = getCookieValue(request);
+        String serialNumber = getDeviceSerialNumber(token);
         boolean validation = true;
         Map<String, Object> map = new HashMap<String, Object>();
         if (validation) {
@@ -350,52 +354,57 @@ public class DeviceAPI {
         }
         map.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_NOTHING);
 
-        VersionService versionService = ctx.getBean(VersionService.class);
-        Example example = new Example(Version.class);
-        example.createCriteria().andEqualTo("type",1);//引导模块
+        DeviceUpdateService deviceUpdateService  = ctx.getBean(DeviceUpdateService.class);
+        Example example = new Example(DeviceUpdate.class);
+        example.createCriteria().andEqualTo("serialNumber",serialNumber).andEqualTo("isUpdate",0);
         example.setOrderByClause("id desc");
-        List<Version> versionList = versionService.selectByExample(example);
-        Version version = getVersion(versionList);
-        if(version == null) {
+        List<DeviceUpdate> versionList = deviceUpdateService.selectByExample(example);
+        DeviceUpdate update = getUpdateVersion(versionList);
+        if(update == null) {
             map.put(HelperUtils.KEY_VER_VERSION_B, "");
             map.put(HelperUtils.KEY_VER_URL_B, "");
         }else{
-            map.put(HelperUtils.KEY_VER_VERSION_B, version.getVersion());
-            map.put(HelperUtils.KEY_VER_URL_B, DeviceAPI.DOMAIN +version.getUrl());
+            update.setIsUpdate(1); //标记为已处理
+            deviceUpdateService.updateByPrimaryKeySelective(update);
+
+            String updateInfo = update.getUpdateInfo();
+            JSONObject obj = JSONObject.fromObject(updateInfo);
+            JSONArray array = obj.getJSONArray("version");
+            for(int i = 0;i<array.size();i++){
+                JSONObject jobj = array.getJSONObject(i);
+//                jobj.getString("id");
+//                jobj.getString("name");
+                String url = jobj.getString("url");
+                String type = jobj.getString("type");
+                String version = jobj.getString("version");
+//                jobj.getString("fileName");
+//                jobj.getString("modelName");
+                int type0 = Integer.parseInt(type);
+                switch (type0){
+                    case 1:
+                        //引导模块
+                        map.put(HelperUtils.KEY_VER_VERSION_B, version);
+                        map.put(HelperUtils.KEY_VER_URL_B, DeviceAPI.DOMAIN + url);
+                        break;
+                    case 2:
+                        //转码模块
+                        map.put(HelperUtils.KEY_VER_VERSION_T, version);
+                        map.put(HelperUtils.KEY_VER_URL_T, DeviceAPI.DOMAIN + url);
+                        break;
+                    case 3:
+                        //流媒体模块
+                        map.put(HelperUtils.KEY_VER_VERSION_S, version);
+                        map.put(HelperUtils.KEY_VER_URL_S, DeviceAPI.DOMAIN + url);
+                        break;
+                }
+            }
+
         }
-
-        example = new Example(Version.class);
-        example.createCriteria().andEqualTo("type",2);//转码模块
-        example.setOrderByClause("id desc");
-        versionList = versionService.selectByExample(example);
-        version = getVersion(versionList);
-        if(version == null) {
-            map.put(HelperUtils.KEY_VER_VERSION_T,"");
-            map.put(HelperUtils.KEY_VER_URL_T,"");
-        }else{
-            map.put(HelperUtils.KEY_VER_VERSION_T, version.getVersion());
-            map.put(HelperUtils.KEY_VER_URL_T, DeviceAPI.DOMAIN +version.getUrl());
-        }
-
-
-        example = new Example(Version.class);
-        example.createCriteria().andEqualTo("type",3);//流媒体模块
-        example.setOrderByClause("id desc");
-        versionList = versionService.selectByExample(example);
-        version = getVersion(versionList);
-        if(version == null) {
-            map.put(HelperUtils.KEY_VER_VERSION_S,"");
-            map.put(HelperUtils.KEY_VER_URL_S,"");
-        }else{
-            map.put(HelperUtils.KEY_VER_VERSION_S, version.getVersion());
-            map.put(HelperUtils.KEY_VER_URL_S, DeviceAPI.DOMAIN +version.getUrl());
-        }
-
         JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
-    private Version getVersion(List<Version> list){
+    private DeviceUpdate getUpdateVersion(List<DeviceUpdate> list){
         return list != null && list.size() > 0?list.get(0):null;
     }
 
@@ -671,6 +680,8 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_REMOTEWATCH);
         } else if (HelperUtils.CMD_UPDATEAD.equals(cmd)) {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_UPDATEAD);
+        } else if(HelperUtils.CMD_UPDATE_VERSION.equals(cmd)){
+            map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_UPDATE_VERSION);
         } else {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
         }

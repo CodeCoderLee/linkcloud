@@ -6,7 +6,9 @@ import cn.ac.bcc.model.business.DeviceUseApply;
 import cn.ac.bcc.model.business.Version;
 import cn.ac.bcc.service.business.device.DeviceUpdateService;
 import cn.ac.bcc.util.Common;
+import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.ResponseData;
+import cn.ac.bcc.util.helper.CommandMap;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
@@ -57,7 +59,7 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
 
     @ResponseBody
     @RequestMapping("updateDeviceVersion")
-    public String updateDeviceVersion(String serialNumbers, String versions){
+    public String updateDeviceVersion(String serialNumbers, String versions) throws InterruptedException {
         String[] serialNumber = serialNumbers.split(",");
         String[] version = versions.split(",");
         JSONArray jsonArray = new JSONArray();
@@ -75,6 +77,11 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
 
         }
         for (int i= 0;i<serialNumber.length;i++) {
+            //心跳包下发指令
+            JSONObject object = new JSONObject();
+            object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATE_VERSION);
+            CommandMap.addCommand(serialNumber[i],object);
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serialNumber", serialNumber[i]);
             jsonObject.put("updateTime", new Date().getTime());
@@ -86,10 +93,12 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
                 //更新
                 deviceUpdate.setUpdateInfo(jsonObject.toString());
                 deviceUpdate.setId(list.get(0).getId());
+                deviceUpdate.setIsUpdate(0);
                 deviceUpdateService.updateByPrimaryKeySelective(deviceUpdate);
             } else {
                 //插入
                 deviceUpdate.setUpdateInfo(jsonObject.toString());
+                deviceUpdate.setIsUpdate(0);
                 deviceUpdateService.insert(deviceUpdate);
             }
         }

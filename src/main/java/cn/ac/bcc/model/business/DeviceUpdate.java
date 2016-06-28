@@ -17,6 +17,17 @@ public class DeviceUpdate {
     @Column(name = "update_info")
     private String updateInfo;
 
+    @Column(name = "is_update")
+    private Integer isUpdate;
+
+    public Integer getIsUpdate() {
+        return isUpdate;
+    }
+
+    public void setIsUpdate(Integer isUpdate) {
+        this.isUpdate = isUpdate;
+    }
+
     /**
      * @return id
      */
