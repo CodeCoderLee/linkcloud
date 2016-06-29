@@ -64,7 +64,7 @@
   <%--</video>--%>
     <video width="100%" height="360" controls="" autoplay="">
       <!-- MP4 must be first for iPad! -->
-      <source src="${program.purl}" type="video/mp4"><!-- Safari / iOS, IE9 -->
+      <%--<source src="${program.purl}" type="video/mp4"><!-- Safari / iOS, IE9 -->--%>
     </video>
   <div class="mobile-getComment">
     <form method="post" id="commentForm">
@@ -156,17 +156,74 @@
 <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
-<script charset="utf-8" src="${ctx}/assets/js/video.js/video.js"></script>
-<script charset="utf-8" src="${ctx}/assets/js/video.js/videojs-contrib-hls.min.js"></script>
+<%--<script charset="utf-8" src="${ctx}/assets/js/video.js/video.js"></script>--%>
+<%--<script charset="utf-8" src="${ctx}/assets/js/video.js/videojs-contrib-hls.min.js"></script>--%>
 <script charset="utf-8" src="${ctx}/assets/js/business/comment.js"></script>
 <script>
-  videojs.options.flash.swf = "${ctx}/assets/js/video.js/video-js.swf";
-  var player = videojs('play-video');
-  player.play();
-
   var commentMoreUrl = '${ctx}/space/commentList.shtml';
   var pageNum = ${responseData.pageNum};
   var videoId = ${program.id};
-</script>
+
+  var source_url = '${program.purl}';
+  var ad_url = 'http://${ip_address}/service/getad';
+  var playList = ['', source_url];
+  var playListLen = playList.length;
+  var playIndex = 0;
+
+  var video = document.getElementsByTagName('video')[0];
+  video.addEventListener('ended', play);
+
+  ajax({
+    url: ad_url,
+    data: {},
+    success: function (a) {
+      var json_obj = JSON.parse(a);
+      playList[0] = json_obj.url;
+
+      play();
+    },
+    fail: function (a) {
+      playIndex++;
+      playNext();
+    }
+  });
+
+
+  function play(e) {
+    if (playIndex >= playListLen) {
+      return;
+    }
+    video.src = playList[playIndex];
+    video.load();
+    video.play();
+
+    playIndex++;
+
+  }
+
+  function playNext(e) {
+    if (playIndex >= playListLen) {
+      return;
+    }
+    video.src = playList[playIndex];
+    video.load();
+    video.play();
+    playIndex++;
+  }
+
+  function ajax(a) {
+    var d, b = "";
+    var c = new XMLHttpRequest;
+    a.data || (a.data = {});
+    c.open("GET", a.url);
+    c.send(null);
+    c.onreadystatechange = function () {
+      if (4 === c.readyState) {
+        200 === c.status ? a.success(c.responseText) : a.fail && a.fail(c.status);
+      }
+    }
+  }
+
+ </script>
 </body>
 </html>

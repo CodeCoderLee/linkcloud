@@ -50,8 +50,8 @@ public class DeviceAPI {
     public static final String URI_HEARTBEAT = "/device/heartbeat.shtml";
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
-    //public static final String DOMAIN = "http://linkcloud.tunnel.qydev.com";
-    public static final String DOMAIN = "http://101.201.38.228:8000";
+    public static final String DOMAIN = "http://linkcloud.tunnel.qydev.com";
+//    public static final String DOMAIN = "http://101.201.38.228:8000";
 
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
@@ -214,8 +214,7 @@ public class DeviceAPI {
         return object.toString();
     }
 
-
-    private void parseReportProgram(String content, String token, String serialNumber) {
+     private void parseReportProgram(String content, String token, String serialNumber) {
         JSONObject jsonObject = JSONObject.fromObject(content);
         ProgramService programService = ctx.getBean(ProgramService.class);
         Integer srcnumber = jsonObject.getInt(HelperUtils.KEY_RP_SCRNUMBER);
@@ -369,7 +368,7 @@ public class DeviceAPI {
 
             String updateInfo = update.getUpdateInfo();
             JSONObject obj = JSONObject.fromObject(updateInfo);
-            JSONArray array = obj.getJSONArray("version");
+            JSONArray array = obj.getJSONArray("versions");
             for(int i = 0;i<array.size();i++){
                 JSONObject jobj = array.getJSONObject(i);
 //                jobj.getString("id");
@@ -398,13 +397,75 @@ public class DeviceAPI {
                         break;
                 }
             }
-
         }
         JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
 
+    public String getUpdateInfo2(HttpRequest request,String postData,List<NameValuePair> nvList){
+        String token = getCookieValue(request);
+        String serialNumber = getDeviceSerialNumber(token);
+        boolean validation = true;
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (validation) {
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
+        } else {
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+            map.put(HelperUtils.KEY_DESCRIPTION, "error");
+        }
+        map.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_NOTHING);
+
+        VersionService versionService = ctx.getBean(VersionService.class);
+        Example example = new Example(Version.class);
+        example.createCriteria().andEqualTo("type",1);//引导模块
+        example.setOrderByClause("id desc");
+        List<Version> versionList = versionService.selectByExample(example);
+        Version version = getVersion(versionList);
+        if(version == null) {
+            map.put(HelperUtils.KEY_VER_VERSION_B, "");
+            map.put(HelperUtils.KEY_VER_URL_B, "");
+        }else{
+            map.put(HelperUtils.KEY_VER_VERSION_B, version.getVersion());
+            map.put(HelperUtils.KEY_VER_URL_B, version.getUrl());
+        }
+
+        example = new Example(Version.class);
+        example.createCriteria().andEqualTo("type",2);//转码模块
+        example.setOrderByClause("id desc");
+        versionList = versionService.selectByExample(example);
+        version = getVersion(versionList);
+        if(version == null) {
+            map.put(HelperUtils.KEY_VER_VERSION_T,"");
+            map.put(HelperUtils.KEY_VER_URL_T,"");
+        }else{
+            map.put(HelperUtils.KEY_VER_VERSION_T, version.getVersion());
+            map.put(HelperUtils.KEY_VER_URL_T, version.getUrl());
+        }
+
+
+        example = new Example(Version.class);
+        example.createCriteria().andEqualTo("type",3);//流媒体模块
+        example.setOrderByClause("id desc");
+        versionList = versionService.selectByExample(example);
+        version = getVersion(versionList);
+        if(version == null) {
+            map.put(HelperUtils.KEY_VER_VERSION_S,"");
+            map.put(HelperUtils.KEY_VER_URL_S,"");
+        }else{
+            map.put(HelperUtils.KEY_VER_VERSION_S, version.getVersion());
+            map.put(HelperUtils.KEY_VER_URL_S, version.getUrl());
+        }
+
+        JSONObject jsonObject = JSONObject.fromObject(map);
+        return jsonObject.toString();
+    }
+
     private DeviceUpdate getUpdateVersion(List<DeviceUpdate> list){
+        return list != null && list.size() > 0?list.get(0):null;
+    }
+
+    private Version getVersion(List<Version> list){
         return list != null && list.size() > 0?list.get(0):null;
     }
 
