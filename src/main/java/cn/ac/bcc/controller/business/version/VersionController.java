@@ -83,9 +83,10 @@ public class VersionController extends BaseController<Version> {
                 File filepath = new File(tomcatPath + relativeUploadPath);
                 if (!filepath.exists())
                     filepath.mkdirs();
-                FileCopyUtils.copy(file.getBytes(), new File(filepath + "/" + UUID.fromString(file.getOriginalFilename()).toString()));
+                UUID uuid = UUID.randomUUID();
+                FileCopyUtils.copy(file.getBytes(), new File(filepath + "/" +  uuid.toString()));
 
-                version.setFilePath(filepath + "/" + file.getOriginalFilename());
+                version.setFilePath(filepath + "/" + uuid.toString());
                 version.setFileName(file.getOriginalFilename());
             } catch (IOException e) {
                 // TODO Auto-generated catch block
