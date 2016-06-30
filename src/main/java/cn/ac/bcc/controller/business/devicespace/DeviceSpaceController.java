@@ -6,6 +6,7 @@ import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.model.core.UserRole;
 import cn.ac.bcc.service.business.comment.CommentService;
 import cn.ac.bcc.service.business.comment.CommentUserService;
+import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.service.business.program.ProgramNetDiskService;
 import cn.ac.bcc.service.business.program.ProgramService;
@@ -57,6 +58,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private UserRoleService userRoleService;
     @Autowired
     private DeviceService deviceService;
+    @Autowired
+    private DeviceAuthenService deviceAuthenService;
 
     private final int PAGE_SIZE = 10;
     private final int SHOW_STATUS = 3;
@@ -238,6 +241,10 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
     public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
         Program program = programService.selectByPrimaryKey(programId);
+
+        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
+        mode.addAttribute("ip_address",deviceAuthen.getIp1());
+
         ResponseData responseData = getCommentList(programId,1);
         mode.addAttribute("responseData",responseData);
         mode.addAttribute("program",program);
@@ -250,6 +257,10 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "play2/{serialNumber}", produces = "text/html; charset=utf-8")
     public String play2(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
         ProgramNetDisk programNetDisk = programNetDiskService.selectByPrimaryKey(programId);
+
+        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
+        mode.addAttribute("ip_address",deviceAuthen.getIp1());
+
         ResponseData responseData = getCommentList(programId,1);
         mode.addAttribute("responseData",responseData);
         mode.addAttribute("program",programNetDisk);
