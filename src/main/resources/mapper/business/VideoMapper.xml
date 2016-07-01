@@ -22,8 +22,15 @@
     <if test="video.fileName!=null and video.fileName!=''">
       and t1.file_name like '%'||#{video.fileName}||'%'
     </if>
-    <if test="video.fileName!=null and video.fileName!=''">
-      and t1.file_name like '%'||#{video.fileName}||'%'
+
+    <if test="video.industryCode!=null and video.industryCode!=''">
+      and t1.industry_code = #{video.industryCode}
+    </if>
+    <if test="video.companyId!=null ">
+      and t1.company_id = #{video.companyId}
+    </if>
+    <if test="video.type!=null ">
+      and t1.type = #{video.type}
     </if>
     <choose>
         <when test="sortName != null">

@@ -2,6 +2,7 @@ package cn.ac.bcc.controller.business.advertisement;
 
 import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
+import cn.ac.bcc.model.business.DeviceUpdate;
 import cn.ac.bcc.model.business.Video;
 import cn.ac.bcc.service.business.advertisement.VideoService;
 import cn.ac.bcc.util.Common;
@@ -61,6 +62,21 @@ public class VideoController extends BaseController<Video>{
         responseData.setRows(list);
 
         return responseData;
+    }
+
+    @ResponseBody
+    @RequestMapping("searchVideoByPageNum")
+    public ResponseData searchVideoByPageNum(Video video, Integer pageNum, Integer pageSize) throws Exception {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Video> list = videoService.searchVideo(video, null, null);
+        PageInfo<Video> pageInfo = new PageInfo<Video>(list);
+        ResponseData responseData = new ResponseData();
+        responseData.setTotal(pageInfo.getTotal());
+        responseData.setRows(list);
+        responseData.setPageNum(pageInfo.getPageNum());
+        responseData.setTotalPages(pageInfo.getPages());
+        return responseData;
+
     }
 
     @RequestMapping("add")

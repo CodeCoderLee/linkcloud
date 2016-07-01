@@ -9,12 +9,17 @@ import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +27,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/videoPublish/")
-public class VideoPublishController extends BaseController<VideoPublish>{
+public class VideoPublishController extends BaseController<VideoPublish> {
     @Autowired
     private VideoPublishService videoPublishService;
 
@@ -36,17 +41,17 @@ public class VideoPublishController extends BaseController<VideoPublish>{
 
     @RequestMapping("addUI")
     public String addUI(Model model, String serialNumbers) {
-//        model.addAttribute("serialNumbers", deviceToVideo.getSerialNumber());
+        model.addAttribute("serialNumbers", serialNumbers);
 //        deviceToVideo = deviceToVideoService.selectOne(deviceToVideo);
 //        deviceToVideo.getSelfVideoInfo();
-        return Common.BACKGROUND_PATH + "/business/device/addDeviceUpdate";
+        return Common.BACKGROUND_PATH + "/business/advertisement/addVideoPublish";
     }
 
     @ResponseBody
     @RequestMapping("search")
     public ResponseData search(DeviceToVideo deviceToVideo, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<DeviceToVideo> list = null;
+        List<DeviceToVideo> list = deviceToVideoService.searchList(deviceToVideo);
         PageInfo<DeviceToVideo> pageInfo = new PageInfo<DeviceToVideo>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
@@ -57,8 +62,65 @@ public class VideoPublishController extends BaseController<VideoPublish>{
     }
 
     @ResponseBody
-    @RequestMapping("updateDeviceVersion")
-    public String updateDeviceVersion(String serialNumbers, String versions) {
-        return null;
+    @RequestMapping("updateVideoPublish")
+    @Transactional
+    public String updateDeviceVersion(String serialNumbers, String videoInfos, Integer type) {
+        String[] serialNumber = serialNumbers.split(",");
+        String[] video = videoInfos.split(",");
+        JSONArray jsonArray = new JSONArray();
+        List<VideoPublish> videoPublishes = new ArrayList<VideoPublish>();
+        for (int i = 0; i < video.length; i++) {
+            String[] videoInfo = video[i].split("&");
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", videoInfo[0]);
+            jsonObject.put("fileName", videoInfo[1]);
+            jsonObject.put("filePath", videoInfo[2]);
+            jsonObject.put("url", videoInfo[3]);
+            jsonArray.add(jsonObject);
+        }
+
+        for (int i = 0; i < serialNumber.length; i++) {
+            for(int j=0;j<videoPublishes.size();j++){
+                videoPublishes.get(j).setSerialNumber(serialNumber[i]);
+                videoPublishes.get(j).setPublishTime(new Date());
+            }
+            //todo 心跳包下发指令
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("serialNumber", serialNumber[i]);
+            jsonObject.put("updateTime", new Date().getTime());
+            jsonObject.put("videos", jsonArray);
+            DeviceToVideo deviceToVideo = new DeviceToVideo();
+            deviceToVideo.setSerialNumber(serialNumber[i]);
+            List<DeviceToVideo> list = deviceToVideoService.select(deviceToVideo);
+            //type 标记广告类型,1自带广告,2第三方企业广告,3自定义广告
+            if (type == 1) {
+                deviceToVideo.setSelfVideoInfo(jsonObject.toString());
+            } else if (type == 2) {
+                deviceToVideo.setCompanyVideoInfo(jsonObject.toString());
+            } else {
+                deviceToVideo.setCustomVideoInfo(jsonObject.toString());
+            }
+            if (list.size() > 0) {
+                //更新
+                deviceToVideo.setId(list.get(0).getId());
+                deviceToVideoService.updateByPrimaryKeySelective(deviceToVideo);
+            } else {
+                //插入
+                deviceToVideoService.insert(deviceToVideo);
+            }
+
+            //删除关联表
+            VideoPublish videoPublish = new VideoPublish();
+            videoPublish.setSerialNumber(serialNumber[i]);
+            videoPublishService.delete(videoPublish);
+
+        }
+
+//        videoPublishService.batchInsert(videoPublishes);
+        for (int i=0 ;i<videoPublishes.size();i++) {
+            videoPublishService.insert(videoPublishes.get(i));
+        }
+        return SUCCESS;
     }
 }

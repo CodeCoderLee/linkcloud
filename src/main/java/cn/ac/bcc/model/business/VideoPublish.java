@@ -16,8 +16,8 @@ public class VideoPublish {
     @Column(name = "video_id")
     private Integer videoId;
 
-    @Column(name = "device_id")
-    private Integer deviceId;
+    @Column(name = "serial_number")
+    private String serialNumber;
 
     @Column(name = "publish_time")
     private Date publishTime;
@@ -60,18 +60,12 @@ public class VideoPublish {
         this.videoId = videoId;
     }
 
-    /**
-     * @return device_id
-     */
-    public Integer getDeviceId() {
-        return deviceId;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    /**
-     * @param deviceId
-     */
-    public void setDeviceId(Integer deviceId) {
-        this.deviceId = deviceId;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     /**

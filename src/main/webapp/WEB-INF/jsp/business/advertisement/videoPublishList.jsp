@@ -28,7 +28,7 @@
                 </form>
             </div>
             <button type="button" class="btn btn-success" id="newBtn">
-                <i class="glyphicon glyphicon-edit"></i>升级
+                <i class="glyphicon glyphicon-edit"></i>绑定广告
             </button>
         </div>
     </div>
@@ -90,8 +90,8 @@
         $('#newBtn').click(function () {
             if (serialNumbers.length == 0) {
                 notify('success', '     请至少选择一个设备      ');
-            }else{
-                $("#content").load("videoPublish/addUI.shtml?serialNumbers="+serialNumbers.join(","));
+            } else {
+                $("#content").load("videoPublish/addUI.shtml?serialNumbers=" + serialNumbers.join(","));
             }
         });
     });
@@ -130,7 +130,9 @@
     function refreshData(data) {
         $('#dataDiv').html("");
         $.each(data, function (i, item) {
-            var videoInfo = eval('(' + item.videoInfo + ')');
+            var selfVideoInfo = eval('(' + item.selfVideoInfo + ')');
+            var companyVideoInfo = eval('(' + item.companyVideoInfo + ')');
+            var customVideoInfo = eval('(' + item.customVideoInfo + ')');
 //            var versionJson = item.updateInfo;
             var html = "<div class=\"col-sm-4\">" +
                     "<div class=\"card\">" +
@@ -143,31 +145,49 @@
                     "</label></dt>" +
                     "<dd>" + item.serialNumber + "</dd>" +
                     "</dl>";
-            if (videoInfo) {
-                html = html + "<dl class=\"dl-horizontal\">" +
-                        "</dl>" +
-                        "<dl class=\"dl-horizontal\">" +
-                        "<dt>更新时间</dt>" +
-                        "<dd>" + dateTimeFormatter(videoInfo.updateTime) + "</dd>" +
-                        "</dl>";
-                var versions = versionJson.versions;
+            html = html +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>自带广告</dt>" +
+                    "<dd></dd>" +
+                    "</dl>";
+            html = html + videoInfoHtml(selfVideoInfo);
+            html = html +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>第三方企业广告</dt>" +
+                    "<dd></dd>" +
+                    "</dl>";
+            html = html + videoInfoHtml(companyVideoInfo);
+            html = html +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>自定义广告</dt>" +
+                    "<dd></dd>" +
+                    "</dl>";
+            html = html + videoInfoHtml(customVideoInfo);
 
-                $.each(videoInfo.videos, function (index, item) {
-                    console.log('item===',item);
-                    html = html + "<dl class=\"dl-horizontal\">" +
-                            "<dt>广告"+(index+1)+"</dt>" +
-                            "<dd>" + item.fileName + "</dd>" +
-                            "</dl>";
-                });
+//            if (selfVideoInfo) {
+//                html = html +
+//                        "<dl class=\"dl-horizontal\">" +
+//                        "<dt>更新时间</dt>" +
+//                        "<dd>" +dateTimeFormatter(selfVideoInfo.updateTime)+"</dd>" +
+//                        "</dl>";
+//                $.each(selfVideoInfo.videos, function (index, item) {
+//                    html = html + "<dl class=\"dl-horizontal\">" +
+//                            "<dt>广告" + (index + 1) + "</dt>" +
+//                            "<dd>" + item.fileName + "</dd>" +
+//                            "</dl>";
+//                });
+//
+//            } else {
+//                html = html + "</dl>" +
+//                        "<dl class=\"dl-horizontal\">" +
+//                        "<dt>无更新记录</dt>" +
+//                        "<dd></dd>" +
+//                        "</dl>";
+//
+//            }
 
-            } else {
-                html = html + "</dl>" +
-                        "<dl class=\"dl-horizontal\">" +
-                        "<dt>无更新记录</dt>" +
-                        "<dd></dd>" +
-                        "</dl>";
 
-            }
+
 
             html = html + "</div>" +
                     "</div>" +
@@ -176,11 +196,11 @@
             $('#dataDiv').append(html);
         });
 
-        $('input[type="checkbox"]').click(function(){
+        $('input[type="checkbox"]').click(function () {
             if (this.checked) {
                 serialNumbers.push(this.value);
-            }else{
-                serialNumbers.splice(serialNumbers.indexOf(this.value),1);
+            } else {
+                serialNumbers.splice(serialNumbers.indexOf(this.value), 1);
             }
         });
     }
@@ -196,5 +216,31 @@
 
 //        return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours()
 //                + ":" + date.getMinutes() + ":" + date.getSeconds();
+    }
+
+    function videoInfoHtml(videoInfo){
+        var html = "";
+        if (videoInfo) {
+            html = html +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>更新时间</dt>" +
+                    "<dd>" +dateTimeFormatter(videoInfo.updateTime)+"</dd>" +
+                    "</dl>";
+            $.each(videoInfo.videos, function (index, item) {
+                html = html + "<dl class=\"dl-horizontal\">" +
+                        "<dt>广告" + (index + 1) + "</dt>" +
+                        "<dd>" + item.fileName + "</dd>" +
+                        "</dl>";
+            });
+
+        } else {
+            html = html + "</dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>无更新记录</dt>" +
+                    "<dd></dd>" +
+                    "</dl>";
+
+        }
+        return html;
     }
 </script>
