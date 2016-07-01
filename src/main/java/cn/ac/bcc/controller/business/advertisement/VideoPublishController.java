@@ -70,6 +70,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
         JSONArray jsonArray = new JSONArray();
         List<VideoPublish> videoPublishes = new ArrayList<VideoPublish>();
         for (int i = 0; i < video.length; i++) {
+            VideoPublish videoPublish = new VideoPublish();
             String[] videoInfo = video[i].split("&");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", videoInfo[0]);
@@ -77,6 +78,9 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             jsonObject.put("filePath", videoInfo[2]);
             jsonObject.put("url", videoInfo[3]);
             jsonArray.add(jsonObject);
+            videoPublish.setVideoId(Integer.valueOf(videoInfo[0]));
+            videoPublishes.add(videoPublish);
+
         }
 
         for (int i = 0; i < serialNumber.length; i++) {
@@ -117,10 +121,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
 
         }
 
-//        videoPublishService.batchInsert(videoPublishes);
-        for (int i=0 ;i<videoPublishes.size();i++) {
-            videoPublishService.insert(videoPublishes.get(i));
-        }
+        videoPublishService.batchInsert(videoPublishes);
         return SUCCESS;
     }
 }

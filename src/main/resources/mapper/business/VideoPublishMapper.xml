@@ -12,16 +12,15 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
     </resultMap>
 
-    <insert id="batchInsert" useGeneratedKeys="true" parameterType="cn.ac.bcc.model.business.VideoPublish">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
+    <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
         INSERT INTO bcc_video_publish
-        (`video_id`, `serial_nuber`, `publish_time`)
+        (`video_id`, `serial_number`, `publish_time`)
         VALUES
-        <foreach collection="videoPublishes" item="videoPublish" index="index" separator="union all">
-           select  #{videoPublish.videoId,jdbcType=INTEGER},#{videoPublish.serial_number,jdbcType=VARCHAR},#{videoPublish.publish_time,jdbcType=TIMESTAMP}
-            from dual
+        <foreach collection="list" item="videoPublish" index="index" separator=",">
+            (#{videoPublish.videoId,jdbcType=INTEGER},#{videoPublish.serialNumber,jdbcType=VARCHAR},#{videoPublish.publishTime,jdbcType=TIMESTAMP})
         </foreach>
     </insert>
 </mapper>

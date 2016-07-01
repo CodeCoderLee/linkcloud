@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface VideoPublishMapper extends Mapper<VideoPublish> {
 
-    void batchInsert(@Param("videoPublishes") List<VideoPublish> videoPublishes);
+    void batchInsert(List<VideoPublish> videoPublishes);
 }
