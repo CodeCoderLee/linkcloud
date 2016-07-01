@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletInputStream;
@@ -22,6 +23,7 @@ import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -30,6 +32,7 @@ import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.service.system.resources.ResourcesService;
 import cn.ac.bcc.service.system.role.RoleService;
 import cn.ac.bcc.util.Common;
+import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -328,6 +331,68 @@ public abstract class BaseController<T> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String saveFile(MultipartFile file, String rootPath){
+        if (!file.isEmpty()) {
+            try {
+                String tomcatPath = getRequest().getServletContext().getRealPath("/");
+                File filepath = new File(tomcatPath + rootPath);
+                if (!filepath.exists())
+                    filepath.mkdirs();
+                UUID uuid = UUID.randomUUID();
+                FileCopyUtils.copy(file.getBytes(), new File(filepath + "/" +  uuid.toString()));
+
+                return filepath + "/" + uuid.toString();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+    }
+
+    public void download(String fileName, String filePath, Integer id){
+        File file = new File(filePath);
+        HttpServletResponse response = getResponse();
+        try {
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            response.reset();
+            // 设置响应头，控制浏览器下载该文件
+            response.setHeader("Content-Disposition", "attachment;filename="
+                    + new String(fileName.replaceAll(" ", "").getBytes("utf-8"),"iso8859-1")+";id="+id);
+            // 设置下载文件的大小
+            response.addHeader("Content-Length", ""+file.length());
+            // 设置文件ContentType类型，这样设置，会自动判断下载文件类型
+            response.setContentType("application/octet-stream");
+            //		response.setContentType("multipart/form-data");
+            // 创建文件输入流
+            FileInputStream in = new FileInputStream(file);
+            // 创建文件输出流
+            OutputStream out = response.getOutputStream(); // 浏览器下载
+            //		out = new FileOutputStream("E:\\file\\out\\" + realName); // 本地下载
+            //创建缓冲区
+            byte buffer[] = new byte[1024];
+            int len = 0;
+            // 循环将输入流中的内容读取到缓冲区当中
+            while((len=in.read(buffer))>0){
+                //输出缓冲区的内容到浏览器，实现文件下载
+                out.write(buffer, 0, len);
+            }
+            // 刷新
+            out.flush();
+            //关闭文件输入流
+            //关闭输出流
+            out.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

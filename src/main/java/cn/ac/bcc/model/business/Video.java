@@ -1,12 +1,13 @@
 package cn.ac.bcc.model.business;
 
+import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_video")
 public class Video {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "file_path")
@@ -15,15 +16,29 @@ public class Video {
     @Column(name = "file_name")
     private String fileName;
 
+    @Column(name = "state")
     private Integer state;
 
-    @Column(name = "industry_id")
-    private Integer industryId;
+    @Column(name = "industry_code")
+    private String industryCode;
 
     @Column(name = "company_id")
     private Integer companyId;
 
+    @Column(name = "url")
     private String url;
+
+    @Column(name = "add_time")
+    private Date addTime;
+
+    @Column(name = "type")
+    private Integer type;
+
+    @Transient
+    private String companyName;
+
+    @Transient
+    private String industryName;
 
     /**
      * @return id
@@ -82,17 +97,17 @@ public class Video {
     }
 
     /**
-     * @return industry_id
+     * @return industry_code
      */
-    public Integer getIndustryId() {
-        return industryId;
+    public String getIndustryCode() {
+        return industryCode;
     }
 
     /**
-     * @param industryId
+     * @param industryCode
      */
-    public void setIndustryId(Integer industryId) {
-        this.industryId = industryId;
+    public void setIndustryCode(String industryCode) {
+        this.industryCode = industryCode;
     }
 
     /**
@@ -121,5 +136,43 @@ public class Video {
      */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    /**
+     * @return add_time
+     */
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    /**
+     * @param addTime
+     */
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getIndustryName() {
+        return industryName;
+    }
+
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
     }
 }

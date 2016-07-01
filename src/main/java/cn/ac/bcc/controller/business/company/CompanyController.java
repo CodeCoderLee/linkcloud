@@ -74,4 +74,10 @@ public class CompanyController extends BaseController<Company> {
     public List<Company> searchCompanyByAreaAndIndustry(Company company){
         return companyService.select(company);
     }
+
+    @ResponseBody
+    @RequestMapping("searchCompanyByIndustry")
+    public List<Company> searchCompanyIndustry(Company company){
+        return companyService.select(company);
+    }
 }

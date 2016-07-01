@@ -80,30 +80,9 @@
                                         <div class="col-sm-3">
                                             <div class="fg-line">
                                                 <div class="select">
-                                                    <select class="form-control company-control" id="grandIndustry"
-                                                            onchange="showIndustry(this.options[this.options.selectedIndex].value,1)">
-                                                        <option value="">一级行业</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="parentIndustry"
-                                                            disabled="true"
-                                                            onchange="showIndustry(this.options[this.options.selectedIndex].value,2)">
-                                                        <option value="">二级行业</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="industry" name="industryCode"
-                                                            disabled="true">
-                                                        <option value="">三级行业</option>
+                                                    <select class="form-control company-control" id="industryCode" name="industryCode"
+                                                            >
+                                                        <option value="">请选择</option>
                                                     </select>
                                                 </div>
                                             </div>

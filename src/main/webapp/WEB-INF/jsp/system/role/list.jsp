@@ -84,3 +84,4 @@
     </script>
 
     <script type="text/javascript" src="${ctx}/js/common/bcc-bootstrap-table.js" />
+    </div>

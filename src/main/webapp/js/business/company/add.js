@@ -6,7 +6,7 @@
 $(function () {
     onLoadUrl();
 
-    $('#industry').change(function () {
+    $('#industryCode').change(function () {
         console.log($(this).find('option:selected').text());
         $('#industryName').val($(this).find('option:selected').text());
     });
