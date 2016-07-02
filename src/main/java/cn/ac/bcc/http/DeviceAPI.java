@@ -81,8 +81,8 @@ public class DeviceAPI {
         uri = uri.toLowerCase();
         if (uri.contains(URI_LINKHELLO)) {
             UUID uuid = UUID.randomUUID();
-            //token = uuid.toString();
-            token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
+            token = uuid.toString();
+            //token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
             sessionID = ServerCookieEncoder.encode("PHPSESSID", token);
             jsonStr = linkHello(request, postData, nvList, token);
         } else if (uri.contains(URI_AUTHEN)) {
