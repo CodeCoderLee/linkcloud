@@ -32,7 +32,8 @@ import java.util.UUID;
 @RequestMapping("/version/")
 public class VersionController extends BaseController<Version> {
 
-    private final String relativeUploadPath = "upload/version/";
+    //    private final String rootPath = "C:/linkcloud/upload/version/";
+    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/version/";
 
     @Autowired
     private VersionService versionService;
@@ -64,7 +65,7 @@ public class VersionController extends BaseController<Version> {
 
     @ResponseBody
     @RequestMapping("searchVersionList")
-    public List<Version> searchVersionList(){
+    public List<Version> searchVersionList() {
 
         List<Version> list = versionService.searchVersionList();
         return list;
@@ -73,29 +74,14 @@ public class VersionController extends BaseController<Version> {
     @RequestMapping("add")
     @ResponseBody
     @SystemLog(module = "版本管理", methods = "版本管理-添加版本")//凡需要处理业务逻辑的.都需要记录操作日志
-    public String add(MultipartFile file, Version version, HttpServletRequest request){
+    public String add(MultipartFile file, Version version, HttpServletRequest request) {
         Date date = new Date();
         version.setAddTime(date);
-
-        if (!file.isEmpty()) {
-            try {
-                String tomcatPath = request.getServletContext().getRealPath("/");
-                File filepath = new File(tomcatPath + relativeUploadPath);
-                if (!filepath.exists())
-                    filepath.mkdirs();
-                UUID uuid = UUID.randomUUID();
-                FileCopyUtils.copy(file.getBytes(), new File(filepath + "/" +  uuid.toString()));
-
-                version.setFilePath(filepath + "/" + uuid.toString());
-                version.setFileName(file.getOriginalFilename());
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-        }
+        String filePath = saveFile(file, rootPath);
+        version.setFilePath(filePath);
+        version.setFileName(file.getOriginalFilename());
         versionService.insertSelective(version);
-        String url = "/version/download.shtml?id="+version.getId();
+        String url = "/version/download.shtml?id=" + version.getId();
         version.setUrl(url);
         versionService.updateByPrimaryKeySelective(version);
         return SUCCESS;
@@ -103,7 +89,7 @@ public class VersionController extends BaseController<Version> {
 
     @ResponseBody
     @RequestMapping("download")
-    public void download(Integer id, HttpServletRequest request, HttpServletResponse response){
+    public void download(Integer id, HttpServletRequest request, HttpServletResponse response) {
         Version version = new Version();
         version.setId(id);
         version = versionService.selectByPrimaryKey(id);
@@ -122,9 +108,9 @@ public class VersionController extends BaseController<Version> {
             response.reset();
             // 设置响应头，控制浏览器下载该文件
             response.setHeader("Content-Disposition", "attachment;filename="
-                    + new String(fileName.replaceAll(" ", "").getBytes("utf-8"),"iso8859-1")+";id="+id);
+                    + new String(fileName.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1") + ";id=" + id);
             // 设置下载文件的大小
-            response.addHeader("Content-Length", ""+file.length());
+            response.addHeader("Content-Length", "" + file.length());
             // 设置文件ContentType类型，这样设置，会自动判断下载文件类型
             response.setContentType("application/octet-stream");
             //		response.setContentType("multipart/form-data");
@@ -137,7 +123,7 @@ public class VersionController extends BaseController<Version> {
             byte buffer[] = new byte[1024];
             int len = 0;
             // 循环将输入流中的内容读取到缓冲区当中
-            while((len=in.read(buffer))>0){
+            while ((len = in.read(buffer)) > 0) {
                 //输出缓冲区的内容到浏览器，实现文件下载
                 out.write(buffer, 0, len);
             }

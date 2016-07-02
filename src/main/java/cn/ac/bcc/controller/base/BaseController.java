@@ -336,8 +336,8 @@ public abstract class BaseController<T> {
     public String saveFile(MultipartFile file, String rootPath){
         if (!file.isEmpty()) {
             try {
-                String tomcatPath = getRequest().getServletContext().getRealPath("/");
-                File filepath = new File(tomcatPath + rootPath);
+
+                File filepath = new File(rootPath);
                 if (!filepath.exists())
                     filepath.mkdirs();
                 UUID uuid = UUID.randomUUID();
