@@ -102,6 +102,7 @@
                 /wechat/authen.shtml = anon
                 /upload/** = anon
                 /version/download.shtml = anon
+                /video/download.shtml = anon
             </value>
         </property>
     </bean>
