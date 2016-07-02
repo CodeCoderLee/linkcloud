@@ -46,7 +46,7 @@
     </div>
     <h1 class="am-header-title">
         <a href="#title-link" class="">
-            <c:if test="${type eq 'debug'}">调试空间</c:if><c:if test="${type eq 'show'}">设备空间</c:if>（<c:choose><c:when test="${item.onOffLine == 1}">在线</c:when><c:otherwise>离线</c:otherwise></c:choose>）
+            <c:if test="${type eq 'debug'}">调试空间</c:if><c:if test="${type eq 'show'}">设备空间</c:if>（${onoff}）
         </a>
     </h1>
     <div class="am-header-right am-header-nav">
