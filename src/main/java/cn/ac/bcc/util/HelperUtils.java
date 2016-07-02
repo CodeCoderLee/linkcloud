@@ -49,6 +49,12 @@ public class HelperUtils {
     public static final String KEY_RP_PURL = "purl";                //表示流媒体服务的本地连接地址，用于播放
     public static final String KEY_RP_PIMG = "pimg";                //直播节目缩略图
 
+    public static final String KEY_AD_NUMBER = "number";            //广告数量
+    public static final String KEY_AD_LIST = "list";
+    public static final String KEY_AD_LIST_URL = "url";             //广告的URL
+    public static final String KEY_AD_LIST_OP = "op";               //变更类型（add delete)
+    public static final String KEY_AD_LIST_PID = "pid";             //广告ID
+
     public static final String KEY_VER_VERSION_B = "version_b";     //表示引导模块的版本号，如果云端没有升级程序，则为空。
     public static final String KEY_VER_URL_B = "url_b";              //表示引导模块下载地址, 空为无效
     public static final String KEY_VER_VERSION_S = "version_s";     //表示流媒体模块的版本号，如果云端没有升级程序，则为空。

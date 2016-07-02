@@ -6,7 +6,9 @@ import cn.ac.bcc.model.business.VideoPublish;
 import cn.ac.bcc.service.business.advertisement.DeviceToVideoService;
 import cn.ac.bcc.service.business.advertisement.VideoPublishService;
 import cn.ac.bcc.util.Common;
+import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.ResponseData;
+import cn.ac.bcc.util.helper.CommandMap;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
@@ -64,7 +66,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
     @ResponseBody
     @RequestMapping("updateVideoPublish")
     @Transactional
-    public String updateDeviceVersion(String serialNumbers, String videoInfos, Integer type) {
+    public String updateDeviceVersion(String serialNumbers, String videoInfos, Integer type) throws InterruptedException {
         String[] serialNumber = serialNumbers.split(",");
         String[] video = videoInfos.split(",");
         JSONArray jsonArray = new JSONArray();
@@ -89,6 +91,10 @@ public class VideoPublishController extends BaseController<VideoPublish> {
                 videoPublishes.get(j).setPublishTime(new Date());
             }
             //todo 心跳包下发指令
+            //心跳包下发指令
+            JSONObject heartObj = new JSONObject();
+            heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
+            CommandMap.addCommand(serialNumber[i],heartObj);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serialNumber", serialNumber[i]);

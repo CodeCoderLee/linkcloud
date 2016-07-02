@@ -1,6 +1,7 @@
 package cn.ac.bcc.http;
 
 import cn.ac.bcc.model.business.*;
+import cn.ac.bcc.service.business.advertisement.DeviceToVideoService;
 import cn.ac.bcc.service.business.device.DeviceUpdateService;
 import cn.ac.bcc.service.business.version.VersionService;
 import cn.ac.bcc.util.helper.*;
@@ -80,8 +81,8 @@ public class DeviceAPI {
         uri = uri.toLowerCase();
         if (uri.contains(URI_LINKHELLO)) {
             UUID uuid = UUID.randomUUID();
-            token = uuid.toString();
-            //token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
+            //token = uuid.toString();
+            token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
             sessionID = ServerCookieEncoder.encode("PHPSESSID", token);
             jsonStr = linkHello(request, postData, nvList, token);
         } else if (uri.contains(URI_AUTHEN)) {
@@ -629,18 +630,66 @@ public class DeviceAPI {
     }
 
     public String updateAd(HttpRequest request, String postData, List<NameValuePair> nvList) {
+//        String token = getCookieValue(request);
+//        boolean validation = true;
+//
+//        JSONObject json = JSONObject.fromObject(postData);
+//
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        if (validation) {
+//            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+//            map.put(HelperUtils.KEY_DESCRIPTION, "");
+//        } else {
+//            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
+//            map.put(HelperUtils.KEY_DESCRIPTION, "error");
+//        }
+//        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
+//
+//        JSONObject jsonObject = JSONObject.fromObject(map);
+//        return jsonObject.toString();
+        return  setAd(request,postData,nvList);
+    }
+
+    public String setAd(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
+        String serialNumber = getDeviceSerialNumber(token);
         boolean validation = true;
 
-        JSONObject json = JSONObject.fromObject(postData);
+        DeviceToVideoService deviceToVideoService  = ctx.getBean(DeviceToVideoService.class);
+        Example example = new Example(DeviceToVideo.class);
+        example.createCriteria().andEqualTo("serialNumber",serialNumber);
+        List<DeviceToVideo> list =  deviceToVideoService.selectByExample(example);
+        DeviceToVideo dtv = null;
 
         Map<String, Object> map = new HashMap<String, Object>();
+        if(list.size() > 0){
+            dtv = list.get(0);
+        }
+        if(dtv == null){
+            validation = false;
+        }
+
         if (validation) {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
+
+            JSONArray jsonArr = new JSONArray();
+            String selfJson  =dtv.getSelfVideoInfo();
+            int num = 0;
+            num += doProcessAd(selfJson,jsonArr);
+
+            String companyJson = dtv.getCompanyVideoInfo();
+            num += doProcessAd(companyJson,jsonArr);
+
+            String customJson = dtv.getCustomVideoInfo();
+            num += doProcessAd(customJson,jsonArr);
+            map.put(HelperUtils.KEY_AD_NUMBER, String.valueOf(num));
+            map.put(HelperUtils.KEY_AD_LIST,jsonArr);
         } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_AD_NUMBER, "0");
+            map.put(HelperUtils.KEY_AD_LIST, "[]");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
 
@@ -648,24 +697,27 @@ public class DeviceAPI {
         return jsonObject.toString();
     }
 
-    public String setAd(HttpRequest request, String postData, List<NameValuePair> nvList) {
-        String token = getCookieValue(request);
-        boolean validation = true;
-
-        JSONObject json = JSONObject.fromObject(postData);
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        if (validation) {
-            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
-            map.put(HelperUtils.KEY_DESCRIPTION, "");
-        } else {
-            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
-            map.put(HelperUtils.KEY_DESCRIPTION, "error");
+    private int doProcessAd(String jsonStr,JSONArray array){
+        JSONObject jsonObj = null;
+        try{
+            jsonObj = JSONObject.fromObject(jsonStr);
+            JSONArray jsonArr = jsonObj.getJSONArray("videos");
+            int size = jsonArr.size();
+            for(int i = 0;i<size;i++){
+                JSONObject obj = jsonArr.getJSONObject(i);
+                String url = obj.getString("url");
+                String id = obj.getString("id");
+                JSONObject adObj = new JSONObject();
+                adObj.put("url",DOMAIN + url);
+                adObj.put("op","add");
+                adObj.put("pid",id);
+                array.add(adObj);
+            }
+            return size;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
         }
-        map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
-
-        JSONObject jsonObject = JSONObject.fromObject(map);
-        return jsonObject.toString();
     }
 
     public String remoteWatch(HttpRequest request, String postData, List<NameValuePair> nvList) {

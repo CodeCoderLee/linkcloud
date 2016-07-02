@@ -107,7 +107,7 @@
                                  <img class="mindex-ulImg" src="${ctx}/assets/i/live.png"  alt=""/>
                              </div>
                              <div class="mindex-detail">
-                                 <p class="mindex-title"><a class="a-space-device-cls" href="${ctx}/space/device/${item.serialNumber}.shtml?type=show&openId=${openId}">${item.serialNumber}</a></p>
+                                 <p class="mindex-title"><a class="a-space-device-cls" href="${ctx}/space/device/${item.serialNumber}.shtml?type=show&openId=${openId}">${item.serialNumber}&nbsp;&nbsp;&nbsp;&nbsp;<img class="mindex-ulImg" <c:choose><c:when test="${item.onOffLine == 1}">src="${ctx}/assets/i/online.png"</c:when><c:otherwise>src="${ctx}/assets/i/offline.png"</c:otherwise></c:choose>  alt=""/></a></p>
                              </div>
                          </li>
                          </c:forEach>

@@ -41,7 +41,7 @@
         <if test="device.status != null">
             and d.status = #{device.status}
         </if>
-        ORDER BY id desc
+        ORDER BY on_off_line desc
     </select>
 
     <select id="selectSettingDevice" resultType="cn.ac.bcc.model.business.Device">

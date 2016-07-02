@@ -171,6 +171,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
                 }
             }
         }
+        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
         List<ProgramNetDisk> lst = programNetDiskService.findProgram(serialNumber,0,true);
         mode.addAttribute("map",map);
@@ -179,6 +180,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("hasRole",hasRole);
         mode.addAttribute("type",type);
+        mode = deviceAuthen.getOnOffLine() != 1 ? mode.addAttribute("onoff", "离线") : mode.addAttribute("onoff", "在线");
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }
 
