@@ -60,9 +60,10 @@
                 <tr>
                     <th data-checkbox="true"></th>
                     <th data-field="username" data-sortable="true">姓名</th>
-                    <th data-field="accountname" data-sortable="true">账户名</th>
-                    <th data-field="description" data-sortable="true">描述</th>
-                    <th data-field="locked" data-formatter="lockedFormatter" data-sortable="true">是否被锁</th>
+                    <th data-field="accountname" data-sortable="true">openID</th>
+                    <th data-field="nickName" data-sortable="true">昵称</th>
+                    <th data-field="sex" data-sortable="true" data-formatter="sexFormatter">性别</th>
+                    <th data-field="city" data-sortable="true" data-formatter="areaFormatter">地区</th>
                     <th data-field="createtime" data-formatter="dateTimeFormatter" data-sortable="true">创建时间</th>
                 </tr>
                 </thead>
@@ -78,7 +79,25 @@
 <script type="text/javascript">
     var addUrl = "user/addUI.shtml";
     var modifyUrl = "user/modifyUI.shtml?id=";
-    var deleteUrl = "user/delete.shtml"
+    var deleteUrl = "user/delete.shtml";
+    function sexFormatter(value){
+        if (!!value) {
+            if(value == 1){
+                return '男';
+            }else {
+                return '女';
+            }
+        }
+        return '-';
+    }
+
+    function areaFormatter(value,row){
+        if(row['country'] == null || row['country'] == ''){
+            return '-'
+        }else {
+            return row['country'] + "." + row['province'] + "." + row['city'];
+        }
+    }
 </script>
 
 <script type="text/javascript" src="${ctx}/js/common/bcc-bootstrap-table.js" />
