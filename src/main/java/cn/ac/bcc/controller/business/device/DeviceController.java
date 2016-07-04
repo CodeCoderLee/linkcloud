@@ -125,11 +125,11 @@ public class DeviceController extends BaseController<Device> {
     @ResponseBody
     @RequestMapping("searchByPage")
     public ResponseData searchByPage(Device device, Integer pageNum, Integer pageSize) throws Exception {
-        if (device.getStatus() != null && device.getStatus() == 1) {
-            Integer userId = Common.findUserSessionId(getRequest());
-            device.setRegisterAccount(userId);
-            device.setDebugAccount(userId);
-        }
+//        if (device.getStatus() != null && device.getStatus() == 1) {
+//            Integer userId = Common.findUserSessionId(getRequest());
+//            device.setRegisterAccount(userId);
+//            device.setDebugAccount(userId);
+//        }
         PageHelper.startPage(pageNum, pageSize);
         List<Device> list = deviceService.selectDebugDevice(device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
@@ -216,10 +216,7 @@ public class DeviceController extends BaseController<Device> {
     @ResponseBody
     @RequestMapping(value = "isExist")
     public boolean isExist(Device device) {
-        if (deviceService.select(device).size() > 0) {
-            return false;
-        }
-        return true;
+        return deviceService.select(device).size() <= 0;
     }
 
 

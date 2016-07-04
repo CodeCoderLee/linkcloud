@@ -91,7 +91,7 @@
                             scrollTo(0, 0);
                             loadDevice(newPage, 6);
                         }
-                    }
+                    };
                     $('#pagination').bootstrapPaginator(options);
                 }
             },
@@ -129,7 +129,7 @@
                     "<dd>是</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('"+item.id+"','"+item.serialNumber+"')\">设为可用</a></dt>" +
+                    "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('"+item.id+"','"+item.serialNumber+"')\">设备入库</a></dt>" +
                     "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?type=debug&openId=" + $('#openId').val() + "\">设备空间</a></dd>" +
                     "<dd><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('"+item.id+"','"+item.serialNumber+"')\">设备详情</a></dd>" +
 
