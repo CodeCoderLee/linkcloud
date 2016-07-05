@@ -24,7 +24,7 @@
 <%--<script type="text/javascript" src="${ctx}/js/common/common.js"/>--%>
 <script type="text/javascript">
     $(function () {
-        var rootPath = "${ctx}"
+        var rootPath = "${ctx}";
         //
         var tb = $("#content");
         tb.html(loadingHtml());
@@ -133,19 +133,19 @@
 <script src="${ctx}/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script src="${ctx}/vendors/bower_components/jquery.nicescroll/jquery.nicescroll.min.js"></script>
-<script src="${ctx}/vendors/bower_components/Waves/dist/waves.min.js"></script>
-<script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script src="${ctx}/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+<%--<script src="${ctx}/vendors/bower_components/Waves/dist/waves.min.js"></script>--%>
+<%--<script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>--%>
+<%--<script src="${ctx}/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>--%>
 
 <!-- Placeholder for IE9 -->
 <!--[if IE 9 ]>
 <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
 <![endif]-->
 
-<script src="${ctx}/js/functions.js"></script>
-<script src="${ctx}/js/demo.js"></script>
+<script src="${ctx}/js/functions.min.js"></script>
+<%--<script src="${ctx}/js/demo.js"></script>--%>
 <script type="text/javascript">
-    var rootPath = "${ctx}"
+    var rootPath = "${ctx}";
     function loadingHtml() {
         return '<div class="alert alert-info">'
                 + '<button type="button" class="close" data-dismiss="alert">'

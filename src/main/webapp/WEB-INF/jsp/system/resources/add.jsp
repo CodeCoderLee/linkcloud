@@ -1,27 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@include file="/common/common.jspf" %>
-<script type="text/javascript" src="${ctx}/js/system/resources/add.js"></script>
-<style type="text/css">
-    #but button {
-        margin-bottom: 5px;
-        margin-right: 5px;
-    }
+<%--<%@include file="/common/common.jspf" %>--%>
 
-    .col-sm-3 {
-        width: 15%;
-        float: left;
-    }
-
-    .col-sm-9 {
-        width: 85%;
-        float: left;
-    }
-
-    label[class^="btn btn-default"] {
-        margin-top: -4px;
-    }
-</style>
 <div class="container">
     <div class="block-header">
         <h2>添加资源菜单</h2>
@@ -123,6 +103,7 @@
                             </div>
                             <footer class="panel-footer text-right bg-light lter">
                                 <button type="submit" class="btn btn-success btn-s-xs">提交</button>
+                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
                             </footer>
                         </section>
                     </form>
@@ -130,4 +111,9 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery-validation/jquery.validate.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
+<script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/common/common.js"/>
+<script type="text/javascript" src="${ctx}/js/system/resources/add.js"></script>

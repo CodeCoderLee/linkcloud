@@ -54,13 +54,13 @@ $(function() {
 			data : searchParams
 		});
 	});
-	$("#addFun").click("click", function() {
+	$("#newBtn").click("click", function() {
 		addFun();
 	});
-	$("#editFun").click("click", function() {
+	$("#modifyBtn").click("click", function() {
 		editFun();
 	});
-	$("#delFun").click("click", function() {
+	$("#deleteBtn").click("click", function() {
 		delFun();
 	});
 	$("#lyGridUp").click("click", function() {// 上移
@@ -75,43 +75,34 @@ $(function() {
 function editFun() {
 	var cbox = grid.getSelectedCheckbox();
 	if (cbox.length > 1 || cbox == "") {
-		layer.alert("只能选中一个");
+		notify("success", "只能选中一个");
 		return;
 	}
-	$('#npcForm').attr('src','resources/modifyUI.shtml?id='+cbox);
-	$('#npcForm').css({
-		'display':'block'
-	});
+	$("#content").load("resources/modifyUI.shtml?id="+cbox);
 }
 function addFun() {
-	// pageii = layer.open({
-	// 	title : "新增",
-	// 	type : 2,
-	// 	area : [ "600px", "80%" ],
-	// 	content : rootPath + '/resources/addUI.shtml'
-	// });
-	//$('#npcForm').attr('src','resources/addUI.shtml');
-	//$('#npcForm').css({
-	//	'display':'block'
-	//});
 	$("#content").load("resources/addUI.shtml");
 }
 function delFun() {
 	var cbox = grid.getSelectedCheckbox();
 	if (cbox == "") {
-		layer.alert("请选择删除项！！");
+		notify("success", "请选择删除项");
 		return;
 	}
-	layer.confirm('是否删除？', function(index) {
-		var url = rootPath + '/resources/deleteEntity.shtml';
-		var s = CommnUtil.ajax(url, {
-			ids : cbox.join(",")
-		}, "json");
-		if (s == "success") {
-			layer.msg('删除成功');
-			grid.loadData();
-		} else {
-			layer.msg('删除失败');
-		}
-	});
+	if(window.confirm("确认删除?")){
+		$.ajax({
+			url: rootPath + '/resources/deleteEntity.shtml',
+			data: {ids: cbox.join(",")},
+			type: "post",
+			success: function (data) {
+				notify("success", "删除成功");
+				$("#content").load(rootPath + "/resources/list.shtml");
+			},
+			error: function () {
+				notify("success", "删除失败");
+				$("#content").load(rootPath + "/resources/list.shtml");
+			}
+
+		});
+	}
 }

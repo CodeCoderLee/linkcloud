@@ -74,7 +74,7 @@
     </div>
 </div>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-validation/jquery.validate.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
+<script type="text/javascript" src="${ctx}/js/jquery/jquery.form.min.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
 <script charset="utf-8" src="${ctx}/js/common/area.js"></script>
