@@ -243,6 +243,13 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
     public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
         Program program = programService.selectByPrimaryKey(programId);
+        String ptype = "";
+        if(program != null)ptype = program.getStype();
+        String pname = "";
+        if(program != null)pname = program.getPname();
+
+        User user = (User) Common.findUserSession(getRequest());
+        Integer userId = user.getId();
 
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         mode.addAttribute("ip_address",deviceAuthen.getIp1());
@@ -252,7 +259,9 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("program",program);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
-        int k = 0;
+        mode.addAttribute("ptype",ptype);
+        mode.addAttribute("pname",pname);
+        mode.addAttribute("userId",userId);
         return Common.BACKGROUND_PATH + "/business/devicespace/play";
     }
 
@@ -261,6 +270,10 @@ public class DeviceSpaceController extends BaseController<Comment>{
         ProgramNetDisk programNetDisk = programNetDiskService.selectByPrimaryKey(programId);
 
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
+
+        User user = (User) Common.findUserSession(getRequest());
+        Integer userId = user.getId();
+
         mode.addAttribute("ip_address",deviceAuthen.getIp1());
 
         ResponseData responseData = getCommentList(programId,1);
@@ -268,7 +281,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("program",programNetDisk);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
-        int k = 0;
+        mode.addAttribute("ptype","netdisk");
+        mode.addAttribute("userId",userId);
         return Common.BACKGROUND_PATH + "/business/devicespace/netdisk-play";
     }
 
