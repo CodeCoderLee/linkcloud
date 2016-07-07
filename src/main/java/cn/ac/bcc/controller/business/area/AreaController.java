@@ -3,6 +3,7 @@ package cn.ac.bcc.controller.business.area;
 import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.Area;
+import cn.ac.bcc.model.business.ProgramDto;
 import cn.ac.bcc.service.business.area.AreaService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
@@ -40,10 +41,38 @@ public class AreaController extends BaseController<Area>{
     @RequestMapping("modifyUI")
     public String modifyUI(Model model) {
         String id = getPara("id");
+        List<ProgramDto> programs = new ArrayList<ProgramDto>();
         if (Common.isNotEmpty(id)) {
-            Area area = areaService.selectByPrimaryKey(Integer.valueOf(id));
-            model.addAttribute("area", area);
+            Area area = new Area();
+            area.setId(Integer.valueOf(id));
+            List<Area> areas = areaService.searchArea(area);
+            model.addAttribute("area", areas.get(0));
+            String selectProgram = areas.get(0).getSelectProgram();
+            JSONArray jsonSelect = new JSONArray();
+            if (!Common.isEmpty(selectProgram)) {
+               jsonSelect = JSONArray.fromObject(selectProgram);
+            }
+            String availableProgram = areas.get(0).getAvailableProgram();
+            JSONArray jsonAvailable = new JSONArray();
+            if (!Common.isEmpty(availableProgram)) {
+                jsonAvailable = JSONArray.fromObject(availableProgram);
+            }
+            for (int i = 0; i < jsonAvailable.size(); i++) {
+                ProgramDto program = new ProgramDto();
+                program.setPid(jsonAvailable.getJSONObject(i).getString("pid"));
+                program.setName(jsonAvailable.getJSONObject(i).getString("name"));
+                program.setSelect(false);
+                for (int j=0;j<jsonSelect.size();j++) {
+                    if (jsonAvailable.getJSONObject(i).getString("pid").equals(jsonSelect.getJSONObject(j).getString("pid"))) {
+                        program.setSelect(true);
+                        break;
+                    }
+                }
+                programs.add(program);
+            }
+            model.addAttribute("programs", programs);
         }
+
         return Common.BACKGROUND_PATH + "/business/area/edit";
     }
 
@@ -64,6 +93,18 @@ public class AreaController extends BaseController<Area>{
     @RequestMapping(value = "modify")
     @SystemLog(module = "频点管理", methods = "频点管理-修改频点信息")//凡需要处理业务逻辑的.都需要记录操作日志
     public String modify(Area area) {
+        String select = getPara("select");
+        JSONArray selectPrograms = new JSONArray();
+        if (!Common.isEmpty(select)) {
+            String[] program = select.split(",");
+            for (int i=0;i<program.length;i++) {
+                JSONObject selectObject = new JSONObject();
+                selectObject.put("pid", program[i].split("&")[0]);
+                selectObject.put("name", program[i].split("&")[1]);
+                selectPrograms.add(selectObject);
+            }
+        }
+        area.setSelectProgram(selectPrograms.toString());
         areaService.updateByPrimaryKeySelective(area);
         return SUCCESS;
     }
@@ -139,6 +180,8 @@ public class AreaController extends BaseController<Area>{
         areaService.updateByPrimaryKeySelective(area);
         return SUCCESS;
     }
-
-
 }
+
+
+
+
