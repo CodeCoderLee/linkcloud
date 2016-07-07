@@ -32,8 +32,8 @@ import java.util.UUID;
 @RequestMapping("/version/")
 public class VersionController extends BaseController<Version> {
 
-    //    private final String rootPath = "C:/linkcloud/upload/version/";
-    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/version/";
+    private final String rootPath = "C:/linkcloud/upload/version/";
+//    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/version/";
 
     @Autowired
     private VersionService versionService;

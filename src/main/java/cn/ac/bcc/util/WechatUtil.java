@@ -23,12 +23,12 @@ public class WechatUtil {
     private static final String MENU_CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create";
     private static final String GET_USER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/user/info";
     private static final String OAUTH_AUTHORIZE_URL = "https://open.weixin.qq.com/connect/oauth2/authorize";
-    private static final String REDIRECT_URL = "http://3abcdb92.ngrok.natapp.cn/wechat/getOpenId.shtml";
-    private static final String PRODUCT_SHOW_REDIRECT_URL = "http://3abcdb92.ngrok.natapp.cn/wechat/getOpenId.shtml?type=1";
-    private static final String PERSONAL_SPACE_REDIRECT_URL = "http://3abcdb92.ngrok.natapp.cn/wechat/getOpenId.shtml?type=2";
-    //    private static final String REDIRECT_URL = "http://linkcloud.tunnel.qydev.com/wechat/getOpenId.shtml";
-//    private static final String PRODUCT_SHOW_REDIRECT_URL = "http://linkcloud.tunnel.qydev.com/wechat/getOpenId.shtml?type=1";
-//    private static final String PERSONAL_SPACE_REDIRECT_URL = "http://linkcloud.tunnel.qydev.com/wechat/getOpenId.shtml?type=2";
+    private static final String REDIRECT_URL = "http://linkedcloud.com.cn/wechat/getOpenId.shtml";
+    private static final String PRODUCT_SHOW_REDIRECT_URL = "http://linkedcloud.com.cnn/wechat/getOpenId.shtml?type=1";
+    private static final String PERSONAL_SPACE_REDIRECT_URL = "http://linkedcloud.com.cn/wechat/getOpenId.shtml?type=2";
+    //    private static final String REDIRECT_URL = "http://linkedcloud.com.cn/wechat/getOpenId.shtml";
+//    private static final String PRODUCT_SHOW_REDIRECT_URL = "http://linkedcloud.com.cn/wechat/getOpenId.shtml?type=1";
+//    private static final String PERSONAL_SPACE_REDIRECT_URL = "http://linkedcloud.com.cn/wechat/getOpenId.shtml?type=2";
     private static final String GET_OAUTH_ACCESS_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/access_token";
     private static final String GET_OAUTH_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo";
 

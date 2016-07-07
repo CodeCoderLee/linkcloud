@@ -51,7 +51,7 @@ public class DeviceAPI {
     public static final String URI_HEARTBEAT = "/device/heartbeat.shtml";
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
-    public static final String DOMAIN = "http://linkcloud.tunnel.qydev.com";
+    public static final String DOMAIN = "http://www.linkedcloud.com.cn";
 //    public static final String DOMAIN = "http://101.201.38.228:8000";
 
     public static final int IS_DIR = 1;

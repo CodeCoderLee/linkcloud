@@ -53,7 +53,7 @@ public class WechatController {
 
     public static boolean flag = true;
 
-    private final String domain = "http://linkcloud.tunnel.qydev.com";
+    private final String domain = "http://www.linkedcloud.com.cn";
 
     /*验证微信接口*/
     @RequestMapping(value = "token", method = RequestMethod.GET)

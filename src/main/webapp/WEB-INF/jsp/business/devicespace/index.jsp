@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>设备空间</title>
+    <title>设备空间（${onoff}）</title>
 
     <meta name="renderer" content="webkit">
 
