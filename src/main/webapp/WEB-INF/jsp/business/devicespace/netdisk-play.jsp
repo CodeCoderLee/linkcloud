@@ -162,10 +162,24 @@
 <script>
   var commentMoreUrl = '${ctx}/space/commentList.shtml';
   var pageNum = ${responseData.pageNum};
+
   var videoId = ${program.id};
+  var ptype = '${ptype}';
+  var pname = '${pname}';
+  var userId = '${userId}';
+  var devid = '${serialNumber}';
+
+  var stime;
+  var ctime;
+  var pid;
+  var interval;
+  var ptype_analysis;
+  var pname_analysis;
 
   var source_url = '${program.purl}';
   var ad_url = 'http://${ip_address}/service/getad';
+  var analysis_url = 'http://${ip_address}/service/analysis';
+
   var playList = ['', source_url];
   var playListLen = playList.length;
   var playIndex = 0;
@@ -173,13 +187,68 @@
   var video = document.getElementsByTagName('video')[0];
   video.addEventListener('ended', play);
 
+  function getPid(url){
+    if(url == source_url){
+      ptype_analysis = ptype;
+      pname_analysis = pname;
+      return videoId;
+    }else{
+      ptype_analysis = 'ad';
+      pname_analysis = '';
+      return getAdId(url);
+    }
+  }
+
+  video.onloadedmetadata = function () {
+    var url = video.url;
+    pid = getPid(url);
+    stime = getDateTime();
+    interval = setInterval("doSubmitAnalysisV()",3000)
+    console.log("onloadedmetadata--interval--" + interval);
+  }
+
+  video.ended = function(){
+    clearInterval(interval);
+    console.log("ended--interval--" + interval);
+  }
+
+  video.ontimeupdate = function(){
+    console.log("ontimeupdate");
+  }
+
+  video.onplaying = function(){
+    console.log("onplaying");
+  }
+
+  function doSubmitAnalysisV(){
+    ctime = getDateTime();
+    ajax2({
+      url: analysis_url,
+      data: {
+        devid: devid,
+        userid: userId,
+        stime: stime,
+        ctime: ctime,
+        ptype: ptype_analysis,
+        pid: pid,
+        pname: pname_analysis
+      },
+      success: function (a) {
+        console.log("ok-----" + a);
+      },
+      fail: function (a) {
+
+      }
+    });
+  }
+
   ajax({
     url: ad_url,
     data: {},
     success: function (a) {
       var json_obj = JSON.parse(a);
       playList[0] = json_obj.url;
-
+      //service/getad得到反馈会是{"url":"http://192.168.1.13/vod/6.MP4"}
       play();
     },
     fail: function (a) {
@@ -189,16 +258,34 @@
   });
 
 
+  function getDateTime(){
+    // 获取当前时间戳(以s为单位)
+    var timestamp = Date.parse(new Date());
+    timestamp = timestamp / 1000;
+    //当前时间戳为：1403149534
+    console.log("当前时间戳为：" + timestamp);
+    return timestamp.toString();
+  }
+
+  function getAdId(url){
+    var regexp = new RegExp("http://[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/vod/([0-9]{1,20})\.\w+", "i");
+    var result = regexp.exec(url);
+    if(result != null){
+      return result[1];
+    }else{
+      return -1;
+    }
+  }
+
   function play(e) {
     if (playIndex >= playListLen) {
       return;
     }
-    video.src = playList[playIndex];
+    var url = playList[playIndex];
+    video.src = url;
     video.load();
     video.play();
-
     playIndex++;
-
   }
 
   function playNext(e) {
@@ -224,6 +311,29 @@
     }
   }
 
+  function ajax2(a) {
+    var d, b = "{";
+    var c = new XMLHttpRequest;
+    a.data || (a.data = {});
+
+    for (d in a.data) {
+      if (b == "{") {
+        b += '"' + d + '":"' + a.data[d] + '"';
+      }
+      else {
+        b += ',"' + d + '":"' + a.data[d] + '"';
+      }
+
+    }
+    b += "}";
+    c.open("POST", a.url);
+    c.send(b);
+    c.onreadystatechange = function () {
+      if (4 === c.readyState) {
+        200 === c.status ? a.success(c.responseText) : a.fail && a.fail(c.status);
+      }
+    }
+  }
  </script>
 </body>
 </html>
