@@ -27,8 +27,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/video/")
 public class VideoController extends BaseController<Video>{
-//    private final String rootPath = "C:/linkcloud/upload/video/";
-    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/video/";
+    private final String rootPath = "C:/linkcloud/upload/video/";
+//    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/video/";
 
     @Autowired
     private VideoService videoService;
