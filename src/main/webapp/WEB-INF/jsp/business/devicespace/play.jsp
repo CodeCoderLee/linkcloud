@@ -164,11 +164,6 @@
   var commentMoreUrl = '${ctx}/space/commentList.shtml';
   var pageNum = ${responseData.pageNum};
 
-  var videoId = ${program.id};
-  var ptype = '${ptype}';
-  var pname = '${pname}';
-  var userId = '${userId}';
-  var devid = '${serialNumber}';
 
   var stime;
   var ctime;
@@ -176,6 +171,7 @@
   var interval;
   var ptype_analysis;
   var pname_analysis;
+  var cur_url;
 
   var source_url = '${program.purl}';
   var ad_url = 'http://${ip_address}/service/getad';
@@ -201,8 +197,7 @@
   }
 
   video.onloadedmetadata = function () {
-    var url = video.url;
-    pid = getPid(url);
+    pid = getPid(cur_url);
     stime = getDateTime();
     interval = setInterval("doSubmitAnalysisV()",3000)
     console.log("onloadedmetadata--interval--" + interval);
@@ -272,9 +267,9 @@
     var regexp = new RegExp("http://[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/vod/([0-9]{1,20})\.\w+", "i");
     var result = regexp.exec(url);
     if(result != null){
-        return result[1];
+      return result[1];
     }else{
-        return -1;
+      return -1;
     }
   }
 
@@ -282,8 +277,8 @@
     if (playIndex >= playListLen) {
       return;
     }
-    var url = playList[playIndex];
-    video.src = url;
+    cur_url = playList[playIndex];
+    video.src = cur_url;
     video.load();
     video.play();
     playIndex++;
@@ -293,7 +288,8 @@
     if (playIndex >= playListLen) {
       return;
     }
-    video.src = playList[playIndex];
+    cur_url = playList[playIndex];
+    video.src = cur_url;
     video.load();
     video.play();
     playIndex++;
@@ -335,7 +331,6 @@
       }
     }
   }
-
 </script>
 </body>
 </html>

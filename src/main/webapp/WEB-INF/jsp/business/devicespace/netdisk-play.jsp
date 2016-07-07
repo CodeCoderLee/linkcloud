@@ -175,6 +175,7 @@
   var interval;
   var ptype_analysis;
   var pname_analysis;
+  var cur_url;
 
   var source_url = '${program.purl}';
   var ad_url = 'http://${ip_address}/service/getad';
@@ -200,8 +201,7 @@
   }
 
   video.onloadedmetadata = function () {
-    var url = video.url;
-    pid = getPid(url);
+    pid = getPid(cur_url);
     stime = getDateTime();
     interval = setInterval("doSubmitAnalysisV()",3000)
     console.log("onloadedmetadata--interval--" + interval);
@@ -281,8 +281,8 @@
     if (playIndex >= playListLen) {
       return;
     }
-    var url = playList[playIndex];
-    video.src = url;
+    cur_url = playList[playIndex];
+    video.src = cur_url;
     video.load();
     video.play();
     playIndex++;
@@ -292,7 +292,8 @@
     if (playIndex >= playListLen) {
       return;
     }
-    video.src = playList[playIndex];
+    cur_url = playList[playIndex];
+    video.src = cur_url;
     video.load();
     video.play();
     playIndex++;
