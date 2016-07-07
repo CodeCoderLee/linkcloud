@@ -34,7 +34,7 @@
                     <button id="subBtn" class="btn btn-success btn-s-xs hidden">设为工作频点</button>
                     <c:if test="${areaId != null && areaId != ''}">
                         <c:forEach items="${res}" var="key">
-                            <a id="setDefaultFrequencyBtn" onclick="javascript:setDefaultFrequency('${key.resurl}')" class="btn btn-success btn-s-xs hidden">设为默认频点</a>
+                            <a id="setDefaultFrequencyBtn" onclick="setDefaultFrequency('${key.resurl}')" class="btn btn-success btn-s-xs hidden">设为默认频点</a>
                         </c:forEach>
                     </c:if>
 
@@ -151,11 +151,11 @@
                             $.each(item.programList, function (index, item) {
                                 divHtml = divHtml + '<div class="checkbox m-b-15">' +
                                         '<label>' +
-                                        '<input type="checkbox" value="' + item.pid + '">' +
+                                        '<input type="checkbox" value="' + item.pid + '" name="'+item.name+'">' +
                                         '<i class="input-helper"></i>' + item.name +
                                         '</label>' +
                                         '</div>';
-                            })
+                            });
 
                             divHtml = divHtml + '</div>';
                             $('#subBtn').removeClass('hidden');
@@ -205,10 +205,14 @@
         var serialNumber = $('#serialNumber').val();
         var frequency = $('ul.scan-tab > li.active').find('a').text();
         var areaId = $('#areaId').val();
+        var programs = [];
+        $.each($('.tab-pane.active').find('input'),function (index,item) {
+            programs.push($(item).val() + "&" + $(item).attr("name") + "&" + $(item).is(":checked"));
+        });
         $.ajax({
             method:'post',
             url:url,
-            data:{areaId:areaId,frequency:frequency},
+            data:{areaId:areaId,frequency:frequency,programs:programs.join(",")},
             dataType:'json',
             success:function (data) {
                 notify('success', '     默认频点设置成功      ');

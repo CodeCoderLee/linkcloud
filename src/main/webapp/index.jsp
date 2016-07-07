@@ -7,6 +7,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="${ctx}/favicon.ico" type="image/x-icon" rel=icon>
+    <link href="${ctx}/favicon.ico" type="image/x-icon" rel="shortcut icon">
     <title>Link Cloud</title>
     <!-- Vendor CSS -->
     <link href="${ctx}/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
@@ -63,17 +65,25 @@
                 <a href="">
                     <div class="profile-pic">
                         <c:choose>
-                            <c:when test="${sessionScope.user.sex==0}">
-                                <img src="img/profile-pics/1.jpg" alt="">
+                            <c:when test="${sessionScope.user.headImgUrl!=null && sessionScope.user.headImgUrl!=''}">
+                                <img src="${sessionScope.user.headImgUrl}" alt="">
                             </c:when>
                             <c:otherwise>
-                                <img src="img/profile-pics/2.jpg" alt="">
+                                <c:choose>
+                                    <c:when test="${sessionScope.user.sex==0}">
+                                        <img src="img/profile-pics/1.jpg" alt="">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="img/profile-pics/2.jpg" alt="">
+                                    </c:otherwise>
+                                </c:choose>
                             </c:otherwise>
                         </c:choose>
+
                     </div>
 
                     <div class="profile-info">
-                        ${sessionScope.user.username}
+                        ${sessionScope.user.nickName}
                         <i class="zmdi zmdi-arrow-drop-down"></i>
                     </div>
                 </a>

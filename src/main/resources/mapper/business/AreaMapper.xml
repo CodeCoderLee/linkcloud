@@ -13,6 +13,21 @@
     <result column="post_code" jdbcType="INTEGER" property="postCode" />
     <result column="level" jdbcType="BIT" property="level" />
     <result column="sort_order" jdbcType="TINYINT" property="sortOrder" />
-    <result column="default_frequency" jdbcType="VARCHAR" property="default_frequency" />
+    <result column="default_frequency" jdbcType="VARCHAR" property="defaultFrequency" />
+    <result column="select_program" jdbcType="VARCHAR" property="selectProgram" />
+    <result column="available_program" jdbcType="VARCHAR" property="availableProgram" />
   </resultMap>
+
+  <select id="searchArea" resultType="cn.ac.bcc.model.business.Area" parameterType="cn.ac.bcc.model.business.Area">
+  select t.id id, t.area_name areaName, t.parent_id parentId, t.short_name shortName, t.area_code areaCode,
+   t.post_code postCode , t.level level, t.sort_order sortOrder, t.default_frequency defaultFrequency,
+   t.select_program selectProgram, t.available_program availableProgram,t1.area_name city, t2.area_name province from bcc_area t ,
+  (select * from bcc_area t where t.`level` = 2 ) t1,
+  (select * from bcc_area t where t.`level` = 1 ) t2
+  where t.`level`=3 and  t.parent_id = t1.id and t1.parent_id = t2.id
+  <if test="area.id!=null">
+    and t.id = #{area.id}
+  </if>
+    order BY id
+  </select>
 </mapper>

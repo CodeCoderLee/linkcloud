@@ -6,6 +6,8 @@ import cn.ac.bcc.service.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by bcc on 16/5/16.
  */
@@ -14,4 +16,8 @@ public class AreaService extends BaseService<Area> {
 
     @Autowired
     private AreaMapper areaMapper;
+
+    public List<Area> searchArea(Area area){
+        return areaMapper.searchArea(area);
+    }
 }

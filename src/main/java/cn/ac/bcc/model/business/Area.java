@@ -57,6 +57,18 @@ public class Area {
     @Column(name = "default_frequency")
     private String defaultFrequency;
 
+    @Column(name = "select_program")
+    private String selectProgram;
+
+    @Column(name = "available_program")
+    private String availableProgram;
+
+    @Transient
+    private String city;
+
+    @Transient
+    private String province;
+
     /**
      * 获取ID
      *
@@ -207,5 +219,37 @@ public class Area {
 
     public void setDefaultFrequency(String defaultFrequency) {
         this.defaultFrequency = defaultFrequency;
+    }
+
+    public String getSelectProgram() {
+        return selectProgram;
+    }
+
+    public void setSelectProgram(String selectProgram) {
+        this.selectProgram = selectProgram;
+    }
+
+    public String getAvailableProgram() {
+        return availableProgram;
+    }
+
+    public void setAvailableProgram(String availableProgram) {
+        this.availableProgram = availableProgram;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }
