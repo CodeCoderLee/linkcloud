@@ -11,10 +11,7 @@ import cn.ac.bcc.service.business.program.ProgramNetDiskService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.util.HelperUtils;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.ServerCookieEncoder;
+import io.netty.handler.codec.http.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -52,8 +49,7 @@ public class DeviceAPI {
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
     public static final String DOMAIN = "http://www.linkedcloud.com.cn";
-//    public static final String DOMAIN = "http://101.201.38.228:8000";
-
+    private Map<String,Boolean> AUTHEN_MAP = new HashMap<String, Boolean>();
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
 
@@ -72,6 +68,7 @@ public class DeviceAPI {
             query = uri.substring(index + 1);
         }
         String token = getCookieValue(request);
+        String serialNumber = getDeviceSerialNumber(token);
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
         log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::" + token + "   data:::" + postData);
@@ -79,41 +76,60 @@ public class DeviceAPI {
         String sessionID = null;
 
         uri = uri.toLowerCase();
+        boolean is_ok = false;
         if (uri.contains(URI_LINKHELLO)) {
             UUID uuid = UUID.randomUUID();
             token = uuid.toString();
             //token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
             sessionID = ServerCookieEncoder.encode("PHPSESSID", token);
             jsonStr = linkHello(request, postData, nvList, token);
+            is_ok = true;
         } else if (uri.contains(URI_AUTHEN)) {
             jsonStr = authen(request, postData, nvList);
+            is_ok = true;
         } else if (uri.contains(URI_REPORT_PROGRAMS)) {
             jsonStr = reportPrograms(request, postData, nvList);
-        } else if (uri.contains(URI_ANALYSISV)) {
+            is_ok = true;
+        } else if (uri.contains(URI_ANALYSISV) && getAuthen(serialNumber)) {
             jsonStr = analysisv(request, postData, nvList);
-        } else if (uri.contains(URI_REMOTECHECK)) {
+            is_ok = true;
+        } else if (uri.contains(URI_REMOTECHECK) && getAuthen(serialNumber)) {
             jsonStr = remoteCheck(request, postData, nvList);
-        } else if (uri.contains(URI_REMOTEWATCH)) {
+            is_ok = true;
+        } else if (uri.contains(URI_REMOTEWATCH) && getAuthen(serialNumber)) {
             jsonStr = remoteWatch(request, postData, nvList);
-        } else if (uri.contains(URI_SCANFRQ)) {
+            is_ok = true;
+        } else if (uri.contains(URI_SCANFRQ) && getAuthen(serialNumber)) {
             jsonStr = scanFrq(request, postData, nvList);
-        } else if (uri.contains(URI_SETAD)) {
+            is_ok = true;
+        } else if (uri.contains(URI_SETAD) && getAuthen(serialNumber)) {
             jsonStr = setAd(request, postData, nvList);
-        } else if (uri.contains(URI_UPDATEAD)) {
+            is_ok = true;
+        } else if (uri.contains(URI_UPDATEAD) && getAuthen(serialNumber)) {
             jsonStr = updateAd(request, postData, nvList);
-        } else if (uri.contains(URI_SETFRQ)) {
+            is_ok = true;
+        } else if (uri.contains(URI_SETFRQ) && getAuthen(serialNumber)) {
             jsonStr = setFrq(request, postData, nvList);
-        } else if (uri.contains(URI_SHOCK)) {
+            is_ok = true;
+        } else if (uri.contains(URI_SHOCK) && getAuthen(serialNumber)) {
             jsonStr = shock(request, postData, nvList);
-        } else if (uri.contains(URI_HEARTBEAT)) {
+            is_ok = true;
+        } else if (uri.contains(URI_HEARTBEAT) && getAuthen(serialNumber)) {
             jsonStr = heartBeat(request, postData, nvList);
-        }else if(uri.contains(URI_GETUPDATEINFO)){
+            is_ok = true;
+        }else if(uri.contains(URI_GETUPDATEINFO) && getAuthen(serialNumber)){
             jsonStr = getUpdateInfo(request,postData,nvList);
+            is_ok = true;
         }
 
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer(jsonStr.getBytes("UTF-8")));
-        if (sessionID != null) {
-            response.headers().set(SET_COOKIE, sessionID);
+        FullHttpResponse response = null;
+        if(is_ok){
+            response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.OK, Unpooled.wrappedBuffer(jsonStr.getBytes("UTF-8")));
+            if (sessionID != null) {
+                response.headers().set(SET_COOKIE, sessionID);
+            }
+        }else{
+            response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.NON_AUTHORITATIVE_INFORMATION, Unpooled.wrappedBuffer("".getBytes("UTF-8")));
         }
         return response;
     }
@@ -155,7 +171,6 @@ public class DeviceAPI {
         DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
         DeviceService deviceService = ctx.getBean(DeviceService.class);
 
-
         //TODO 还没有判断是否进行了设备注册操作，检查bcc_device设备表中
         JSONObject json = JSONObject.fromObject(postData);
         DeviceAuthen deviceAuthen = new DeviceAuthen();
@@ -163,47 +178,55 @@ public class DeviceAPI {
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
 
         TokenNumMap.add(token,json.getString(HelperUtils.KEY_ID));
-
+        String serialNumber = json.getString(HelperUtils.KEY_ID);
         Device device = new Device();
-        device.setSerialNumber(json.getString(HelperUtils.KEY_ID));
+        device.setSerialNumber(serialNumber);
         device = deviceService.selectOne(device);
-        String frq = "";
+        String frq = "0";
         String programIds = "";
+        boolean validation = true;
         if (device != null) {
-            frq = device.getWorkFrequency();
-            programIds = device.getProgramIds();
+            frq = device.getWorkFrequency() != null?device.getWorkFrequency():"0";
+            programIds = device.getProgramIds()!=null?device.getProgramIds():"";
             device.setOnOffLine(HelperUtils.ON_LINE);
             deviceService.updateByPrimaryKeySelective(device);
-        }
-        boolean validation = true;
-        boolean update = true;
-        if (deviceAuthen == null) {
-            deviceAuthen = new DeviceAuthen();
-            update = false;
-        }
-        deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
-        deviceAuthen.setPrivateKey(json.getString(HelperUtils.KEY_KEY));
-        deviceAuthen.setIp1(json.getString(HelperUtils.KEY_IP_S));
-        deviceAuthen.setIp2(json.getString(HelperUtils.KEY_IP_T));
-        deviceAuthen.setMac1(json.getString(HelperUtils.KEY_MAC_S));
-        deviceAuthen.setMac2(json.getString(HelperUtils.KEY_MAC_T));
-        deviceAuthen.setVersion1(json.getString(HelperUtils.KEY_VERSION_S));
-        deviceAuthen.setVersion2(json.getString(HelperUtils.KEY_VERSION_T));
-        deviceAuthen.setToken(token);
-        deviceAuthen.setOnOffLine(HelperUtils.ON_LINE);
-        if (update) {
-            deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
-        } else {
-            deviceAuthenService.insertSelective(deviceAuthen);
+        }else{
+            validation = false;
         }
 
         Map<String, Object> map = new HashMap<String, Object>();
         if (validation) {
+            boolean update = true;
+            if (deviceAuthen == null) {
+                deviceAuthen = new DeviceAuthen();
+                update = false;
+            }
+            deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
+            deviceAuthen.setPrivateKey(json.getString(HelperUtils.KEY_KEY));
+            deviceAuthen.setIp1(json.getString(HelperUtils.KEY_IP_S));
+            deviceAuthen.setIp2(json.getString(HelperUtils.KEY_IP_T));
+            deviceAuthen.setMac1(json.getString(HelperUtils.KEY_MAC_S));
+            deviceAuthen.setMac2(json.getString(HelperUtils.KEY_MAC_T));
+            deviceAuthen.setVersion1(json.getString(HelperUtils.KEY_VERSION_S));
+            deviceAuthen.setVersion2(json.getString(HelperUtils.KEY_VERSION_T));
+            deviceAuthen.setToken(token);
+            deviceAuthen.setOnOffLine(HelperUtils.ON_LINE);
+            if (update) {
+                deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
+            } else {
+                deviceAuthenService.insertSelective(deviceAuthen);
+            }
+
+            //TODO 授权
+            AUTHEN_MAP.put(serialNumber,true);
+
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
         } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error.");
+
+            AUTHEN_MAP.put(serialNumber,false);
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
         map.put(HelperUtils.KEY_FRQ, frq);
@@ -315,7 +338,12 @@ public class DeviceAPI {
     }
 
     private String getDeviceSerialNumber(String token) {
-        String serialNumber = TokenNumMap.get(token);
+        String serialNumber = "";
+        try{
+            serialNumber = TokenNumMap.get(token);
+        }catch (Exception e){
+//            e.printStackTrace();
+        }
         return serialNumber;
     }
 
@@ -801,6 +829,18 @@ public class DeviceAPI {
         JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
+
+    public boolean getAuthen(String serialNumber){
+        boolean authen = false;
+        try {
+            authen = AUTHEN_MAP.get(serialNumber);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  authen;
+    }
+
+
 
     public static void main(String[] args) {
         String s = "";
