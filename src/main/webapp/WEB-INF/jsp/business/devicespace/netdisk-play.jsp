@@ -267,9 +267,9 @@
     return timestamp.toString();
   }
 
-  //service/getad得到反馈会是{"url":"http://192.168.1.13/vod/6.MP4"}
+  //service/getad得到反馈会是{"url":"http://192.168.1.13/ad/6.MP4"}
   function getAdId(url){
-    var sindex = url.indexOf("vod/");
+    var sindex = url.indexOf("ad/");
     var eindex = url.indexOf(".MP4");
     var id = url.substring(sindex+4,eindex);
     return id;
