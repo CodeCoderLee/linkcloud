@@ -33,6 +33,43 @@
                                                placeholder="请输入私钥" name="privateKey" id="privateKey">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">设备区域(默认海淀区)</label>
+                                    <div class="col-sm-9">
+                                        <div class="col-sm-3">
+                                            <div class="fg-line">
+                                                <div class="select">
+                                                    <select class="form-control" id="province"
+                                                            onchange="showCity(this.options[this.options.selectedIndex].value,1)">
+                                                        <option value="">省</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="fg-line">
+                                                <div class="select">
+                                                    <select class="form-control" id="city"
+                                                            disabled="true"
+                                                            onchange="showCity(this.options[this.options.selectedIndex].value,2)">
+                                                        <option value="">市</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="fg-line">
+                                                <div class="select">
+                                                    <select class="form-control" id="county" name="areaId"
+                                                            disabled="true">
+                                                        <option value="">县</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="footer text-right bg-light lter">
                                 <button class="btn btn-success btn-s-xs">注册</button>

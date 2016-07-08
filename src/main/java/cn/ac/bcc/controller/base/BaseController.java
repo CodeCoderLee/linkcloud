@@ -284,6 +284,54 @@ public abstract class BaseController<T> {
         return example;
     }
 
+
+    /**
+     * 获取object中不为空的属性相等的查询条件及order规则的Example
+     *
+     * @param object Object包含的不为空的属性为查询条件，判等
+     * @return 返回带有查询条件约束和排序规则的Example
+     */
+    public Example getEqualsToExample(Object object,Class<?> clazz) {
+        Example example = new Example(clazz);
+        List<String> attributes = Common.getClassFieldsNameEn(object.getClass());
+        Example.Criteria criteria = example.createCriteria();
+        Field[] fields = clazz.getDeclaredFields();//获得属性
+        try {
+            for (Field field : fields) {
+                PropertyDescriptor pd = new PropertyDescriptor(field.getName(),
+                        clazz);
+                Method getMethod = pd.getReadMethod();//获得get方法
+                Object attr = getMethod.invoke(object);//执行get方法返回一个Object
+                if (attr != null && !attr.equals("")) {
+                    criteria.andEqualTo(field.getName(), attr);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IntrospectionException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        /*增加排序*/
+        String sortOrder = getPara("order");
+        String sortName = getPara("sort");
+        if (Common.isNotEmpty(sortOrder)) {
+            if (Common.isNotEmpty(sortName)) {
+                String columnName = Common.getClassFieldColumnName(clazz,sortName);
+                if (columnName != null) {
+                    example.setOrderByClause(columnName + " " + sortOrder);
+                }else
+                    example.setOrderByClause("id " + sortOrder);
+            } else
+                example.setOrderByClause("id " + sortOrder);
+        } else {
+            example.setOrderByClause("id desc");
+        }
+        return example;
+    }
+
+
     /**
      * 对返回结果进行封装
      *

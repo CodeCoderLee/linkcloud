@@ -56,8 +56,8 @@
                 <thead>
                 <tr>
                     <th data-checkbox="true"></th>
-                    <th data-field="serialNumber" data-sortable="true">序列号</th>
-                    <th data-field="serialNumber" data-sortable="true">区域</th>
+                    <th data-field="serialNumber">序列号</th>
+                    <th data-field="areaName" data-formatter="areaFormatter">区域</th>
                     <th data-field="registerTime" data-formatter="dateTimeFormatter" data-sortable="true">注册时间</th>
                 </tr>
                 </thead>
@@ -74,5 +74,8 @@
     var addUrl = "device/addUI.shtml";
     var modifyUrl = "device/modifyUI.shtml";
     var deleteUrl = "device/delete.shtml";
+    function areaFormatter(value, row) {
+        return row['province'] + "." + row['city'] + "." + row['areaName'];
+    }
 </script>
 <script charset="UTF-8" src="${ctx}/js/common/bcc-bootstrap-table.js"></script>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.business.DeviceViewMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.DeviceView" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="private_key" property="privateKey" jdbcType="VARCHAR" />
+    <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+    <result column="register_account" property="registerAccount" jdbcType="INTEGER" />
+    <result column="bind_account" property="bindAccount" jdbcType="INTEGER" />
+    <result column="bind_phone" property="bindPhone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="debug_account" property="debugAccount" jdbcType="INTEGER" />
+    <result column="on_off_line" property="onOffLine" jdbcType="INTEGER" />
+    <result column="register_name" property="registerName" jdbcType="VARCHAR" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
