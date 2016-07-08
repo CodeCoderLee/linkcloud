@@ -2,8 +2,9 @@
  * 设备注册js
  * Created by bcc on 16/5/28.
  */
-
+var first = true;
 $(function () {
+
     onLoadUrl();
     $('#closeBtn').click(function () {
         $("#content").load(rootPath + "/device/list.shtml");
@@ -69,7 +70,15 @@ $(function () {
             //alert("dataMap.length::" + dataMap.length);
             console.log("dataMap:::" + dataMap);
             for (var i = 0; i < dataMap.length; i++) {
-                $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#province");
+                if (dataMap[i].areaName == '北京') {
+                    $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#province");
+                    if (first) {
+                        showCity(dataMap[i].id, 1);
+                    }
+                } else {
+                    $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#province");
+                }
+
 
             }
             //$("#msg").html(decodeURI(data));
@@ -103,7 +112,13 @@ function showCity(id, type) {
             if (type === 1) {
                 $('#city').html("<option value=\"\">市</option>");
                 for (var i = 0; i < dataMap.length; i++) {
-                    $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#city");
+                    if (dataMap[i].areaName == '北京市' && first) {
+                        $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#city");
+                        showCity(dataMap[i].id, 2);
+                    } else {
+                        $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#city");
+                    }
+
 
                 }
                 // $('#city').val("");
@@ -113,7 +128,13 @@ function showCity(id, type) {
             } else {
                 $('#county').html("<option value=\"\">县</option>");
                 for (var i = 0; i < dataMap.length; i++) {
-                    $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#county");
+                    if(dataMap[i].areaName == '海淀区' && first){
+                        $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#county");
+                        first = false;
+                    }else{
+                        $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#county");
+                    }
+
 
                 }
                 $('#county').attr("disabled", false);

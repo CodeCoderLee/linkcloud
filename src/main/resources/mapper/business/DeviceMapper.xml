@@ -18,13 +18,26 @@
         <result column="work_frequency" jdbcType="VARCHAR" property="workFrequency"/>
         <result column="program_ids" jdbcType="VARCHAR" property="programIds"/>
         <result column="on_off_line" jdbcType="INTEGER" property="onOffLine"/>
+        <result column="track_no" jdbcType="VARCHAR" property="trackNo"/>
     </resultMap>
+
+    <select id="searchDeviceList" resultType="cn.ac.bcc.model.business.Device">
+         select d.id id, d.serial_number serialNumber, d.private_key privateKey, d.register_time registerTime,
+        d.register_account registerAccount, d.bind_account bindAccount, d.bind_phone bindPhone, d.`status` status,
+        d.area_id areaId, d.debug_account debugAccount,d.on_off_line onOffLine, d.track_no trackNo, u.userName registerName from bcc_device d left join bcc_user u
+        on d.register_account=u.id ,
+        (select t.id id, t.area_name areaName, t1.area_name city, t2.area_name province from bcc_area t ,
+          (select * from bcc_area t where t.`level` = 2 ) t1,
+          (select * from bcc_area t where t.`level` = 1 ) t2
+          where t.`level`=3 and  t.parent_id = t1.id and t1.parent_id = t2.id) a
+        where  1= 1 and d.area_id = a.id
+    </select>
 
     <select id="selectDebugDevice" resultType="cn.ac.bcc.model.business.Device"
             parameterType="cn.ac.bcc.model.business.Device">
         select d.id id, d.serial_number serialNumber, d.private_key privateKey, d.register_time registerTime,
         d.register_account registerAccount, d.bind_account bindAccount, d.bind_phone bindPhone, d.`status` status,
-        d.area_id areaId, d.debug_account debugAccount,d.on_off_line onOffLine, u.userName registerName from bcc_device d left join bcc_user u
+        d.area_id areaId, d.debug_account debugAccount,d.on_off_line onOffLine, d.track_no trackNo, u.userName registerName from bcc_device d left join bcc_user u
         on d.register_account=u.id WHERE 1=1
         <if test="device.id != null">
             and d.id = #{device.id}
@@ -47,7 +60,7 @@
     <select id="selectSettingDevice" resultType="cn.ac.bcc.model.business.Device">
         select d.id id, d.serial_number serialNumber, d.private_key privateKey, d.register_time registerTime,
         d.register_account registerAccount, d.bind_account bindAccount, d.bind_phone bindPhone, d.`status` status,
-        d.area_id areaId, d.debug_account debugAccount, u.userName registerName from bcc_device d left join bcc_user u
+        d.area_id areaId, d.debug_account debugAccount, d.track_no trackNo, u.userName registerName from bcc_device d left join bcc_user u
         on d.register_account=u.id WHERE 1=1
         and d.status != 1
         <if test="device.id != null">

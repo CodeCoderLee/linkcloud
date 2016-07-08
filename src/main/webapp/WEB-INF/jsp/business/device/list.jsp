@@ -25,9 +25,9 @@
             <%--<button type="button" class="btn btn-info" id="modifyBtn">--%>
                 <%--<i class="glyphicon glyphicon-edit"></i>调试--%>
             <%--</button>--%>
-            <%--<button type="button" class="btn btn-danger" id="deleteBtn">--%>
-                <%--<i class="glyphicon glyphicon-minus"></i>删除--%>
-            <%--</button>--%>
+            <button type="button" class="btn btn-danger" id="deleteBtn">
+                <i class="glyphicon glyphicon-minus"></i>删除
+            </button>
             <button id="refreshBtn" class="btn btn-default">
                 <i class="glyphicon glyphicon-refresh"></i>刷新
             </button>

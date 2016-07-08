@@ -76,6 +76,9 @@ public class Device {
     @Column(name = "program_ids")
     private String programIds;
 
+    @Column(name = "track_no")
+    private String trackNo;
+
 
     @Transient
     private String registerName;
@@ -290,5 +293,13 @@ public class Device {
 
     public void setOnOffLine(Integer onOffLine) {
         this.onOffLine = onOffLine;
+    }
+
+    public String getTrackNo() {
+        return trackNo;
+    }
+
+    public void setTrackNo(String trackNo) {
+        this.trackNo = trackNo;
     }
 }

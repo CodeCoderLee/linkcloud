@@ -35,7 +35,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">设备区域(默认海淀区)</label>
+                                    <label class="col-sm-3 control-label">设备区域</label>
                                     <div class="col-sm-9">
                                         <div class="col-sm-3">
                                             <div class="fg-line">
@@ -51,7 +51,6 @@
                                             <div class="fg-line">
                                                 <div class="select">
                                                     <select class="form-control" id="city"
-                                                            disabled="true"
                                                             onchange="showCity(this.options[this.options.selectedIndex].value,2)">
                                                         <option value="">市</option>
                                                     </select>
@@ -62,7 +61,7 @@
                                             <div class="fg-line">
                                                 <div class="select">
                                                     <select class="form-control" id="county" name="areaId"
-                                                            disabled="true">
+                                                            >
                                                         <option value="">县</option>
                                                     </select>
                                                 </div>
