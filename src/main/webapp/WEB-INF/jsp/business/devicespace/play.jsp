@@ -268,10 +268,10 @@
     return timestamp.toString();
   }
 
-  //service/getad得到反馈会是{"url":"http://192.168.1.13/ad/6.MP4"}
+  //service/getad得到反馈会是{"url":"http://192.168.1.13/ad/6.mp4"}
   function getAdId(url){
     var sindex = url.indexOf("ad/");
-    var eindex = url.indexOf(".MP4");
+    var eindex = url.indexOf(".mp4");
     var id = url.substring(sindex+4,eindex);
     return id;
   }
