@@ -159,8 +159,8 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("searchDeviceSettingList")
     public ResponseData searchDeviceSettingList(Device device, Integer pageNum, Integer pageSize){
         Integer userId = Common.findUserSessionId(getRequest());
-        device.setRegisterAccount(userId);
-        device.setDebugAccount(userId);
+//        device.setRegisterAccount(userId);
+//        device.setDebugAccount(userId);
         PageHelper.startPage(pageNum, pageSize);
         List<Device> list = deviceService.selectSettingDevice(userId, device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
