@@ -22,8 +22,8 @@ public class DeviceService extends BaseService<Device> {
         return deviceMapper.selectDebugDevice(device);
     }
 
-    public int updateStatusByNum(String serialNumber,int status, int areaId){
-        return deviceMapper.updateStatusByNum(serialNumber,status, areaId);
+    public int updateStatusByNum(String serialNumber,int status, int areaId, String workFrequency, String programIds){
+        return deviceMapper.updateStatusByNum(serialNumber,status, areaId, workFrequency, programIds);
     }
 
     public int updateOnOffLineByNum(String serialNumber,Integer onOffLine){
