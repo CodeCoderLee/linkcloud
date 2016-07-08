@@ -22,9 +22,9 @@
             <button type="button" class="btn btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-edit"></i>注册
             </button>
-            <%--<button type="button" class="btn btn-info" id="modifyBtn">--%>
-                <%--<i class="glyphicon glyphicon-edit"></i>调试--%>
-            <%--</button>--%>
+            <button type="button" class="btn btn-info" id="modifyBtn">
+                <i class="glyphicon glyphicon-edit"></i>修改
+            </button>
             <button type="button" class="btn btn-danger" id="deleteBtn">
                 <i class="glyphicon glyphicon-minus"></i>删除
             </button>
@@ -72,7 +72,7 @@
         src="${ctx}/vendors/bower_components/bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js"/>
 <script type="text/javascript">
     var addUrl = "device/addUI.shtml";
-    var modifyUrl = "device/modifyUI.shtml";
+    var modifyUrl = "device/modifyUI.shtml?id=";
     var deleteUrl = "device/delete.shtml";
     function areaFormatter(value, row) {
         return row['province'] + "." + row['city'] + "." + row['areaName'];

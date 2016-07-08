@@ -1,24 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.ac.bcc.mapper.business.DeviceViewMapper" >
-  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.DeviceView" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ac.bcc.mapper.business.DeviceViewMapper">
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.DeviceView">
     <!--
       WARNING - @mbggenerated
     -->
-    <result column="id" property="id" jdbcType="INTEGER" />
-    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
-    <result column="private_key" property="privateKey" jdbcType="VARCHAR" />
-    <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
-    <result column="register_account" property="registerAccount" jdbcType="INTEGER" />
-    <result column="bind_account" property="bindAccount" jdbcType="INTEGER" />
-    <result column="bind_phone" property="bindPhone" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="area_id" property="areaId" jdbcType="INTEGER" />
-    <result column="debug_account" property="debugAccount" jdbcType="INTEGER" />
-    <result column="on_off_line" property="onOffLine" jdbcType="INTEGER" />
-    <result column="register_name" property="registerName" jdbcType="VARCHAR" />
-    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="private_key" jdbcType="VARCHAR" property="privateKey" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="register_account" jdbcType="INTEGER" property="registerAccount" />
+    <result column="bind_account" jdbcType="INTEGER" property="bindAccount" />
+    <result column="bind_phone" jdbcType="VARCHAR" property="bindPhone" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="debug_account" jdbcType="INTEGER" property="debugAccount" />
+    <result column="work_frequency" jdbcType="VARCHAR" property="workFrequency" />
+    <result column="program_ids" jdbcType="VARCHAR" property="programIds" />
+    <result column="on_off_line" jdbcType="INTEGER" property="onOffLine" />
+    <result column="track_no" jdbcType="VARCHAR" property="trackNo" />
+    <result column="ex_status" jdbcType="INTEGER" property="exStatus" />
+    <result column="register_name" jdbcType="VARCHAR" property="registerName" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
   </resultMap>
 </mapper>

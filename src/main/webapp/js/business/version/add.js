@@ -8,16 +8,23 @@ $(function () {
 
     $('#closeBtn').click(function () {
         alert($('#entrance'));
-            $("#content").load(rootPath + "/version/list.shtml");
+        $("#content").load(rootPath + "/version/list.shtml");
     });
     $('#form').validate({
         submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
             $(form).ajaxSubmit({
+                uploadProgress: function (event, position, total, percentComplete) {
+                    console.log("percentComplete===", percentComplete);
+                    console.log("total===", total);
+                },
                 type: "post",
                 dataType: "json",
+                // complete: function(response) { // on complete
+                //     console.log("complete!!");
+                // },
                 success: function (data) {
                     notify('success', '     版本信息添加成功      ');
-                        $("#content").load(rootPath + "/version/list.shtml");
+                    $("#content").load(rootPath + "/version/list.shtml");
                 },
                 error: function (XMLResponse) {
                     alert(XMLResponse.responseText);
@@ -56,7 +63,7 @@ $(function () {
             $(".alert-danger").addClass("hidden");
         }
     });
-    
+
     // $.ajax({
     //     url:rooPath
     // });
