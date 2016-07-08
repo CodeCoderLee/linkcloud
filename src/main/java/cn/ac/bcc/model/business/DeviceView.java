@@ -3,14 +3,13 @@ package cn.ac.bcc.model.business;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "bcc_device")
-public class Device {
+@Table(name = "bcc_device_view")
+public class DeviceView {
     /**
      * 主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -61,27 +60,35 @@ public class Device {
     @Column(name = "area_id")
     private Integer areaId;
 
-    @Column(name="on_off_line")
-    private Integer onOffLine;
-
     /**
      * 调试账户
      */
     @Column(name = "debug_account")
     private Integer debugAccount;
 
-    @Column(name = "work_frequency")
-    private String workFrequency;
+    @Column(name = "on_off_line")
+    private Integer onOffLine;
 
-    @Column(name = "program_ids")
-    private String programIds;
-
-    @Column(name = "track_no")
-    private String trackNo;
-
-
-    @Transient
+    @Column(name = "register_name")
     private String registerName;
+
+    /**
+     * 区域名称
+     */
+    @Column(name = "area_name")
+    private String areaName;
+
+    /**
+     * 区域名称
+     */
+    @Column(name = "city")
+    private String city;
+
+    /**
+     * 区域名称
+     */
+    @Column(name = "province")
+    private String province;
 
     /**
      * 获取主键
@@ -263,43 +270,85 @@ public class Device {
         this.debugAccount = debugAccount;
     }
 
-    public String getRegisterName() {
-        return registerName;
-    }
-
-    public void setRegisterName(String registerName) {
-        this.registerName = registerName;
-    }
-
-    public String getWorkFrequency() {
-        return workFrequency;
-    }
-
-    public void setWorkFrequency(String workFrequency) {
-        this.workFrequency = workFrequency;
-    }
-
-    public String getProgramIds() {
-        return programIds;
-    }
-
-    public void setProgramIds(String programIds) {
-        this.programIds = programIds;
-    }
-
+    /**
+     * @return on_off_line
+     */
     public Integer getOnOffLine() {
         return onOffLine;
     }
 
+    /**
+     * @param onOffLine
+     */
     public void setOnOffLine(Integer onOffLine) {
         this.onOffLine = onOffLine;
     }
 
-    public String getTrackNo() {
-        return trackNo;
+    /**
+     * @return register_name
+     */
+    public String getRegisterName() {
+        return registerName;
     }
 
-    public void setTrackNo(String trackNo) {
-        this.trackNo = trackNo;
+    /**
+     * @param registerName
+     */
+    public void setRegisterName(String registerName) {
+        this.registerName = registerName;
+    }
+
+    /**
+     * 获取区域名称
+     *
+     * @return area_name - 区域名称
+     */
+    public String getAreaName() {
+        return areaName;
+    }
+
+    /**
+     * 设置区域名称
+     *
+     * @param areaName 区域名称
+     */
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    /**
+     * 获取区域名称
+     *
+     * @return city - 区域名称
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 设置区域名称
+     *
+     * @param city 区域名称
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * 获取区域名称
+     *
+     * @return province - 区域名称
+     */
+    public String getProvince() {
+        return province;
+    }
+
+    /**
+     * 设置区域名称
+     *
+     * @param province 区域名称
+     */
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

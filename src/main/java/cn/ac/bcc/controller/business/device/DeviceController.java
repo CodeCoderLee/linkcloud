@@ -5,7 +5,9 @@ import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.exception.SystemException;
 import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceAuthen;
+import cn.ac.bcc.model.business.DeviceView;
 import cn.ac.bcc.model.core.User;
+import cn.ac.bcc.service.business.device.DeviceViewService;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
@@ -38,6 +40,9 @@ public class DeviceController extends BaseController<Device> {
 
     @Autowired
     DeviceAuthenService deviceAuthenService;
+
+    @Autowired
+    private DeviceViewService deviceViewService;
 
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
@@ -110,11 +115,11 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("search")
-    public ResponseData search(Device device, Integer limit, Integer offset) throws Exception {
+    public ResponseData search(DeviceView deviceView, Integer limit, Integer offset) throws Exception {
         PageHelper.offsetPage(offset, limit);
-        Example example = getEqualsToExample(device);
-        List<Device> list = deviceService.selectByExample(example);
-        PageInfo<Device> pageInfo = new PageInfo<Device>(list);
+        Example example = getEqualsToExample(deviceView,deviceView.getClass());
+        List<DeviceView> list = deviceViewService.selectByExample(example);
+        PageInfo<DeviceView> pageInfo = new PageInfo<DeviceView>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
         responseData.setRows(list);
@@ -175,7 +180,9 @@ public class DeviceController extends BaseController<Device> {
             device.setDebugAccount(userId);
             device.setStatus(1);
             //方便测试,默认区域id为海淀区的...
-            device.setAreaId(110108);
+            if (device.getAreaId() == null) {
+                device.setAreaId(110108);
+            }
             if(!(deviceList!=null && deviceList.size()>0)){
                 deviceService.insert(device);
             }
@@ -327,7 +334,7 @@ public class DeviceController extends BaseController<Device> {
 //        scanFreqPrograms.add(scanFreqProgram);
 //        freq.setProgramList(scanFreqPrograms);
 //        freqs.add(freq);
-
+//
 //        scanFreqInfos.setFreqList(freqs);
         scanFreqInfos = MemoryMap.get(serialNumber);
         if(scanFreqInfos == null){
