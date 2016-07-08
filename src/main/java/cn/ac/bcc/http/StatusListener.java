@@ -4,6 +4,7 @@ import cn.ac.bcc.util.helper.HeartBeatMap;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.HelperUtils;
+import cn.ac.bcc.util.helper.OnOffLineMap;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -49,18 +50,19 @@ public class StatusListener implements ServletContextListener {
             int maxSpace = 10000;
             while (run){
                 try {
-                    List<String> keyList = HeartBeatMap.getKeys();
-                    for (String key : keyList) {
-                        long current = System.currentTimeMillis();
-                        long oldTime = HeartBeatMap.getTimestamp(key);
-                        long interval = current - oldTime;
-                        if (interval > maxSpace) {
+                    List<String> keyList = OnOffLineMap.getKeys();
+                    for (String serialNumber : keyList) {
+                        if (!OnOffLineMap.isOnline(serialNumber)) {
                             //超过500毫秒判断为离线，更新状态
                             DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
                             DeviceService deviceService = ctx.getBean(DeviceService.class);
-                            deviceService.updateOnOffLineByNum(key, HelperUtils.OFF_LINE);
-                            deviceAuthenService.updateOnOffLineByNum(key, HelperUtils.OFF_LINE);
-                            HeartBeatMap.clear(key);
+                            deviceService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
+                            deviceAuthenService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
+                            HeartBeatMap.clear(serialNumber);
+                            OnOffLineMap.clear(serialNumber);
+                            if(DeviceAPI.AUTHEN_MAP.containsKey(serialNumber)){
+                                DeviceAPI.AUTHEN_MAP.put(serialNumber,false);
+                            }
                             System.out.println("off-line");
                         }
                     }

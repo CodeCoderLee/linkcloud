@@ -49,7 +49,7 @@ public class DeviceAPI {
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
     public static final String DOMAIN = "http://www.linkedcloud.com.cn";
-    private Map<String,Boolean> AUTHEN_MAP = new HashMap<String, Boolean>();
+    public static Map<String,Boolean> AUTHEN_MAP = new HashMap<String, Boolean>();
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
 
@@ -79,47 +79,58 @@ public class DeviceAPI {
         boolean is_ok = false;
         if (uri.contains(URI_LINKHELLO)) {
             UUID uuid = UUID.randomUUID();
-            token = uuid.toString();
-            //token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
+            //token = uuid.toString();
+            token = "b340f12c-f6e0-4c75-b87a-871296a760d2";
             sessionID = ServerCookieEncoder.encode("PHPSESSID", token);
             jsonStr = linkHello(request, postData, nvList, token);
             is_ok = true;
         } else if (uri.contains(URI_AUTHEN)) {
             jsonStr = authen(request, postData, nvList);
             is_ok = true;
-        } else if (uri.contains(URI_REPORT_PROGRAMS)) {
+        } else if (uri.contains(URI_REPORT_PROGRAMS)  && getAuthen(serialNumber)) {
             jsonStr = reportPrograms(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_ANALYSISV) && getAuthen(serialNumber)) {
             jsonStr = analysisv(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_REMOTECHECK) && getAuthen(serialNumber)) {
             jsonStr = remoteCheck(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_REMOTEWATCH) && getAuthen(serialNumber)) {
             jsonStr = remoteWatch(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_SCANFRQ) && getAuthen(serialNumber)) {
             jsonStr = scanFrq(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_SETAD) && getAuthen(serialNumber)) {
             jsonStr = setAd(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_UPDATEAD) && getAuthen(serialNumber)) {
             jsonStr = updateAd(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_SETFRQ) && getAuthen(serialNumber)) {
             jsonStr = setFrq(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_SHOCK) && getAuthen(serialNumber)) {
             jsonStr = shock(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         } else if (uri.contains(URI_HEARTBEAT) && getAuthen(serialNumber)) {
             jsonStr = heartBeat(request, postData, nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         }else if(uri.contains(URI_GETUPDATEINFO) && getAuthen(serialNumber)){
             jsonStr = getUpdateInfo(request,postData,nvList);
             is_ok = true;
+            OnOffLineMap.online(serialNumber);
         }
 
         FullHttpResponse response = null;
@@ -177,8 +188,9 @@ public class DeviceAPI {
         deviceAuthen.setSerialNumber(json.getString(HelperUtils.KEY_ID));
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
 
-        TokenNumMap.add(token,json.getString(HelperUtils.KEY_ID));
         String serialNumber = json.getString(HelperUtils.KEY_ID);
+        TokenNumMap.add(token,serialNumber);
+
         Device device = new Device();
         device.setSerialNumber(serialNumber);
         device = deviceService.selectOne(device);
@@ -233,7 +245,7 @@ public class DeviceAPI {
         map.put(HelperUtils.KEY_PROGRAMS, programIds);
 
         System.out.print("on-line");
-
+        OnOffLineMap.online(serialNumber);
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
     }
