@@ -268,7 +268,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "play2/{serialNumber}", produces = "text/html; charset=utf-8")
     public String play2(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
         ProgramNetDisk programNetDisk = programNetDiskService.selectByPrimaryKey(programId);
-
+        String pname = "";
+        if(programNetDisk != null)pname = programNetDisk.getPname();
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
 
         User user = (User) Common.findUserSession(getRequest());
@@ -282,6 +283,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("ptype","netdisk");
+        mode.addAttribute("pname",pname);
         mode.addAttribute("userId",userId);
         return Common.BACKGROUND_PATH + "/business/devicespace/netdisk-play";
     }

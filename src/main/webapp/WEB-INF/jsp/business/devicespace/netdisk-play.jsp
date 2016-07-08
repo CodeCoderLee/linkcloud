@@ -267,14 +267,12 @@
     return timestamp.toString();
   }
 
+  //service/getad得到反馈会是{"url":"http://192.168.1.13/vod/6.MP4"}
   function getAdId(url){
-    var regexp = new RegExp("http://[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/vod/([0-9]{1,20})\.\w+", "i");
-    var result = regexp.exec(url);
-    if(result != null){
-      return result[1];
-    }else{
-      return -1;
-    }
+    var sindex = url.indexOf("vod/");
+    var eindex = url.indexOf(".MP4");
+    var id = url.substring(sindex+4,eindex);
+    return id;
   }
 
   function play(e) {
