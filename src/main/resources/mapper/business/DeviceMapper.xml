@@ -62,7 +62,6 @@
         d.register_account registerAccount, d.bind_account bindAccount, d.bind_phone bindPhone, d.`status` status,
         d.area_id areaId, d.debug_account debugAccount, d.track_no trackNo, d.ex_status exStatus, u.userName registerName from bcc_device d left join bcc_user u
         on d.register_account=u.id WHERE 1=1
-        and d.status != 1
         <if test="device.id != null">
             and d.id = #{device.id}
         </if>
@@ -72,7 +71,7 @@
         ORDER BY id desc
     </select>
     <update id="updateStatusByNum">
-        update BCC_DEVICE d SET d.STATUS = #{status}, d.area_id = #{areaId}
+        update BCC_DEVICE d SET d.STATUS = #{status}, d.area_id = #{areaId}, d.work_frequency=#{workFrequency}, d.program_ids=#{programIds}
         where d.serial_number = #{serialNumber}
     </update>
 
