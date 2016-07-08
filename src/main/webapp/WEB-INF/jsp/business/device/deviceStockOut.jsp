@@ -86,6 +86,9 @@
             return false;
         });
 
+        $('#closeBtn').click(function () {
+            $("#content").load(rootPath + "/deviceUseApply/list.shtml");
+        });
 
     });
 

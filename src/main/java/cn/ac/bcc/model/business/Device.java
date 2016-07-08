@@ -50,7 +50,7 @@ public class Device {
     private String bindPhone;
 
     /**
-     * 设备状态
+     * 设备状态，1注册，2正式使用，3演示使用，4入库
      */
     @Column(name = "status")
     private Integer status;
@@ -61,23 +61,35 @@ public class Device {
     @Column(name = "area_id")
     private Integer areaId;
 
-    @Column(name="on_off_line")
-    private Integer onOffLine;
-
     /**
      * 调试账户
      */
     @Column(name = "debug_account")
     private Integer debugAccount;
 
+    /**
+     * 工作频点
+     */
     @Column(name = "work_frequency")
     private String workFrequency;
 
+    /**
+     * 节目号，以逗号分割
+     */
     @Column(name = "program_ids")
     private String programIds;
 
+    @Column(name = "on_off_line")
+    private Integer onOffLine;
+
+    /**
+     * 物流号
+     */
     @Column(name = "track_no")
     private String trackNo;
+
+    @Column(name = "ex_status")
+    private Integer exStatus;
 
 
     @Transient
@@ -210,18 +222,18 @@ public class Device {
     }
 
     /**
-     * 获取设备状态
+     * 获取设备状态，1注册，2正式使用，3演示使用，4入库
      *
-     * @return status - 设备状态
+     * @return status - 设备状态，1注册，2正式使用，3演示使用，4入库
      */
     public Integer getStatus() {
         return status;
     }
 
     /**
-     * 设置设备状态
+     * 设置设备状态，1注册，2正式使用，3演示使用，4入库
      *
-     * @param status 设备状态
+     * @param status 设备状态，1注册，2正式使用，3演示使用，4入库
      */
     public void setStatus(Integer status) {
         this.status = status;
@@ -263,43 +275,93 @@ public class Device {
         this.debugAccount = debugAccount;
     }
 
+    /**
+     * 获取工作频点
+     *
+     * @return work_frequency - 工作频点
+     */
+    public String getWorkFrequency() {
+        return workFrequency;
+    }
+
+    /**
+     * 设置工作频点
+     *
+     * @param workFrequency 工作频点
+     */
+    public void setWorkFrequency(String workFrequency) {
+        this.workFrequency = workFrequency;
+    }
+
+    /**
+     * 获取节目号，以逗号分割
+     *
+     * @return program_ids - 节目号，以逗号分割
+     */
+    public String getProgramIds() {
+        return programIds;
+    }
+
+    /**
+     * 设置节目号，以逗号分割
+     *
+     * @param programIds 节目号，以逗号分割
+     */
+    public void setProgramIds(String programIds) {
+        this.programIds = programIds;
+    }
+
+    /**
+     * @return on_off_line
+     */
+    public Integer getOnOffLine() {
+        return onOffLine;
+    }
+
+    /**
+     * @param onOffLine
+     */
+    public void setOnOffLine(Integer onOffLine) {
+        this.onOffLine = onOffLine;
+    }
+
+    /**
+     * 获取物流号
+     *
+     * @return track_no - 物流号
+     */
+    public String getTrackNo() {
+        return trackNo;
+    }
+
+    /**
+     * 设置物流号
+     *
+     * @param trackNo 物流号
+     */
+    public void setTrackNo(String trackNo) {
+        this.trackNo = trackNo;
+    }
+
+    /**
+     * @return ex_status
+     */
+    public Integer getExStatus() {
+        return exStatus;
+    }
+
+    /**
+     * @param exStatus
+     */
+    public void setExStatus(Integer exStatus) {
+        this.exStatus = exStatus;
+    }
+
     public String getRegisterName() {
         return registerName;
     }
 
     public void setRegisterName(String registerName) {
         this.registerName = registerName;
-    }
-
-    public String getWorkFrequency() {
-        return workFrequency;
-    }
-
-    public void setWorkFrequency(String workFrequency) {
-        this.workFrequency = workFrequency;
-    }
-
-    public String getProgramIds() {
-        return programIds;
-    }
-
-    public void setProgramIds(String programIds) {
-        this.programIds = programIds;
-    }
-
-    public Integer getOnOffLine() {
-        return onOffLine;
-    }
-
-    public void setOnOffLine(Integer onOffLine) {
-        this.onOffLine = onOffLine;
-    }
-
-    public String getTrackNo() {
-        return trackNo;
-    }
-
-    public void setTrackNo(String trackNo) {
-        this.trackNo = trackNo;
     }
 }

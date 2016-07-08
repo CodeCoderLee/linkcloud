@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.ac.bcc.mapper.business.DeviceMapper">
-    <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.Device">
-        <!--
-          WARNING - @mbggenerated
-        -->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="serial_number" jdbcType="VARCHAR" property="serialNumber"/>
-        <result column="private_key" jdbcType="VARCHAR" property="privateKey"/>
-        <result column="register_time" jdbcType="TIMESTAMP" property="registerTime"/>
-        <result column="register_account" jdbcType="INTEGER" property="registerAccount"/>
-        <result column="bind_account" jdbcType="INTEGER" property="bindAccount"/>
-        <result column="bind_phone" jdbcType="VARCHAR" property="bindPhone"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="area_id" jdbcType="INTEGER" property="areaId"/>
-        <result column="debug_account" jdbcType="INTEGER" property="debugAccount"/>
-        <result column="work_frequency" jdbcType="VARCHAR" property="workFrequency"/>
-        <result column="program_ids" jdbcType="VARCHAR" property="programIds"/>
-        <result column="on_off_line" jdbcType="INTEGER" property="onOffLine"/>
-        <result column="track_no" jdbcType="VARCHAR" property="trackNo"/>
-    </resultMap>
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.Device">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="private_key" jdbcType="VARCHAR" property="privateKey" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="register_account" jdbcType="INTEGER" property="registerAccount" />
+    <result column="bind_account" jdbcType="INTEGER" property="bindAccount" />
+    <result column="bind_phone" jdbcType="VARCHAR" property="bindPhone" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="debug_account" jdbcType="INTEGER" property="debugAccount" />
+    <result column="work_frequency" jdbcType="VARCHAR" property="workFrequency" />
+    <result column="program_ids" jdbcType="VARCHAR" property="programIds" />
+    <result column="on_off_line" jdbcType="INTEGER" property="onOffLine" />
+    <result column="track_no" jdbcType="VARCHAR" property="trackNo" />
+    <result column="ex_status" jdbcType="INTEGER" property="exStatus" />
+  </resultMap>
 
     <select id="searchDeviceList" resultType="cn.ac.bcc.model.business.Device">
          select d.id id, d.serial_number serialNumber, d.private_key privateKey, d.register_time registerTime,
         d.register_account registerAccount, d.bind_account bindAccount, d.bind_phone bindPhone, d.`status` status,
-        d.area_id areaId, d.debug_account debugAccount,d.on_off_line onOffLine, d.track_no trackNo, u.userName registerName from bcc_device d left join bcc_user u
+        d.area_id areaId, d.debug_account debugAccount,d.on_off_line onOffLine, d.track_no trackNo, d.ex_status exStatus, u.userName registerName from bcc_device d left join bcc_user u
         on d.register_account=u.id ,
         (select t.id id, t.area_name areaName, t1.area_name city, t2.area_name province from bcc_area t ,
           (select * from bcc_area t where t.`level` = 2 ) t1,
@@ -33,11 +34,10 @@
         where  1= 1 and d.area_id = a.id
     </select>
 
-    <select id="selectDebugDevice" resultType="cn.ac.bcc.model.business.Device"
-            parameterType="cn.ac.bcc.model.business.Device">
+    <select id="selectDebugDevice" parameterType="cn.ac.bcc.model.business.Device" resultType="cn.ac.bcc.model.business.Device">
         select d.id id, d.serial_number serialNumber, d.private_key privateKey, d.register_time registerTime,
         d.register_account registerAccount, d.bind_account bindAccount, d.bind_phone bindPhone, d.`status` status,
-        d.area_id areaId, d.debug_account debugAccount,d.on_off_line onOffLine, d.track_no trackNo, u.userName registerName from bcc_device d left join bcc_user u
+        d.area_id areaId, d.debug_account debugAccount,d.on_off_line onOffLine, d.track_no trackNo, d.ex_status exStatus, u.userName registerName from bcc_device d left join bcc_user u
         on d.register_account=u.id WHERE 1=1
         <if test="device.id != null">
             and d.id = #{device.id}
@@ -60,7 +60,7 @@
     <select id="selectSettingDevice" resultType="cn.ac.bcc.model.business.Device">
         select d.id id, d.serial_number serialNumber, d.private_key privateKey, d.register_time registerTime,
         d.register_account registerAccount, d.bind_account bindAccount, d.bind_phone bindPhone, d.`status` status,
-        d.area_id areaId, d.debug_account debugAccount, d.track_no trackNo, u.userName registerName from bcc_device d left join bcc_user u
+        d.area_id areaId, d.debug_account debugAccount, d.track_no trackNo, d.ex_status exStatus, u.userName registerName from bcc_device d left join bcc_user u
         on d.register_account=u.id WHERE 1=1
         and d.status != 1
         <if test="device.id != null">

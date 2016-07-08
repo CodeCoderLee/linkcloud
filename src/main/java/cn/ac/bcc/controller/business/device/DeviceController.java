@@ -3,10 +3,12 @@ package cn.ac.bcc.controller.business.device;
 import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.exception.SystemException;
+import cn.ac.bcc.model.business.Area;
 import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceAuthen;
 import cn.ac.bcc.model.business.DeviceView;
 import cn.ac.bcc.model.core.User;
+import cn.ac.bcc.service.business.area.AreaService;
 import cn.ac.bcc.service.business.device.DeviceViewService;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
@@ -16,6 +18,7 @@ import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,6 +46,9 @@ public class DeviceController extends BaseController<Device> {
 
     @Autowired
     private DeviceViewService deviceViewService;
+
+    @Autowired
+    private AreaService areaService;
 
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
@@ -105,8 +111,10 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("modifyUI")
     public String modifyUI(Model model) {
         String id = getPara("id");
+        DeviceView deviceView = new DeviceView();
         if (Common.isNotEmpty(id)) {
-            Device device = deviceService.selectByPrimaryKey(Integer.valueOf(id));
+            deviceView.setId(Integer.valueOf(id));
+            DeviceView device = deviceViewService.selectOne(deviceView);
             model.addAttribute("device", device);
         }
         return Common.BACKGROUND_PATH + "/business/device/edit";
@@ -183,6 +191,17 @@ public class DeviceController extends BaseController<Device> {
             if (device.getAreaId() == null) {
                 device.setAreaId(110108);
             }
+            Area area = areaService.selectByPrimaryKey(device.getAreaId());
+            JSONArray jsonSelect = new JSONArray();
+            if (!Common.isEmpty(area.getSelectProgram())) {
+                jsonSelect = JSONArray.fromObject(area.getSelectProgram());
+            }
+            device.setWorkFrequency(area.getDefaultFrequency());
+            String programIds = "";
+            for (int j=0;j<jsonSelect.size();j++) {
+                programIds = programIds + jsonSelect.getJSONObject(j).getString("pid") +",";
+            }
+            device.setProgramIds(programIds.equals("") ? null : programIds.substring(0, programIds.length() - 1));
             if(!(deviceList!=null && deviceList.size()>0)){
                 deviceService.insert(device);
             }
@@ -199,6 +218,39 @@ public class DeviceController extends BaseController<Device> {
             return SUCCESS;
         } catch (Exception e) {
             throw new SystemException("注册设备异常");
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping("modify")
+    @SystemLog(module = "设备管理", methods = "设备注册-修改设备")//凡需要处理业务逻辑的.都需要记录操作日志
+    public String modify(Device device) {
+        try {
+            Device oldDevice = deviceService.selectByPrimaryKey(device.getId());
+            if (device.getStatus() != oldDevice.getStatus()) {
+                device.setExStatus(oldDevice.getStatus());
+            }
+            if (device.getAreaId() != null && device.getAreaId() != oldDevice.getAreaId()) {
+                Integer areaId = device.getAreaId();
+                Area area = new Area();
+                area = areaService.selectByPrimaryKey(areaId);
+                area.getSelectProgram();
+                JSONArray jsonArray = new JSONArray();
+                if (!Common.isEmpty(area.getSelectProgram())) {
+                    jsonArray = JSONArray.fromObject(area.getSelectProgram());
+                }
+                String programIds = "";
+                for(int i=0;i<jsonArray.size();i++){
+                    programIds = programIds + jsonArray.getJSONObject(i).getString("pid") + ",";
+                }
+                device.setProgramIds(programIds.equals("")?null:programIds.substring(0, programIds.length() - 1));
+                device.setWorkFrequency(oldDevice.getWorkFrequency());
+            }
+            deviceService.updateByPrimaryKeySelective(device);
+            return SUCCESS;
+        } catch (Exception e) {
+            throw new SystemException("修改设备异常");
         }
 
     }
@@ -229,6 +281,7 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping(value = "updateDevice")
+    @SystemLog(module = "设备管理", methods = "设备管理-设备调试")//凡需要处理业务逻辑的.都需要记录操作日志
     public String updateDevice(Device device){
         deviceService.updateByPrimaryKeySelective(device);
         return SUCCESS;
