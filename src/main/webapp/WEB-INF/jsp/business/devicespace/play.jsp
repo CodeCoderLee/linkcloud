@@ -272,7 +272,7 @@
   function getAdId(url){
     var sindex = url.indexOf("ad/");
     var eindex = url.indexOf(".mp4");
-    var id = url.substring(sindex+4,eindex);
+    var id = url.substring(sindex+3,eindex);
     return id;
   }
 
