@@ -1,6 +1,6 @@
 <%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <link rel="stylesheet" href="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.css">
 <div class="container">
     <div class="block-header">
@@ -58,6 +58,7 @@
                     <th data-checkbox="true"></th>
                     <th data-field="serialNumber">序列号</th>
                     <th data-field="areaName" data-formatter="areaFormatter">区域</th>
+                    <th data-field="version1" data-formatter="versionFormatter">Version_s/Version_t</th>
                     <th data-field="registerTime" data-formatter="dateTimeFormatter" data-sortable="true">注册时间</th>
                 </tr>
                 </thead>
@@ -76,6 +77,18 @@
     var deleteUrl = "device/delete.shtml";
     function areaFormatter(value, row) {
         return row['province'] + "." + row['city'] + "." + row['areaName'];
+    }
+    function versionFormatter(value, row) {
+        var version1 = '-';
+        var version2 = '-';
+        if (row['version1']) {
+            version1 = row['version1'];
+        }
+        if (row['version2']) {
+            version2 = row['version2'];
+        }
+        return version1 + "/" + version2;
+
     }
 </script>
 <script charset="UTF-8" src="${ctx}/js/common/bcc-bootstrap-table.js"></script>
