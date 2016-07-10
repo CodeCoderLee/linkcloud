@@ -89,6 +89,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             for(int j=0;j<videoPublishes.size();j++){
                 videoPublishes.get(j).setSerialNumber(serialNumber[i]);
                 videoPublishes.get(j).setPublishTime(new Date());
+                videoPublishes.get(j).setType(type);
             }
             //todo 心跳包下发指令
             //心跳包下发指令
@@ -123,6 +124,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             //删除关联表
             VideoPublish videoPublish = new VideoPublish();
             videoPublish.setSerialNumber(serialNumber[i]);
+            videoPublish.setType(type);
             videoPublishService.delete(videoPublish);
 
         }

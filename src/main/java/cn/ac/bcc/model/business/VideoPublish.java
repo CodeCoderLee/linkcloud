@@ -22,6 +22,9 @@ public class VideoPublish {
     @Column(name = "publish_time")
     private Date publishTime;
 
+    @Column(name = "type")
+    private Integer type;
+
     /**
      * 0 下线
 1 上线
@@ -102,5 +105,13 @@ public class VideoPublish {
      */
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

@@ -88,7 +88,7 @@
                             scrollTo(0,0);
                             loadDevice(newPage, 6);
                         }
-                    }
+                    };
                     $('#pagination').bootstrapPaginator(options);
                 }
             },
@@ -122,13 +122,23 @@
                     "<dd>" + item.registerName + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt>是否上线</dt>" +
-                    "<dd>是</dd>" +
+                    "<dt>是否在线</dt>";
+            if (item.onOffLine) {
+                html = html + "<dd>是</dd>";
+            }else {
+                html = html + "<dd>否</dd>";
+            }
+            html = html +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>" +
-                    "<dd><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a></dd>" +
-                    "</dl>" +
+                    "<dt><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
+            if (item.onOffLine) {
+                html = html + "<dd><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a></dd>";
+            }else {
+                html = html + "<dd><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a></dd>";
+            }
+
+            html = html + "</dl>" +
                     "</div>" +
                     "</div>" +
                     "</div>" +
@@ -138,7 +148,7 @@
     }
 
     function scanFrequency(serialNumber) {
-        $('#content').load("device/scanFrequency.shtml?serialNumber="+serialNumber+"&id=${resId}");
+        $('#content').load("device/scanFrequencyUI.shtml?serialNumber="+serialNumber+"&id=${resId}");
     }
 
     function shock(serialNumber){
