@@ -135,7 +135,7 @@
             if (item.onOffLine) {
                 html = html + "<dd><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a></dd>";
             }else {
-                html = html + "<dd><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a></dd>";
+                html = html + "<dd><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"scanFrequency('"+item.serialNumber+"')\">扫频</a><label style='color: red;'>离线无法扫频</label></dd>";
             }
 
             html = html + "</dl>" +
