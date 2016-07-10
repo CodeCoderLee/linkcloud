@@ -6,31 +6,36 @@ import javax.persistence.*;
 @Table(name = "bcc_video_report")
 public class VideoReport {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "publish_id")
-    private Integer publishId;
+    @Column(name = "serial_number")
+    private String serialNumber;
 
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "ip")
-    private String ip;
+    private Date stime;
 
     /**
-     * 浏览时间
+     * æµè§ˆæ—¶é—´
      */
-    private Date time;
+    private Date ctime;
 
     /**
-     * 0 直播
-1 点播
-2 摄像
-3 远程
+     * 0 ç›´æ’­
+1 ç‚¹æ’­
+2 æ‘„åƒ
+3 è¿œç¨‹
      */
-    private Integer type;
+    @Column(name = "space_time")
+    private Integer spaceTime;
+
+    private String ptype;
+
+    private Integer pid;
+
+    private String pname;
 
     /**
      * @return id
@@ -47,17 +52,17 @@ public class VideoReport {
     }
 
     /**
-     * @return publish_id
+     * @return serial_number
      */
-    public Integer getPublishId() {
-        return publishId;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
     /**
-     * @param publishId
+     * @param serialNumber
      */
-    public void setPublishId(Integer publishId) {
-        this.publishId = publishId;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     /**
@@ -75,64 +80,106 @@ public class VideoReport {
     }
 
     /**
-     * @return ip
+     * @return stime
      */
-    public String getIp() {
-        return ip;
+    public Date getStime() {
+        return stime;
     }
 
     /**
-     * @param ip
+     * @param stime
      */
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setStime(Date stime) {
+        this.stime = stime;
     }
 
     /**
-     * 获取浏览时间
+     * 获取æµè§ˆæ—¶é—´
      *
-     * @return time - 浏览时间
+     * @return ctime - æµè§ˆæ—¶é—´
      */
-    public Date getTime() {
-        return time;
+    public Date getCtime() {
+        return ctime;
     }
 
     /**
-     * 设置浏览时间
+     * 设置æµè§ˆæ—¶é—´
      *
-     * @param time 浏览时间
+     * @param ctime æµè§ˆæ—¶é—´
      */
-    public void setTime(Date time) {
-        this.time = time;
+    public void setCtime(Date ctime) {
+        this.ctime = ctime;
     }
 
     /**
-     * 获取0 直播
-1 点播
-2 摄像
-3 远程
+     * 获取0 ç›´æ’­
+1 ç‚¹æ’­
+2 æ‘„åƒ
+3 è¿œç¨‹
      *
-     * @return type - 0 直播
-1 点播
-2 摄像
-3 远程
+     * @return space_time - 0 ç›´æ’­
+1 ç‚¹æ’­
+2 æ‘„åƒ
+3 è¿œç¨‹
      */
-    public Integer getType() {
-        return type;
+    public Integer getSpaceTime() {
+        return spaceTime;
     }
 
     /**
-     * 设置0 直播
-1 点播
-2 摄像
-3 远程
+     * 设置0 ç›´æ’­
+1 ç‚¹æ’­
+2 æ‘„åƒ
+3 è¿œç¨‹
      *
-     * @param type 0 直播
-1 点播
-2 摄像
-3 远程
+     * @param spaceTime 0 ç›´æ’­
+1 ç‚¹æ’­
+2 æ‘„åƒ
+3 è¿œç¨‹
      */
-    public void setType(Integer type) {
-        this.type = type;
+    public void setSpaceTime(Integer spaceTime) {
+        this.spaceTime = spaceTime;
+    }
+
+    /**
+     * @return ptype
+     */
+    public String getPtype() {
+        return ptype;
+    }
+
+    /**
+     * @param ptype
+     */
+    public void setPtype(String ptype) {
+        this.ptype = ptype;
+    }
+
+    /**
+     * @return pid
+     */
+    public Integer getPid() {
+        return pid;
+    }
+
+    /**
+     * @param pid
+     */
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    /**
+     * @return pname
+     */
+    public String getPname() {
+        return pname;
+    }
+
+    /**
+     * @param pname
+     */
+    public void setPname(String pname) {
+        this.pname = pname;
     }
 }

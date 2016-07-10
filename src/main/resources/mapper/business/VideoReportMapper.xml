@@ -6,10 +6,13 @@
       WARNING - @mbggenerated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="publish_id" jdbcType="INTEGER" property="publishId" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="ip" jdbcType="VARCHAR" property="ip" />
-    <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="stime" jdbcType="TIMESTAMP" property="stime" />
+    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+    <result column="space_time" jdbcType="INTEGER" property="spaceTime" />
+    <result column="ptype" jdbcType="VARCHAR" property="ptype" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
   </resultMap>
 </mapper>

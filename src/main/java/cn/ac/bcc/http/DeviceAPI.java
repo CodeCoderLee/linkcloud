@@ -3,6 +3,7 @@ package cn.ac.bcc.http;
 import cn.ac.bcc.model.business.*;
 import cn.ac.bcc.service.business.advertisement.DeviceToVideoService;
 import cn.ac.bcc.service.business.device.DeviceUpdateService;
+import cn.ac.bcc.service.business.report.VideoReportService;
 import cn.ac.bcc.service.business.version.VersionService;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
@@ -71,7 +72,7 @@ public class DeviceAPI {
         String serialNumber = getDeviceSerialNumber(token);
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
-        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::" + token + "   data:::" + postData);
+        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::::::::" + token + "\r\nserialNumber:::" +  serialNumber + "\r\ndata:::::::::::" + postData);
         String jsonStr = "";
         String sessionID = null;
 
@@ -520,7 +521,10 @@ public class DeviceAPI {
         String token = getCookieValue(request);
         boolean validation = true;
         JSONObject json = JSONObject.fromObject(postData);
-        HelperUtils rj = new HelperUtils();
+        String number = json.getString("number");
+        JSONArray array = json.getJSONArray("list");
+        VideoReportService videoReportService = ctx.getBean(VideoReportService.class);
+        validation = videoReportService.addReportData(array);
 
         Map<String, Object> map = new HashMap<String, Object>();
         if (validation) {
@@ -531,7 +535,6 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_DESCRIPTION, "error");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
-
         JSONObject jsonObject = JSONObject.fromObject(map);
         return jsonObject.toString();
     }
