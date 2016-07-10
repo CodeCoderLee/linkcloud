@@ -22,78 +22,19 @@
                 </div>
                 <div class="card-body">
                     <form id="form" name="form" class="form-horizontal" method="post"
-                          action="${ctx}/advertisement/add.shtml" enctype="multipart/form-data" >
+                          action="${ctx}/advertisement/add.shtml" enctype="multipart/form-data">
                         <section class="panel panel-default">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class=" col-sm-3 control-label">选择区域</label>
-                                    <div class="col-sm-9">
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="province"
-                                                            onchange="showCity(this.options[this.options.selectedIndex].value,1)">
-                                                        <option value="">省</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="city"
-                                                            disabled="true"
-                                                            onchange="showCity(this.options[this.options.selectedIndex].value,2)">
-                                                        <option value="">市</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="county" name="areaId"
-                                                            disabled="true">
-                                                        <option value="">县</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
                                     <label class=" col-sm-3 control-label">选择行业</label>
-                                    <div class="col-sm-9">
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="grandIndustry"
-                                                            onchange="showIndustry(this.options[this.options.selectedIndex].value,1)">
-                                                        <option value="">一级行业</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="parentIndustry"
-                                                            disabled="true"
-                                                            onchange="showIndustry(this.options[this.options.selectedIndex].value,2)">
-                                                        <option value="">二级行业</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="fg-line">
-                                                <div class="select">
-                                                    <select class="form-control company-control" id="industry" name="industryCode"
-                                                            disabled="true">
-                                                        <option value="">三级行业</option>
-                                                    </select>
-                                                </div>
+                                    <div class="col-sm-5">
+                                        <div class="fg-line">
+                                            <div class="select">
+                                                <select class="form-control company-control" id="industryCode"
+                                                        name="industryCode"
+                                                >
+                                                    <option value="">请选择</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -114,27 +55,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-1">
-                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                    </div>
-                                    <label class="col-sm-3 control-label" style="color: red;">注:需要先选择区域和行业</label>
-                                </div>
 
+                                </div>
 
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">上传广告图片</label>
                                     <div class="col-sm-9">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput"></div>
-                                            <div>
-                                                <span class="btn btn-info btn-file">
-                                                    <span class="fileinput-new">选择广告图片</span>
-                                                    <span class="fileinput-exists">重新选择</span>
-                                                    <input type="file" name="...">
-                                                </span>
-                                                <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">移除</a>
-                                            </div>
+                                            <span class="btn btn-primary btn-file m-r-10">
+                                                <span class="fileinput-new">选择视频文件</span>
+                                                <span class="fileinput-exists">重新选择</span>
+                                                <input type="file" name="file">
+                                            </span>
+                                            <span class="fileinput-filename"></span>
+                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
                                         </div>
                                     </div>
                                 </div>

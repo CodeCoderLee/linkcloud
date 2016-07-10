@@ -1,6 +1,7 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "bcc_advertisement")
 public class Advertisement {
@@ -50,6 +51,9 @@ public class Advertisement {
      */
     @Column(name = "company_id")
     private String companyId;
+
+    @Column(name = "add_time")
+    private Date addTime;
 
     @Transient
     private String companyName;
@@ -229,5 +233,13 @@ public class Advertisement {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
     }
 }

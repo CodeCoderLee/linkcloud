@@ -49,7 +49,7 @@ public abstract class BaseController<T> {
     @Autowired
     public ResourcesService resourcesService;
 
-    public String readRequestInputStream(){
+    public String readRequestInputStream() {
         String content = null;
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(getRequest().getInputStream()));
@@ -59,7 +59,7 @@ public abstract class BaseController<T> {
                 sb.append(line);
             }
             content = sb.toString();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return content;
@@ -109,9 +109,10 @@ public abstract class BaseController<T> {
 
     /**
      * 获取session
+     *
      * @return
      */
-    protected HttpSession getSession(){
+    protected HttpSession getSession() {
         return getRequest().getSession();
     }
 
@@ -223,7 +224,7 @@ public abstract class BaseController<T> {
      */
     public JSONObject search(BaseService<T> baseService, T object, Integer limit, Integer offset) {
         Example example = getEqualsToExample(object);
-        PageHelper.startPage(offset,limit);
+        PageHelper.startPage(offset, limit);
         List<T> list = baseService.selectByExample(example);
         PageInfo<T> pageInfo = new PageInfo<T>(list);
         return commonResponse(pageInfo, object);
@@ -271,10 +272,10 @@ public abstract class BaseController<T> {
         String sortName = getPara("sort");
         if (Common.isNotEmpty(sortOrder)) {
             if (Common.isNotEmpty(sortName)) {
-                String columnName = Common.getClassFieldColumnName(object.getClass(),sortName);
+                String columnName = Common.getClassFieldColumnName(object.getClass(), sortName);
                 if (columnName != null) {
                     example.setOrderByClause(columnName + " " + sortOrder);
-                }else
+                } else
                     example.setOrderByClause("id " + sortOrder);
             } else
                 example.setOrderByClause("id " + sortOrder);
@@ -291,7 +292,7 @@ public abstract class BaseController<T> {
      * @param object Object包含的不为空的属性为查询条件，判等
      * @return 返回带有查询条件约束和排序规则的Example
      */
-    public Example getEqualsToExample(Object object,Class<?> clazz) {
+    public Example getEqualsToExample(Object object, Class<?> clazz) {
         Example example = new Example(clazz);
         List<String> attributes = Common.getClassFieldsNameEn(object.getClass());
         Example.Criteria criteria = example.createCriteria();
@@ -318,10 +319,10 @@ public abstract class BaseController<T> {
         String sortName = getPara("sort");
         if (Common.isNotEmpty(sortOrder)) {
             if (Common.isNotEmpty(sortName)) {
-                String columnName = Common.getClassFieldColumnName(clazz,sortName);
+                String columnName = Common.getClassFieldColumnName(clazz, sortName);
                 if (columnName != null) {
                     example.setOrderByClause(columnName + " " + sortOrder);
-                }else
+                } else
                     example.setOrderByClause("id " + sortOrder);
             } else
                 example.setOrderByClause("id " + sortOrder);
@@ -351,7 +352,7 @@ public abstract class BaseController<T> {
         String jsonData = readFileDataToString(formJsonPath);
         if (jsonData == null) {/*不存在json文件的情况*/
             dataObject.setForm(JSONObject.fromObject("{}"));
-        }else {
+        } else {
             JSONObject formJson = JSONObject.fromObject(jsonData);
             dataObject.setForm(formJson);
         }
@@ -366,7 +367,7 @@ public abstract class BaseController<T> {
 
     public String readFileDataToString(String filePath) {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8"));
             StringBuilder stringBuilder = new StringBuilder();
             String temp;
             while ((temp = bufferedReader.readLine()) != null) {
@@ -381,7 +382,7 @@ public abstract class BaseController<T> {
         return null;
     }
 
-    public String saveFile(MultipartFile file, String rootPath){
+    public String saveFile(MultipartFile file, String rootPath) {
         if (!file.isEmpty()) {
             try {
 
@@ -389,7 +390,7 @@ public abstract class BaseController<T> {
                 if (!filepath.exists())
                     filepath.mkdirs();
                 UUID uuid = UUID.randomUUID();
-                FileCopyUtils.copy(file.getBytes(), new File(filepath + "/" +  uuid.toString()));
+                FileCopyUtils.copy(file.getBytes(), new File(filepath + "/" + uuid.toString()));
 
                 return filepath + "/" + uuid.toString();
             } catch (IOException e) {
@@ -401,7 +402,27 @@ public abstract class BaseController<T> {
         return null;
     }
 
-    public void download(String fileName, String filePath, Integer id){
+    public String saveImage(MultipartFile file, String rootPath) {
+        if (!file.isEmpty()) {
+            try {
+                String fileName = file.getOriginalFilename();
+                File filepath = new File(rootPath);
+                if (!filepath.exists())
+                    filepath.mkdirs();
+                UUID uuid = UUID.randomUUID();
+                String newFilePath = filepath + "/" + uuid.toString() + fileName.substring(fileName.lastIndexOf("."));
+                file.transferTo(new File(newFilePath));
+                return newFilePath;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
+        return null;
+    }
+
+    public void download(String fileName, String filePath, Integer id) {
         File file = new File(filePath);
         HttpServletResponse response = getResponse();
         try {
@@ -409,9 +430,9 @@ public abstract class BaseController<T> {
             response.reset();
             // 设置响应头，控制浏览器下载该文件
             response.setHeader("Content-Disposition", "attachment;filename="
-                    + new String(fileName.replaceAll(" ", "").getBytes("utf-8"),"iso8859-1")+";id="+id);
+                    + new String(fileName.replaceAll(" ", "").getBytes("utf-8"), "iso8859-1") + ";id=" + id);
             // 设置下载文件的大小
-            response.addHeader("Content-Length", ""+file.length());
+            response.addHeader("Content-Length", "" + file.length());
             // 设置文件ContentType类型，这样设置，会自动判断下载文件类型
             response.setContentType("application/octet-stream");
             //		response.setContentType("multipart/form-data");
@@ -424,7 +445,7 @@ public abstract class BaseController<T> {
             byte buffer[] = new byte[1024];
             int len = 0;
             // 循环将输入流中的内容读取到缓冲区当中
-            while((len=in.read(buffer))>0){
+            while ((len = in.read(buffer)) > 0) {
                 //输出缓冲区的内容到浏览器，实现文件下载
                 out.write(buffer, 0, len);
             }

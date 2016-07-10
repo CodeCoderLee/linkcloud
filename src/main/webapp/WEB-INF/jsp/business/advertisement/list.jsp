@@ -55,9 +55,8 @@
                     <th data-checkbox="true"></th>
                     <th data-field="fileName" data-sortable="true">文件名</th>
                     <th data-field="companyName"  data-sortable="true">广告主</th>
-                    <th data-field="source" data-sortable="true">来源</th>
-                    <th data-field="industryCode" data-sortable="true">所属行业</th>
-                    <th data-field="state"  data-sortable="true">状态</th>
+                    <%--<th data-field="source" data-sortable="true">来源</th>--%>
+                    <th data-field="industryName" data-sortable="true">所属行业</th>
                 </tr>
                 </thead>
             </table>

@@ -9,13 +9,16 @@
     <div class="card">
         <div class="card-header">
             <div class="progress progress-striped active">
-                <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"
-                     style="width: 1%">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 0%">
                     <span class="sr-only">0% Complete</span>
                 </div>
             </div>
             <div style="margin-top: 10px" id="info">
                 扫描到0个可用频点
+            </div>
+            <div class="footer text-right bg-light lter">
+`                <a id="scanFrequencyBtn"  class="btn btn-success btn-s-xs">扫频</a>
             </div>
         </div>
     </div>
@@ -34,7 +37,8 @@
                     <button id="subBtn" class="btn btn-success btn-s-xs hidden">设为工作频点</button>
                     <c:if test="${areaId != null && areaId != ''}">
                         <c:forEach items="${res}" var="key">
-                            <a id="setDefaultFrequencyBtn" onclick="setDefaultFrequency('${key.resurl}')" class="btn btn-success btn-s-xs hidden">设为默认频点</a>
+                            <a id="setDefaultFrequencyBtn" onclick="setDefaultFrequency('${key.resurl}')"
+                               class="btn btn-success btn-s-xs hidden">设为默认频点</a>
                         </c:forEach>
                     </c:if>
 
@@ -51,15 +55,38 @@
 <script type="text/javascript" src="${ctx}/js/common/common.js"></script>
 <script charset="utf-8">
     var ids = [];
-    var int = setInterval("getScanFrequency()", 3000);
+    var flag = false;
+    var int;
+    //    var int = setInterval("getScanFrequency()", 3000);
     $(document).ready(function () {
 
-
+        getScanFrequency();
         /*返回按钮单击事件绑定*/
         $('#closeBtn').click(function () {
             /*关闭定时扫频请求*/
             clearInterval(int);
             $("#content").load(rootPath + "/device/settingList.shtml");
+        });
+
+        $('#scanFrequencyBtn').click(function () {
+            var serialNumber = $('#serialNumber').val();
+            $.ajax({
+                method: 'post',
+                url: rootPath + "/device/startScanFrequency.shtml",
+                data: {serialNumber: serialNumber},
+                dataType: 'json',
+                success: function (data) {
+                    console.log("扫频命令下发成功");
+                    int = setInterval("getScanFrequency()", 3000);
+                    flag = true;
+                    $('#info').html("扫描到0个可用频点");
+                    $('#freqTab').html("");
+                    $('#subBtn').addClass("hidden");
+                    $('#setDefaultFrequencyBtn').addClass("hidden");
+                    $('div.progress-bar').attr("aria-valuenow", 0);
+                    $('div.progress-bar').attr("style", "width:" + 0 + "%");
+                }
+            });
         });
 
         $('ul.scan-tab >li').click(function () {
@@ -119,7 +146,6 @@
     });
 
 
-
     function getScanFrequency() {
         $.ajax({
             method: "post",
@@ -131,6 +157,7 @@
                 var ulHtml = "";
                 var divHtml = "";
                 if (data.scanEnded) {
+                    $('#scanFrequencyBtn').text("重新扫频");
                     $('#info').html("扫描到" + data.frqsNum + "个可用频点");
                     $('div.progress-bar').attr("aria-valuenow", 100);
                     $('div.progress-bar').attr("style", "width:100%");
@@ -151,7 +178,7 @@
                             $.each(item.programList, function (index, item) {
                                 divHtml = divHtml + '<div class="checkbox m-b-15">' +
                                         '<label>' +
-                                        '<input type="checkbox" value="' + item.pid + '" name="'+item.name+'">' +
+                                        '<input type="checkbox" value="' + item.pid + '" name="' + item.name + '">' +
                                         '<i class="input-helper"></i>' + item.name +
                                         '</label>' +
                                         '</div>';
@@ -185,7 +212,11 @@
                             $('#programIds').trigger("input");
                         });
                     }
-                    clearInterval(int);
+                    if (flag) {
+                        clearInterval(int);
+                        flag = false;
+                    }
+
 
                 } else {
                     $('#info').html("扫描到" + data.frqsNum + "个可用频点");
@@ -206,18 +237,23 @@
         var frequency = $('ul.scan-tab > li.active').find('a').text();
         var areaId = $('#areaId').val();
         var programs = [];
-        $.each($('.tab-pane.active').find('input'),function (index,item) {
+        $.each($('.tab-pane.active').find('input'), function (index, item) {
             programs.push($(item).val() + "&" + $(item).attr("name") + "&" + $(item).is(":checked"));
         });
         $.ajax({
-            method:'post',
-            url:url,
-            data:{areaId:areaId,frequency:frequency,programs:programs.join(",")},
-            dataType:'json',
-            success:function (data) {
+            method: 'post',
+            url: url,
+            data: {areaId: areaId, frequency: frequency, programs: programs.join(",")},
+            dataType: 'json',
+            success: function (data) {
                 notify('success', '     默认频点设置成功      ');
             }
         });
+    }
+
+    function startScanFrequency() {
+        alert(1);
+
     }
 
 </script>
