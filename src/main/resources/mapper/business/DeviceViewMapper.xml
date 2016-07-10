@@ -24,5 +24,7 @@
     <result column="area_name" jdbcType="VARCHAR" property="areaName" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="version1" jdbcType="VARCHAR" property="version1" />
+    <result column="version2" jdbcType="VARCHAR" property="version2" />
   </resultMap>
 </mapper>

@@ -49,7 +49,7 @@ public class DeviceAPI {
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
     public static final String DOMAIN = "http://www.linkedcloud.com.cn";
-    public static final Map<String,Boolean> AUTHEN_MAP = new HashMap<String, Boolean>();
+    public static Map<String,Boolean> AUTHEN_MAP = new HashMap<String, Boolean>();
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
 
@@ -127,7 +127,13 @@ public class DeviceAPI {
             jsonStr = heartBeat(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
-        }else if(uri.contains(URI_GETUPDATEINFO) && getAuthen(serialNumber)){
+        }
+//        else if(uri.contains(URI_GETUPDATEINFO) && getAuthen(serialNumber)){
+//            jsonStr = getUpdateInfo(request,postData,nvList);
+//            is_ok = true;
+//            OnOffLineMap.online(serialNumber);
+//        }
+        else if(uri.contains(URI_GETUPDATEINFO)){
             jsonStr = getUpdateInfo(request,postData,nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
@@ -755,7 +761,7 @@ public class DeviceAPI {
             }
             return size;
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return 0;
         }
     }
@@ -847,7 +853,8 @@ public class DeviceAPI {
         try {
             authen = AUTHEN_MAP.get(serialNumber);
         }catch (Exception e){
-            e.printStackTrace();
+            authen =false;
+            //e.printStackTrace();
         }
         return  authen;
     }

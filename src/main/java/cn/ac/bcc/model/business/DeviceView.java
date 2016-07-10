@@ -112,6 +112,12 @@ public class DeviceView {
     @Column(name = "province")
     private String province;
 
+    @Column(name = "version1")
+    private String version1;
+
+
+    @Column(name = "version2")
+    private String version2;
     /**
      * 获取主键
      *
@@ -440,5 +446,21 @@ public class DeviceView {
      */
     public void setProvince(String province) {
         this.province = province;
+    }
+
+    public String getVersion1() {
+        return version1;
+    }
+
+    public void setVersion1(String version1) {
+        this.version1 = version1;
+    }
+
+    public String getVersion2() {
+        return version2;
+    }
+
+    public void setVersion2(String version2) {
+        this.version2 = version2;
     }
 }
