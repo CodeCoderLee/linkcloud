@@ -55,6 +55,9 @@ public class Advertisement {
     @Column(name = "add_time")
     private Date addTime;
 
+    @Column(name = "type")
+    private Integer type;
+
     @Transient
     private String companyName;
 
@@ -241,5 +244,13 @@ public class Advertisement {
 
     public void setAddTime(Date addTime) {
         this.addTime = addTime;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

@@ -53,10 +53,10 @@
                 <thead>
                 <tr>
                     <th data-checkbox="true"></th>
-                    <th data-field="fileName" data-sortable="true">文件名</th>
-                    <th data-field="companyName"  data-sortable="true">广告主</th>
-                    <%--<th data-field="source" data-sortable="true">来源</th>--%>
-                    <th data-field="industryName" data-sortable="true">所属行业</th>
+                    <th data-field="fileName" >文件名</th>
+                    <th data-field="companyName" >广告主</th>
+                    <th data-field="type" data-formatter="typeFormatter">广告类型</th>
+                    <th data-field="industryName">所属行业</th>
                 </tr>
                 </thead>
             </table>
@@ -71,7 +71,21 @@
 <script type="text/javascript">
     var addUrl = "advertisement/addUI.shtml";
     var modifyUrl = "advertisement/modifyUI.shtml?id=";
-    var deleteUrl = "advertisement/delete.shtml"
+    var deleteUrl = "advertisement/delete.shtml";
+    function typeFormatter(value){
+        if(!!value){
+            if (value == 1) {
+                return '自带广告';
+            }else if (value == 2) {
+                return '第三方企业广告';
+            }else {
+                return '自定义广告';
+            }
+        }else{
+            return '-';
+        }
+
+    }
 </script>
 
 <script type="text/javascript" src="${ctx}/js/common/bcc-bootstrap-table.js" />

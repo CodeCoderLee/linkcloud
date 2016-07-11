@@ -58,13 +58,28 @@
 
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">广告类型</label>
+                                    <div class="col-sm-5">
+                                        <div class="fg-line">
+                                            <div class="select">
+                                                <select class="form-control" id="type" name="type">
+                                                    <option value="1">自带广告</option>
+                                                    <option value="2">第三方企业广告</option>
+                                                    <option value="3">自定义广告</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">上传广告图片</label>
                                     <div class="col-sm-9">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
                                             <span class="btn btn-primary btn-file m-r-10">
-                                                <span class="fileinput-new">选择视频文件</span>
+                                                <span class="fileinput-new">选择图片文件</span>
                                                 <span class="fileinput-exists">重新选择</span>
                                                 <input type="file" name="file">
                                             </span>
