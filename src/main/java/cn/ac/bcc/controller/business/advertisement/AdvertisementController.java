@@ -49,7 +49,7 @@ public class AdvertisementController extends BaseController<Advertisement>{
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
-        return Common.BACKGROUND_PATH + "/business/advertisement/list";
+        return Common.BACKGROUND_PATH + "/business/advertisement/pictureList";
     }
 
     @RequestMapping("addUI")
@@ -57,7 +57,7 @@ public class AdvertisementController extends BaseController<Advertisement>{
         List<Company> companyList = companyService.selectAll();
 
         model.addAttribute("companyList",companyList);
-        return Common.BACKGROUND_PATH + "/business/advertisement/add";
+        return Common.BACKGROUND_PATH + "/business/advertisement/addPicture";
     }
 
     @ResponseBody
