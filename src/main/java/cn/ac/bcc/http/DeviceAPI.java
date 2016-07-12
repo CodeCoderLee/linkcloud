@@ -735,8 +735,8 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_AD_NUMBER, String.valueOf(num));
             map.put(HelperUtils.KEY_AD_LIST,jsonArr);
         } else {
-            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
-            map.put(HelperUtils.KEY_DESCRIPTION, "error");
+            map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
+            map.put(HelperUtils.KEY_DESCRIPTION, "");
             map.put(HelperUtils.KEY_AD_NUMBER, "0");
             map.put(HelperUtils.KEY_AD_LIST, "[]");
         }

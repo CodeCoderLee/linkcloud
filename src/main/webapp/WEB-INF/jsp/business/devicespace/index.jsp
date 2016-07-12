@@ -46,7 +46,7 @@
     </div>
     <h1 class="am-header-title">
         <a href="#title-link" class="">
-            <c:if test="${type eq 'debug'}">调试空间</c:if><c:if test="${type eq 'show'}">设备空间</c:if>（${onoff}）
+            <c:if test="${_type_ eq 'debug'}">调试空间</c:if><c:if test="${_type_ eq 'show'}">设备空间</c:if>（${onoff}）
         </a>
     </h1>
     <div class="am-header-right am-header-nav">
@@ -69,14 +69,27 @@
         <div data-am-widget="slider" class="mobile-slider am-slider am-slider-c2"
              data-am-slider='{"directionNav":false}'>
             <ul class="am-slides">
-                <li>
-                    <img src="http://i0.letvimg.com/lc04_iscms/201605/08/00/16/8040034b659f49888ac9aab9f985f94b.jpg">
-                    <div class="am-slider-desc">欢乐颂</div>
-                </li>
-                <li>
-                    <img src="http://i0.letvimg.com/lc04_iscms/201605/08/00/16/8040034b659f49888ac9aab9f985f94b.jpg">
-                    <div class="am-slider-desc">欢乐颂</div>
-                </li>
+                <c:if test="${arraySize > 0}">
+                    <c:forEach items="${array}" var="item" varStatus="status">
+                        <c:if test="${status.index <= 5}">
+                            <li>
+                                <img src="${item.url}">
+                                <div class="am-slider-desc">广告</div>
+                                <div class="cls_ad_id" style="display: none">${item.id}</div>
+                            </li>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
+                <c:if test="${arraySize == 0}">
+                    <li>
+                        <img src="http://i0.letvimg.com/lc04_iscms/201605/08/00/16/8040034b659f49888ac9aab9f985f94b.jpg">
+                        <div class="am-slider-desc">欢乐颂</div>
+                    </li>
+                    <li>
+                        <img src="http://i0.letvimg.com/lc04_iscms/201605/08/00/16/8040034b659f49888ac9aab9f985f94b.jpg">
+                        <div class="am-slider-desc">欢乐颂</div>
+                    </li>
+                </c:if>
             </ul>
         </div>
     </div>

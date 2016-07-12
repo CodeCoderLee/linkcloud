@@ -4,6 +4,7 @@ import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.*;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.model.core.UserRole;
+import cn.ac.bcc.service.business.advertisement.AdvertisementPublishService;
 import cn.ac.bcc.service.business.comment.CommentService;
 import cn.ac.bcc.service.business.comment.CommentUserService;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
@@ -16,6 +17,7 @@ import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import net.sf.json.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private DeviceService deviceService;
     @Autowired
     private DeviceAuthenService deviceAuthenService;
+    @Autowired
+    private AdvertisementPublishService advertisementPublishService;
 
     private final int PAGE_SIZE = 10;
     private final int SHOW_STATUS = 3;
@@ -171,6 +175,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
                 }
             }
         }
+        JSONArray array = advertisementPublishService.getAdList(serialNumber);
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
         List<ProgramNetDisk> lst = programNetDiskService.findProgram(serialNumber,0,true);
@@ -179,7 +184,10 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("hasRole",hasRole);
-        mode.addAttribute("type",type);
+//        mode.addAttribute("type",type);
+        if(type != null)getSession().setAttribute("_type_",type);
+        mode.addAttribute("array",array);
+        mode.addAttribute("arraySize",array.size());
         mode = deviceAuthen.getOnOffLine() != 1 ? mode.addAttribute("onoff", "离线") : mode.addAttribute("onoff", "在线");
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }
@@ -311,15 +319,15 @@ public class DeviceSpaceController extends BaseController<Comment>{
         return getCommentList(1, pageNum);
     }
 
-//    private List<Comment> getCommentList(Integer programId,Integer pageNum,Integer pageSize){
-//        List<Comment> commentList = new ArrayList<Comment>();
-//        Example example = new Example(Comment.class);
-//        Example.Criteria criteria = example.createCriteria();
-//        criteria.andEqualTo("videoId",programId);
-//        example.setOrderByClause("publishDate desc");
-//        PageInfo<Comment> pageInfo = commentService.selectByPage(pageNum,pageSize);
-//        return pageInfo.getList();// commentList;
-//    }
+    private List<Comment> getCommentList(Integer programId,Integer pageNum,Integer pageSize){
+        List<Comment> commentList = new ArrayList<Comment>();
+        Example example = new Example(Comment.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("videoId",programId);
+        example.setOrderByClause("publishDate desc");
+        PageInfo<Comment> pageInfo = commentService.selectByPage(pageNum,pageSize);
+        return pageInfo.getList();// commentList;
+    }
 
     private ResponseData getCommentList(Integer programId,Integer pageNum){
         int pageSize = 5;
