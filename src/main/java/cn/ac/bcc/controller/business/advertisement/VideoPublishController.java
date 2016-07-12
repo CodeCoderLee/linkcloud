@@ -69,7 +69,9 @@ public class VideoPublishController extends BaseController<VideoPublish> {
     public String updateDeviceVersion(String serialNumbers, String videoInfos, Integer type) throws InterruptedException {
         String[] serialNumber = serialNumbers.split(",");
         String[] video = videoInfos.split(",");
-        JSONArray jsonArray = new JSONArray();
+        JSONArray selfJsonArray = new JSONArray();
+        JSONArray companyJsonArray = new JSONArray();
+        JSONArray customJsonArray = new JSONArray();
         List<VideoPublish> videoPublishes = new ArrayList<VideoPublish>();
         for (int i = 0; i < video.length; i++) {
             VideoPublish videoPublish = new VideoPublish();
@@ -79,8 +81,15 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             jsonObject.put("fileName", videoInfo[1]);
             jsonObject.put("filePath", videoInfo[2]);
             jsonObject.put("url", videoInfo[3]);
-            jsonArray.add(jsonObject);
+            if (Integer.valueOf(videoInfo[4]) == 1) {
+                selfJsonArray.add(jsonObject);
+            } else if (Integer.valueOf(videoInfo[4]) == 2) {
+                companyJsonArray.add(jsonObject);
+            } else {
+                customJsonArray.add(jsonObject);
+            }
             videoPublish.setVideoId(Integer.valueOf(videoInfo[0]));
+            videoPublish.setType(Integer.valueOf(videoInfo[4]));
             videoPublishes.add(videoPublish);
 
         }
@@ -89,7 +98,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             for(int j=0;j<videoPublishes.size();j++){
                 videoPublishes.get(j).setSerialNumber(serialNumber[i]);
                 videoPublishes.get(j).setPublishTime(new Date());
-                videoPublishes.get(j).setType(type);
+//                videoPublishes.get(j).setType(type);
             }
             //todo 心跳包下发指令
             //心跳包下发指令
@@ -100,18 +109,24 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serialNumber", serialNumber[i]);
             jsonObject.put("updateTime", new Date().getTime());
-            jsonObject.put("videos", jsonArray);
+
             DeviceToVideo deviceToVideo = new DeviceToVideo();
             deviceToVideo.setSerialNumber(serialNumber[i]);
             List<DeviceToVideo> list = deviceToVideoService.select(deviceToVideo);
+
+            deviceToVideo.setUpdateTime(new Date());
+
+            jsonObject.put("videos", selfJsonArray);
+            deviceToVideo.setSelfVideoInfo(jsonObject.toString());
+
+            jsonObject.put("videos", companyJsonArray);
+            deviceToVideo.setCompanyVideoInfo(jsonObject.toString());
+
+            jsonObject.put("videos", customJsonArray);
+            deviceToVideo.setCustomVideoInfo(jsonObject.toString());
+
+
             //type 标记广告类型,1自带广告,2第三方企业广告,3自定义广告
-            if (type == 1) {
-                deviceToVideo.setSelfVideoInfo(jsonObject.toString());
-            } else if (type == 2) {
-                deviceToVideo.setCompanyVideoInfo(jsonObject.toString());
-            } else {
-                deviceToVideo.setCustomVideoInfo(jsonObject.toString());
-            }
             if (list.size() > 0) {
                 //更新
                 deviceToVideo.setId(list.get(0).getId());
@@ -124,12 +139,28 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             //删除关联表
             VideoPublish videoPublish = new VideoPublish();
             videoPublish.setSerialNumber(serialNumber[i]);
-            videoPublish.setType(type);
+//            videoPublish.setType(type);
             videoPublishService.delete(videoPublish);
 
         }
 
         videoPublishService.batchInsert(videoPublishes);
+        return SUCCESS;
+    }
+
+    @ResponseBody
+    @RequestMapping("unBindVideoPublish")
+    public String unBindVideoPublish(String serialNumbers){
+        String[] serialNumber = serialNumbers.split(",");
+        for(int i=0;i<serialNumber.length;i++){
+            VideoPublish videoPublish = new VideoPublish();
+            videoPublish.setSerialNumber(serialNumber[i]);
+            videoPublishService.delete(videoPublish);
+
+            DeviceToVideo deviceToVideo = new DeviceToVideo();
+            deviceToVideo.setSerialNumber(serialNumber[i]);
+            deviceToVideoService.delete(deviceToVideo);
+        }
         return SUCCESS;
     }
 }

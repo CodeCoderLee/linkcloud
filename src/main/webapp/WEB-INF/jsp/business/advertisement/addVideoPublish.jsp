@@ -111,13 +111,27 @@
         $('#subBtn').click(function () {
 
             if (videoIds.length == 0) {
-                notify('success', '     请选择视频广告      ');
+                if (window.confirm('未选中任意一条广告,将取消所有视频广告的绑定,是否确认?')) {
+                    var serialNumbers = $('#serialNumbers').val();
+                    $.ajax({
+                        method: 'post',
+                        url: 'videoPublish/unBindVideoPublish.shtml',
+                        data: {serialNumbers: serialNumbers},
+                        success: function (data) {
+                            notify('success', '     设备取消绑定视频广告成功      ');
+                            $("#content").load(rootPath + "/videoPublish/list.shtml");
+                        },
+                        error: function (XMLHttpRequest) {
+                            console.log(XMLHttpRequest);
+                        }
+                    });
+                }
             } else {
                 var serialNumbers = $('#serialNumbers').val();
                 $.ajax({
                     method: 'post',
                     url: 'videoPublish/updateVideoPublish.shtml',
-                    data: {serialNumbers: serialNumbers, videoInfos: videoInfos.join(","), type:type},
+                    data: {serialNumbers: serialNumbers, videoInfos: videoInfos.join(",")},
                     success: function (data) {
                         notify('success', '     设备发布视频广告成功      ');
                         $("#content").load(rootPath + "/videoPublish/list.shtml");
@@ -134,10 +148,10 @@
         $('#closeBtn').click(function () {
             $("#content").load(rootPath + "/videoPublish/list.shtml");
         });
-        
+
         $('#tab > li > a').click(function () {
-            videoIds = [];
-            videoInfos = [];
+//            videoIds = [];
+//            videoInfos = [];
             var typeStr = $(this).attr("href");
             if (typeStr == '#self') {
                 type = 1;
@@ -232,8 +246,13 @@
                     '<div class="card-body card-padding">' +
                     '<div class="pmbb-view">' +
                     '<dl class="dl-horizontal">' +
-                    '<dt><label class="checkbox checkbox-inline m-r-20">' +
-                    '<input type="checkbox" name="videoInfo" value="' + item.id + '&' + item.fileName + '&' + item.filePath + '&' + item.url + '"/>' +
+                    '<dt><label class="checkbox checkbox-inline m-r-20">';
+            if (videoIds.indexOf(item.id + "") >= 0) {
+                html = html + '<input type="checkbox" checked="checked" name="videoInfo" value="' + item.id + '&' + item.fileName + '&' + item.filePath + '&' + item.url + '&' + type + '"/>';
+            } else {
+                html = html + '<input type="checkbox" name="videoInfo" value="' + item.id + '&' + item.fileName + '&' + item.filePath + '&' + item.url + '&' + type + '"/>';
+            }
+            html = html +
                     '<i class="input-helper"></i>' +
                     '</label></dt>' +
                     '<dd>' + item.fileName + '</dd>' +

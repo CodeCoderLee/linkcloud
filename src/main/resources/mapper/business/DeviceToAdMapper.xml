@@ -10,6 +10,7 @@
     <result column="self_ad_info" property="selfAdInfo" jdbcType="VARCHAR" />
     <result column="company_ad_info" property="companyAdInfo" jdbcType="VARCHAR" />
     <result column="custom_ad_info" property="customAdInfo" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
   <select id="searchList" resultType="cn.ac.bcc.model.business.DeviceToAd">

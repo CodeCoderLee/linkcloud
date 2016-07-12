@@ -144,6 +144,10 @@
                     "<i class=\"input-helper\"></i>" +
                     "</label></dt>" +
                     "<dd>" + item.serialNumber + "</dd>" +
+                    "</dl>" +
+                    "<dl>" +
+                    "<dt>更新时间</dt>" +
+                    "<dd>" + dateTimeFormatter(item.updateTime) + "</dd>" +
                     "</dl>";
             html = html +
                     "<dl class=\"dl-horizontal\">" +
@@ -187,8 +191,6 @@
 //            }
 
 
-
-
             html = html + "</div>" +
                     "</div>" +
                     "</div>" +
@@ -218,14 +220,14 @@
 //                + ":" + date.getMinutes() + ":" + date.getSeconds();
     }
 
-    function videoInfoHtml(videoInfo){
+    function videoInfoHtml(videoInfo) {
         var html = "";
         if (videoInfo) {
-            html = html +
-                    "<dl class=\"dl-horizontal\">" +
-                    "<dt>更新时间</dt>" +
-                    "<dd>" +dateTimeFormatter(videoInfo.updateTime)+"</dd>" +
-                    "</dl>";
+//            html = html +
+//                    "<dl class=\"dl-horizontal\">" +
+//                    "<dt>更新时间</dt>" +
+//                    "<dd>" + dateTimeFormatter(videoInfo.updateTime) + "</dd>" +
+//                    "</dl>";
             $.each(videoInfo.videos, function (index, item) {
                 html = html + "<dl class=\"dl-horizontal\">" +
                         "<dt>广告" + (index + 1) + "</dt>" +

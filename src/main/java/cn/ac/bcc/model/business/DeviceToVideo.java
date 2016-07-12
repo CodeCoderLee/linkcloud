@@ -1,6 +1,7 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "bcc_device_to_video")
 public class DeviceToVideo {
@@ -27,6 +28,8 @@ public class DeviceToVideo {
     @Column(name = "custom_video_info")
     private String customVideoInfo;
 
+    @Column(name = "update_time")
+    private Date updateTime;
     /**
      * @return id
      */
@@ -103,5 +106,13 @@ public class DeviceToVideo {
      */
     public void setCustomVideoInfo(String customVideoInfo) {
         this.customVideoInfo = customVideoInfo;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

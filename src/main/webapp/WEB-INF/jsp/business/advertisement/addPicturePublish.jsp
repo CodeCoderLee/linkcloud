@@ -111,7 +111,22 @@
         $('#subBtn').click(function () {
 
             if (adIds.length == 0) {
-                notify('success', '     请选择视频广告      ');
+                if(window.confirm('未选中任意一条广告,将取消所有图文广告的绑定,是否确认?')){
+                    var serialNumbers = $('#serialNumbers').val();
+                    $.ajax({
+                        method: 'post',
+                        url: 'advertisementPublish/unBindAdPublish.shtml',
+                        data: {serialNumbers: serialNumbers},
+                        success: function (data) {
+                            notify('success', '     设备取消绑定图文广告成功      ');
+                            $("#content").load(rootPath + "/advertisementPublish/list.shtml");
+                        },
+                        error: function (XMLHttpRequest) {
+                            console.log(XMLHttpRequest);
+                        }
+                    });
+                }
+//                notify('success', '     请选择图文广告      ');
             } else if (adIds.length > 6) {
                 notify('success', '     最多绑定6条图文广告      ')
             } else {

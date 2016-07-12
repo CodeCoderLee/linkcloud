@@ -85,7 +85,7 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
             jsonObject.put("url", videoInfo[3]);
             if (Integer.valueOf(videoInfo[4]) == 1) {
                 selfJsonArray.add(jsonObject);
-            } else if (Integer.valueOf(videoInfo[4]) == 1) {
+            } else if (Integer.valueOf(videoInfo[4]) == 2) {
                 companyJsonArray.add(jsonObject);
             } else {
                 customJsonArray.add(jsonObject);
@@ -112,6 +112,8 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
 
             DeviceToAd deviceToAd = new DeviceToAd();
             deviceToAd.setSerialNumber(serialNumber[i]);
+            List<DeviceToAd> list = deviceToAdService.select(deviceToAd);
+
             deviceToAd.setUpdateTime(new Date());
 
             jsonObject.put("ads", selfJsonArray);
@@ -123,7 +125,8 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
             jsonObject.put("ads", customJsonArray);
             deviceToAd.setCustomAdInfo(jsonObject.toString());
 
-            List<DeviceToAd> list = deviceToAdService.select(deviceToAd);
+
+
             if (list.size() > 0) {
                 //更新
                 deviceToAd.setId(list.get(0).getId());
@@ -141,6 +144,22 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
         }
 
         advertisementPublishService.batchInsert(adPublishes);
+        return SUCCESS;
+    }
+
+    @ResponseBody
+    @RequestMapping("unBindAdPublish")
+    public String unBindAdPublish(String serialNumbers){
+        String[] serialNumber = serialNumbers.split(",");
+        for(int i=0;i<serialNumber.length;i++){
+            AdPublish adPublish = new AdPublish();
+            adPublish.setSerialNumber(serialNumber[i]);
+            advertisementPublishService.delete(adPublish);
+
+            DeviceToAd deviceToAd = new DeviceToAd();
+            deviceToAd.setSerialNumber(serialNumber[i]);
+            deviceToAdService.delete(deviceToAd);
+        }
         return SUCCESS;
     }
 }
