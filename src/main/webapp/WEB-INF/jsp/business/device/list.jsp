@@ -96,7 +96,7 @@
         if (value == 1) {
             return "调试状态";
         }else if(value == 2){
-            return "出库状态";
+            return "正式使用";
         }else if(value == 3 ){
             return "演示状态";
         }else if(value == 4) {
