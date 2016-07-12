@@ -72,17 +72,19 @@
         });
 
         $("#sub").click(function () {
-            $('#form').ajaxSubmit({
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    notify('success', '     设备出库成功     ');
-                    $("#content").load(rootPath + "/deviceUseApply/list.shtml");
-                },
-                error: function (XMLResponse) {
-                    alert(XMLResponse.responseText);
-                }
-            });
+            if(window.confirm('确认出库?')){
+                $('#form').ajaxSubmit({
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        notify('success', '     设备出库成功     ');
+                        $("#content").load(rootPath + "/deviceUseApply/list.shtml");
+                    },
+                    error: function (XMLResponse) {
+                        alert(XMLResponse.responseText);
+                    }
+                });
+            }
             return false;
         });
 

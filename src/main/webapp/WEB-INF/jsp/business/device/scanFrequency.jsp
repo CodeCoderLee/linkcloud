@@ -112,17 +112,20 @@
         $('#form').validate({
             submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
                 $('#frequency').val($('ul.scan-tab > li.active').find('a').text());
-                $(form).ajaxSubmit({
-                    type: "post",
-                    dataType: "json",
-                    success: function (data) {
-                        notify('success', '     频点设置成功      ');
-                        $("#content").load(rootPath + "/device/settingList.shtml");
-                    },
-                    error: function (XMLResponse) {
-                        alert(XMLResponse.responseText);
-                    }
-                });
+                if(window.confirm('确认设置工作频点?')){
+                    $(form).ajaxSubmit({
+                        type: "post",
+                        dataType: "json",
+                        success: function (data) {
+                            notify('success', '     频点设置成功      ');
+                            $("#content").load(rootPath + "/device/settingList.shtml");
+                        },
+                        error: function (XMLResponse) {
+                            alert(XMLResponse.responseText);
+                        }
+                    });
+                }
+
             },
             ignore: "",
             rules: {
@@ -233,26 +236,28 @@
     }
 
     function setDefaultFrequency(url) {
-        var serialNumber = $('#serialNumber').val();
-        var frequency = $('ul.scan-tab > li.active').find('a').text();
-        var areaId = $('#areaId').val();
-        var programs = [];
-        $.each($('.tab-pane.active').find('input'), function (index, item) {
-            programs.push($(item).val() + "&" + $(item).attr("name") + "&" + $(item).is(":checked"));
-        });
-        $.ajax({
-            method: 'post',
-            url: url,
-            data: {areaId: areaId, frequency: frequency, programs: programs.join(",")},
-            dataType: 'json',
-            success: function (data) {
-                notify('success', '     默认频点设置成功      ');
-            }
-        });
+        if(window.confirm('确认设置默认频点?')){
+            var serialNumber = $('#serialNumber').val();
+            var frequency = $('ul.scan-tab > li.active').find('a').text();
+            var areaId = $('#areaId').val();
+            var programs = [];
+            $.each($('.tab-pane.active').find('input'), function (index, item) {
+                programs.push($(item).val() + "&" + $(item).attr("name") + "&" + $(item).is(":checked"));
+            });
+            $.ajax({
+                method: 'post',
+                url: url,
+                data: {areaId: areaId, frequency: frequency, programs: programs.join(",")},
+                dataType: 'json',
+                success: function (data) {
+                    notify('success', '     默认频点设置成功      ');
+                }
+            });
+        }
+
     }
 
     function startScanFrequency() {
-        alert(1);
 
     }
 
