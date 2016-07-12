@@ -4,6 +4,7 @@ import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.Advertisement;
 import cn.ac.bcc.model.business.Company;
+import cn.ac.bcc.model.business.Video;
 import cn.ac.bcc.service.business.advertisement.AdvertisementService;
 import cn.ac.bcc.service.business.company.CompanyService;
 import cn.ac.bcc.util.Common;
@@ -123,6 +124,22 @@ public class AdvertisementController extends BaseController<Advertisement>{
         stream.write(data);
         stream.flush();
         stream.close();
+    }
+
+
+    @ResponseBody
+    @RequestMapping("searchAdByPageNum")
+    public ResponseData searchAdByPageNum(Advertisement advertisement, Integer pageNum, Integer pageSize) throws Exception {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Advertisement> list = advertisementService.searchAdvertisement(advertisement, null, null);
+        PageInfo<Advertisement> pageInfo = new PageInfo<Advertisement>(list);
+        ResponseData responseData = new ResponseData();
+        responseData.setTotal(pageInfo.getTotal());
+        responseData.setRows(list);
+        responseData.setPageNum(pageInfo.getPageNum());
+        responseData.setTotalPages(pageInfo.getPages());
+        return responseData;
+
     }
 
 }

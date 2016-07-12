@@ -12,7 +12,7 @@
     <result column="source" jdbcType="VARCHAR" property="source" />
     <result column="industry_code" jdbcType="VARCHAR" property="industryCode" />
     <result column="is_third_party" jdbcType="VARCHAR" property="isThirdParty" />
-    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="type" jdbcType="INTEGER" property="type" />
@@ -28,5 +28,34 @@
       and t1.source = source
     </if>
     order BY id desc
+  </select>
+
+  <select id="searchAdvertisement" resultType="cn.ac.bcc.model.business.Advertisement">
+    select t1.id id, t1.file_path filePath, t1.file_name fileName, t1.state, t1.industry_code industryCode,
+    t1.company_id companyId, t1.url, t1.add_time addTime,t1.type type, t2.name companyName, t3.full_name industryName from bcc_advertisement t1 left join bcc_company t2 on t1.company_id = t2.id
+    left join bcc_industry t3 on t1.industry_code = t3.full_code where 1=1
+    <if test="advertisement.fileName!=null and advertisement.fileName!=''">
+      and t1.file_name like '%'||#{advertisement.fileName}||'%'
+    </if>
+
+    <if test="advertisement.industryCode!=null and advertisement.industryCode!=''">
+      and t1.industry_code = #{advertisement.industryCode}
+    </if>
+    <if test="advertisement.companyId!=null ">
+      and t1.company_id = #{advertisement.companyId}
+    </if>
+    <if test="advertisement.type!=null ">
+      and t1.type = #{advertisement.type}
+    </if>
+    <choose>
+      <when test="sortName != null">
+        order by #{sortName} #{sortOrder}
+      </when>
+
+      <otherwise>
+        order by t1.add_time desc
+      </otherwise>
+    </choose>
+
   </select>
 </mapper>

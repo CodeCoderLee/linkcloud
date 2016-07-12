@@ -125,13 +125,18 @@
                     "<dd>" + item.registerName + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt>是否上线</dt>" +
-                    "<dd>是</dd>" +
+                    "<dt>是否上线</dt>";
+            if (item.onOffLine) {
+                html = html + "<dd>是</dd>";
+            } else {
+                html = html + "<dd>否</dd>";
+            }
+            html = html +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('"+item.id+"','"+item.serialNumber+"')\">设备入库</a></dt>" +
+                    "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('" + item.id + "','" + item.serialNumber + "')\">设备入库</a></dt>" +
                     "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?type=debug&openId=" + $('#openId').val() + "\">设备空间</a></dd>" +
-                    "<dd><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('"+item.id+"','"+item.serialNumber+"')\">设备详情</a></dd>" +
+                    "<dd><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('" + item.id + "','" + item.serialNumber + "')\">设备详情</a></dd>" +
 
                     "</dl>" +
                     "</div>" +
@@ -142,12 +147,12 @@
         })
     }
 
-    function setAvailable(id,serialNumber) {
+    function setAvailable(id, serialNumber) {
         $.ajax({
-            url:'device/updateDevice.shtml',
-            data:{id:id,status:4,serialNumber:serialNumber},
-            dataType:'json',
-            success:function () {
+            url: 'device/updateDevice.shtml',
+            data: {id: id, status: 4, serialNumber: serialNumber},
+            dataType: 'json',
+            success: function () {
                 notify('success', '     调试完成      ');
                 loadDevice(1, 6);
             },
@@ -157,12 +162,11 @@
         });
     }
 
-    function getHeartBeatInfo(id,serialNumber ){
-        var url='device/getHeartBeatInfoPage.shtml';
-        $("#myContainer").load(url+"?id="+id+"&serialNumber="+serialNumber);
+    function getHeartBeatInfo(id, serialNumber) {
+        var url = 'device/getHeartBeatInfoPage.shtml';
+        $("#myContainer").load(url + "?id=" + id + "&serialNumber=" + serialNumber);
 
     }
-
 
 
 </script>

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: lifm
-  Date: 16/7/1
-  Time: 下午1:51
+  Date: 16/7/11
+  Time: 下午9:00
   To change this template use File | Settings | File Templates.
 --%>
 <%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
@@ -12,7 +12,7 @@
 
 <div class="container">
     <div class="block-header">
-        <h2>绑定视频广告</h2>
+        <h2>绑定图文广告</h2>
     </div>
     <div class="line line-dashed line-lg pull-in"></div>
     <div class="card">
@@ -34,7 +34,7 @@
                         <div class="fg-line">
                             <div class="select">
                                 <select class="form-control" id="companyId" name="companyId"
-                                        onchange="loadVideo(1,6)">
+                                        onchange="loadAd(1,6)">
                                     <option value="">所属企业</option>
                                 </select>
                             </div>
@@ -102,25 +102,27 @@
     var rootPath = "${ctx}";
 </script>
 <script charset="utf-8">
-    var videoInfos = [];
-    var videoIds = [];
+    var adInfos = [];
+    var adIds = [];
     var type = 3;//广告类型,初始化自定义类型
     $(document).ready(function () {
-        loadVideo(1, 6);
+        loadAd(1, 6);
         /*确定按钮点击事件绑定,打开新增窗口*/
         $('#subBtn').click(function () {
 
-            if (videoIds.length == 0) {
+            if (adIds.length == 0) {
                 notify('success', '     请选择视频广告      ');
+            } else if (adIds.length > 6) {
+                notify('success', '     最多绑定6条图文广告      ')
             } else {
                 var serialNumbers = $('#serialNumbers').val();
                 $.ajax({
                     method: 'post',
-                    url: 'videoPublish/updateVideoPublish.shtml',
-                    data: {serialNumbers: serialNumbers, videoInfos: videoInfos.join(","), type:type},
+                    url: 'advertisementPublish/updateAdPublish.shtml',
+                    data: {serialNumbers: serialNumbers, adInfos: adInfos.join(",")},
                     success: function (data) {
                         notify('success', '     设备发布视频广告成功      ');
-                        $("#content").load(rootPath + "/videoPublish/list.shtml");
+                        $("#content").load(rootPath + "/advertisementPublish/list.shtml");
                     },
                     error: function (XMLHttpRequest) {
                         console.log(XMLHttpRequest);
@@ -132,12 +134,12 @@
 
         /*返回按钮单击事件绑定*/
         $('#closeBtn').click(function () {
-            $("#content").load(rootPath + "/videoPublish/list.shtml");
+            $("#content").load(rootPath + "/advertisementPublish/list.shtml");
         });
-        
+
         $('#tab > li > a').click(function () {
-            videoIds = [];
-            videoInfos = [];
+//            adIds = [];
+//            adInfos = [];
             var typeStr = $(this).attr("href");
             if (typeStr == '#self') {
                 type = 1;
@@ -146,7 +148,7 @@
             } else {
                 type = 3;
             }
-            loadVideo(1, 6);
+            loadAd(1, 6);
         });
 
         /*加载行业*/
@@ -185,12 +187,12 @@
     }
 
 
-    function loadVideo(pageNum, pageSize) {
+    function loadAd(pageNum, pageSize) {
         var companyId = $('#companyId').val();
         var industryCode = $('#industryCode').val();
         $.ajax({
             method: 'get',
-            url: rootPath + '/video/searchVideoByPageNum.shtml',
+            url: rootPath + '/advertisement/searchAdByPageNum.shtml',
             dataType: 'json',
             data: {
                 type: type,
@@ -212,7 +214,7 @@
                         totalPages: data.totalPages,
                         onPageChanged: function (e, oldPage, newPage) {
                             scrollTo(0, 0);
-                            loadVideo(newPage, 6);
+                            loadAd(newPage, 6);
                         }
                     };
                     $('#pagination').bootstrapPaginator(options);
@@ -225,6 +227,7 @@
     }
 
     function refreshData(data) {
+        console.log("adIds====",adIds);
         $('#dataDiv').html("");
         $.each(data, function (i, item) {
             var html = '<div class="col-sm-4">' +
@@ -232,8 +235,14 @@
                     '<div class="card-body card-padding">' +
                     '<div class="pmbb-view">' +
                     '<dl class="dl-horizontal">' +
-                    '<dt><label class="checkbox checkbox-inline m-r-20">' +
-                    '<input type="checkbox" name="videoInfo" value="' + item.id + '&' + item.fileName + '&' + item.filePath + '&' + item.url + '"/>' +
+                    '<dt><label class="checkbox checkbox-inline m-r-20">';
+            if (adIds.indexOf(item.id+"") >= 0) {
+                html = html + '<input type="checkbox" checked="checked" name="AdInfo" value="' + item.id + '&' + item.fileName + '&' + item.filePath + '&' + item.url + '&'+ type+'"/>';
+            }else{
+                html = html + '<input type="checkbox" name="AdInfo" value="' + item.id + '&' + item.fileName + '&' + item.filePath + '&' + item.url + '&'+ type+'"/>';
+            }
+
+            html = html +
                     '<i class="input-helper"></i>' +
                     '</label></dt>' +
                     '<dd>' + item.fileName + '</dd>' +
@@ -258,18 +267,18 @@
         });
 
         $('input[type="checkbox"]').click(function () {
-            var videoId = this.value.split("&")[0];
+            var adId = this.value.split("&")[0];
             if (this.checked) {
-                if (videoIds.length == 6) {
-                    notify('success', '     一台设备最多发布6条视频广告      ');
+                if (adIds.length == 6) {
+                    notify('success', '     一台设备最多发布6条图文广告      ');
                     this.checked = false;
                 } else {
-                    videoInfos.push(this.value);
-                    videoIds.push(videoId);
+                    adInfos.push(this.value);
+                    adIds.push(adId);
                 }
             } else {
-                videoIds.splice(videoIds.indexOf(videoId), 1);
-                videoInfos.splice(videoInfos.indexOf(this.value), 1);
+                adIds.splice(adIds.indexOf(adId), 1);
+                adInfos.splice(adInfos.indexOf(this.value), 1);
             }
         });
     }

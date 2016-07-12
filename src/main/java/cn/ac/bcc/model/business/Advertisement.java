@@ -29,6 +29,7 @@ public class Advertisement {
     private Integer state;
 
 
+    @Column(name = "source")
     private String source;
 
     /**
@@ -50,7 +51,7 @@ public class Advertisement {
      * 广告主
      */
     @Column(name = "company_id")
-    private String companyId;
+    private Integer companyId;
 
     @Column(name = "add_time")
     private Date addTime;
@@ -189,7 +190,7 @@ public class Advertisement {
      *
      * @return company_id - 广告主
      */
-    public String getCompanyId() {
+    public Integer getCompanyId() {
         return companyId;
     }
 
@@ -198,7 +199,7 @@ public class Advertisement {
      *
      * @param companyId 广告主
      */
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
 

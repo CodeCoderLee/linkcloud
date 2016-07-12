@@ -9,4 +9,6 @@ import java.util.List;
 public interface AdvertisementMapper extends Mapper<Advertisement> {
 
     List<Advertisement> selectAdvertisement(@Param("advertisement") Advertisement advertisement);
+
+    List<Advertisement> searchAdvertisement(@Param("advertisement") Advertisement advertisement, @Param("sortOrder") String sortOrder, @Param("sortName") String sortName);
 }

@@ -7,8 +7,21 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="ad_id" jdbcType="INTEGER" property="adId" />
-    <result column="device_id" jdbcType="INTEGER" property="deviceId" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
     <result column="position" jdbcType="INTEGER" property="position" />
     <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
+
+  <insert id="batchInsert" useGeneratedKeys="true" parameterType="java.util.List">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO bcc_ad_publish
+    (`ad_id`, `serial_number`, `publish_time`, `type`)
+    VALUES
+    <foreach collection="list" item="adPublish" index="index" separator=",">
+      (#{adPublish.adId,jdbcType=INTEGER},#{adPublish.serialNumber,jdbcType=VARCHAR},#{adPublish.publishTime,jdbcType=TIMESTAMP},#{adPublish.type,jdbcType=INTEGER})
+    </foreach>
+  </insert>
 </mapper>

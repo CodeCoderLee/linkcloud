@@ -20,4 +20,8 @@ public class AdvertisementService extends BaseService<Advertisement> {
     public List<Advertisement> selectAdvertisement(Advertisement advertisement){
         return advertisementMapper.selectAdvertisement(advertisement);
     }
+
+    public List<Advertisement> searchAdvertisement(Advertisement advertisement, String sortOrder, String sortName){
+        return advertisementMapper.searchAdvertisement(advertisement, sortOrder, sortName);
+    }
 }

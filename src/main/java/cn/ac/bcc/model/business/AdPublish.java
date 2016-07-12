@@ -17,10 +17,10 @@ public class AdPublish {
     private Integer adId;
 
     /**
-     * 对应设备ID
+     * 对应设备序列号
      */
-    @Column(name = "device_id")
-    private Integer deviceId;
+    @Column(name = "serial_number")
+    private String serialNumber;
 
     /**
      * 广告位置
@@ -29,6 +29,9 @@ public class AdPublish {
 
     @Column(name = "publish_time")
     private Date publishTime;
+
+    @Column(name = "type")
+    private Integer type;
 
     /**
      * @return id
@@ -63,21 +66,21 @@ public class AdPublish {
     }
 
     /**
-     * 获取对应设备ID
+     * 获取对应设备序列号
      *
-     * @return device_id - 对应设备ID
+     * @return serial_number - 对应设备序列号
      */
-    public Integer getDeviceId() {
-        return deviceId;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
     /**
-     * 设置对应设备ID
+     * 设置对应设备序列号
      *
-     * @param deviceId 对应设备ID
+     * @param serialNumber 对应设备序列号
      */
-    public void setDeviceId(Integer deviceId) {
-        this.deviceId = deviceId;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     /**
@@ -110,5 +113,19 @@ public class AdPublish {
      */
     public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
+    }
+
+    /**
+     * @return type
+     */
+    public Integer getType() {
+        return type;
+    }
+
+    /**
+     * @param type
+     */
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

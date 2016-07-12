@@ -6,7 +6,6 @@ import javax.persistence.*;
 @Table(name = "bcc_ad_report")
 public class AdReport {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.business.DeviceToAdMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.DeviceToAd" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+    <result column="self_ad_info" property="selfAdInfo" jdbcType="VARCHAR" />
+    <result column="company_ad_info" property="companyAdInfo" jdbcType="VARCHAR" />
+    <result column="custom_ad_info" property="customAdInfo" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="searchList" resultType="cn.ac.bcc.model.business.DeviceToAd">
+    select t2.id id,t1.serial_number serialNumber,t2.self_ad_info selfAdInfo,
+    t2.company_ad_info companyAdInfo, t2.custom_ad_info customAdInfo,t2.update_time updateTime from bcc_device t1 LEFT  JOIN  bcc_device_to_ad t2
+    on t1.serial_number = t2.serial_number where 1=1
+    <if test="serialNumber != null and serialNumber != ''">
+      and t1.serial_number = #{serialNumber}
+    </if>
+    ORDER BY t1.register_time DESC
+  </select>
+</mapper>
