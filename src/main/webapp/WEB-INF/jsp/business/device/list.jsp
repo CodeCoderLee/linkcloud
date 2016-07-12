@@ -58,7 +58,7 @@
                     <th data-checkbox="true"></th>
                     <th data-field="serialNumber">序列号</th>
                     <th data-field="areaName" data-formatter="areaFormatter">区域</th>
-                    <th data-field="onOffLine" data-formatter="onOffLineFormatter">状态</th>
+                    <th data-field="status" data-formatter="statusFormatter">状态</th>
                     <th data-field="version1" data-formatter="versionFormatter">Version_s/Version_t</th>
                     <th data-field="registerTime" data-formatter="dateTimeFormatter" data-sortable="true">注册时间</th>
                 </tr>
@@ -92,11 +92,17 @@
 
     }
 
-    function onOffLineFormatter(value) {
+    function statusFormatter(value) {
         if (value == 1) {
-            return "在线";
+            return "调试状态";
+        }else if(value == 2){
+            return "出库状态";
+        }else if(value == 3 ){
+            return "演示状态";
+        }else if(value == 4) {
+            return "入库状态";
         }else {
-            return "离线"
+            return "-";
         }
 
     }
