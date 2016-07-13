@@ -100,11 +100,6 @@ public class VideoPublishController extends BaseController<VideoPublish> {
                 videoPublishes.get(j).setPublishTime(new Date());
 //                videoPublishes.get(j).setType(type);
             }
-            //todo 心跳包下发指令
-            //心跳包下发指令
-            JSONObject heartObj = new JSONObject();
-            heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
-            CommandMap.addCommand(serialNumber[i],heartObj);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serialNumber", serialNumber[i]);
@@ -142,6 +137,11 @@ public class VideoPublishController extends BaseController<VideoPublish> {
 //            videoPublish.setType(type);
             videoPublishService.delete(videoPublish);
 
+            //todo 心跳包下发指令
+            //心跳包下发指令
+            JSONObject heartObj = new JSONObject();
+            heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
+            CommandMap.addCommand(serialNumber[i],heartObj);
         }
 
         videoPublishService.batchInsert(videoPublishes);
@@ -150,7 +150,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
 
     @ResponseBody
     @RequestMapping("unBindVideoPublish")
-    public String unBindVideoPublish(String serialNumbers){
+    public String unBindVideoPublish(String serialNumbers) throws InterruptedException {
         String[] serialNumber = serialNumbers.split(",");
         for(int i=0;i<serialNumber.length;i++){
             VideoPublish videoPublish = new VideoPublish();
@@ -160,6 +160,12 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             DeviceToVideo deviceToVideo = new DeviceToVideo();
             deviceToVideo.setSerialNumber(serialNumber[i]);
             deviceToVideoService.delete(deviceToVideo);
+
+            //todo 心跳包下发指令
+            //心跳包下发指令
+            JSONObject heartObj = new JSONObject();
+            heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
+            CommandMap.addCommand(serialNumber[i],heartObj);
         }
         return SUCCESS;
     }

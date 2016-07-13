@@ -36,7 +36,7 @@
   <div data-am-widget="header"
         class="am-header am-header-default">
     <div class="am-header-left am-header-nav">
-        <c:set var="hasRole" value="true"/>
+        <%--<c:set var="hasRole" value="true"/>--%>
         <c:if test="${hasRole}">
         <a href="${ctx}/index.shtml" class="">
             <i class="am-header-icon am-icon-home"></i>

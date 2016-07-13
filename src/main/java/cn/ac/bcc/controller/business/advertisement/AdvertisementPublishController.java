@@ -149,7 +149,7 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
 
     @ResponseBody
     @RequestMapping("unBindAdPublish")
-    public String unBindAdPublish(String serialNumbers){
+    public String unBindAdPublish(String serialNumbers) throws InterruptedException {
         String[] serialNumber = serialNumbers.split(",");
         for(int i=0;i<serialNumber.length;i++){
             AdPublish adPublish = new AdPublish();
@@ -159,6 +159,12 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
             DeviceToAd deviceToAd = new DeviceToAd();
             deviceToAd.setSerialNumber(serialNumber[i]);
             deviceToAdService.delete(deviceToAd);
+
+//            //todo 心跳包下发指令
+//            //心跳包下发指令
+//            JSONObject object = new JSONObject();
+//            object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
+//            CommandMap.addCommand(serialNumber[i],object);
         }
         return SUCCESS;
     }
