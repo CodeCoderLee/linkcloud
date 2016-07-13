@@ -98,33 +98,57 @@ public class WechatController {
     @RequestMapping("index")
     public String index(HttpServletRequest request,Model model,String url){
         String code = request.getParameter("code");
-        JSONObject jsonObject = WechatUtil.getOauthAccessToken(code);
+        String isWeb = request.getParameter("isWeb");
+        JSONObject jsonObject;
+        if(Common.isEmpty(isWeb)){
+            jsonObject = WechatUtil.getOauthAccessToken(code);
+        }else{
+            jsonObject = WechatUtil.getWebOauthAccessToken(code);
+        }
         JSONObject userInfo = WechatUtil.getOauthUserInfo(jsonObject.getString("access_token"), jsonObject.getString("openid"));
+        System.out.println("userInfo==="+userInfo.toString());
         User user = new User();
         /*通过openId获取user信息*/
-        user.setOpenId(userInfo.getString("openid"));
+        user.setUnionId(userInfo.getString("unionid"));
         List<User> users = userService.select(user);
-        if (users.size() < 1) {
-            /*如果不存在该用户,那么添加新用户*/
-            user.setCity(userInfo.containsKey("city") ? userInfo.getString("city") : null);
-            user.setCountry(userInfo.containsKey("country") ? userInfo.getString("country") : null);
-            user.setCreatetime(new Date());
-            user.setAccountname(user.getOpenId());
-            user.setDeleteStatus(0);
-            user.setGroupId(userInfo.containsKey("groupid") ? userInfo.getInt("groupid") : null);
-            user.setHeadImgUrl(userInfo.containsKey("headimgurl") ? userInfo.getString("headimgurl") : null);
-            user.setNickName(userInfo.containsKey("nickname") ? userInfo.getString("nickname") : null);
-            user.setProvince(userInfo.containsKey("province") ? userInfo.getString("province") : null);
-            user.setSex(userInfo.containsKey("sex") ? userInfo.getInt("sex") : null);
-            user.setUnionId(userInfo.containsKey("unionid") ? userInfo.getString("unionid") : null);
-            user.setRemark(userInfo.containsKey("remark") ? userInfo.getString("remark") : null);
-            user.setPassword(Constants.USER_DEFAULT_PASSWORD);
-            PasswordHelper passwordHelper = new PasswordHelper();
-            passwordHelper.encryptPassword(user);
-            userService.insert(user);
-        }else {
+        if (users.size() < 1) {//根据unionid查找用户，兼容以前没有存unionid的情况
+            user = new User();
+            user.setOpenId(userInfo.getString("openid"));
+            users = userService.select(user);
+            if (users.size() < 1) {//微信公众帐号和网页都没有登陆过
+                /*如果不存在该用户,那么添加新用户*/
+                user.setCity(userInfo.containsKey("city") ? userInfo.getString("city") : null);
+                user.setCountry(userInfo.containsKey("country") ? userInfo.getString("country") : null);
+                user.setCreatetime(new Date());
+                user.setAccountname(user.getOpenId());
+                user.setDeleteStatus(0);
+                user.setGroupId(userInfo.containsKey("groupid") ? userInfo.getInt("groupid") : null);
+                user.setHeadImgUrl(userInfo.containsKey("headimgurl") ? userInfo.getString("headimgurl") : null);
+                user.setNickName(userInfo.containsKey("nickname") ? userInfo.getString("nickname") : null);
+                user.setProvince(userInfo.containsKey("province") ? userInfo.getString("province") : null);
+                user.setSex(userInfo.containsKey("sex") ? userInfo.getInt("sex") : null);
+                user.setUnionId(userInfo.containsKey("unionid") ? userInfo.getString("unionid") : null);
+                user.setRemark(userInfo.containsKey("remark") ? userInfo.getString("remark") : null);
+                user.setPassword(Constants.USER_DEFAULT_PASSWORD);
+                PasswordHelper passwordHelper = new PasswordHelper();
+                passwordHelper.encryptPassword(user);
+                userService.insert(user);
+            } else {//公众号unionid为空，更新
+                User user1 = users.get(0);
+                user1.setUnionId(userInfo.getString("unionid"));
+                userService.updateByPrimaryKeySelective(user1);
+                user = users.get(0);
+            }
+        } else {
             user = users.get(0);
         }
+//        user.setOpenId(userInfo.getString("openid"));
+//        List<User> users = userService.select(user);
+//        if (users.size() < 1) {
+//
+//        }else {
+//            user = users.get(0);
+//        }
 
         request.getContextPath();
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
@@ -176,6 +200,9 @@ public class WechatController {
         //TODO 普通权限的用户仅能进入前台页面
         //return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
         model.addAttribute("openId",user.getOpenId());
+        if(!Common.isEmpty(isWeb)){
+            return "redirect:/index.shtml";
+        }
         return "redirect:" + url + ".shtml";
     }
 //
