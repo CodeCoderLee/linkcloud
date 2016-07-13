@@ -22,7 +22,7 @@ public class AdvertisementPublishService extends BaseService<AdPublish>{
     private AdPublishMapper adPublishMapper;
     @Autowired
     private DeviceToAdMapper deviceToAdMapper;
-    public static final String DOMAIN ="http://localhost:8000";// "http://www.linkedcloud.com.cn";
+    public static final String DOMAIN ="http://www.linkedcloud.com.cn";//"http://localhost:8000";/
     public void batchInsert(List<AdPublish> adPublishes){
         adPublishMapper.batchInsert(adPublishes);
     }
