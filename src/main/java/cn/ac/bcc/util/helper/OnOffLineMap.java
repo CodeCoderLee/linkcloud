@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class OnOffLineMap {
     private static Map<String,Long> map = new HashMap<String, Long>();
-    static int maxSpace = 10000;
+    static int maxSpace = 120000;
     public static void online(String serialNumber){
         map.put(serialNumber,System.currentTimeMillis());
     }

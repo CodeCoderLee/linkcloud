@@ -15,9 +15,12 @@ import cn.ac.bcc.service.system.user.UserRoleService;
 import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
+import cn.ac.bcc.util.helper.HeartBeatMap;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -364,7 +367,36 @@ public class DeviceSpaceController extends BaseController<Comment>{
         return responseData;
     }
 
+    @RequestMapping(value = "getHeartBeat", produces = "text/html; charset=utf-8")
+    @ResponseBody
+    public JSONObject getHeartBeat(Model mode,String serialNumber,String timeStr){
+        JSONObject obj = new JSONObject();
+        try {
+            long time = 0;
+            if(Common.isNotEmpty(timeStr))time = Long.parseLong(timeStr);
+            long oldTime = HeartBeatMap.getTimestamp(serialNumber);
+//            if (time != oldTime) {
+                String json = HeartBeatMap.get(serialNumber);
+                json  = "Hello World!";
+                obj.put("json",json);
+                //Date date = new Date(oldTime * 1000);
+            Date date = new Date();
+                SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date_time = sFormat.format(date);
+                obj.put("date-time",date_time);
+                obj.put("time",oldTime);
+//            }
+        }catch (Exception e){
 
+        }
+        return obj;
+    }
+
+    @RequestMapping(value = "goDebugHeartBeat/{serialNumber}", produces = "text/html; charset=utf-8")
+    public String goDebugHeartBeat(@PathVariable String serialNumber,Model mode){
+        mode.addAttribute("serialNumber",serialNumber);
+        return Common.BACKGROUND_PATH + "/business/devicespace/debug-heartbeat";
+    }
     /**
      * 获取object中不为空的属性相等的查询条件及order规则的Example
      *
