@@ -31,6 +31,7 @@
 
     <link rel="stylesheet" href="${ctx}/assets/css/base.min.css">
     <link rel="stylesheet" href="${ctx}/assets/css/mobile.css">
+    <link rel="stylesheet" href="${ctx}/assets/css/progress.css">
 </head>
 <body class="vi-mobile">
 <div data-am-widget="header"
@@ -104,7 +105,14 @@
         </nav>
     </div>
     <c:if test="${not empty(map[entry.key])}">
-    <ul class="mindex-ul">
+    <ul class="mindex-ul" id="ul-tv">
+        <li style="display: none;">
+            <section class="container">
+                <div class="progress">
+                    <span class="orange" style="width: 60%;"><span>60%</span></span>
+                </div>
+            </section>
+        </li>
         <c:forEach items="${map[entry.key]}" var="item">
             <li>
                 <div class="mindex-avatar">
@@ -118,7 +126,6 @@
                 </div>
             </li>
         </c:forEach>
-
     </ul>
     </c:if>
     </c:if>
@@ -210,5 +217,37 @@
     <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
     <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
     <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var baseUrl = '${ctx}/space/getTvPrograms/${serialNumber}.shtml'
+
+        var interval;
+        var isScan = ${isScan};
+        if(isScan){
+            interval = self.setInterval("heartbeat()",1000)
+        }
+
+        function heartbeat(){
+            jQuery.ajax({
+                url:baseUrl,
+                type:"POST",
+                success:function(data)
+                {
+                    if(data){
+                        var scanFreqInfos = jQuery.parseJSON(data);
+                        if(scanFreqInfos["scanEnded"]){
+                            clearInterval(interval);
+                        }else{
+                            //更新进度条
+                            var progress = scanFreqInfos['progress'];
+                            $('#ul-tv li').attr('style',"display:block")
+                            $('#ul-tv .orange').attr('style',"width:" + progress + "%")
+                            $('#ul-tv span').text("客官稍等，正在努力加载中……" + progress + "%");
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
 </body>
 </html>

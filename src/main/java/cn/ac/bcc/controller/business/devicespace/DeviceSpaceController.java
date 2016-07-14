@@ -16,6 +16,8 @@ import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
 import cn.ac.bcc.util.helper.HeartBeatMap;
+import cn.ac.bcc.util.helper.MemoryMap;
+import cn.ac.bcc.util.helper.ScanFreqInfos;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
@@ -164,6 +166,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
     public String index(@PathVariable String serialNumber,String openId,String type,Model mode){
         log.info("openId:::" + openId);
         boolean hasRole = false;
+        boolean isScan = false;
         if(openId != null){
             User user = new User();
             /*通过openId获取user信息*/
@@ -183,8 +186,13 @@ public class DeviceSpaceController extends BaseController<Comment>{
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
         List<ProgramNetDisk> lst = programNetDiskService.findProgram(serialNumber,0,true);
+        ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
+        if(scanFreqInfos != null && !scanFreqInfos.isScanEnded()){
+            isScan = true;
+        }
         String ip = deviceAuthen.getIp1();
         mode.addAttribute("ip_address",ip);
+        mode.addAttribute("isScan",isScan);
         mode.addAttribute("map",map);
         mode.addAttribute("netdiskList",lst);
         mode.addAttribute("openId",openId);
@@ -373,6 +381,23 @@ public class DeviceSpaceController extends BaseController<Comment>{
         responseData.setPageNum(pageInfo.getNextPage());
         responseData.setHasNextPage(pageInfo.isHasNextPage());
         return responseData;
+    }
+
+    @RequestMapping(value = "getTvPrograms/{serialNumber}", produces = "text/html; charset=utf-8")
+    @ResponseBody
+    public ScanFreqInfos getTvPrograms(@PathVariable String serialNumber,Model mode){
+        ScanFreqInfos ret = null;//new ScanFreqInfos();
+        try {
+            ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
+            if(scanFreqInfos != null){
+                ret = new ScanFreqInfos();
+                ret.setScanEnded(scanFreqInfos.isScanEnded());
+                ret.setProgress(scanFreqInfos.getProgress());
+            }
+        }catch (Exception e){
+
+        }
+        return ret;
     }
 
     @RequestMapping(value = "getHeartBeat", produces = "text/html; charset=utf-8")
