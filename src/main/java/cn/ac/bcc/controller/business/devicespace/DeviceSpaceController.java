@@ -182,6 +182,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
         List<ProgramNetDisk> lst = programNetDiskService.findProgram(serialNumber,0,true);
+        String ip = deviceAuthen.getIp1();
+        mode.addAttribute("ip_address",ip);
         mode.addAttribute("map",map);
         mode.addAttribute("netdiskList",lst);
         mode.addAttribute("openId",openId);
@@ -369,23 +371,21 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
     @RequestMapping(value = "getHeartBeat", produces = "text/html; charset=utf-8")
     @ResponseBody
-    public JSONObject getHeartBeat(Model mode,String serialNumber,String timeStr){
+    public JSONObject getHeartBeat(Model mode,String serialNumber,String seq){
         JSONObject obj = new JSONObject();
         try {
-            long time = 0;
-            if(Common.isNotEmpty(timeStr))time = Long.parseLong(timeStr);
             long oldTime = HeartBeatMap.getTimestamp(serialNumber);
-//            if (time != oldTime) {
+            String oldSeq = HeartBeatMap.getSeq(serialNumber);
+            if (!oldSeq.equals(seq)) {
                 String json = HeartBeatMap.get(serialNumber);
-                json  = "Hello World!";
+                //json  = "Hello World!";
                 obj.put("json",json);
-                //Date date = new Date(oldTime * 1000);
-            Date date = new Date();
+                Date date = new Date(oldTime * 1000);
                 SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String date_time = sFormat.format(date);
                 obj.put("date-time",date_time);
-                obj.put("time",oldTime);
-//            }
+                obj.put("seq",seq);
+            }
         }catch (Exception e){
 
         }

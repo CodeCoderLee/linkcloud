@@ -814,6 +814,12 @@ public class DeviceAPI {
 
         JSONObject json = JSONObject.fromObject(postData);
         json.put("time",currentTime);
+        if(nvList != null && nvList.size() > 0){
+            NameValuePair nvp = nvList.get(0);
+            if(nvp.getName().equals("seq")){
+                json.put("seq",nvp.getValue());
+            }
+        }
         postData = json.toString();
         //{"dstat":"0","line":"480","temper":"68","locked":"1","frq":"786000000","strength":"179","snr":"13","dprogs":"3","ndisks":"0","camers":"0","sessions":"0"}
         String serialNumber = getDeviceSerialNumber(token);

@@ -45,7 +45,7 @@
         </c:if>
     </div>
     <h1 class="am-header-title">
-            ${serialNumber}-${onoff} <c:if test="${_type_ == 'debug'}"><a style="color:#2fb3ff;" href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml" target="_blank">调式详情</a> </c:if>
+            ${serialNumber}-${onoff}
     </h1>
     <div class="am-header-right am-header-nav">
         <!-- <a href="#right-link" class="">
@@ -191,6 +191,13 @@
     </c:if>
     </c:forEach>
     </c:if>
+
+
+    <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header">
+        <h2 class="am-titlebar-title ">
+            IP地址：${ip_address}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#2fb3ff;" href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml" target="_blank">点击进入调式详情</a>
+        </h2>
+    </div>
 
     <footer data-am-widget="footer"
             class="am-footer am-footer-default"

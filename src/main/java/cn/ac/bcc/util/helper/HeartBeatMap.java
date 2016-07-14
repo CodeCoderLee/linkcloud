@@ -34,6 +34,16 @@ public class HeartBeatMap {
         }
     }
 
+    public static String getSeq(String key){
+        if(map.containsKey(key)){
+            String jsonStr = map.get(key);
+            JSONObject json = JSONObject.fromObject(jsonStr);
+            return json.getString("seq");
+        }else{
+            return "-1";
+        }
+    }
+
     public static String get(String key){
         if(map.containsKey(key)){
             return map.get(key);

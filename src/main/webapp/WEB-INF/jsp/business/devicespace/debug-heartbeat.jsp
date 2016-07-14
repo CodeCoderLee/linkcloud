@@ -71,7 +71,7 @@
          function heartbeat(){
              jQuery.ajax({
                  url:baseUrl,
-                 data:{serialNumber:'${serialNumber}',time:'${time}'},
+                 data:{serialNumber:'${serialNumber}',seq:'${seq}'},
                  type:"POST",
                  success:function(data)
                  {
