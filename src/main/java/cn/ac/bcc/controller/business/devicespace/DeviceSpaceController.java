@@ -33,6 +33,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -264,6 +265,10 @@ public class DeviceSpaceController extends BaseController<Comment>{
         User user = (User) Common.findUserSession(getRequest());
         Integer userId = user.getId();
 
+        Example example = new Example(Program.class);
+        example.createCriteria().andEqualTo("stype",ptype).andEqualTo("deviceSerialNumber",serialNumber);
+        List<Program> list = programService.selectByExample(example);
+
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         mode.addAttribute("ip_address",deviceAuthen.getIp1());
 
@@ -275,6 +280,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("ptype",ptype);
         mode.addAttribute("pname",pname);
         mode.addAttribute("userId",userId);
+        mode.addAttribute("list",list);
         return Common.BACKGROUND_PATH + "/business/devicespace/play";
     }
 
@@ -398,9 +404,15 @@ public class DeviceSpaceController extends BaseController<Comment>{
     }
 
     @RequestMapping(value = "goDebugHeartBeat/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String goDebugHeartBeat(@PathVariable String serialNumber,Model mode){
+    public String goDebugHeartBeat(@PathVariable String serialNumber,Model mode) throws IOException {
         mode.addAttribute("serialNumber",serialNumber);
-        return Common.BACKGROUND_PATH + "/business/devicespace/debug-heartbeat";
+        if(Common.check(getRequest(),getResponse())){
+            //移动端访问
+            return Common.BACKGROUND_PATH + "/business/devicespace/debug-heartbeat";
+        }else {
+            //pc端访问
+            return Common.BACKGROUND_PATH + "/business/devicespace/debug-heartbeat-pc";
+        }
     }
     /**
      * 获取object中不为空的属性相等的查询条件及order规则的Example

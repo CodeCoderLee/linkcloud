@@ -520,11 +520,17 @@ public class DeviceAPI {
     public String analysisv(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         boolean validation = true;
-        JSONObject json = JSONObject.fromObject(postData);
-        String number = json.getString("number");
-        JSONArray array = json.getJSONArray("list");
-        VideoReportService videoReportService = ctx.getBean(VideoReportService.class);
-        validation = videoReportService.addReportData(array);
+        JSONObject json = null;
+        try{
+            json = JSONObject.fromObject(postData);
+            String number = json.getString("number");
+            JSONArray array = json.getJSONArray("list");
+            VideoReportService videoReportService = ctx.getBean(VideoReportService.class);
+            validation = videoReportService.addReportData(array);
+        }catch (Exception e){
+            validation = false;
+        }
+
 
         Map<String, Object> map = new HashMap<String, Object>();
         if (validation) {

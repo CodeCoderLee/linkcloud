@@ -47,7 +47,7 @@
 <div >
     <ul class="mindex-ul heartbeat-list">
         <li style="display: none;">
-            <div style="float:left;border:0.1px;padding:3px; PADDING:0px; width:350px; height:150px; LINE-HEIGHT: 20px; OVERFLOW: auto; ">
+            <div style="float:left;LINE-HEIGHT: 20px; OVERFLOW: auto; ">
                 <img class="mindex-ulImg" src="${ctx}/assets/i/hand.png"  alt=""/>
                 <span class="text-content"></span>
             </div>
@@ -101,6 +101,7 @@
             clearInterval(interval);
             $(this).attr("value","开始");
         }
+
     })
 
     $('.shock-cmd-op').on("click",function(){

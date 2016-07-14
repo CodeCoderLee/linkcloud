@@ -32,9 +32,12 @@ import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
 import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import cn.ac.bcc.annotation.Model;
 import cn.ac.bcc.model.core.User;
+import cn.ac.bcc.util.helper.CheckMobile;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -776,5 +779,42 @@ public class Common {
 			}
 		}
 		return token.equals(cookieValue);
+	}
+
+	/**
+	 * 检查访问方式是否为移动端
+	 *
+	 * @Title: check
+	 * @Date : 2014-7-7 下午03:55:19
+	 * @param request
+	 * @throws IOException
+	 */
+	public static boolean check(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		boolean isFromMobile=false;
+
+		HttpSession session= request.getSession();
+		//检查是否已经记录访问方式（移动端或pc端）
+		if(null==session.getAttribute("ua")){
+			try{
+				//获取ua，用来判断是否为移动端访问
+				String userAgent = request.getHeader( "USER-AGENT" ).toLowerCase();
+				if(null == userAgent){
+					userAgent = "";
+				}
+				isFromMobile= CheckMobile.check(userAgent);
+				//判断是否为移动端访问
+				if(isFromMobile){
+					System.out.println("移动端访问");
+					session.setAttribute("ua","mobile");
+				} else {
+					System.out.println("pc端访问");
+					session.setAttribute("ua","pc");
+				}
+			}catch(Exception e){}
+		}else{
+			isFromMobile=session.getAttribute("ua").equals("mobile");
+		}
+
+		return isFromMobile;
 	}
 }
