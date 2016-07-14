@@ -46,6 +46,10 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
     @RequestMapping("search")
     public ResponseData search(DeviceUpdate deviceUpdate, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
+        String serialNumber = deviceUpdate.getSerialNumber();
+        if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
+            deviceUpdate.setSerialNumber(getSession().getAttribute("serialNumber").toString());
+        }
         List<DeviceUpdate> list = deviceUpdateService.searchList(deviceUpdate.getSerialNumber());
 
         PageInfo<DeviceUpdate> pageInfo = new PageInfo<DeviceUpdate>(list);

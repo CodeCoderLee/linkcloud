@@ -93,6 +93,8 @@ public class MyRealm extends AuthorizingRealm {
 			Session session = SecurityUtils.getSubject().getSession();
 			session.setAttribute("userSession", users.get(0));
 			session.setAttribute("userSessionId", users.get(0).getId());
+			session.removeAttribute("serialNumber");
+			session.setAttribute("isLock",0);
 			return authenticationInfo;
 		} else {
 			throw new UnknownAccountException();// 没找到帐号

@@ -204,6 +204,10 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("search")
     public ResponseData search(DeviceView deviceView, Integer limit, Integer offset) throws Exception {
         PageHelper.offsetPage(offset, limit);
+        String serialNumber = deviceView.getSerialNumber();
+        if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
+            deviceView.setSerialNumber(getSession().getAttribute("serialNumber").toString());
+        }
         Example example = getEqualsToExample(deviceView,deviceView.getClass());
         List<DeviceView> list = deviceViewService.selectByExample(example);
         PageInfo<DeviceView> pageInfo = new PageInfo<DeviceView>(list);
@@ -223,6 +227,10 @@ public class DeviceController extends BaseController<Device> {
 //            device.setDebugAccount(userId);
 //        }
         PageHelper.startPage(pageNum, pageSize);
+        String serialNumber = device.getSerialNumber();
+        if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
+            device.setSerialNumber(getSession().getAttribute("serialNumber").toString());
+        }
         List<Device> list = deviceService.selectDebugDevice(device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
         ResponseData responseData = new ResponseData();
@@ -241,6 +249,10 @@ public class DeviceController extends BaseController<Device> {
 //        device.setRegisterAccount(userId);
 //        device.setDebugAccount(userId);
         PageHelper.startPage(pageNum, pageSize);
+        String serialNumber = device.getSerialNumber();
+        if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
+            device.setSerialNumber(getSession().getAttribute("serialNumber").toString());
+        }
         List<Device> list = deviceService.selectSettingDevice(userId, device);
         PageInfo<Device> pageInfo = new PageInfo<Device>(list);
         ResponseData responseData = new ResponseData();
@@ -446,6 +458,22 @@ public class DeviceController extends BaseController<Device> {
         model.addAttribute("postData",json);
         model.addAttribute("serialNumber",serialNumber);
         return Common.BACKGROUND_PATH + "/business/device/deviceHeartBeatInfoPage";
+    }
+
+    @ResponseBody
+    @RequestMapping("lockDevice")
+    public String lockDevice(String serialNumber){
+        getSession().setAttribute("serialNumber", serialNumber);
+        getSession().setAttribute("isLock", 1);
+        return SUCCESS;
+    }
+
+    @ResponseBody
+    @RequestMapping("unlockDevice")
+    public String unlockDevice(){
+        getSession().removeAttribute("serialNumber");
+        getSession().setAttribute("isLock", 0);
+        return SUCCESS;
     }
 
 
