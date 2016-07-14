@@ -104,15 +104,19 @@
             <a href="${ctx}/space/list/${serialNumber}.shtml?stype=dtmb&openId=${openId}" class="">更多</a>
         </nav>
     </div>
+    <c:if test="${empty(map[entry.key])}">
+        <ul class="mindex-ul" id="ul-tv">
+            <li style="display: none;">
+                <section class="container">
+                    <div class="progress">
+                        <span class="orange" style="width: 60%;"><span>60%</span></span>
+                    </div>
+                </section>
+            </li>
+        </ul>
+    </c:if>
     <c:if test="${not empty(map[entry.key])}">
     <ul class="mindex-ul" id="ul-tv">
-        <li style="display: none;">
-            <section class="container">
-                <div class="progress">
-                    <span class="orange" style="width: 60%;"><span>60%</span></span>
-                </div>
-            </section>
-        </li>
         <c:forEach items="${map[entry.key]}" var="item">
             <li>
                 <div class="mindex-avatar">
