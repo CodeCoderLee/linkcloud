@@ -10,6 +10,7 @@
     <meta name="keywords" content="">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <%--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />--%>
     <title>调试详情</title>
 
     <meta name="renderer" content="webkit">
@@ -42,10 +43,10 @@
 
     </nav>
 </div>
-<div>
+<div >
     <ul class="mindex-ul heartbeat-list">
         <li style="display: none;">
-            <div style="float:left;">
+            <div style="float:left;border:0.1px;padding:3px; PADDING:0px; width:350px; height:150px; LINE-HEIGHT: 20px; OVERFLOW: auto; ">
                 <img class="mindex-ulImg" src="${ctx}/assets/i/hand.png"  alt=""/>
                 <span class="text-content"></span>
             </div>
