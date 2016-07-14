@@ -75,70 +75,64 @@ public class WechatController {
         }
     }
 
-    @RequestMapping(value = "authen",method = RequestMethod.GET)
-    public String authen(HttpServletRequest request,Model model,String uri) throws UnsupportedEncodingException {
+    @RequestMapping(value = "authen", method = RequestMethod.GET)
+    public String authen(HttpServletRequest request, Model model, String uri) throws UnsupportedEncodingException {
         StringBuilder url = new StringBuilder();
         url.append("https://open.weixin.qq.com/connect/oauth2/authorize?appid=").append(WechatUtil.getAppId());
         url.append("&redirect_uri=");//http%3a%2f%2flinkcloud.tunnel.qydev.com%2fwechat%2findex.shtml%3furl%3d%2findex
-        url.append(URLEncoder.encode(domain,"utf-8"));
-        url.append(URLEncoder.encode("/wechat/index.shtml?url=","utf-8")).append(URLEncoder.encode(uri,"utf-8"));
+        url.append(URLEncoder.encode(domain, "utf-8"));
+        url.append(URLEncoder.encode("/wechat/index.shtml?url=", "utf-8")).append(URLEncoder.encode(uri, "utf-8"));
         url.append("&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
         return "redirect:" + url;
     }
 
     /**
-     *  演示空间地址 /space/show.shtml
-     *  个人空间地址 /index.shtml
-     *  设备空间地址 /device/{number}.shtml
+     * 演示空间地址 /space/show.shtml
+     * 个人空间地址 /index.shtml
+     * 设备空间地址 /device/{number}.shtml
+     *
      * @param request
      * @param model
      * @param url
      * @return
      */
     @RequestMapping("index")
-    public String index(HttpServletRequest request,Model model,String url){
+    public String index(HttpServletRequest request, Model model, String url) {
         String code = request.getParameter("code");
         String isWeb = request.getParameter("isWeb");
         JSONObject jsonObject;
-        if(Common.isEmpty(isWeb)){
+        if (Common.isEmpty(isWeb)) {
             jsonObject = WechatUtil.getOauthAccessToken(code);
-        }else{
+        } else {
             jsonObject = WechatUtil.getWebOauthAccessToken(code);
         }
         JSONObject userInfo = WechatUtil.getOauthUserInfo(jsonObject.getString("access_token"), jsonObject.getString("openid"));
-        System.out.println("userInfo==="+userInfo.toString());
+        System.out.println("userInfo===" + userInfo.toString());
         User user = new User();
         /*通过openId获取user信息*/
         user.setUnionId(userInfo.getString("unionid"));
+        user.setDeleteStatus(0);
         List<User> users = userService.select(user);
         if (users.size() < 1) {//根据unionid查找用户，兼容以前没有存unionid的情况
-            user = new User();
-            user.setOpenId(userInfo.getString("openid"));
-            users = userService.select(user);
-            if (users.size() < 1) {//微信公众帐号和网页都没有登陆过
+            //微信公众帐号和网页都没有登陆过
                 /*如果不存在该用户,那么添加新用户*/
-                user.setCity(userInfo.containsKey("city") ? userInfo.getString("city") : null);
-                user.setCountry(userInfo.containsKey("country") ? userInfo.getString("country") : null);
-                user.setCreatetime(new Date());
-                user.setAccountname(user.getOpenId());
-                user.setDeleteStatus(0);
-                user.setGroupId(userInfo.containsKey("groupid") ? userInfo.getInt("groupid") : null);
-                user.setHeadImgUrl(userInfo.containsKey("headimgurl") ? userInfo.getString("headimgurl") : null);
-                user.setNickName(userInfo.containsKey("nickname") ? userInfo.getString("nickname") : null);
-                user.setProvince(userInfo.containsKey("province") ? userInfo.getString("province") : null);
-                user.setSex(userInfo.containsKey("sex") ? userInfo.getInt("sex") : null);
-                user.setUnionId(userInfo.containsKey("unionid") ? userInfo.getString("unionid") : null);
-                user.setRemark(userInfo.containsKey("remark") ? userInfo.getString("remark") : null);
-                user.setPassword(Constants.USER_DEFAULT_PASSWORD);
-                PasswordHelper passwordHelper = new PasswordHelper();
-                passwordHelper.encryptPassword(user);
-                userService.insert(user);
-            } else {//公众号unionid为空，更新
-                User user1 = users.get(0);
-                user1.setUnionId(userInfo.getString("unionid"));
-                userService.updateByPrimaryKeySelective(user1);
-                user = users.get(0);
-            }
+            user.setCity(userInfo.containsKey("city") ? userInfo.getString("city") : null);
+            user.setCountry(userInfo.containsKey("country") ? userInfo.getString("country") : null);
+            user.setCreatetime(new Date());
+            user.setAccountname(user.getUnionId());
+            user.setOpenId(userInfo.getString("openid"));
+            user.setDeleteStatus(0);
+            user.setGroupId(userInfo.containsKey("groupid") ? userInfo.getInt("groupid") : null);
+            user.setHeadImgUrl(userInfo.containsKey("headimgurl") ? userInfo.getString("headimgurl") : null);
+            user.setNickName(userInfo.containsKey("nickname") ? userInfo.getString("nickname") : null);
+            user.setProvince(userInfo.containsKey("province") ? userInfo.getString("province") : null);
+            user.setSex(userInfo.containsKey("sex") ? userInfo.getInt("sex") : null);
+            user.setUnionId(userInfo.containsKey("unionid") ? userInfo.getString("unionid") : null);
+            user.setRemark(userInfo.containsKey("remark") ? userInfo.getString("remark") : null);
+            user.setPassword(Constants.USER_DEFAULT_PASSWORD);
+            PasswordHelper passwordHelper = new PasswordHelper();
+            passwordHelper.encryptPassword(user);
+            userService.insert(user);
         } else {
             user = users.get(0);
         }
@@ -199,8 +193,8 @@ public class WechatController {
         }
         //TODO 普通权限的用户仅能进入前台页面
         //return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
-        model.addAttribute("openId",user.getOpenId());
-        if(!Common.isEmpty(isWeb)){
+        model.addAttribute("openId", user.getOpenId());
+        if (!Common.isEmpty(isWeb)) {
             return "redirect:/index.shtml";
         }
         return "redirect:" + url + ".shtml";
@@ -240,7 +234,7 @@ public class WechatController {
             PasswordHelper passwordHelper = new PasswordHelper();
             passwordHelper.encryptPassword(user);
             userService.insert(user);
-        }else {
+        } else {
             user = users.get(0);
         }
 
@@ -293,7 +287,7 @@ public class WechatController {
         }
         //TODO 普通权限的用户仅能进入前台页面
         //return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
-        model.addAttribute("openId",user.getOpenId());
+        model.addAttribute("openId", user.getOpenId());
         String type = request.getParameter("type");
         if (!Common.isEmpty(type)) {
             if (type.equals("1")) {
