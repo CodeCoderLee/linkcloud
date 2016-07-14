@@ -60,7 +60,7 @@
                 <tr>
                     <th data-checkbox="true"></th>
                     <th data-field="username" data-sortable="true">姓名</th>
-                    <th data-field="accountname" data-sortable="true">openID</th>
+                    <th data-field="accountname" data-sortable="true">unionId</th>
                     <th data-field="nickName" data-sortable="true">昵称</th>
                     <th data-field="sex" data-sortable="true" data-formatter="sexFormatter">性别</th>
                     <th data-field="city" data-sortable="true" data-formatter="areaFormatter">地区</th>
