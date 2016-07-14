@@ -7,6 +7,7 @@ import javax.persistence.*;
 public class VideoReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "serial_number")
@@ -15,27 +16,43 @@ public class VideoReport {
     @Column(name = "user_id")
     private Integer userId;
 
+    @Column(name = "stime")
     private Date stime;
 
     /**
-     * æµè§ˆæ—¶é—´
+     *
      */
+    @Column(name = "ctime")
     private Date ctime;
 
     /**
-     * 0 ç›´æ’­
-1 ç‚¹æ’­
-2 æ‘„åƒ
-3 è¿œç¨‹
      */
     @Column(name = "space_time")
     private Integer spaceTime;
 
+    @Column(name = "ptype")
     private String ptype;
 
+    @Column(name = "pid")
     private Integer pid;
 
+    @Column(name = "pname")
     private String pname;
+
+    @Transient
+    private String time;
+
+    @Transient
+    private String videoFileName;
+
+    @Transient
+    private Long totalCount;
+
+    @Transient
+    private Long totalTime;
+
+    @Transient
+    private String datetime;
 
     /**
      * @return id
@@ -181,5 +198,45 @@ public class VideoReport {
      */
     public void setPname(String pname) {
         this.pname = pname;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getVideoFileName() {
+        return videoFileName;
+    }
+
+    public void setVideoFileName(String videoFileName) {
+        this.videoFileName = videoFileName;
+    }
+
+    public Long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Long totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public Long getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(Long totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 }

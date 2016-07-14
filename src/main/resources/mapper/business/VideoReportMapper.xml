@@ -15,4 +15,40 @@
     <result column="pid" jdbcType="INTEGER" property="pid" />
     <result column="pname" jdbcType="VARCHAR" property="pname" />
   </resultMap>
+
+  <select id="statisticsVideoByDay" resultType="cn.ac.bcc.model.business.VideoReport">
+    select DATE_FORMAT(t.stime,'%Y%m%d') datetime,pid,v.file_name videoFileName,
+    count(t.pid) totalCount,sum(t.space_time) totalTime
+    from bcc_video_report t left join  bcc_video v on t.pid = v.id
+    where t.ptype = 'ad' and DATE_FORMAT(t.stime,'%Y%m%d') = #{date} group by datetime,pid ORDER BY pid
+  </select>
+
+  <select id="statisticsVideoByMonth" resultType="cn.ac.bcc.model.business.VideoReport">
+    select DATE_FORMAT(t.stime,'%Y%m') days,pid,v.file_name videoFileName,
+    count(t.pid) totalCount,sum(t.space_time) totalTime
+    from bcc_video_report t left join  bcc_video v on t.pid = v.id
+    where t.ptype = 'ad' and DATE_FORMAT(t.stime,'%Y%m') = #{date} group by days,pid ORDER BY pid
+  </select>
+
+  <select id="statisticsVideoByYear" resultType="cn.ac.bcc.model.business.VideoReport">
+    select DATE_FORMAT(t.stime,'%Y') days,pid,v.file_name videoFileName,
+    count(t.pid) totalCount,sum(t.space_time) totalTime
+    from bcc_video_report t left join  bcc_video v on t.pid = v.id
+    where t.ptype = 'ad' and DATE_FORMAT(t.stime,'%Y') = #{date} group by days,pid ORDER BY pid
+  </select>
+
+  <select id="statisticsAllVideoByDay" resultType="HashMap">
+    select count(*) totalCount, COALESCE(sum(t.space_time),0) totalTime from bcc_video_report t
+    where t.ptype = 'ad' and DATE_FORMAT(t.stime,'%Y%m%d') = #{date}
+  </select>
+
+  <select id="statisticsAllVideoByMonth" resultType="java.util.HashMap">
+    select count(*) totalCount,COALESCE(sum(t.space_time),0) totalTime from bcc_video_report t
+    where t.ptype = 'ad' and DATE_FORMAT(t.stime,'%Y%m') = #{date}
+  </select>
+
+  <select id="statisticsAllVideoByYear" resultType="java.util.HashMap">
+    select count(*) totalCount,COALESCE(sum(t.space_time),0) totalTime from bcc_video_report t
+    where t.ptype = 'ad' and DATE_FORMAT(t.stime,'%Y') = #{date}
+  </select>
 </mapper>
