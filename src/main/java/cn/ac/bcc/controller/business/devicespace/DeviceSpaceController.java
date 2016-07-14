@@ -376,20 +376,25 @@ public class DeviceSpaceController extends BaseController<Comment>{
         try {
             long oldTime = HeartBeatMap.getTimestamp(serialNumber);
             String oldSeq = HeartBeatMap.getSeq(serialNumber);
-            if (!oldSeq.equals(seq)) {
+            if (!oldSeq.equals(seq) && !oldSeq.equals("-1")) {
                 String json = HeartBeatMap.get(serialNumber);
                 //json  = "Hello World!";
                 obj.put("json",json);
-                Date date = new Date(oldTime * 1000);
-                SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String date_time = sFormat.format(date);
-                obj.put("date-time",date_time);
-                obj.put("seq",seq);
+                obj.put("date-time",timestampToDate(oldTime));
+                obj.put("seq",oldSeq);
+                obj.put("validate",true);
             }
         }catch (Exception e){
 
         }
         return obj;
+    }
+
+    private String timestampToDate(Long beginDate) {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String sd = sdf.format(new Date(beginDate));
+        return sd;
     }
 
     @RequestMapping(value = "goDebugHeartBeat/{serialNumber}", produces = "text/html; charset=utf-8")
