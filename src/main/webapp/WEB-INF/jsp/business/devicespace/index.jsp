@@ -45,9 +45,7 @@
         </c:if>
     </div>
     <h1 class="am-header-title">
-        <a href="#title-link" class="">
-            <c:if test="${_type_ eq 'debug'}">调试空间</c:if><c:if test="${_type_ eq 'show'}">设备空间</c:if>（${onoff}）
-        </a>
+            ${serialNumber}-${onoff} <c:if test="${_type_ == 'debug'}"><a style="color:#2fb3ff;" href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml" target="_blank">调式详情</a> </c:if>
     </h1>
     <div class="am-header-right am-header-nav">
         <!-- <a href="#right-link" class="">
