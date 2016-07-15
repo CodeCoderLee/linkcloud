@@ -35,7 +35,7 @@
         <div class="card-body table-responsive">
             <table id="bccTable"
                    data-toggle="table"
-                   data-sort-name="id"
+                   data-sort-name="createtime"
                    data-sort-order="desc"
                    data-pagination="true"
                    data-pagination-v-align="bottom"
