@@ -1,6 +1,9 @@
 .container {
-  margin: 20px auto;
-  width: 640px;
+  width:350px;
+  LINE-HEIGHT: 20px;
+  OVERFLOW: auto;
+  margin-left:10px;
+  width: 360px;
 }
 .container > div {
   margin-bottom: 20px;

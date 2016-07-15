@@ -46,7 +46,7 @@
         </c:if>
     </div>
     <h1 class="am-header-title">
-            ${serialNumber}-${onoff}
+        ${serialNumber}-${onoff}
     </h1>
     <div class="am-header-right am-header-nav">
         <!-- <a href="#right-link" class="">
@@ -242,6 +242,8 @@
                     $('#ul-tv-1 li:first').attr('style',"display:none");
                     if(data){
                         clearInterval(interval_program);
+                        data = eval("("+data+")");
+                        $('#ul-tv-2').empty();
                         $('#ul-tv-2').append(data);
                     }else{
 

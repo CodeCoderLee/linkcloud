@@ -834,8 +834,8 @@ public class Common {
 				sb.append("alt/>");
 				sb.append("</div>");
 				sb.append("<div class=\"mindex-detail\">");
-				sb.append("<p class=\"mindex-title\"><a");
-				sb.append("href=\"").append(ctx).append("/space/play/").append(program.getDeviceSerialNumber()).append(".shtml?programId=").append(program.getId()).append("\">").append(program.getPname()).append("</a>");
+				sb.append("<p class=\"mindex-title\">");
+				sb.append("<a href=\"").append(ctx).append("/space/play/").append(program.getDeviceSerialNumber()).append(".shtml?programId=").append(program.getId()).append("\">").append(program.getPname()).append("</a>");
 				sb.append("</p>");
 				sb.append("</div>");
 				sb.append("</li>");
