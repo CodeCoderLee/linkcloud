@@ -385,19 +385,33 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
     @RequestMapping(value = "getTvPrograms/{serialNumber}", produces = "text/html; charset=utf-8")
     @ResponseBody
-    public ScanFreqInfos getTvPrograms(@PathVariable String serialNumber,Model mode){
-        ScanFreqInfos ret = null;//new ScanFreqInfos();
-        try {
-            ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
-            if(scanFreqInfos != null){
-                ret = new ScanFreqInfos();
-                ret.setScanEnded(scanFreqInfos.isScanEnded());
-                ret.setProgress(scanFreqInfos.getProgress());
-            }
-        }catch (Exception e){
+    public String getTvPrograms(@PathVariable String serialNumber,Integer type,Model mode){
+        ;//new ScanFreqInfos();
+        StringBuilder sb = new StringBuilder();
+        if(type != null && type == 0){
+            List<Program> programList = programService.findTopProgram(serialNumber);
+            String html = Common.genHtml(programList,getRequest());
+            sb.append(html);
+        }else {
+            try {
+                ScanFreqInfos ret = new ScanFreqInfos();
+                ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
+                if (scanFreqInfos != null) {
+                    ret.setScanEnded(scanFreqInfos.isScanEnded());
+                    ret.setProgress(scanFreqInfos.getProgress());
+                    JSONObject obj = JSONObject.fromObject(ret);
+                    sb.append(obj.toString());
+                }else{
+                    ret.setScanEnded(false);
+                    ret.setProgress(0);
+                    JSONObject obj = JSONObject.fromObject(ret);
+                    sb.append(obj.toString());
+                }
+            } catch (Exception e) {
 
+            }
         }
-        return ret;
+        return sb.toString();
     }
 
     @RequestMapping(value = "getHeartBeat", produces = "text/html; charset=utf-8")

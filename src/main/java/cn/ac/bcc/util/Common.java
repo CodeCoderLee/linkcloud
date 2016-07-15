@@ -36,8 +36,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import cn.ac.bcc.annotation.Model;
+import cn.ac.bcc.model.business.Program;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.util.helper.CheckMobile;
+import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -816,5 +818,29 @@ public class Common {
 		}
 
 		return isFromMobile;
+	}
+
+
+	public static String genHtml(List<Program> programList,HttpServletRequest request){
+		StringBuilder sb = new StringBuilder();
+		if(programList != null) {
+			int size = programList.size();
+			String ctx = request.getContextPath();
+			for (int i = 0; i < size; i++) {
+				Program program = programList.get(i);
+				sb.append("<li>");
+				sb.append("<div class=\"mindex-avatar\">");
+				sb.append("<img class=\"mindex-ulImg\" src='").append(program.getPimg()).append("' onerror=\"this.src='").append(ctx).append("/assets/i/video/live.jpg'\"");
+				sb.append("alt/>");
+				sb.append("</div>");
+				sb.append("<div class=\"mindex-detail\">");
+				sb.append("<p class=\"mindex-title\">");
+				sb.append("<a href=\"").append(ctx).append("/space/play/").append(program.getDeviceSerialNumber()).append(".shtml?programId=").append(program.getId()).append("\">").append(program.getPname()).append("</a>");
+				sb.append("</p>");
+				sb.append("</div>");
+				sb.append("</li>");
+			}
+		}
+		return sb.toString();
 	}
 }

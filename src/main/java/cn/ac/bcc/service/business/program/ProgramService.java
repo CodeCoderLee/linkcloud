@@ -38,4 +38,13 @@ public class ProgramService extends BaseService<Program> {
         map.put("camera",cameraList);
         return  map;
     }
+
+    public List<Program> findTopProgram(String deviceSerialNumber){
+        Map<String,List<Program>> map = new HashMap<String,List<Program>>();
+        Example example = new Example(Program.class);
+        example.createCriteria().andEqualTo("deviceSerialNumber",deviceSerialNumber).andEqualTo("stype",STYPE_DTMB);
+        RowBounds rowBounds = new RowBounds(0,4);
+        List<Program> tvList = programMapper.selectByExampleAndRowBounds(example,rowBounds);
+        return  tvList;
+    }
 }
