@@ -105,18 +105,19 @@
         </nav>
     </div>
     <c:if test="${empty(map[entry.key])}">
-        <ul class="mindex-ul" id="ul-tv">
+        <ul class="mindex-ul" id="ul-tv-1">
             <li style="display: none;">
                 <section class="container">
                     <div class="progress">
-                        <span class="orange" style="width: 60%;"><span>60%</span></span>
+                        <span class="orange" style="width: 100%;"><span>客官稍等，扫频操作执行中</span></span>
+                        <span class="red" style="width: 0%;"><span>0%</span></span>
                     </div>
                 </section>
             </li>
         </ul>
     </c:if>
     <c:if test="${not empty(map[entry.key])}">
-    <ul class="mindex-ul" id="ul-tv">
+    <ul class="mindex-ul" id="ul-tv-2">
         <c:forEach items="${map[entry.key]}" var="item">
             <li>
                 <div class="mindex-avatar">
@@ -227,10 +228,26 @@
         var interval;
         var isScan = ${isScan};
         if(isScan){
-            interval = self.setInterval("heartbeat()",1000)
+            $('#ul-tv-1 li').attr('style',"display:block");
+            interval = self.setInterval("getProgress()",1000)
         }
 
-        function heartbeat(){
+        function getProgramList(){
+            jQuery.ajax({
+                url:baseUrl,
+                data:{type:0},
+                type:"POST",
+                success:function(data)
+                {
+                    $('#ul-tv-1 li:first').attr('style',"display:none");
+                    if(data){
+                        $('#ul-tv-2').append(data);
+                    }
+                }
+            });
+        }
+
+        function getProgress(){
             jQuery.ajax({
                 url:baseUrl,
                 type:"POST",
@@ -240,12 +257,13 @@
                         var scanFreqInfos = jQuery.parseJSON(data);
                         if(scanFreqInfos["scanEnded"]){
                             clearInterval(interval);
+                            //读取节目
+                            setTimeout(getProgramList(),5000);
                         }else{
                             //更新进度条
                             var progress = scanFreqInfos['progress'];
-                            $('#ul-tv li').attr('style',"display:block")
-                            $('#ul-tv .orange').attr('style',"width:" + progress + "%")
-                            $('#ul-tv span').text("客官稍等，正在努力加载中……" + progress + "%");
+                            $('#ul-tv-1 .red').attr('style',"width:" + progress + "%")
+                            $('#ul-tv-1 .red').text(progress + "%");
                         }
                     }
                 }
