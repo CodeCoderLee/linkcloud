@@ -46,15 +46,15 @@
         <property name="sessionManager" ref="sessionManager"/>
 
         <property name="kickoutAfter" value="false"/>
-        <property name="maxSession" value="1"/>
-        <property name="kickoutUrl" value="/login.shtml"/>
+        <property name="maxSession" value="2"/>
+        <property name="kickoutUrl" value="/index.html"/>
     </bean>
 
 
     <!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/toLogin.shtml"/>
+        <property name="loginUrl" value="/index.html"/>
         <property name="successUrl" value="/index.shtml"/>
         <property name="unauthorizedUrl" value="/denied.jsp"/>
         <!-- 自定义权限配置 -->
@@ -83,7 +83,7 @@
                 /install.shtml = anon
                 /lanyuan.shtml = anon
                 index.html = anon
-                / = anon
+                <!--/ = anon-->
                 /index.html = anon
                 test.jsp = anon
                 test.html = anon
