@@ -89,7 +89,7 @@
                 <tr>
                     <th data-checkbox="true"></th>
                     <%--<th data-field="id" data-sortable="true">区域Id</th>--%>
-                    <th data-field="areaName" data-width="40%" data-formatter="areaFormatter">区域</th>
+                    <th data-field="areaName" data-width="100" data-formatter="areaFormatter">区域</th>
                     <th data-field="defaultFrequency">频点</th>
                     <th data-field="selectProgram">已选节目</th>
                     <%--<th data-field="availableProgram">可用节目</th>--%>
