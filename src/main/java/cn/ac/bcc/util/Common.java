@@ -823,21 +823,23 @@ public class Common {
 
 	public static String genHtml(List<Program> programList,HttpServletRequest request){
 		StringBuilder sb = new StringBuilder();
-		int size = programList.size();
-		String ctx = request.getContextPath();
-		for(int i = 0;i<size;i++){
-			Program program = programList.get(i);
-			sb.append("<li>");
-			sb.append("<div class=\"mindex-avatar\">");
-			sb.append("<img class=\"mindex-ulImg\" src='").append(program.getPimg()).append("' onerror=\"this.src='").append(ctx).append("/assets/i/video/live.jpg'\"");
-			sb.append("alt=\"\"/>");
-			sb.append("</div>");
-			sb.append("<div class=\"mindex-detail\">");
-			sb.append("<p class=\"mindex-title\"><a");
-			sb.append("href=\"").append(ctx).append("/space/play/").append(program.getDeviceSerialNumber()).append(".shtml?programId=").append(program.getId()).append("\">").append(program.getPname()).append("</a>");
-			sb.append("</p>");
-			sb.append("</div>");
-			sb.append("</li>");
+		if(programList != null) {
+			int size = programList.size();
+			String ctx = request.getContextPath();
+			for (int i = 0; i < size; i++) {
+				Program program = programList.get(i);
+				sb.append("<li>");
+				sb.append("<div class=\"mindex-avatar\">");
+				sb.append("<img class=\"mindex-ulImg\" src='").append(program.getPimg()).append("' onerror=\"this.src='").append(ctx).append("/assets/i/video/live.jpg'\"");
+				sb.append("alt/>");
+				sb.append("</div>");
+				sb.append("<div class=\"mindex-detail\">");
+				sb.append("<p class=\"mindex-title\"><a");
+				sb.append("href=\"").append(ctx).append("/space/play/").append(program.getDeviceSerialNumber()).append(".shtml?programId=").append(program.getId()).append("\">").append(program.getPname()).append("</a>");
+				sb.append("</p>");
+				sb.append("</div>");
+				sb.append("</li>");
+			}
 		}
 		return sb.toString();
 	}
