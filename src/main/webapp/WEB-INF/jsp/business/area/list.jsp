@@ -3,6 +3,12 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <link rel="stylesheet" href="${ctx}/vendors/bower_components/bootstrap-table/dist/bootstrap-table.css">
+<style type="text/css">
+    .myth{
+        min-width:100px
+    }
+</style>
+
 <div class="container listPage">
     <div class="block-header">
         <h2>频点管理</h2>
@@ -89,9 +95,9 @@
                 <tr>
                     <th data-checkbox="true"></th>
                     <%--<th data-field="id" data-sortable="true">区域Id</th>--%>
-                    <th data-field="areaName" data-width="100" data-formatter="areaFormatter">区域</th>
-                    <th data-field="defaultFrequency">频点</th>
-                    <th data-field="selectProgram">已选节目</th>
+                    <th data-field="areaName" data-class="myth" data-formatter="areaFormatter">区域</th>
+                    <th data-field="defaultFrequency" >频点</th>
+                    <th data-field="selectProgram" >已选节目</th>
                     <%--<th data-field="availableProgram">可用节目</th>--%>
                 </tr>
                 </thead>
