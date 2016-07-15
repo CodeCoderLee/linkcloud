@@ -46,7 +46,7 @@ public class Area {
      * 等级
      */
     @Column(name = "level")
-    private Boolean level;
+    private Integer level;
 
     /**
      * 排序
@@ -182,7 +182,7 @@ public class Area {
      *
      * @return level - 等级
      */
-    public Boolean getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
@@ -191,7 +191,7 @@ public class Area {
      *
      * @param level 等级
      */
-    public void setLevel(Boolean level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 

@@ -38,19 +38,19 @@ public class AreaController extends BaseController<Area>{
         return Common.BACKGROUND_PATH + "/business/area/list";
     }
 
-    @RequestMapping("modifyUI")
-    public String modifyUI(Model model) {
-        String id = getPara("id");
+    @ResponseBody
+    @RequestMapping("getPrograms")
+    public List<ProgramDto> getPrograms(String id){
         List<ProgramDto> programs = new ArrayList<ProgramDto>();
         if (Common.isNotEmpty(id)) {
             Area area = new Area();
             area.setId(Integer.valueOf(id));
             List<Area> areas = areaService.searchArea(area);
-            model.addAttribute("area", areas.get(0));
+//            model.addAttribute("area", areas.get(0));
             String selectProgram = areas.get(0).getSelectProgram();
             JSONArray jsonSelect = new JSONArray();
             if (!Common.isEmpty(selectProgram)) {
-               jsonSelect = JSONArray.fromObject(selectProgram);
+                jsonSelect = JSONArray.fromObject(selectProgram);
             }
             String availableProgram = areas.get(0).getAvailableProgram();
             JSONArray jsonAvailable = new JSONArray();
@@ -70,11 +70,47 @@ public class AreaController extends BaseController<Area>{
                 }
                 programs.add(program);
             }
-            model.addAttribute("programs", programs);
         }
-
-        return Common.BACKGROUND_PATH + "/business/area/edit";
+        return programs;
     }
+
+//    @RequestMapping("modifyUI")
+//    public String modifyUI(Model model) {
+//        String id = getPara("id");
+//        List<ProgramDto> programs = new ArrayList<ProgramDto>();
+//        if (Common.isNotEmpty(id)) {
+//            Area area = new Area();
+//            area.setId(Integer.valueOf(id));
+//            List<Area> areas = areaService.searchArea(area);
+//            model.addAttribute("area", areas.get(0));
+//            String selectProgram = areas.get(0).getSelectProgram();
+//            JSONArray jsonSelect = new JSONArray();
+//            if (!Common.isEmpty(selectProgram)) {
+//               jsonSelect = JSONArray.fromObject(selectProgram);
+//            }
+//            String availableProgram = areas.get(0).getAvailableProgram();
+//            JSONArray jsonAvailable = new JSONArray();
+//            if (!Common.isEmpty(availableProgram)) {
+//                jsonAvailable = JSONArray.fromObject(availableProgram);
+//            }
+//            for (int i = 0; i < jsonAvailable.size(); i++) {
+//                ProgramDto program = new ProgramDto();
+//                program.setPid(jsonAvailable.getJSONObject(i).getString("pid"));
+//                program.setName(jsonAvailable.getJSONObject(i).getString("name"));
+//                program.setSelect(false);
+//                for (int j=0;j<jsonSelect.size();j++) {
+//                    if (jsonAvailable.getJSONObject(i).getString("pid").equals(jsonSelect.getJSONObject(j).getString("pid"))) {
+//                        program.setSelect(true);
+//                        break;
+//                    }
+//                }
+//                programs.add(program);
+//            }
+//            model.addAttribute("programs", programs);
+//        }
+//
+//        return Common.BACKGROUND_PATH + "/business/area/edit";
+//    }
 
     @ResponseBody
     @RequestMapping("search")

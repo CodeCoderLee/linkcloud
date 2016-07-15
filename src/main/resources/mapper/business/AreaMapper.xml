@@ -11,7 +11,7 @@
     <result column="short_name" jdbcType="VARCHAR" property="shortName" />
     <result column="area_code" jdbcType="INTEGER" property="areaCode" />
     <result column="post_code" jdbcType="INTEGER" property="postCode" />
-    <result column="level" jdbcType="BIT" property="level" />
+    <result column="level" jdbcType="INTEGER" property="level" />
     <result column="sort_order" jdbcType="TINYINT" property="sortOrder" />
     <result column="default_frequency" jdbcType="VARCHAR" property="defaultFrequency" />
     <result column="select_program" jdbcType="VARCHAR" property="selectProgram" />
@@ -26,8 +26,23 @@
   (select * from bcc_area t where t.`level` = 1 ) t2
   where t.`level`=3 and  t.parent_id = t1.id and t1.parent_id = t2.id
   <if test="area.id!=null">
-    and t.id = #{area.id}
+    <choose>
+      <when test="area.level!=null and area.level == 1">
+          and t.parent_id in (select t1.id from bcc_area t1 where t1.parent_id = #{area.id})
+      </when>
+      <when test="area.level!=null and area.level == 2">
+        and t.parent_id = #{area.id}
+      </when>
+      <when test="area.level!=null and area.level == 3">
+        and t.id = ${area.id}
+      </when>
+      <otherwise>
+        and t.id = #{area.id}
+      </otherwise>
+    </choose>
+
   </if>
+
     order BY id
   </select>
 </mapper>

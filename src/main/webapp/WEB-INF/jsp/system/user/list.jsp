@@ -106,7 +106,7 @@
             options.pageSize = Number(limit);
         }
         if (offset) {
-            options.pageNumber = Number(offset)+1;
+            options.pageNumber = Number(offset)/Number(limit)+1;
         }
         if (sortOrder) {
             options.sortOrder = sortOrder;
