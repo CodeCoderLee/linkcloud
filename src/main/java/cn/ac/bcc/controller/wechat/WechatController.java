@@ -135,10 +135,17 @@ public class WechatController {
             userService.insert(user);
         } else {
             user = users.get(0);
-            if (!user.getNickName().equals(userInfo.containsKey("nickname")?userInfo.getString("nickname") : null)) {
+            String oldNickName = user.getNickName();
+            String newNickName = userInfo.containsKey("nickname")?userInfo.getString("nickname") : null;
+            if (Common.isEmpty(oldNickName)) {
                 User user1 = new User();
                 user1.setId(user.getId());
-                user1.setNickName(userInfo.getString("nickname"));
+                user1.setNickName(newNickName);
+                userService.updateByPrimaryKeySelective(user1);
+            } else if (!oldNickName.equals(newNickName)) {
+                User user1 = new User();
+                user1.setId(user.getId());
+                user1.setNickName(newNickName);
                 userService.updateByPrimaryKeySelective(user1);
             }
         }
