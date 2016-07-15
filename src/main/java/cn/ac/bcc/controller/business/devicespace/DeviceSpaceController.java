@@ -394,12 +394,16 @@ public class DeviceSpaceController extends BaseController<Comment>{
             sb.append(html);
         }else {
             try {
-                ScanFreqInfos ret = null;
+                ScanFreqInfos ret = new ScanFreqInfos();
                 ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
                 if (scanFreqInfos != null) {
-                    ret = new ScanFreqInfos();
                     ret.setScanEnded(scanFreqInfos.isScanEnded());
                     ret.setProgress(scanFreqInfos.getProgress());
+                    JSONObject obj = JSONObject.fromObject(ret);
+                    sb.append(obj.toString());
+                }else{
+                    ret.setScanEnded(false);
+                    ret.setProgress(0);
                     JSONObject obj = JSONObject.fromObject(ret);
                     sb.append(obj.toString());
                 }
