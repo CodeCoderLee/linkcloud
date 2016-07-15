@@ -12,6 +12,7 @@ public class UserLogin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Model(name = "ID")
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "userId")

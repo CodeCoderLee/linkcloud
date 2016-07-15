@@ -364,6 +364,24 @@ public abstract class BaseController<T> {
         return JSONObject.fromObject(responseObject);
     }
 
+    public Example addSortOrder(Example example, T object){
+        String sortOrder = getPara("order");
+        String sortName = getPara("sort");
+        if (Common.isNotEmpty(sortOrder)) {
+            if (Common.isNotEmpty(sortName)) {
+                String columnName = Common.getClassFieldColumnName(object.getClass(),sortName);
+                if (columnName != null) {
+                    example.setOrderByClause(columnName + " " + sortOrder);
+                }else
+                    example.setOrderByClause("id " + sortOrder);
+            } else
+                example.setOrderByClause("id " + sortOrder);
+        } else {
+            example.setOrderByClause("id desc");
+        }
+        return example;
+    }
+
 
     public String readFileDataToString(String filePath) {
         try {

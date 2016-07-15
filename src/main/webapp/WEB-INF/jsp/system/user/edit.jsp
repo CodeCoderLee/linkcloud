@@ -8,6 +8,10 @@
     <div class="line line-dashed line-lg pull-in"></div>
     <div class="card">
         <div class="card-header">
+            <input type="hidden" value="${limit}" id="limit">
+            <input type="hidden" value="${offset}" id="offset">
+            <input type="hidden" value="${sortName}" id="sortName">
+            <input type="hidden" value="${sortOrder}" id="sortOrder">
             <div class="m-b-md" style="margin-bottom: 18px">
                 <div class="alert alert-danger hidden" role="alert">
                 </div>

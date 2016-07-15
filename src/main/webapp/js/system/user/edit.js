@@ -1,7 +1,11 @@
 $(function () {
 	onLoadUrl();
+	var limit = $('#limit').val();
+	var offset = $('#offset').val();
+	var sortOrder = $('#sortOrder').val();
+	var sortName = $('#sortName').val();
 	$('#closeBtn').click(function () {
-		$("#content").load(rootPath + "/user/list.shtml");
+		$("#content").load(rootPath + "/user/list.shtml?limit="+limit+"&offset="+offset+"&sortName="+sortName+"&sortOrder="+sortOrder);
 	});
 	$('#form').validate({
 		submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
@@ -10,7 +14,7 @@ $(function () {
 				dataType: "json",
 				success: function (data) {
 					notify('success', '     用户修改成功      ');
-					$("#content").load(rootPath + "/user/list.shtml");
+					$("#content").load(rootPath + "/user/list.shtml?limit="+limit+"&offset="+offset+"&sortName="+sortName+"&sortOrder="+sortOrder);
 				},
 				error: function (XMLResponse) {
 					alert(XMLResponse.responseText);

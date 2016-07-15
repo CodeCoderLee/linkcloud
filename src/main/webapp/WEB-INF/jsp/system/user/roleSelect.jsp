@@ -78,6 +78,7 @@ function unselectedAll() {
 <div class="form-group">
 <input id="txtGroupsSelect" type="hidden" value="${txtRoleSelect}"
 			name="roleId" />
+	<input type="hidden" value="${self}" id="self">
 	<label class="col-sm-3 control-label">角色</label>
 	<div class="col-sm-9">
 		<table class="tweenBoxTable" name="groups_tweenbox"
@@ -98,19 +99,19 @@ function unselectedAll() {
 					</select></td>
 					<td align="center">
 						<div style="margin-left: 5px; margin-right: 5px">
-							<button onclick="selectedAll()" class="btn btn-primary"
+							<button onclick="selectedAll()"  class="btn btn-primary"
 								type="button" style="width: 50px;" title="全选">&lt;&lt;</button>
 						</div>
 						<div style="margin-left: 5px; margin-right: 5px; margin-top: 5px;">
-							<button onclick="selected()" class="btn btn-primary"
+							<button onclick="selected()"  class="btn btn-primary"
 								type="button" style="width: 50px;" title="选择">&lt;</button>
 						</div>
 						<div style="margin-left: 5px; margin-right: 5px; margin-top: 5px;">
-							<button onclick="unselected()" class="btn btn-primary"
+							<button onclick="unselected()"  class="btn btn-primary"
 								type="button" style="width: 50px;" title="取消">&gt;</button>
 						</div>
 						<div style="margin-left: 5px; margin-right: 5px; margin-top: 5px">
-							<button onclick="unselectedAll()" class="btn btn-primary"
+							<button onclick="unselectedAll()"  class="btn btn-primary"
 								type="button" style="width: 50px;" title="全取消">&gt;&gt;</button>
 						</div>
 					</td>
@@ -126,3 +127,11 @@ function unselectedAll() {
 		</table>
 	</div>
 </div>
+<script charset="utf-8">
+	$(document).ready(function () {
+		var self = $('#self').val();
+		if (self == '1') {
+			$('.btn.btn-primary').attr("disabled",true);
+		}
+	});
+</script>

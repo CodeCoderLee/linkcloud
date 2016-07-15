@@ -9,7 +9,7 @@ $(document).ready(function () {
     $('#search').click(function () {
 
         console.log("search::");
-        var queryObject = new Object();
+        var queryObject = {};
         console.log($("#searchParam").attr("name"));
         var paraName = $("#searchParam").attr("name");
         var paraValue = $("#searchParam").val();
@@ -53,7 +53,9 @@ $(document).ready(function () {
             alert("最多选中一条记录");
             return;
         }
-        $("#content").load(modifyUrl + ids[0]);
+        var options = $('#bccTable').bootstrapTable('getOptions');
+        $("#content").load(modifyUrl + ids[0] +"&limit="+options['pageSize'] + "&offset="+(options['pageNumber']-1)+"&sortName="+options['sortName']+"&sortOrder="+options['sortOrder']);
+        // $("#content").load(modifyUrl + ids[0]);
         ids = [];
     });
 
@@ -124,11 +126,12 @@ $(document).ready(function () {
     /*排序触发事件*/
     $('#bccTable').on('sort.bs.table', function (e, name, order) {
         console.log(name, '=====', order);
-        var $accountName = $('#accountName').val();
-        var queryObject = new Object();
+        var searchValue = $('#searchParam').val();
+        var queryObject = {};
+        var paraName = $('#searchParam').attr("name");
         /*当参数不为空字符串时,传给后台,避免accountname值为"",导致结果为空*/
-        if ($accountName.length) {
-            queryObject.accountname = $accountName;
+        if (searchValue.length) {
+            queryObject.paraName = searchValue;
 
         }
         queryObject.sortName = name;
