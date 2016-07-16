@@ -5,6 +5,8 @@ var errorCount = 0;
 $(document).ready(function () {
     $('#form').validate({
         submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
+            $('#industryName').val($("#modifyIndustryCode").find('option:selected').text());
+            $('#areaName').val($("#modifyCounty").find('option:selected').text());
             $(form).ajaxSubmit({
                 type: "post",
                 dataType: "json",

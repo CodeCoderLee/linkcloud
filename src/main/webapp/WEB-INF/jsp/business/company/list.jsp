@@ -137,6 +137,8 @@
                 <div class="card-body">
                     <form id="form" name="form" class="form-horizontal" method="post"
                           action="${ctx}/company/modify.shtml">
+                        <input type="hidden" name="industryName" id="industryName"/>
+                        <input type="hidden" name="areaName" id="areaName"/>
                         <input type="hidden" name="id" id="id"/>
                         <section class="panel panel-default">
                             <div class="panel-body">
