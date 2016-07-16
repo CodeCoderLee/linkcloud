@@ -13,6 +13,7 @@ public  @interface SystemLog {
   
 	String module()  default "";  //模块名称 系统管理-用户管理－列表页面
 	String methods()  default "";  //新增用户
+//	String operateObj() default "";  //操作对象,即如果操作的是设备则显示设备号
     String description()  default "";  //
 }  
   

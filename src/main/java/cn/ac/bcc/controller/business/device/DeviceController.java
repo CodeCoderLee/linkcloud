@@ -99,7 +99,8 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("startScanFrequency")
-    public String startScanFrequency(String serialNumber) throws Exception {
+    @SystemLog(module = "设备管理", methods = "设备管理-设备配置-扫频")
+    public String startScanFrequency(String serialNumber,Device device) throws Exception {
 //        Map<String, String> map = new HashMap<String,String>();
 //        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
         JSONObject object = new JSONObject();
@@ -381,7 +382,8 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("setFrequency")
-    public String setFrequency(String serialNumber, String frequency, String programIds) throws InterruptedException {
+    @SystemLog(module = "设备管理", methods = "设备管理-设备频点")
+    public String setFrequency(String serialNumber,Device device, String frequency, String programIds) throws InterruptedException {
         deviceService.updateWorkFrequencyAndProgramIds(serialNumber,frequency,programIds);
         //设置后清空MemroyMap中的相关数据
 //        MemoryMap.clear(serialNumber);
@@ -401,8 +403,8 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("shock")
-    public String shock(String serialNumber) throws InterruptedException {
-        //TODO 下发设置节目号
+    @SystemLog(module = "设备管理", methods = "设备管理-连通性测试")
+    public String shock(String serialNumber,Device device) throws InterruptedException {
         //心跳包下发指令
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SHOCK);
@@ -462,7 +464,8 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("lockDevice")
-    public String lockDevice(String serialNumber){
+    @SystemLog(module = "设备管理", methods = "设备管理-设备注册-锁定")
+    public String lockDevice(String serialNumber,Device device){
         getSession().setAttribute("serialNumber", serialNumber);
         getSession().setAttribute("isLock", 1);
         return SUCCESS;

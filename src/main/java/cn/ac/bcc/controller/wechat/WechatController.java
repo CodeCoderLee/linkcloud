@@ -113,9 +113,11 @@ public class WechatController {
         user.setUnionId(userInfo.getString("unionid"));
         user.setDeleteStatus(0);
         List<User> users = userService.select(user);
+        String nickName ;
         if (users.size() < 1) {//根据unionid查找用户，兼容以前没有存unionid的情况
             //微信公众帐号和网页都没有登陆过
                 /*如果不存在该用户,那么添加新用户*/
+            nickName = userInfo.containsKey("nickname") ? userInfo.getString("nickname") : null;
             user.setCity(userInfo.containsKey("city") ? userInfo.getString("city") : null);
             user.setCountry(userInfo.containsKey("country") ? userInfo.getString("country") : null);
             user.setCreatetime(new Date());
@@ -124,7 +126,7 @@ public class WechatController {
             user.setDeleteStatus(0);
             user.setGroupId(userInfo.containsKey("groupid") ? userInfo.getInt("groupid") : null);
             user.setHeadImgUrl(userInfo.containsKey("headimgurl") ? userInfo.getString("headimgurl") : null);
-            user.setNickName(userInfo.containsKey("nickname") ? userInfo.getString("nickname") : null);
+            user.setNickName(nickName);
             user.setProvince(userInfo.containsKey("province") ? userInfo.getString("province") : null);
             user.setSex(userInfo.containsKey("sex") ? userInfo.getInt("sex") : null);
             user.setUnionId(userInfo.containsKey("unionid") ? userInfo.getString("unionid") : null);
@@ -133,20 +135,24 @@ public class WechatController {
             PasswordHelper passwordHelper = new PasswordHelper();
             passwordHelper.encryptPassword(user);
             userService.insert(user);
+
         } else {
             user = users.get(0);
             String oldNickName = user.getNickName();
+            nickName = oldNickName;
             String newNickName = userInfo.containsKey("nickname")?userInfo.getString("nickname") : null;
             if (Common.isEmpty(oldNickName)) {
                 User user1 = new User();
                 user1.setId(user.getId());
                 user1.setNickName(newNickName);
                 userService.updateByPrimaryKeySelective(user1);
+                nickName = newNickName;
             } else if (!oldNickName.equals(newNickName)) {
                 User user1 = new User();
                 user1.setId(user.getId());
                 user1.setNickName(newNickName);
                 userService.updateByPrimaryKeySelective(user1);
+                nickName = newNickName;
             }
         }
 //        user.setOpenId(userInfo.getString("openid"));
@@ -196,6 +202,7 @@ public class WechatController {
             bccUserlogin.setAccountname(user.getAccountname());
             bccUserlogin.setLoginip(session.getHost());
             bccUserlogin.setLogintime(new Date());
+            bccUserlogin.setNickName(nickName);
             userLoginService.insert(bccUserlogin);
             request.removeAttribute("error");
 
