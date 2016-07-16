@@ -276,19 +276,24 @@ public class DeviceSpaceController extends BaseController<Comment>{
         Example example = new Example(Program.class);
         example.createCriteria().andEqualTo("stype",ptype).andEqualTo("deviceSerialNumber",serialNumber);
         List<Program> list = programService.selectByExample(example);
+//        list.get(1).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
+//        list.get(0).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
 
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         mode.addAttribute("ip_address",deviceAuthen.getIp1());
 
         ResponseData responseData = getCommentList(programId,1);
         mode.addAttribute("responseData",responseData);
-        mode.addAttribute("program",program);
-        mode.addAttribute("openId",openId);
+//        mode.addAttribute("program",program);
+//        mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("ptype",ptype);
-        mode.addAttribute("pname",pname);
+//        mode.addAttribute("pname",pname);
         mode.addAttribute("userId",userId);
         mode.addAttribute("list",list);
+
+        JSONArray array = JSONArray.fromObject(list);
+        mode.addAttribute("array",array.toString());
         return Common.BACKGROUND_PATH + "/business/devicespace/play";
     }
 
@@ -328,6 +333,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         commentService.insertSelective(comment);
 //        commentList.add(comment);
         mode.addAttribute("programId",programId);
+        mode.addAttribute("videoId",programId);
         mode.addAttribute("pageNum",pageNum);
         return "redirect:/space/commentList.shtml";
     }
@@ -335,7 +341,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "commentList", produces = "text/html; charset=utf-8")
     @ResponseBody
     public ResponseData commentList(Model mode,Integer videoId,Integer pageNum){
-        return getCommentList(1, pageNum);
+        return getCommentList(videoId, pageNum);
     }
 
     private List<Comment> getCommentList(Integer programId,Integer pageNum,Integer pageSize){

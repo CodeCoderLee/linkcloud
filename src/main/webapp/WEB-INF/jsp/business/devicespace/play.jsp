@@ -53,19 +53,19 @@
   </div>
 </div>
 <div class="mobile-main">
-  <%--<video id="play-video" class="video-js vjs-amazeui vi-video" controls preload="none"--%>
-         <%--data-setup="{}" style="width:100%;height:350px;">--%>
-    <%--<source src="${program.purl}" type='video/mp4' />--%>
-    <%--&lt;%&ndash;<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />&ndash;%&gt;--%>
-    <%--&lt;%&ndash;<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />&ndash;%&gt;--%>
-    <%--<track kind="captions" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->--%>
-    <%--<track kind="subtitles" src="video.js/demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->--%>
-    <%--<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>--%>
-  <%--</video>--%>
-    <video width="100%" height="360" controls="" autoplay="">
-      <!-- MP4 must be first for iPad! -->
-      <%--<source src="${program.purl}" type="video/mp4"><!-- Safari / iOS, IE9 -->--%>
-    </video>
+    <div class="mobile-sliderWrapper">
+      <div data-am-widget="slider" class="mobile-slider am-slider am-slider-c2" data-am-slider='{"directionNav":false,"slideshow":false,"controlNav":false}' >
+        <ul id="videoSlider" class="am-slides video-slider">
+          <c:if test="${list.size() > 0}">
+            <c:forEach items="${list}" var="item" varStatus="status">
+              <li>
+                <video class="v-${status.index}" data-pos=0 controls="controls" width="100%" height="360"></video>
+              </li>
+            </c:forEach>
+          </c:if>
+        </ul>
+      </div>
+    </div>
   <div class="mobile-getComment">
     <form method="post" id="commentForm">
       <textarea class="mobile-vi-textarea" rows="5" name="text" placeholder="请输入你的评论^_^"></textarea>
@@ -91,16 +91,9 @@
           </div>
         </header>
         <div class="am-comment-bd">
-          <p>这部电影不错</p>
+          <p></p>
           <%--<blockquote>是的,非常不错,很有价值</blockquote>--%>
         </div>
-        <%--<footer class="am-comment-footer">--%>
-          <%--<div class="am-comment-actions">--%>
-            <%--<a href=""><i class="am-icon-thumbs-up"></i></a>--%>
-            <%--<a href=""><i class="am-icon-thumbs-down"></i></a>--%>
-            <%--<a href=""><i class="am-icon-reply"></i></a>--%>
-          <%--</div>--%>
-        <%--</footer>--%>
       </div>
     </article>
     <c:set var="commentList" value="${responseData.rows}" />
@@ -143,7 +136,9 @@
       <span style="display:block;"><a href="javascript:void(0)" class="more-comment">显示更多</a></span>
   </div>
   </c:if>
+<div id="test-div">
 
+</div>
 </div>
 </div>
 <footer data-am-widget="footer"
@@ -157,82 +152,86 @@
 <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
-<%--<script charset="utf-8" src="${ctx}/assets/js/video.js/video.js"></script>--%>
-<%--<script charset="utf-8" src="${ctx}/assets/js/video.js/videojs-contrib-hls.min.js"></script>--%>
 <script charset="utf-8" src="${ctx}/assets/js/business/comment.js"></script>
+<script charset="utf-8" src="${ctx}/assets/js/business/analysis.js"></script>
+<script charset="utf-8" src="${ctx}/assets/js/hammer.min.js"></script>
 <script>
   var commentMoreUrl = '${ctx}/space/commentList.shtml';
   var pageNum = ${responseData.pageNum};
-
-  var videoId = ${program.id};
-  var ptype = '${ptype}';
-  var pname = '${pname}';
+  <%--var videoId = ${program.id};--%>
   var userId = '${userId}';
   var devid = '${serialNumber}';
 
-  var stime;
-  var ctime;
-  var pid;
-  var interval;
-  var ptype_analysis;
-  var pname_analysis;
-  var cur_url;
-
-  var source_url = '${program.purl}';
   var ad_url = 'http://${ip_address}/service/getad';
   var analysis_url = 'http://${ip_address}/service/analysis';
 
-  var playList = ['', source_url];
-  var playListLen = playList.length;
-  var playIndex = 0;
+  var pid = null;
+  var stime = null;
+  var ptype_analysis = null;
+  var pname_analysis = null;
 
-  var video = document.getElementsByTagName('video')[0];
-  video.addEventListener('ended', play);
+  var videoArray = [];
+  var oldVideo = null;
 
-  function getPid(url){
-    if(url == source_url){
-      ptype_analysis = ptype;
-      pname_analysis = pname;
-      return videoId;
-    }else{
-      ptype_analysis = 'ad';
-      pname_analysis = '';
-      return getAdId(url);
-    }
+  var current = 0;
+  $(document).ready(function() {
+    var num = 0;
+    var clsArr = [];
+    var vSlider = document.getElementById('videoSlider');
+
+    var vSliderMc = new Hammer(vSlider);
+    var max = null;
+    vSliderMc.on("swipe", function(ev) {
+      clsArr = ev.target.className.split(' ');
+      num = Number(clsArr[clsArr.length-1].split('-')[1]);
+      max = $('.video-slider li:not(.clone)').length-1;
+      if (ev.deltaX<0) {
+        num === max ? current = 0 : current = num+1;
+      } else if (ev.deltaX>0) {
+        num === 0 ? current = max : current = num-1;
+      }
+      console.log('当前视频 video index:',current,ev.deltaX>0? '滑动向右' : '滑动向左');
+      $("input[name=programId]").attr("value",videoArray[current].programId);
+      setTimeout("videoArray[current].startOrRePlay(oldVideo)",10);
+      setTimeout("videoArray[current].changeComment()",10);
+    });
+
+      var programArray = eval("("+ '${array}'+")");
+      for(var k = 0;k<programArray.length;k++){
+          var program = programArray[k];
+          var video = $('ul li:not(.clone) video').eq(k).get(0);
+          var cls = $('ul li:not(.clone) video').eq(k).attr('class');
+          var videoWrapper = new VideoWrapper(program,video,cls);
+          videoArray[k] = videoWrapper;
+      }
+
+    videoArray[0].startOrRePlay();
+
+  });
+
+  function getDateTime(){
+    // 获取当前时间戳(以s为单位)
+    var timestamp = Date.parse(new Date());
+    timestamp = timestamp / 1000;
+    //当前时间戳为：1403149534
+//    console.log("当前时间戳为：" + timestamp);
+    return timestamp.toString();
   }
 
-  video.onloadedmetadata = function () {
-    pid = getPid(cur_url);
-    stime = getDateTime();
-    interval = setInterval("doSubmitAnalysisV()",3000)
-    console.log("onloadedmetadata--interval--" + interval);
-  }
-
-  video.ended = function(){
-    clearInterval(interval);
-    console.log("ended--interval--" + interval);
-  }
-
-  video.ontimeupdate = function(){
-    console.log("ontimeupdate");
-  }
-
-  video.onplaying = function(){
-    console.log("onplaying");
-  }
-
-  function doSubmitAnalysisV(){
-    ctime = getDateTime();
+  function doSubmitAnalysisV(me){
+    var here = me;
+//    console.log('here:stime:::',here.stime);
+    here.ctime = getDateTime();
     ajax2({
       url: analysis_url,
       data: {
         devid: devid,
         userid: userId,
-        stime: stime,
-        ctime: ctime,
-        ptype: ptype_analysis,
-        pid: pid,
-        pname: pname_analysis
+        stime: here.stime,
+        ctime: here.ctime,
+        ptype: here.ptype_analysis,
+        pid: here.pid,
+        pname: here.pname_analysis
       },
       success: function (a) {
         console.log("ok-----" + a);
@@ -241,98 +240,6 @@
 
       }
     });
-  }
-
-  ajax({
-    url: ad_url,
-    data: {},
-    success: function (a) {
-      var json_obj = JSON.parse(a);
-      playList[0] = json_obj.url;
-      //service/getad得到反馈会是{"url":"http://192.168.1.13/vod/6.MP4"}
-      play();
-    },
-    fail: function (a) {
-      playIndex++;
-      playNext();
-    }
-  });
-
-
-  function getDateTime(){
-    // 获取当前时间戳(以s为单位)
-    var timestamp = Date.parse(new Date());
-    timestamp = timestamp / 1000;
-    //当前时间戳为：1403149534
-    console.log("当前时间戳为：" + timestamp);
-    return timestamp.toString();
-  }
-
-  //service/getad得到反馈会是{"url":"http://192.168.1.13/ad/6.mp4"}
-  function getAdId(url){
-    var sindex = url.indexOf("ad/");
-    var eindex = url.indexOf(".mp4");
-    var id = url.substring(sindex+3,eindex);
-    return id;
-  }
-
-  function play(e) {
-    if (playIndex >= playListLen) {
-      return;
-    }
-    cur_url = playList[playIndex];
-    video.src = cur_url;
-    video.load();
-    video.play();
-    playIndex++;
-  }
-
-  function playNext(e) {
-    if (playIndex >= playListLen) {
-      return;
-    }
-    cur_url = playList[playIndex];
-    video.src = cur_url;
-    video.load();
-    video.play();
-    playIndex++;
-  }
-
-  function ajax(a) {
-    var d, b = "";
-    var c = new XMLHttpRequest;
-    a.data || (a.data = {});
-    c.open("GET", a.url);
-    c.send(null);
-    c.onreadystatechange = function () {
-      if (4 === c.readyState) {
-        200 === c.status ? a.success(c.responseText) : a.fail && a.fail(c.status);
-      }
-    }
-  }
-
-  function ajax2(a) {
-    var d, b = "{";
-    var c = new XMLHttpRequest;
-    a.data || (a.data = {});
-
-    for (d in a.data) {
-      if (b == "{") {
-        b += '"' + d + '":"' + a.data[d] + '"';
-      }
-      else {
-        b += ',"' + d + '":"' + a.data[d] + '"';
-      }
-
-    }
-    b += "}";
-    c.open("POST", a.url);
-    c.send(b);
-    c.onreadystatechange = function () {
-      if (4 === c.readyState) {
-        200 === c.status ? a.success(c.responseText) : a.fail && a.fail(c.status);
-      }
-    }
   }
 </script>
 </body>
