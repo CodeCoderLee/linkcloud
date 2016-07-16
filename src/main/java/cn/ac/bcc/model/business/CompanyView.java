@@ -1,19 +1,15 @@
 package cn.ac.bcc.model.business;
 
-import cn.ac.bcc.annotation.Model;
-
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
-@Table(name = "bcc_company")
-public class Company {
-    @Id
+@Table(name = "bcc_company_view")
+public class CompanyView {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")
-    @Model(isChinese = true)
     private String name;
 
     @Column(name = "full_name")
@@ -26,7 +22,7 @@ public class Company {
     private Integer areaId;
 
     /**
-     * 所属行业
+     * 所属行业，关联bcc_industry表中的full_code字段
      */
     @Column(name = "industry_code")
     private String industryCode;
@@ -45,6 +41,30 @@ public class Company {
 
     @Column(name = "create_time")
     private Date createTime;
+
+    /**
+     * ID
+     */
+    @Column(name = "city_id")
+    private Integer cityId;
+
+    /**
+     * 区域名称
+     */
+    @Column(name = "city")
+    private String city;
+
+    /**
+     * ID
+     */
+    @Column(name = "province_id")
+    private Integer provinceId;
+
+    /**
+     * 区域名称
+     */
+    @Column(name = "province")
+    private String province;
 
     /**
      * @return ID
@@ -107,18 +127,18 @@ public class Company {
     }
 
     /**
-     * 获取所属行业
+     * 获取所属行业，关联bcc_industry表中的full_code字段
      *
-     * @return industry_code - 所属行业
+     * @return industry_code - 所属行业，关联bcc_industry表中的full_code字段
      */
     public String getIndustryCode() {
         return industryCode;
     }
 
     /**
-     * 设置所属行业
+     * 设置所属行业，关联bcc_industry表中的full_code字段
      *
-     * @param industryCode 所属行业
+     * @param industryCode 所属行业，关联bcc_industry表中的full_code字段
      */
     public void setIndustryCode(String industryCode) {
         this.industryCode = industryCode;
@@ -170,11 +190,89 @@ public class Company {
         this.industryName = industryName;
     }
 
+    /**
+     * @return create_time
+     */
     public Date getCreateTime() {
         return createTime;
     }
 
+    /**
+     * @param createTime
+     */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取ID
+     *
+     * @return city_id - ID
+     */
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    /**
+     * 设置ID
+     *
+     * @param cityId ID
+     */
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+    }
+
+    /**
+     * 获取区域名称
+     *
+     * @return city - 区域名称
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 设置区域名称
+     *
+     * @param city 区域名称
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * 获取ID
+     *
+     * @return province_id - ID
+     */
+    public Integer getProvinceId() {
+        return provinceId;
+    }
+
+    /**
+     * 设置ID
+     *
+     * @param provinceId ID
+     */
+    public void setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    /**
+     * 获取区域名称
+     *
+     * @return province - 区域名称
+     */
+    public String getProvince() {
+        return province;
+    }
+
+    /**
+     * 设置区域名称
+     *
+     * @param province 区域名称
+     */
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

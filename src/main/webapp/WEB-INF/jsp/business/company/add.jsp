@@ -43,7 +43,7 @@
                                         <div class="col-sm-3">
                                             <div class="fg-line">
                                                 <div class="select">
-                                                    <select class="form-control" id="province"
+                                                    <select class="form-control" id="province" name="province"
                                                             onchange="showCity(this.options[this.options.selectedIndex].value,1)">
                                                         <option value="">省</option>
                                                     </select>
@@ -53,7 +53,7 @@
                                         <div class="col-sm-3">
                                             <div class="fg-line">
                                                 <div class="select">
-                                                    <select class="form-control" id="city"
+                                                    <select class="form-control" id="city" name="city"
                                                             disabled="true"
                                                             onchange="showCity(this.options[this.options.selectedIndex].value,2)">
                                                         <option value="">市</option>

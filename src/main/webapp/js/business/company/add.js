@@ -3,6 +3,7 @@
  * Created by bcc on 16/5/28.
  */
 
+var errorCount = 0;
 $(function () {
     onLoadUrl();
 
@@ -17,7 +18,6 @@ $(function () {
     });
 
     $('#closeBtn').click(function () {
-        alert($('#entrance'));
         if ($('#entrance').val() != null && $('#entrance').val() != '') {
             $("#content").load(rootPath + "/deviceUseApply/addUI.shtml");
         } else
@@ -48,6 +48,12 @@ $(function () {
             "fullName": {
                 required: true
             },
+            "province": {
+                required: true
+            },
+            "city": {
+                required: true
+            },
             "areaId": {
                 required: true
             },
@@ -63,6 +69,12 @@ $(function () {
             "fullName": {
                 required: "请输入企业全称"
             },
+            "province": {
+                required: "请选择所属地区"
+            },
+            "city": {
+                required: "请选择所属地区"
+            },
             "areaId": {
                 required: "请选择所属地区"
             },
@@ -71,11 +83,16 @@ $(function () {
             }
         },
         errorPlacement: function (error, element) {// 自定义提示错误位置
-            $(".alert-danger").removeClass("hidden");
-            $(".alert-danger").html(error.html());
+            if (errorCount == 0) {
+                $(".alert-danger").removeClass("hidden");
+                $(".alert-danger").html(error.html()+'</br>');
+            }
+            errorCount++;
         },
         success: function (label) {// 验证通过后
             $(".alert-danger").addClass("hidden");
+            $(".alert-danger").html("");
+            errorCount = 0;
         }
     });
 });

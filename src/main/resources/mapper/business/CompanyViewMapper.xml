@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ac.bcc.mapper.business.CompanyViewMapper">
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.CompanyView">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="ID" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="area_id" jdbcType="INTEGER" property="areaId" />
+    <result column="industry_code" jdbcType="VARCHAR" property="industryCode" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="industry_name" jdbcType="VARCHAR" property="industryName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+  </resultMap>
+  <select id="searchCompany" resultType="cn.ac.bcc.model.business.CompanyView">
+    select t.id id, t.name name, t.full_name fullName,t.area_id areaId,t.industry_code industryCode,
+    t.remark remark, t.area_name areaName, t.industry_name industryName, t.create_time createTime,
+    t.city_id cityId, t.city city, t.province_id provinceId, t.province province from bcc_company_view t where 1=1
+    <if test="companyView.name!=null and companyView.name != ''">
+      <![CDATA[and (t.name like "%"#{companyView.name}"%" or t.full_name like "%"#{companyView.name}"%") ]]>
+
+    </if>
+    <if test="companyView.fullName!=null and companyView.fullName != ''">
+      <![CDATA[and (t.name like "%"#{companyView.fullName}"%" or t.full_name like "%"#{companyView.fullName}"%") ]]>
+    </if>
+    <if test="companyView.areaId!=null">
+      and t.area_id = #{companyView.areaId}
+    </if>
+    <if test="companyView.cityId != null">
+      and t.city_id =#{companyView.cityId}
+    </if>
+    <if test="companyView.provinceId !=null">
+      and t.province_id = #{companyView.provinceId}
+    </if>
+    <if test="companyView.industryCode !=null and companyView.industryCode!=''">
+      and t.industry_code = #{companyView.industryCode}
+    </if>
+    <choose>
+      <when test="sortName !=null and sortName!=''">
+        ORDER BY ${sortName} ${sortOrder}
+      </when>
+      <otherwise>
+        ORDER BY t.create_time desc
+      </otherwise>
+    </choose>
+  </select>
+</mapper>
