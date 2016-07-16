@@ -1,5 +1,7 @@
 package cn.ac.bcc.model.core;
 
+import cn.ac.bcc.annotation.Model;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -65,6 +67,7 @@ public class User {
      * 从微信端获取到的微信昵称
      */
     @Column(name = "nick_name")
+    @Model(isChinese = true)
     private String nickName;
 
     /**

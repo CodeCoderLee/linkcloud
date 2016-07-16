@@ -12,6 +12,7 @@ public class UserLogin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Model(name = "ID")
+    @Column(name = "id")
     private Integer id;
 
     @Column(name = "userId")
@@ -29,6 +30,18 @@ public class UserLogin {
     @Column(name = "loginIP")
     @Model(name = "登录IP")
     private String loginip;
+
+    @Column(name = "nick_name")
+    @Model(name = "昵称")
+    private String nickName;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     /**
      * @return id

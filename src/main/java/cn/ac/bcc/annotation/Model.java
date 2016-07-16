@@ -12,4 +12,5 @@ public @interface Model {
 	 */
 	String name() default "";
 	boolean readable() default true;/*用于标记字段是否能够被前端读写*/
+	boolean isChinese() default false;
 }

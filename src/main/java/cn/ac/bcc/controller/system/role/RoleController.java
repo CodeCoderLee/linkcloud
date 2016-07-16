@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -159,6 +160,11 @@ public class RoleController extends BaseController<Role> {
         }
         model.addAttribute("role", resultAllRoles);
         model.addAttribute("userRole", resultMyRoles);
+        Integer self = 0;
+        if (Common.findUserSessionId(getRequest()).equals(Integer.valueOf(userIdStr))) {
+            self = 1;
+        }
+        model.addAttribute("self", self);//标记是否是当前登录用户,不能修改自己的角色
         return Common.BACKGROUND_PATH + "/system/user/roleSelect";
     }
 }

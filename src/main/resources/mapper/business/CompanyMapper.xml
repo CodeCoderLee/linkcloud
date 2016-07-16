@@ -13,5 +13,6 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="area_name" jdbcType="VARCHAR" property="areaName" />
     <result column="industry_name" jdbcType="VARCHAR" property="industryName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 </mapper>

@@ -13,5 +13,7 @@
     <result column="userIP" property="userip" jdbcType="VARCHAR" />
     <result column="operTime" property="opertime" jdbcType="TIMESTAMP" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="operate_obj" property="operateObj" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

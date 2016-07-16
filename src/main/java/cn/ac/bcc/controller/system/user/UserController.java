@@ -52,6 +52,11 @@ public class UserController extends BaseController<User> {
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
+        //判断是否从修改或者删除等操作返回
+        model.addAttribute("limit", getPara("limit"));
+        model.addAttribute("offset", getPara("offset"));
+        model.addAttribute("sortName", getPara("sortName"));
+        model.addAttribute("sortOrder", getPara("sortOrder"));
         return Common.BACKGROUND_PATH + "/system/user/list";
     }
 
@@ -63,6 +68,10 @@ public class UserController extends BaseController<User> {
     @RequestMapping("modifyUI")
     public String modifyUI(Model model) {
         String id = getPara("id");
+        model.addAttribute("limit", getPara("limit"));
+        model.addAttribute("offset", getPara("offset"));
+        model.addAttribute("sortName", getPara("sortName"));
+        model.addAttribute("sortOrder", getPara("sortOrder"));
         if (Common.isNotEmpty(id)) {
             User user = userService.selectByPrimaryKey(Integer.valueOf(id));
             model.addAttribute("user", user);
@@ -76,7 +85,13 @@ public class UserController extends BaseController<User> {
         /*查询未删除的数据*/
         user.setDeleteStatus(0);
         PageHelper.offsetPage(offset, limit);
-        Example example = getEqualsToExample(user);
+//        Example example = getEqualsToExample(user);
+        Example example = new Example(User.class);
+        if (!Common.isEmpty(user.getNickName())) {
+            example.or().andLike("nickName", "%" + user.getNickName() + "%");
+            example.or().andLike("username", "%" + user.getNickName() + "%");
+        }
+        example = addSortOrder(example, user);
         List<User> list = userService.selectByExample(example);
         PageInfo<User> pageInfo = new PageInfo<User>(list);
         ResponseData responseData = new ResponseData();
@@ -139,10 +154,7 @@ public class UserController extends BaseController<User> {
     @ResponseBody
     @RequestMapping(value = "isExist")
     public boolean isExist(User user) {
-        if (userService.select(user).size() > 0) {
-            return false;
-        }
-        return true;
+        return userService.select(user).size() <= 0;
     }
 
     @ResponseBody

@@ -3,6 +3,7 @@ package cn.ac.bcc.controller.base;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.*;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import cn.ac.bcc.annotation.Model;
 import cn.ac.bcc.service.base.BaseService;
 import cn.ac.bcc.util.DataObject;
 import cn.ac.bcc.util.ResponseObject;
@@ -274,7 +276,23 @@ public abstract class BaseController<T> {
             if (Common.isNotEmpty(sortName)) {
                 String columnName = Common.getClassFieldColumnName(object.getClass(), sortName);
                 if (columnName != null) {
-                    example.setOrderByClause(columnName + " " + sortOrder);
+                    try {
+                        Field field = object.getClass().getDeclaredField(sortName);
+                        Annotation[] annotation = field.getDeclaredAnnotations();
+                        for(int i=0;i<annotation.length;i++){
+                            if (annotation[i] instanceof Model) {
+                                if (field.getAnnotation(Model.class).isChinese()) {
+//                                    CONVERT( chinese_field USING gbk )
+                                    example.setOrderByClause("convert ( " + columnName + " using gbk ) " + sortOrder);
+                                    break;
+                                }
+                            } else {
+                                example.setOrderByClause(columnName + " " + sortOrder);
+                            }
+                        }
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    }
                 } else
                     example.setOrderByClause("id " + sortOrder);
             } else
@@ -321,7 +339,23 @@ public abstract class BaseController<T> {
             if (Common.isNotEmpty(sortName)) {
                 String columnName = Common.getClassFieldColumnName(clazz, sortName);
                 if (columnName != null) {
-                    example.setOrderByClause(columnName + " " + sortOrder);
+                    try {
+                        Field field = object.getClass().getDeclaredField(sortName);
+                        Annotation[] annotation = field.getDeclaredAnnotations();
+                        for(int i=0;i<annotation.length;i++){
+                            if (annotation[i] instanceof Model) {
+                                if (field.getAnnotation(Model.class).isChinese()) {
+//                                    CONVERT( chinese_field USING gbk )
+                                    example.setOrderByClause("convert ( " + columnName + " using gbk ) " + sortOrder);
+                                    break;
+                                }
+                            } else {
+                                example.setOrderByClause(columnName + " " + sortOrder);
+                            }
+                        }
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    }
                 } else
                     example.setOrderByClause("id " + sortOrder);
             } else
@@ -331,6 +365,8 @@ public abstract class BaseController<T> {
         }
         return example;
     }
+
+
 
 
     /**
@@ -362,6 +398,41 @@ public abstract class BaseController<T> {
         responseObject.setTotal(pageInfo.getTotal());
         System.out.println(JSONObject.fromObject(responseObject).toString());
         return JSONObject.fromObject(responseObject);
+    }
+
+    public Example addSortOrder(Example example, T object){
+        String sortOrder = getPara("order");
+        String sortName = getPara("sort");
+        if (Common.isNotEmpty(sortOrder)) {
+            if (Common.isNotEmpty(sortName)) {
+                String columnName = Common.getClassFieldColumnName(object.getClass(),sortName);
+                if (columnName != null) {
+                    try {
+                        Field field = object.getClass().getDeclaredField(sortName);
+                        Annotation[] annotation = field.getDeclaredAnnotations();
+                        for(int i=0;i<annotation.length;i++){
+                            if (annotation[i] instanceof Model) {
+                                if (field.getAnnotation(Model.class).isChinese()) {
+//                                    CONVERT( chinese_field USING gbk )
+                                    example.setOrderByClause("convert ( " + columnName + " using gbk ) " + sortOrder);
+                                    break;
+                                }
+                            } else {
+                                example.setOrderByClause(columnName + " " + sortOrder);
+                            }
+                        }
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    }
+
+                }else
+                    example.setOrderByClause("id " + sortOrder);
+            } else
+                example.setOrderByClause("id " + sortOrder);
+        } else {
+            example.setOrderByClause("id desc");
+        }
+        return example;
     }
 
 

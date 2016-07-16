@@ -39,6 +39,32 @@ public class Log {
     @Model(name="描述")
     private String description;
 
+    @Column(name = "operate_obj")
+    @Model(name = "操作的设备号")
+    private String operateObj;
+
+
+
+    @Column(name = "nick_name")
+    @Model(name = "昵称")
+    private String nickName;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getOperateObj() {
+        return operateObj;
+    }
+
+    public void setOperateObj(String operateObj) {
+        this.operateObj = operateObj;
+    }
+
     /**
      * @return id
      */

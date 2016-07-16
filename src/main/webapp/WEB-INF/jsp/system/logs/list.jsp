@@ -57,8 +57,10 @@
             <thead>
             <tr>
                 <th data-field="accountname">帐号</th>
+                <th data-field="nickName">昵称</th>
                 <th data-field="module">模块</th>
                 <th data-field="methods">方法</th>
+                <th data-field="operateObj">操作设备</th>
                 <th data-field="actiontime">响应时间</th>
                 <th data-field="userip">IP地址</th>
                 <th data-field="opertime" data-formatter="dateTimeFormatter">操作时间</th>
