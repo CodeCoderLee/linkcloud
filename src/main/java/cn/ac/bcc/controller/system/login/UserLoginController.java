@@ -208,6 +208,7 @@ public class UserLoginController extends BaseController {
             bccUserlogin.setAccountname(username);
             bccUserlogin.setLoginip(session.getHost());
             bccUserlogin.setLogintime(new Date());
+            bccUserlogin.setNickName(username);
             userLoginService.insert(bccUserlogin);
             request.removeAttribute("error");
 

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.ac.bcc.model.business.Device;
+import cn.ac.bcc.model.core.User;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,6 +14,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.omg.CORBA.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +77,7 @@ public class LogAopAction {
 		}
 
 		logs.setAccountname(user);
+
 		logs.setModule(map.get("module"));
 		logs.setMethods("<font color=\"red\">执行方法异常:-->" + map.get("methods") + "</font>");
 		logs.setDescription("<font color=\"red\">执行方法异常:-->" + e + "</font>");
@@ -102,12 +106,20 @@ public class LogAopAction {
 		String methodName = point.getSignature().getName();
 		String className = point.getTarget().getClass().getSimpleName();
 		Log logs = new Log();
+		Object[] getArgs =point.getArgs();
+		for (int i=0;i<getArgs.length;i++) {
+			if (getArgs[i] instanceof Device) {
+				Device device = (Device) getArgs[i];
+				logs.setOperateObj(device.getSerialNumber());
+			}
+		}
 		Map<String, String> map = null;
 		String user = null;
 		Long start = 0L;
 		Long end = 0L;
 		Long time = 0L;
 		String ip = null;
+		String nickName = "";
 		try {
 			ip = SecurityUtils.getSubject().getSession().getHost();
 		} catch (Exception e) {
@@ -116,9 +128,11 @@ public class LogAopAction {
 		try {
 			// 登录名
 			user = SecurityUtils.getSubject().getPrincipal().toString();
+			User user1 = (User)SecurityUtils.getSubject().getSession().getAttribute("user");
 			if (Common.isEmpty(user)) {
 				user = "无法获取登录用户信息！";
 			}
+			nickName = user1.getNickName();
 		} catch (Exception e) {
 			user = "无法获取登录用户信息！";
 		}
@@ -141,8 +155,9 @@ public class LogAopAction {
 			logs.setActiontime(Integer.parseInt(time.toString()));
 			logs.setOpertime(new Date(start));
 			logs.setUserip(ip);
+			logs.setNickName(nickName);
 			
-			logService.insert(logs);
+			logService.insertSelective(logs);
 			
 			// *========控制台输出=========*//
 			System.out.println("=====通知开始=====");
@@ -179,6 +194,7 @@ public class LogAopAction {
 				if (clazzs.length == arguments.length) {
 					map.put("module", method.getAnnotation(SystemLog.class).module());
 					map.put("methods", method.getAnnotation(SystemLog.class).methods());
+//					map.put("operateObj",method.getAnnotation(SystemLog.class).operateObj());
 					String de = method.getAnnotation(SystemLog.class).description();
 					if (Common.isEmpty(de))
 						de = "执行成功!";

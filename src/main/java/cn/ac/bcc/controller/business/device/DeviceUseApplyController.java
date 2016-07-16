@@ -76,6 +76,7 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
     @RequestMapping("stockOut")
     @ResponseBody
     @Transactional
+    @SystemLog(module = "设备管理", methods = "设备管理-出库申请-出库")
     public String stockOut(HttpServletRequest request){
         int applyId = Integer.parseInt(request.getParameter("id"));
         DeviceUseApply deviceUseApply = deviceUseApplyService.selectByPrimaryKey(applyId);

@@ -10,5 +10,6 @@
     <result column="accountName" property="accountname" jdbcType="VARCHAR" />
     <result column="loginTime" property="logintime" jdbcType="TIMESTAMP" />
     <result column="loginIP" property="loginip" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
   </resultMap>
 </mapper>

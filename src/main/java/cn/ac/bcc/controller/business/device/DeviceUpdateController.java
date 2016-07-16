@@ -1,6 +1,8 @@
 package cn.ac.bcc.controller.business.device;
 
+import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
+import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceUpdate;
 import cn.ac.bcc.model.business.DeviceUseApply;
 import cn.ac.bcc.model.business.Version;
@@ -63,7 +65,8 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
 
     @ResponseBody
     @RequestMapping("updateDeviceVersion")
-    public String updateDeviceVersion(String serialNumbers, String versions) throws InterruptedException {
+    @SystemLog(module = "设备管理", methods = "设备管理-设备升级")
+    public String updateDeviceVersion(String serialNumbers, Device device,String versions) throws InterruptedException {
         String[] serialNumber = serialNumbers.split(",");
         String[] version = versions.split(",");
         JSONArray jsonArray = new JSONArray();

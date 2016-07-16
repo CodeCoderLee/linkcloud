@@ -45,6 +45,7 @@
 				<thead>
 				<tr>
 					<th data-field="accountname">帐号</th>
+					<th data-field="nickName">昵称</th>
 					<th data-field="logintime" data-formatter="dateTimeFormatter">登入时间</th>
 					<th data-field="loginip">登入IP</th>
 				</tr>
