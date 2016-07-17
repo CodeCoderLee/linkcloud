@@ -32,6 +32,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.misc.BASE64Encoder;
 import tk.mybatis.mapper.entity.Example;
 
 import java.beans.IntrospectionException;
@@ -475,16 +476,22 @@ public class DeviceSpaceController extends BaseController<Comment>{
     }
 
     @RequestMapping(value = "goDebugHeartBeat/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String goDebugHeartBeat(@PathVariable String serialNumber,Model mode) throws IOException {
+    public String goDebugHeartBeat(@PathVariable String serialNumber,Model mode,Messenger messenger) throws IOException {
         mode.addAttribute("serialNumber",serialNumber);
+        JSONObject jsonObject = JSONObject.fromObject(messenger);
+        String json = jsonObject.toString();
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        String base64 = base64Encoder.encode(json.getBytes());
+        mode.addAttribute("base64",base64);
         if(Common.check(getRequest(),getResponse())){
             //移动端访问
             return Common.BACKGROUND_PATH + "/business/devicespace/debug-heartbeat";
-        }else {
+        }else{
             //pc端访问
             return Common.BACKGROUND_PATH + "/business/devicespace/debug-heartbeat-pc";
         }
     }
+
     /**
      * 获取object中不为空的属性相等的查询条件及order规则的Example
      *

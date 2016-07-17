@@ -37,8 +37,19 @@
 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
     <h2 class="am-titlebar-title ">
         调试详情--(${serialNumber})
+        <%--<input type="button" value="SHOCK" class="shock-cmd-op">--%>
+        <%--<input type="button" value="停止" class="start-stop">--%>
+        <%--<input type="hidden" value="${base64}" name="base64">--%>
+    </h2>
+    <nav class="am-titlebar-nav">
+
+    </nav>
+</div>
+<div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
+    <h2 class="am-titlebar-title ">
         <input type="button" value="SHOCK" class="shock-cmd-op">
         <input type="button" value="停止" class="start-stop">
+        <input type="hidden" value="${base64}" name="base64">
     </h2>
     <nav class="am-titlebar-nav">
 
