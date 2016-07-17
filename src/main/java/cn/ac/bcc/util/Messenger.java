@@ -9,7 +9,7 @@ public class Messenger {
     private Integer msgPageSize;
     private Integer msgPageNumber;
     private String msgSerialNumber;
-    private String msgEentrance;
+    private String msgEntrance;
 
     public String getMsgUrl() {
         return msgUrl;
@@ -43,11 +43,11 @@ public class Messenger {
         this.msgSerialNumber = msgSerialNumber;
     }
 
-    public String getMsgEentrance() {
-        return msgEentrance;
+    public String getMsgEntrance() {
+        return msgEntrance;
     }
 
-    public void setMsgEentrance(String msgEentrance) {
-        this.msgEentrance = msgEentrance;
+    public void setMsgEentrance(String msgEntrance) {
+        this.msgEntrance = msgEntrance;
     }
 }
