@@ -18,6 +18,11 @@
     <div class="card">
         <div class="card-body card-padding">
             <input type="hidden" name="serialNumbers" id="serialNumbers" value="${serialNumbers}"/>
+            <input type="hidden" name="msgEntrance" id="msgEntrance" value="${messenger.msgEntrance}"/>
+            <input type="hidden" name="msgSerialNumber" id="msgSerialNumber" value="${messenger.msgSerialNumber}"/>
+            <input type="hidden" name="msgPageSize" id="msgPageSize" value="${messenger.msgPageSize}"/>
+            <input type="hidden" name="msgPageNumber" id="msgPageNumber" value="${messenger.msgPageNumber}"/>
+
             <div class="row" id="dataDiv">
             </div>
             <div class="footer text-right bg-light lter">
@@ -90,13 +95,26 @@
                 notify('success', '     请选择升级文件      ');
             } else {
                 var serialNumbers = $('#serialNumbers').val();
+                var msgEntrance = $('#msgEntrance').val();
+                console.log("msgEntrance::",msgEntrance);
+                console.log("serialNumbers:::",serialNumbers);
                 $.ajax({
                     method: 'post',
                     url: 'deviceUpdate/updateDeviceVersion.shtml',
-                    data: {serialNumbers: serialNumbers, versions: versions.join(",")},
+                    data: {serialNumbers: serialNumbers, versions: versions.join(","),msgEntrance:msgEntrance},
                     success: function (data) {
                         notify('success', '     升级指令已下发      ');
-                        $("#content").load(rootPath + "/deviceUpdate/list.shtml");
+                        console.log("data::::"+data);
+                        if(data.toString() == "debug"){
+                            console.log("debug:::::::::::");
+                            $("#content").load(rootPath + "/device/debugList.shtml?serialNumbers=" + serialNumber
+                                    +"&msgEntrance=" +msgEntrance
+                                    +"&msgSerialNumber=" +msgSerialNumber
+                                    +"&msgPageSize=" +msgPageSize
+                                    +"&msgPageNumber=" +msgPageNumber);
+                        }else {
+                            $("#content").load(rootPath + "/deviceUpdate/list.shtml");
+                        }
                     },
                     error: function (XMLHttpRequest) {
                         console.log(XMLHttpRequest);
@@ -108,7 +126,25 @@
 
         /*返回按钮单击事件绑定*/
         $('#closeBtn').click(function () {
-            $("#content").load(rootPath + "/deviceUpdate/list.shtml");
+            var msgEntrance = $('#msgEntrance').val();
+            var msgSerialNumber = $('#searchParam').val();
+            var msgPageSize = 6;
+            var msgPageNumber = $('#msgPageNumber').val();
+            console.info("msgPageNumber::",msgPageNumber);
+            console.info("msgEntrance::",msgEntrance);
+            console.info("msgEntrance==debug",msgEntrance=='debug');
+
+            if(msgEntrance=="debug"){
+                $("#content").load(rootPath + "/device/debugList.shtml?serialNumbers=" + serialNumber
+                        +"&msgEntrance=" +msgEntrance
+                        +"&msgSerialNumber=" +msgSerialNumber
+                        +"&msgPageSize=" +msgPageSize
+                        +"&msgPageNumber=" +msgPageNumber);
+            }else {
+                $("#content").load(rootPath + "/deviceUpdate/list.shtml");
+            }
+
+
         });
     });
 </script>
