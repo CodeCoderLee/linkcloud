@@ -7,6 +7,8 @@
     <div class="block-header">
         <h2>设备调试</h2>
         <input type="hidden" id="openId" name="openId" value="${openId}"/>
+        <input type="hidden" id="msgEntrance" name="msgEntrance" value="debug"/>
+        <input type="hidden" id="msgPageNumber" name="msgPageNumber" value="${messenger.msgPageNumber}"/>
     </div>
     <div class="card">
         <div class="card-header">
@@ -67,10 +69,17 @@
 <script charset="utf-8" src="${ctx}/js/bootstrap-paginator.min.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
-<script type="text/javascript" src="${ctx}/js/business/device/commonOperate.js"></script>
+
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
-        loadDevice(1, 6);
+        var msgPageNumber = $('#msgPageNumber').val();
+        console.log("msgPageNumber::",msgPageNumber);
+        if(Number(msgPageNumber) >0){
+            loadDevice(Number(msgPageNumber), 6);
+        }else {
+            loadDevice(1,6);
+        }
+        var rootPath = "${ctx}";
     });
     function loadDevice(pageNum, pageSize) {
         $.ajax({
@@ -114,8 +123,8 @@
                     "<dd>" + item.serialNumber + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt>私钥</dt>" +
-                    "<dd>" + item.privateKey + "</dd>" +
+                    "<dt>物流号</dt>" +
+                    "<dd>" + item.trackNo + "</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>注册时间</dt>" +
@@ -136,6 +145,7 @@
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('" + item.id + "','" + item.serialNumber + "')\">设备入库</a></dt>" +
+                    "<dt><a class=\"btn btn-info\" href=\"javascript:getDeviceUpdate('" + item.id + "','" + item.serialNumber + "')\">设备升级</a></dt>" +
                     "<dd><a class=\"btn btn-info\" href=\"/space/device/" + item.serialNumber + ".shtml?type=debug&openId=" + $('#openId').val() + "\">设备空间</a></dd>" +
                     "<dd><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('" + item.id + "','" + item.serialNumber + "')\">设备详情</a></dd>" +
 
@@ -148,3 +158,4 @@
         })
     }
 </script>
+<script type="text/javascript" src="${ctx}/js/business/device/commonOperate.js"/>

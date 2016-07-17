@@ -24,3 +24,23 @@ function getHeartBeatInfo(id, serialNumber) {
     $("#myContainer").load(url + "?id=" + id + "&serialNumber=" + serialNumber);
 
 }
+
+function getDeviceUpdate(id, serialNumber) {
+    var pages = $('#pagination').bootstrapPaginator("getPages");
+    var msgEntrance = $('#msgEntrance').val();
+    var msgSerialNumber = $('#searchParam').val();
+
+    console.log("msgEntrance::",msgEntrance);
+    console.log("msgSerialNumber::",msgSerialNumber);
+
+    var msgPageSize = 6;
+    var msgPageNumber = pages.current;
+
+    var url = rootPath + '/deviceUpdate/addUI.shtml';
+    $("#myContainer").load(url + "?id=" + id + "&serialNumbers=" + serialNumber
+        +"&msgEntrance=" +msgEntrance
+        +"&msgSerialNumber=" +msgSerialNumber
+        +"&msgPageSize=" +msgPageSize
+        +"&msgPageNumber=" +msgPageNumber);
+
+}

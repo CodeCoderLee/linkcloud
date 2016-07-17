@@ -61,10 +61,19 @@ public class DeviceController extends BaseController<Device> {
     }
 
     @RequestMapping("debugList")
-    public String debugListUI(Model model,Messenger messenger) throws Exception {
+    public String debugListUI(Model model,HttpServletRequest request) throws Exception {
+        String msgEntrance = request.getParameter("msgEntrance");
+        String msgSerialNumber = request.getParameter("msgSerialNumber");
+        int msgPageSize = request.getParameter("msgPageSize") == null ? 0 : Integer.parseInt(request.getParameter("msgPageSize"));
+        int msgPageNumber = request.getParameter("msgPageNumber") == null ? 0 : Integer.parseInt(request.getParameter("msgPageNumber"));
+        Messenger messenger = new Messenger();
+        messenger.setMsgEntrance(msgEntrance);
+        messenger.setMsgSerialNumber(msgSerialNumber);
+        messenger.setMsgPageNumber(msgPageNumber);
+        messenger.setMsgPageSize(msgPageSize);
 
-        model.addAttribute("res", findByRes());
         model.addAttribute("messenger", messenger);
+        model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/debugList";
     }

@@ -9,6 +9,7 @@ import cn.ac.bcc.model.business.Version;
 import cn.ac.bcc.service.business.device.DeviceUpdateService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.HelperUtils;
+import cn.ac.bcc.util.Messenger;
 import cn.ac.bcc.util.ResponseData;
 import cn.ac.bcc.util.helper.CommandMap;
 import com.github.pagehelper.PageHelper;
@@ -21,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -34,13 +36,35 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
     private DeviceUpdateService deviceUpdateService;
 
     @RequestMapping("list")
-    public String listUI() {
+    public String listUI(Model model, HttpServletRequest request,Messenger messenger) {
+//        String msgEntrance = request.getParameter("msgEntrance");
+//        String msgSerialNumber = request.getParameter("msgSerialNumber");
+//        int msgPageSize = request.getParameter("msgPageSize") == null ? 0 : Integer.parseInt(request.getParameter("msgPageSize"));
+//        int msgPageNumber = request.getParameter("msgPageNumber") == null ? 0 : Integer.parseInt(request.getParameter("msgPageNumber"));
+//        Messenger messenger = new Messenger();
+//        messenger.setMsgEntrance(msgEntrance);
+//        messenger.setMsgSerialNumber(msgSerialNumber);
+//        messenger.setMsgPageNumber(msgPageNumber);
+//        messenger.setMsgPageSize(msgPageSize);
+
+        model.addAttribute("messenger", messenger);
         return Common.BACKGROUND_PATH + "/business/device/deviceUpdateList";
     }
 
     @RequestMapping("addUI")
-    public String addUI(Model model,String serialNumbers) {
+    public String addUI(Model model, String serialNumbers, HttpServletRequest request,Messenger messenger) {
+//        String msgEntrance = request.getParameter("msgEntrance");
+//        String msgSerialNumber = request.getParameter("msgSerialNumber");
+//        int msgPageSize = request.getParameter("msgPageSize") == null ? 0 : Integer.parseInt(request.getParameter("msgPageSize"));
+//        int msgPageNumber = request.getParameter("msgPageNumber") == null ? 0 : Integer.parseInt(request.getParameter("msgPageNumber"));
+//        Messenger messenger = new Messenger();
+//        messenger.setMsgEntrance(msgEntrance);
+//        messenger.setMsgSerialNumber(msgSerialNumber);
+//        messenger.setMsgPageNumber(msgPageNumber);
+//        messenger.setMsgPageSize(msgPageSize);
+
         model.addAttribute("serialNumbers", serialNumbers);
+        model.addAttribute("messenger", messenger);
         return Common.BACKGROUND_PATH + "/business/device/addDeviceUpdate";
     }
 
@@ -66,11 +90,12 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
     @ResponseBody
     @RequestMapping("updateDeviceVersion")
     @SystemLog(module = "设备管理", methods = "设备管理-设备升级")
-    public String updateDeviceVersion(String serialNumbers, Device device,String versions) throws InterruptedException {
+    public String updateDeviceVersion(String serialNumbers, Device device, String versions,HttpServletRequest request) throws InterruptedException {
+        String msgEntrance = request.getParameter("msgEntrance")==null ? "":request.getParameter("msgEntrance");
         String[] serialNumber = serialNumbers.split(",");
         String[] version = versions.split(",");
         JSONArray jsonArray = new JSONArray();
-        for (int i= 0;i<version.length;i++) {
+        for (int i = 0; i < version.length; i++) {
             String[] versionInfos = version[i].split("&");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", versionInfos[0]);
@@ -83,11 +108,11 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
             jsonArray.add(jsonObject);
 
         }
-        for (int i= 0;i<serialNumber.length;i++) {
+        for (int i = 0; i < serialNumber.length; i++) {
             //心跳包下发指令
             JSONObject object = new JSONObject();
-            object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATE_VERSION);
-            CommandMap.addCommand(serialNumber[i],object);
+            object.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_UPDATE_VERSION);
+            CommandMap.addCommand(serialNumber[i], object);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serialNumber", serialNumber[i]);
@@ -109,7 +134,10 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
                 deviceUpdateService.insert(deviceUpdate);
             }
         }
-        return SUCCESS;
+        if(msgEntrance.equals("debug")){
+            return "debug";
+        }else
+            return SUCCESS;
     }
 
 
