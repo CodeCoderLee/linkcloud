@@ -7,9 +7,12 @@ import cn.ac.bcc.model.business.Area;
 import cn.ac.bcc.model.business.Device;
 import cn.ac.bcc.model.business.DeviceAuthen;
 import cn.ac.bcc.model.business.DeviceView;
+import cn.ac.bcc.model.core.Resources;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.service.business.area.AreaService;
 import cn.ac.bcc.service.business.device.DeviceViewService;
+import cn.ac.bcc.service.system.resources.ResourcesService;
+import cn.ac.bcc.util.Messenger;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
@@ -50,6 +53,7 @@ public class DeviceController extends BaseController<Device> {
     @Autowired
     private AreaService areaService;
 
+
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
         model.addAttribute("res", findByRes());
@@ -57,9 +61,10 @@ public class DeviceController extends BaseController<Device> {
     }
 
     @RequestMapping("debugList")
-    public String debugListUI(Model model) throws Exception {
+    public String debugListUI(Model model,Messenger messenger) throws Exception {
 
         model.addAttribute("res", findByRes());
+        model.addAttribute("messenger", messenger);
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/debugList";
     }
@@ -72,10 +77,12 @@ public class DeviceController extends BaseController<Device> {
     }
 
     @RequestMapping("settingList")
-    public String settingListUI(Model model) throws Exception {
+    public String settingListUI(Model model, Messenger messenger) throws Exception {
         model.addAttribute("res", findByRes());
         /*向前台传递资源id,为了传递给扫频页面,在扫频页面判断是否有设置默认频点的权限*/
         model.addAttribute("resId", getPara("id"));
+        Resources resources = resourcesService.selectByPrimaryKey(Integer.valueOf(getPara("id")));
+        model.addAttribute("resUrl", resources.getResurl());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/deviceSettingList";
     }
@@ -425,7 +432,7 @@ public class DeviceController extends BaseController<Device> {
     }
 
     @RequestMapping("getHeartBeatInfoPage")
-    public String getHeartBeatInfoPage(Model model,HttpServletRequest request){
+    public String getHeartBeatInfoPage(Model model,HttpServletRequest request,Messenger messenger){
         int id = Integer.parseInt(request.getParameter("id"));
         String serialNumber = request.getParameter("serialNumber");
 
@@ -459,6 +466,7 @@ public class DeviceController extends BaseController<Device> {
 
         model.addAttribute("postData",json);
         model.addAttribute("serialNumber",serialNumber);
+        model.addAttribute("messenger", messenger);
         return Common.BACKGROUND_PATH + "/business/device/deviceHeartBeatInfoPage";
     }
 
