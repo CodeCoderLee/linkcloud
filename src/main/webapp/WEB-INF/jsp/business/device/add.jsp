@@ -26,11 +26,18 @@
                                     </div>
                                 </div>
 
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-sm-3 control-label">设备私钥</label>--%>
+                                    <%--<div class="col-sm-9">--%>
+                                        <%--<input type="text" class="form-control"--%>
+                                               <%--placeholder="请输入私钥" name="privateKey" id="privateKey">--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">设备私钥</label>
+                                    <label class="col-sm-3 control-label">物流号</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control"
-                                               placeholder="请输入私钥" name="privateKey" id="privateKey">
+                                        <input type="text" name="trackNo" id="trackNo">
                                     </div>
                                 </div>
 
