@@ -473,6 +473,7 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("unlockDevice")
+    @SystemLog(module = "设备管理", methods = "设备管理-设备注册-解除锁定")
     public String unlockDevice(){
         getSession().removeAttribute("serialNumber");
         getSession().setAttribute("isLock", 0);

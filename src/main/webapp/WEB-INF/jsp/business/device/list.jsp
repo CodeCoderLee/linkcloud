@@ -61,6 +61,7 @@
                 <tr>
                     <th data-checkbox="true"></th>
                     <th data-field="serialNumber">序列号</th>
+                    <th data-field="trackNo">物流号</th>
                     <th data-field="areaName" data-formatter="areaFormatter">区域</th>
                     <th data-field="status" data-formatter="statusFormatter">状态</th>
                     <th data-field="version1" data-formatter="versionFormatter">Version_s/Version_t</th>
