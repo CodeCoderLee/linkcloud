@@ -7,6 +7,10 @@
     <div class="block-header">
         <h2>设备调试</h2>
         <input type="hidden" id="openId" name="openId" value="${openId}"/>
+        <input type="hidden" id="msgPageSize" name="msgPageSize"/>
+        <input type="hidden" id="msgPageNumber" name="msgPageNumber"/>
+        <input type="hidden" id="msgSerialNumber" name="msgSerialNumber"/>
+        <input type="hidden" id="msgEntrance" name="msgEntrance" value="debug"/>
     </div>
     <div class="card">
         <div class="card-header">

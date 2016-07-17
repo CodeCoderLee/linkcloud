@@ -16,6 +16,11 @@
                 <input type="hidden" name="serialNumber" value="${serialNumber}"/>
                 <input type="hidden" id="frequency" name="frequency" value=""/>
                 <input type="hidden" id="programIds" name="programIds" value=""/>
+                <input type="hidden" id="msgPageSize" name="msgPageSize" value="${messenger.msgPageSize}"/>
+                <input type="hidden" id="msgPageNumber" name="msgPageNumber" value="${messenger.msgPageNumber}"/>
+                <input type="hidden" id="msgSerialNumber" name="msgSerialNumber" value="${messenger.msgSerialNumber}"/>
+                <input type="hidden" id="msgUrl" name="msgUrl" value="${messenger.msgUrl}"/>
+                <input type="hidden" id="msgEntrance" name="msgEntrance" value="${messenger.msgEntrance}"/>
                 <div role="tabpanel" id="freqTab">
 
                     <div class="card">
@@ -83,6 +88,23 @@
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
 <script>
     $('#closeBtn').click(function () {
-        $("#content").load(rootPath + "/device/debugList.shtml");
+        var msgPageSize = $('#msgPageSize').val();
+        var msgPageNumber = $('#msgPageNumber').val();
+        var msgSerialNumber = $('#msgSerialNumber').val();
+        var msgUrl = $('#msgUrl').val();
+        if ($('#msgEntrance').val()=="setting") {
+            $("#content").load(rootPath + msgUrl,{
+                msgPageSize:msgPageSize,
+                msgPageNumber:msgPageNumber,
+                msgSerialNumber:msgSerialNumber
+            });
+        }else{
+            $("#content").load(rootPath + msgUrl,{
+                msgPageSize:msgPageSize,
+                msgPageNumber:msgPageNumber,
+                msgSerialNumber:msgSerialNumber
+            });
+        }
+
     });
 </script>

@@ -5,6 +5,11 @@
 <div class="container">
     <div class="block-header">
         <h2>设备扫频</h2>
+        <input type="hidden" id="msgPageSize" name="msgPageSize" value="${messenger.msgPageSize}"/>
+        <input type="hidden" id="msgPageNumber" name="msgPageNumber" value="${messenger.msgPageNumber}"/>
+        <input type="hidden" id="msgSerialNumber" name="msgSerialNumber" value="${messenger.msgSerialNumber}"/>
+        <input type="hidden" id="msgUrl" name="msgUrl" value="${messenger.msgUrl}"/>
+        <input type="hidden" id="msgEntrance" name="msgEntrance" value="${messenger.msgEntrance}"/>
     </div>
     <div class="card">
         <div class="card-header">
@@ -65,7 +70,8 @@
         $('#closeBtn').click(function () {
             /*关闭定时扫频请求*/
             clearInterval(int);
-            $("#content").load(rootPath + "/device/settingList.shtml");
+            goBack();
+//            $("#content").load(rootPath + "/device/settingList.shtml");
         });
 
         $('#scanFrequencyBtn').click(function () {
@@ -118,7 +124,8 @@
                         dataType: "json",
                         success: function (data) {
                             notify('success', '     频点设置成功      ');
-                            $("#content").load(rootPath + "/device/settingList.shtml");
+                            goBack();
+//                            $("#content").load(rootPath + "/device/settingList.shtml");
                         },
                         error: function (XMLResponse) {
                             alert(XMLResponse.responseText);
@@ -259,6 +266,26 @@
 
     function startScanFrequency() {
 
+    }
+
+    function goBack(){
+        var msgPageSize = $('#msgPageSize').val();
+        var msgPageNumber = $('#msgPageNumber').val();
+        var msgSerialNumber = $('#msgSerialNumber').val();
+        var msgUrl = $('#msgUrl').val();
+        if ($('#msgEntrance').val()=="setting") {
+            $("#content").load(rootPath + msgUrl,{
+                msgPageSize:msgPageSize,
+                msgPageNumber:msgPageNumber,
+                msgSerialNumber:msgSerialNumber
+            });
+        }else{
+            $("#content").load(rootPath + msgUrl,{
+                msgPageSize:msgPageSize,
+                msgPageNumber:msgPageNumber,
+                msgSerialNumber:msgSerialNumber
+            });
+        }
     }
 
 </script>

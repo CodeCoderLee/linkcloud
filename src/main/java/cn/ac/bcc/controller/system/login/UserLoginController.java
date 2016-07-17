@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
+import cn.ac.bcc.util.Messenger;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -66,7 +67,7 @@ public class UserLoginController extends BaseController {
 
 
     @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
-    public String index(Model model) {
+    public String index(Model model, String messenger) {
         System.out.println("index");
         JSONObject jsonObject = new JSONObject();
         try {
@@ -104,6 +105,7 @@ public class UserLoginController extends BaseController {
             model.addAttribute("list", ns);
             // 登陆的信息回传页面
             model.addAttribute("user", user1);
+            model.addAttribute("messenger", messenger);
             //return jsonObject;
             return "/index";
         } catch (Exception e) {

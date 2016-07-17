@@ -30,17 +30,18 @@
         //
         var tb = $("#content");
         tb.html(loadingHtml());
+        var obj = {};
         var messenger = $('#messenger').val();
         if (messenger != null && messenger!="") {
-            var obj = eval('(' + messenger + ')');
+            obj = eval('(' + messenger + ')');
             if ($.isEmptyObject(obj)) {
                 initMenu();
             }else {
-                if (obj.url != null && obj.url !="") {
+                if (obj.msgUrl != null && obj.msgUrl !="") {
                     $.each($("#menuList ul li a"),function(index,item){
                         var nav = $(item).attr("nav-n");
                         var sn = nav.split(",");
-                        alert("sn[2]=="+sn[2]+"&url=="+obj.url);
+                        alert("sn[2]=="+sn[2]+"&url=="+obj.msgUrl);
                         if (obj.url == sn[2]) {
                             $(item).addClass("active");
                             $(item).parents("li").addClass("active");
@@ -64,7 +65,12 @@
             //判断是否有权限
             var nav = $($("#menuList ul li.active  a.active")[0]).attr("nav-n");
             var sn = nav.split(",");
-            tb.load(rootPath + sn[2],{messenger:messenger});
+            if ($.isEmptyObject(obj)) {
+                tb.load(rootPath + sn[2]);
+            }else {
+                tb.load(rootPath + sn[2],obj);
+            }
+
         }else{
             /*一个权限都没有*/
 //            tb.load(rootPath + "/WEB-INF/jsp/system/user/list.jsp");

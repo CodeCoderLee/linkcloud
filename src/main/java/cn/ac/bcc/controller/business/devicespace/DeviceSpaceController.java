@@ -14,6 +14,7 @@ import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.service.system.user.UserRoleService;
 import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.Common;
+import cn.ac.bcc.util.Messenger;
 import cn.ac.bcc.util.ResponseData;
 import cn.ac.bcc.util.helper.HeartBeatMap;
 import cn.ac.bcc.util.helper.MemoryMap;
@@ -163,7 +164,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
     }
 
     @RequestMapping(value = "device/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String index(@PathVariable String serialNumber,String openId,String type,Model mode){
+    public String index(@PathVariable String serialNumber, String openId, String type, Model mode, Messenger messenger){
         log.info("openId:::" + openId);
         boolean hasRole = false;
         boolean isScan = false;
@@ -417,7 +418,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
     @RequestMapping(value = "getTvPrograms/{serialNumber}", produces = "text/html; charset=utf-8")
     @ResponseBody
     public String getTvPrograms(@PathVariable String serialNumber,Integer type,Model mode){
-        ;//new ScanFreqInfos();
+        //new ScanFreqInfos();
         StringBuilder sb = new StringBuilder();
         if(type != null && type == 0){
             List<Program> programList = programService.findTopProgram(serialNumber);
