@@ -47,7 +47,7 @@ public class Messenger {
         return msgEntrance;
     }
 
-    public void setMsgEentrance(String msgEntrance) {
+    public void setMsgEntrance(String msgEntrance) {
         this.msgEntrance = msgEntrance;
     }
 }
