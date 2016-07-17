@@ -59,7 +59,7 @@
           <c:if test="${list.size() > 0}">
             <c:forEach items="${list}" var="item" varStatus="status">
               <li>
-                <video class="v-${status.index}" data-pos=0 controls="controls" width="100%" height="360"></video>
+                <video class="v-${status.index}" data-pos=0  controls="" autoplay="" webkit-playsinline width="100%" height="360"></video>
               </li>
             </c:forEach>
           </c:if>
