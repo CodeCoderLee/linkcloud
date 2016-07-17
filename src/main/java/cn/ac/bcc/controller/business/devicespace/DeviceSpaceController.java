@@ -192,6 +192,13 @@ public class DeviceSpaceController extends BaseController<Comment>{
         if(scanFreqInfos != null && !scanFreqInfos.isScanEnded()){
             isScan = true;
         }
+
+        JSONObject jsonObject = JSONObject.fromObject(messenger);
+        String json = jsonObject.toString();
+        BASE64Encoder base64Encoder = new BASE64Encoder();
+        String base64 = base64Encoder.encode(json.getBytes());
+        mode.addAttribute("base64",base64);
+
         String ip = deviceAuthen.getIp1();
         mode.addAttribute("ip_address",ip);
         mode.addAttribute("isScan",isScan);
