@@ -262,6 +262,29 @@ public class DeviceSpaceController extends BaseController<Comment>{
         return Common.BACKGROUND_PATH + "/business/devicespace/netdisk-list";
     }
 
+    private List<Program> adjustSort(List<Program> list,Integer programId){
+        List<Program> retList = new ArrayList<Program>();
+        int index = -1;
+        for(int i =0;i<list.size();i++){
+            Program program = list.get(i);
+            if(programId.equals(program.getId())){
+                index = i;
+                break;
+            }
+        }
+        if(index != -1){
+            for(int i = index;i<list.size();i++){
+                Program program = list.get(i);
+                retList.add(program);
+            }
+            for(int i= 0;i<index;i++){
+                Program program = list.get(i);
+                retList.add(program);
+            }
+        }
+        return retList;
+    }
+
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
     public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
         Program program = programService.selectByPrimaryKey(programId);
@@ -276,6 +299,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         Example example = new Example(Program.class);
         example.createCriteria().andEqualTo("stype",ptype).andEqualTo("deviceSerialNumber",serialNumber);
         List<Program> list = programService.selectByExample(example);
+        list = adjustSort(list,programId);
 //        list.get(1).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
 //        list.get(0).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
 
@@ -291,6 +315,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
 //        mode.addAttribute("pname",pname);
         mode.addAttribute("userId",userId);
         mode.addAttribute("list",list);
+        mode.addAttribute("current_program_id",programId);
 
         JSONArray array = JSONArray.fromObject(list);
         mode.addAttribute("array",array.toString());
