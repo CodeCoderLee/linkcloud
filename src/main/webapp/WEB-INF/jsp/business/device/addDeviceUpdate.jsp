@@ -22,6 +22,7 @@
             <input type="hidden" name="msgSerialNumber" id="msgSerialNumber" value="${messenger.msgSerialNumber}"/>
             <input type="hidden" name="msgPageSize" id="msgPageSize" value="${messenger.msgPageSize}"/>
             <input type="hidden" name="msgPageNumber" id="msgPageNumber" value="${messenger.msgPageNumber}"/>
+            <input type="hidden" id="msgUrl" name="msgUrl" value="${messenger.msgUrl}"/>
 
             <div class="row" id="dataDiv">
             </div>
@@ -104,17 +105,7 @@
                     data: {serialNumbers: serialNumbers, versions: versions.join(","),msgEntrance:msgEntrance},
                     success: function (data) {
                         notify('success', '     升级指令已下发      ');
-                        console.log("data::::"+data);
-                        if(data.toString() == "debug"){
-                            console.log("debug:::::::::::");
-                            $("#content").load(rootPath + "/device/debugList.shtml?serialNumbers=" + serialNumber
-                                    +"&msgEntrance=" +msgEntrance
-                                    +"&msgSerialNumber=" +msgSerialNumber
-                                    +"&msgPageSize=" +msgPageSize
-                                    +"&msgPageNumber=" +msgPageNumber);
-                        }else {
-                            $("#content").load(rootPath + "/deviceUpdate/list.shtml");
-                        }
+                        goBack();
                     },
                     error: function (XMLHttpRequest) {
                         console.log(XMLHttpRequest);
@@ -126,25 +117,25 @@
 
         /*返回按钮单击事件绑定*/
         $('#closeBtn').click(function () {
-            var msgEntrance = $('#msgEntrance').val();
-            var msgSerialNumber = $('#searchParam').val();
-            var msgPageSize = 6;
-            var msgPageNumber = $('#msgPageNumber').val();
-            console.info("msgPageNumber::",msgPageNumber);
-            console.info("msgEntrance::",msgEntrance);
-            console.info("msgEntrance==debug",msgEntrance=='debug');
-
-            if(msgEntrance=="debug"){
-                $("#content").load(rootPath + "/device/debugList.shtml?serialNumbers=" + serialNumber
-                        +"&msgEntrance=" +msgEntrance
-                        +"&msgSerialNumber=" +msgSerialNumber
-                        +"&msgPageSize=" +msgPageSize
-                        +"&msgPageNumber=" +msgPageNumber);
-            }else {
-                $("#content").load(rootPath + "/deviceUpdate/list.shtml");
-            }
-
-
+            goBack();
         });
     });
+
+    function goBack() {
+        var msgPageSize = $('#msgPageSize').val();
+        var msgPageNumber = $('#msgPageNumber').val();
+        var msgSerialNumber = $('#msgSerialNumber').val();
+        var msgUrl = $('#msgUrl').val();
+        if (msgUrl!=null && msgUrl!="") {
+            $("#content").load(rootPath + msgUrl, {
+                msgPageSize: msgPageSize,
+                msgPageNumber: msgPageNumber,
+                msgSerialNumber: msgSerialNumber
+            });
+        }else {
+            $("#content").load(rootPath + "/deviceUpdate/list.shtml");
+        }
+
+
+    }
 </script>

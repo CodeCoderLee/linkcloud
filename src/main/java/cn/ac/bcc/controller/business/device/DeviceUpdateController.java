@@ -53,16 +53,6 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
 
     @RequestMapping("addUI")
     public String addUI(Model model, String serialNumbers, HttpServletRequest request,Messenger messenger) {
-//        String msgEntrance = request.getParameter("msgEntrance");
-//        String msgSerialNumber = request.getParameter("msgSerialNumber");
-//        int msgPageSize = request.getParameter("msgPageSize") == null ? 0 : Integer.parseInt(request.getParameter("msgPageSize"));
-//        int msgPageNumber = request.getParameter("msgPageNumber") == null ? 0 : Integer.parseInt(request.getParameter("msgPageNumber"));
-//        Messenger messenger = new Messenger();
-//        messenger.setMsgEntrance(msgEntrance);
-//        messenger.setMsgSerialNumber(msgSerialNumber);
-//        messenger.setMsgPageNumber(msgPageNumber);
-//        messenger.setMsgPageSize(msgPageSize);
-
         model.addAttribute("serialNumbers", serialNumbers);
         model.addAttribute("messenger", messenger);
         return Common.BACKGROUND_PATH + "/business/device/addDeviceUpdate";

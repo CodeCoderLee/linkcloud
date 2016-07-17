@@ -88,23 +88,18 @@
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
 <script>
     $('#closeBtn').click(function () {
+        goBack()
+    });
+    function goBack() {
         var msgPageSize = $('#msgPageSize').val();
         var msgPageNumber = $('#msgPageNumber').val();
         var msgSerialNumber = $('#msgSerialNumber').val();
         var msgUrl = $('#msgUrl').val();
-        if ($('#msgEntrance').val()=="setting") {
-            $("#content").load(rootPath + msgUrl,{
-                msgPageSize:msgPageSize,
-                msgPageNumber:msgPageNumber,
-                msgSerialNumber:msgSerialNumber
-            });
-        }else{
-            $("#content").load(rootPath + msgUrl,{
-                msgPageSize:msgPageSize,
-                msgPageNumber:msgPageNumber,
-                msgSerialNumber:msgSerialNumber
-            });
-        }
+        $("#content").load(rootPath + msgUrl, {
+            msgPageSize: msgPageSize,
+            msgPageNumber: msgPageNumber,
+            msgSerialNumber: msgSerialNumber
+        });
 
-    });
+    }
 </script>

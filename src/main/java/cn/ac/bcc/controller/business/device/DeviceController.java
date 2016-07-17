@@ -61,20 +61,16 @@ public class DeviceController extends BaseController<Device> {
     }
 
     @RequestMapping("debugList")
-    public String debugListUI(Model model,HttpServletRequest request) throws Exception {
-        String msgEntrance = request.getParameter("msgEntrance");
-        String msgSerialNumber = request.getParameter("msgSerialNumber");
-        int msgPageSize = request.getParameter("msgPageSize") == null ? 0 : Integer.parseInt(request.getParameter("msgPageSize"));
-        int msgPageNumber = request.getParameter("msgPageNumber") == null ? 0 : Integer.parseInt(request.getParameter("msgPageNumber"));
-        Messenger messenger = new Messenger();
-        messenger.setMsgEntrance(msgEntrance);
-        messenger.setMsgSerialNumber(msgSerialNumber);
-        messenger.setMsgPageNumber(msgPageNumber);
-        messenger.setMsgPageSize(msgPageSize);
-
-        model.addAttribute("messenger", messenger);
+    public String debugListUI(Model model,HttpServletRequest request,Messenger messenger) throws Exception {
         model.addAttribute("res", findByRes());
+        /*向前台传递资源id,为了传递给扫频页面,在扫频页面判断是否有设置默认频点的权限*/
+        model.addAttribute("resId", getPara("id"));
+        Resources resources = resourcesService.selectByPrimaryKey(Integer.valueOf(getPara("id")));
+        model.addAttribute("resUrl", resources.getResurl());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
+        messenger.setMsgUrl(resources.getResurl()+"?id="+Integer.valueOf(getPara("id")));
+        messenger.setMsgPageSize(6);
+        model.addAttribute("messenger", messenger);
         return Common.BACKGROUND_PATH + "/business/device/debugList";
     }
 
@@ -126,73 +122,73 @@ public class DeviceController extends BaseController<Device> {
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SCANFRQ);
         CommandMap.addCommand(serialNumber,object);
-        ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
-        scanFreqInfos.setFrqsNum(3);
-        scanFreqInfos.setProgress(20);
-        scanFreqInfos.setScanEnded(true);
-        List<Freq> freqs = new ArrayList<Freq>();
-        Freq freq = new Freq();
-        freq.setFrq("111");
-        freq.setSnr(10);
-        freq.setStrength(80);
-        List<ScanFreqProgram> scanFreqPrograms = new ArrayList<ScanFreqProgram>();
-        ScanFreqProgram scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-1");
-        scanFreqProgram.setPid("CCTV-1");
-        scanFreqPrograms.add(scanFreqProgram);
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-2");
-        scanFreqProgram.setPid("CCTV-2");
-        scanFreqPrograms.add(scanFreqProgram);
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-3");
-        scanFreqProgram.setPid("CCTV-3");
-        scanFreqPrograms.add(scanFreqProgram);
-        freq.setProgramList(scanFreqPrograms);
-        freqs.add(freq);
-
-        freq = new Freq();
-        freq.setFrq("222");
-        freq.setSnr(11);
-        freq.setStrength(88);
-        scanFreqPrograms = new ArrayList<ScanFreqProgram>();
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-4");
-        scanFreqProgram.setPid("CCTV-4");
-        scanFreqPrograms.add(scanFreqProgram);
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-5");
-        scanFreqProgram.setPid("CCTV-5");
-        scanFreqPrograms.add(scanFreqProgram);
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-6");
-        scanFreqProgram.setPid("CCTV-6");
-        scanFreqPrograms.add(scanFreqProgram);
-        freq.setProgramList(scanFreqPrograms);
-        freqs.add(freq);
-
-        freq = new Freq();
-        freq.setFrq("333");
-        freq.setSnr(12);
-        freq.setStrength(78);
-        scanFreqPrograms = new ArrayList<ScanFreqProgram>();
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-7");
-        scanFreqProgram.setPid("CCTV-7");
-        scanFreqPrograms.add(scanFreqProgram);
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-8");
-        scanFreqProgram.setPid("CCTV-8");
-        scanFreqPrograms.add(scanFreqProgram);
-        scanFreqProgram = new ScanFreqProgram();
-        scanFreqProgram.setName("CCTV-9");
-        scanFreqProgram.setPid("CCTV-9");
-        scanFreqPrograms.add(scanFreqProgram);
-        freq.setProgramList(scanFreqPrograms);
-        freqs.add(freq);
-
-        scanFreqInfos.setFreqList(freqs);
-        MemoryMap.add(serialNumber,scanFreqInfos);
+//        ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
+//        scanFreqInfos.setFrqsNum(3);
+//        scanFreqInfos.setProgress(20);
+//        scanFreqInfos.setScanEnded(true);
+//        List<Freq> freqs = new ArrayList<Freq>();
+//        Freq freq = new Freq();
+//        freq.setFrq("111");
+//        freq.setSnr(10);
+//        freq.setStrength(80);
+//        List<ScanFreqProgram> scanFreqPrograms = new ArrayList<ScanFreqProgram>();
+//        ScanFreqProgram scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-1");
+//        scanFreqProgram.setPid("CCTV-1");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-2");
+//        scanFreqProgram.setPid("CCTV-2");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-3");
+//        scanFreqProgram.setPid("CCTV-3");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        freq.setProgramList(scanFreqPrograms);
+//        freqs.add(freq);
+//
+//        freq = new Freq();
+//        freq.setFrq("222");
+//        freq.setSnr(11);
+//        freq.setStrength(88);
+//        scanFreqPrograms = new ArrayList<ScanFreqProgram>();
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-4");
+//        scanFreqProgram.setPid("CCTV-4");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-5");
+//        scanFreqProgram.setPid("CCTV-5");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-6");
+//        scanFreqProgram.setPid("CCTV-6");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        freq.setProgramList(scanFreqPrograms);
+//        freqs.add(freq);
+//
+//        freq = new Freq();
+//        freq.setFrq("333");
+//        freq.setSnr(12);
+//        freq.setStrength(78);
+//        scanFreqPrograms = new ArrayList<ScanFreqProgram>();
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-7");
+//        scanFreqProgram.setPid("CCTV-7");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-8");
+//        scanFreqProgram.setPid("CCTV-8");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        scanFreqProgram = new ScanFreqProgram();
+//        scanFreqProgram.setName("CCTV-9");
+//        scanFreqProgram.setPid("CCTV-9");
+//        scanFreqPrograms.add(scanFreqProgram);
+//        freq.setProgramList(scanFreqPrograms);
+//        freqs.add(freq);
+//
+//        scanFreqInfos.setFreqList(freqs);
+//        MemoryMap.add(serialNumber,scanFreqInfos);
         return SUCCESS;
     }
 

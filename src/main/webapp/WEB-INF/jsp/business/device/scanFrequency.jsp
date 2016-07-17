@@ -23,7 +23,7 @@
                 扫描到0个可用频点
             </div>
             <div class="footer text-right bg-light lter">
-`                <a id="scanFrequencyBtn"  class="btn btn-success btn-s-xs">扫频</a>
+                ` <a id="scanFrequencyBtn" class="btn btn-success btn-s-xs">扫频</a>
             </div>
         </div>
     </div>
@@ -118,7 +118,7 @@
         $('#form').validate({
             submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
                 $('#frequency').val($('ul.scan-tab > li.active').find('a').text());
-                if(window.confirm('确认设置工作频点?')){
+                if (window.confirm('确认设置工作频点?')) {
                     $(form).ajaxSubmit({
                         type: "post",
                         dataType: "json",
@@ -243,7 +243,7 @@
     }
 
     function setDefaultFrequency(url) {
-        if(window.confirm('确认设置默认频点?')){
+        if (window.confirm('确认设置默认频点?')) {
             var serialNumber = $('#serialNumber').val();
             var frequency = $('ul.scan-tab > li.active').find('a').text();
             var areaId = $('#areaId').val();
@@ -268,24 +268,17 @@
 
     }
 
-    function goBack(){
+    function goBack() {
         var msgPageSize = $('#msgPageSize').val();
         var msgPageNumber = $('#msgPageNumber').val();
         var msgSerialNumber = $('#msgSerialNumber').val();
         var msgUrl = $('#msgUrl').val();
-        if ($('#msgEntrance').val()=="setting") {
-            $("#content").load(rootPath + msgUrl,{
-                msgPageSize:msgPageSize,
-                msgPageNumber:msgPageNumber,
-                msgSerialNumber:msgSerialNumber
-            });
-        }else{
-            $("#content").load(rootPath + msgUrl,{
-                msgPageSize:msgPageSize,
-                msgPageNumber:msgPageNumber,
-                msgSerialNumber:msgSerialNumber
-            });
-        }
+        $("#content").load(rootPath + msgUrl, {
+            msgPageSize: msgPageSize,
+            msgPageNumber: msgPageNumber,
+            msgSerialNumber: msgSerialNumber
+        });
+
     }
 
 </script>

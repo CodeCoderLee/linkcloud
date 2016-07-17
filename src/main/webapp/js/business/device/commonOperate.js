@@ -29,14 +29,14 @@ function getHeartBeatInfo(id, serialNumber) {
     var msgEntrance = $('#msgEntrance').val();
     var msgUrl = $('#msgUrl').val();
 
-    $("#myContainer").load(url,{
-        id:id,
-        serialNumber:serialNumber,
-        msgPageSize:msgPageSize,
-        msgPageNumber:msgPageNumber,
-        msgEntrance:msgEntrance,
-        msgSerialNumber:msgSerialNumber,
-        msgUrl:msgUrl
+    $("#myContainer").load(url, {
+        id: id,
+        serialNumber: serialNumber,
+        msgPageSize: msgPageSize,
+        msgPageNumber: msgPageNumber,
+        msgEntrance: msgEntrance,
+        msgSerialNumber: msgSerialNumber,
+        msgUrl: msgUrl
 
     });
 
@@ -60,47 +60,64 @@ function goDebugHeartBeatInfo(serialNumber) {
     form.submit();
 }
 
-function setFormData(){
+function setFormData() {
     var pages = $('#pagination').bootstrapPaginator("getPages");
-    $('#msgPageSize').val(6);
+    if ($('#msgPageSize').val() == null || $('#msgPageSize').val() == "") {
+        $('#msgPageSize').val(6);
+    }
     $('#msgPageNumber').val(pages.current);
     $('#msgSerialNumber').val($('#searchParam').val());
 }
 
 function scanFrequency(serialNumber) {
     var pages = $('#pagination').bootstrapPaginator("getPages");
-    var msgPageSize = 6;
+    var msgPageSize = $('#msgPageSize').val();
     var msgPageNumber = pages.current;
     var msgSerialNumber = $('#searchParam').val();
     var msgEntrance = $('#msgEntrance').val();
     var msgUrl = $('#msgUrl').val();
     var id = $('#resId').val();
-    alert(serialNumber);
-    $('#content').load("device/scanFrequencyUI.shtml?serialNumber=" + serialNumber + "&id="+id,{
-        msgPageSize:msgPageSize,
-        msgPageNumber:msgPageNumber,
-        msgEntrance:msgEntrance,
-        msgSerialNumber:msgSerialNumber,
-        msgUrl:msgUrl
+    $('#content').load("device/scanFrequencyUI.shtml?serialNumber=" + serialNumber + "&id=" + id, {
+        msgPageSize: msgPageSize,
+        msgPageNumber: msgPageNumber,
+        msgEntrance: msgEntrance,
+        msgSerialNumber: msgSerialNumber,
+        msgUrl: msgUrl
     });
 }
 
-function getDeviceUpdate(id, serialNumber) {
+function getDeviceUpdate(serialNumber) {
     var pages = $('#pagination').bootstrapPaginator("getPages");
-    var msgEntrance = $('#msgEntrance').val();
-    var msgSerialNumber = $('#searchParam').val();
-
-    console.log("msgEntrance::",msgEntrance);
-    console.log("msgSerialNumber::",msgSerialNumber);
-
-    var msgPageSize = 6;
+    var msgPageSize = $('#msgPageSize').val();
     var msgPageNumber = pages.current;
+    var msgSerialNumber = $('#searchParam').val();
+    var msgEntrance = $('#msgEntrance').val();
+    var msgUrl = $('#msgUrl').val();
+    var id = $('#resId').val();
 
     var url = rootPath + '/deviceUpdate/addUI.shtml';
-    $("#myContainer").load(url + "?id=" + id + "&serialNumbers=" + serialNumber
-        +"&msgEntrance=" +msgEntrance
-        +"&msgSerialNumber=" +msgSerialNumber
-        +"&msgPageSize=" +msgPageSize
-        +"&msgPageNumber=" +msgPageNumber);
+    $("#myContainer").load(url + "?id=" + id + "&serialNumbers=" + serialNumber, {
+        msgPageSize: msgPageSize,
+        msgPageNumber: msgPageNumber,
+        msgEntrance: msgEntrance,
+        msgSerialNumber: msgSerialNumber,
+        msgUrl: msgUrl
+    });
 
+}
+
+function shock(serialNumber) {
+    $.ajax({
+        method: 'get',
+        url: 'device/shock.shtml',
+        dataType: 'json',
+        data: {serialNumber: serialNumber},
+        success: function (data) {
+            console.log(data);
+            alert("指令已成功下发。");
+        },
+        error: function (XMLHttpRequest) {
+            console.log(XMLHttpRequest);
+        }
+    });
 }

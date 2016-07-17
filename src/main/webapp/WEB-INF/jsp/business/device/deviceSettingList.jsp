@@ -88,6 +88,10 @@
             pageSize = $('#msgPageSize').val();
         }
         loadDevice(pageNum, pageSize);
+
+        $('#searchBtn').click(function(){
+            loadDevice(1,6);
+        });
     });
     function loadDevice(pageNum, pageSize) {
         var serialNumber = $('#searchParam').val();
@@ -158,7 +162,7 @@
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class=\"btn btn-info\" href=\"javascript:goDebugHeartBeatInfo('" + item.serialNumber + "')\">调试页</a></dt>" +
-                    "<dd></dd>" +
+                    "<dd><a class=\"btn btn-info\" href=\"javascript:getDeviceUpdate('" + item.serialNumber + "')\">设备升级</a></dd>" +
                     "</dl>";
             html = html +
                     "<dl class=\"dl-horizontal\">" +
@@ -176,23 +180,5 @@
                     "</div>";
             $('#dataDiv').append(html);
         })
-    }
-
-
-
-    function shock(serialNumber) {
-        $.ajax({
-            method: 'get',
-            url: 'device/shock.shtml',
-            dataType: 'json',
-            data: {serialNumber: serialNumber},
-            success: function (data) {
-                console.log(data);
-                alert("指令已成功下发。");
-            },
-            error: function (XMLHttpRequest) {
-                console.log(XMLHttpRequest);
-            }
-        });
     }
 </script>
