@@ -41,19 +41,16 @@
         <%--<input type="button" value="停止" class="start-stop">--%>
         <%--<input type="hidden" value="${base64}" name="base64">--%>
     </h2>
-    <nav class="am-titlebar-nav">
-
-    </nav>
 </div>
 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
     <h2 class="am-titlebar-title ">
         <input type="button" value="SHOCK" class="shock-cmd-op">
         <input type="button" value="停止" class="start-stop">
-        <input type="hidden" value="${base64}" name="base64">
+        <form action="${ctx}/index.shtml" id="gohome-form" style="float:right;">
+            <input type="button" value="返回" name="back">
+            <input type="hidden" value="${base64}" name="messenger">
+        </form>
     </h2>
-    <nav class="am-titlebar-nav">
-
-    </nav>
 </div>
 <div >
     <ul class="mindex-ul heartbeat-list">
@@ -125,6 +122,10 @@
             }
         });
     });
+
+    $("input[name=back]").on("click",function(){
+        $('#gohome-form').submit();
+    })
 </script>
 </body>
 </html>
