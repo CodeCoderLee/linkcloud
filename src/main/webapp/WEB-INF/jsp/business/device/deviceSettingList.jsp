@@ -129,6 +129,15 @@
                 html = html + "<dd>否</dd>";
             }
             html = html +
+            "</dl>" +
+            "<dl class=\"dl-horizontal\">" +
+            "<dt><a class=\"btn btn-info\" href=\"javascript:setAvailable('" + item.id + "','" + item.serialNumber + "')\">设备入库</a></dt>" +
+            "<dd><a class=\"btn btn-info\" href=\"javascript:goSpace('" + item.id + "','" + item.serialNumber + "')>设备空间</a></dd>" +
+            "<dd><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('" + item.id + "','" + item.serialNumber + "')\">设备详情</a></dd>" +
+//                    /space/device/" + item.serialNumber + ".shtml?type=debug&openId=" + $('#openId').val() + "\"
+
+            "</dl>";
+            html = html +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";

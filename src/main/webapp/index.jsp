@@ -30,12 +30,41 @@
         //
         var tb = $("#content");
         tb.html(loadingHtml());
+        var messenger = $('#messenger').val();
+        if (messenger != null && messenger!="") {
+            var obj = eval('(' + messenger + ')');
+            if ($.isEmptyObject(obj)) {
+                initMenu();
+            }else {
+                if (obj.url != null && obj.url !="") {
+                    $.each($("#menuList ul li a"),function(index,item){
+                        var nav = $(item).attr("nav-n");
+                        var sn = nav.split(",");
+                        alert("sn[2]=="+sn[2]+"&url=="+obj.url);
+                        if (obj.url == sn[2]) {
+                            $(item).addClass("active");
+                            $(item).parents("li").addClass("active");
+                            if ($(item).parents("li").length == 2) {//两级菜单,展开
+                                $($(item).parents("li")[1]).addClass("toggled");
+                            }
+                            return true;
+                        }
+
+                    });
+                }else {
+                    initMenu();
+                }
+            }
+
+        }else{
+            initMenu();
+        }
         /*获取菜单栏中active菜单的url，进行加载*/
         if($("#menuList ul li.active a.active").length>0){
             //判断是否有权限
             var nav = $($("#menuList ul li.active  a.active")[0]).attr("nav-n");
             var sn = nav.split(",");
-            tb.load(rootPath + sn[2]);
+            tb.load(rootPath + sn[2],{messenger:messenger});
         }else{
             /*一个权限都没有*/
 //            tb.load(rootPath + "/WEB-INF/jsp/system/user/list.jsp");
@@ -55,9 +84,25 @@
         });
 
     });
+
+    function initMenu(){
+        //判断有没有li标签
+        if ($("#menuList ul li").length>0) {//等于0则无权限
+            var firstLi = $("#menuList ul li")[0];
+            $(firstLi).addClass("active");
+            if ($(firstLi).find("ul").length>0) {//目录,有子菜单
+                $(firstLi).addClass("toggled");//展开
+                $($(firstLi).find("ul").find("li")[0]).addClass("active");
+                $($(firstLi).find("ul").find("li a")[0]).addClass("active");
+            }else{
+                $(firstLi).addClass("toggled");//没有子菜单.
+            }
+        }
+    }
 </script>
 <body>
 <%@include file="header.jsp"%>
+<input type="hidden" value="${messenger}" id="messenger"/>
 <section id="main">
     <aside id="sidebar">
         <div class="sidebar-inner c-overflow">
@@ -109,17 +154,18 @@
                         2.是第一个目录,那么class添加active类,默认选中
                         3.如果有二级目录,并且是第一个目录,那么默认展开,选中二级目录中的第一个--%>
                         <li class="level_1 <c:if test="${key.children.size()>0}"> sub-menu </c:if>
-                                <c:if test="${s.index==0}"> active </c:if>
-                                <c:if test="${key.children.size()>0&&s.index==0}"> toggled </c:if>" >
+                                <%--<c:if test="${s.index==0}"> active </c:if>--%>
+                                <%--<c:if test="${key.children.size()>0&&s.index==0}"> toggled </c:if>--%>" >
                         <%--为菜单栏中的<a>标签,添加load的class,只有拥有load类的标签的点击事件才会加载页面--%>
-                        <a href="javascript:void(0)" class="<c:if test="${key.children.size()==0} load"></c:if> <c:if test="${s.index==0&&key.children.size()==0}"> active </c:if>" nav-n="${key.name},${key.name},${key.resUrl}?id=${kc.id}">
+                        <a href="javascript:void(0)" class="<c:if test="${key.children.size()==0} load"></c:if> <%--<c:if test="${s.index==0&&key.children.size()==0}"> active </c:if>--%>" nav-n="${key.name},${key.name},${key.resUrl}?id=${kc.id}">
                         <i class="zmdi zmdi-widgets"></i>${key.name}
                         </a>
                             <ul>
                                 <c:forEach var="kc" items="${key.children}" varStatus="kcs">
-                                    <li <c:if test="${kcs.index==0}">class="active"</c:if> >
+                                    <%--<li <c:if test="${kcs.index==0}">class="active"</c:if> >--%>
+                                    <li>
                                         <%--二级目录的菜单,都需要加载页面,所以添加class添加load--%>
-                                        <a href="javascript:void(0)"  class="load <c:if test="${kcs.index==0&&s.index==0}"> active </c:if>"
+                                        <a href="javascript:void(0)"  class="load <%--<c:if test="${kcs.index==0&&s.index==0}"> active </c:if>--%>"
                                            nav-n="${key.name},${kc.name},${kc.resUrl}?id=${kc.id}"> <i
                                                 class="fa fa-angle-right"></i> <span>${kc.name}</span>
                                         </a></li>
