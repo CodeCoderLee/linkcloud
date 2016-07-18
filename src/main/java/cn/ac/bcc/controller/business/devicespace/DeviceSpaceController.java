@@ -309,9 +309,9 @@ public class DeviceSpaceController extends BaseController<Comment>{
         example.createCriteria().andEqualTo("stype",ptype).andEqualTo("deviceSerialNumber",serialNumber);
         List<Program> list = programService.selectByExample(example);
         list = adjustSort(list,programId);
-        list.get(0).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
-        list.get(2).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
-        list.get(4).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
+//        list.get(0).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
+//        list.get(2).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
+//        list.get(4).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
 
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         mode.addAttribute("ip_address",deviceAuthen.getIp1());
