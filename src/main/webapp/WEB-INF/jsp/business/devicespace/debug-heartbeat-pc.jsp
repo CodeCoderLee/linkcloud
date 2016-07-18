@@ -46,9 +46,9 @@
     <h2 class="am-titlebar-title ">
         <input type="button" value="SHOCK" class="shock-cmd-op">
         <input type="button" value="停止" class="start-stop">
-        <form action="${ctx}/index.shtml" id="go-form" style="float:right;">
+        <form action="${ctx}/index.shtml" id="gohome-form" style="float:right;">
             <input type="button" value="返回" name="back">
-            <input type="hidden" value="${base64}" name="base64">
+            <input type="hidden" value="${base64}" name="messenger">
         </form>
     </h2>
 </div>
@@ -125,7 +125,7 @@
     });
 
     $("input[name=back]").on("click",function(){
-        $('#go-form').submit();
+        $('#gohome-form').submit();
     })
 </script>
 </body>

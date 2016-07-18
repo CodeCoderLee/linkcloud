@@ -39,10 +39,12 @@
     <div class="am-header-left am-header-nav">
         <%--<c:set var="hasRole" value="true"/>--%>
         <c:if test="${hasRole}">
-            <a href="${ctx}/index.shtml" class="">
-                <i class="am-header-icon am-icon-home"></i>
+            <a href="javascript:void(0);" class="gohome-a">
+                <i class="am-header-icon am-icon-home"></i><b>个人空间</b>
+                <form action="${ctx}/index.shtml" id="gohome-form">
+                    <input type="hidden" value="${base64}" name="messenger">
+                </form>
             </a>
-            管理员
         </c:if>
     </div>
     <h1 class="am-header-title">
@@ -276,6 +278,10 @@
             });
         }
 
+
+        $(".gohome-a").on("click",function(){
+            $('#gohome-form').submit();
+        })
     </script>
 </body>
 </html>
