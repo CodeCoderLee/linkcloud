@@ -496,15 +496,15 @@ public class DeviceController extends BaseController<Device> {
 //        json.put("camers","0");
 //        json.put("sessions","0");
 
-        String postData = HeartBeatMap.get("serialNumber");
-        JSONObject json = null;
-        if(postData != null){
-            json = JSONObject.fromObject(postData);
-        }else{
-            json = new JSONObject();
-        }
-
-        model.addAttribute("postData",json);
+//        String postData = HeartBeatMap.get("serialNumber");
+//        JSONObject json = null;
+//        if(postData != null){
+//            json = JSONObject.fromObject(postData);
+//        }else{
+//            json = new JSONObject();
+//        }
+        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber("0000000f");
+        model.addAttribute("postData",deviceAuthen);
         model.addAttribute("serialNumber",serialNumber);
         model.addAttribute("messenger", messenger);
         return Common.BACKGROUND_PATH + "/business/device/deviceHeartBeatInfoPage";
