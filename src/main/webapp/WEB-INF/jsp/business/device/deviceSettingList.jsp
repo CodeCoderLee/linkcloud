@@ -164,13 +164,16 @@
                     "<dt><a class=\"btn btn-info\" href=\"javascript:goDebugHeartBeatInfo('" + item.serialNumber + "')\">调试页</a></dt>" +
                     "<dd><a class=\"btn btn-info\" href=\"javascript:getDeviceUpdate('" + item.serialNumber + "')\">设备升级</a></dd>" +
                     "</dl>";
-            html = html +
-                    "<dl class=\"dl-horizontal\">" +
-                    "<dt><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
             if (item.onOffLine) {
+                html = html +
+                        "<dl class=\"dl-horizontal\">" +
+                        "<dt><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
                 html = html + "<dd><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"scanFrequency('" + item.serialNumber + "')\">扫频</a></dd>";
             } else {
-                html = html + "<dd><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"scanFrequency('" + item.serialNumber + "')\">扫频</a><label style='color: red;'>离线无法扫频</label></dd>";
+                html = html +
+                        "<dl class=\"dl-horizontal\">" +
+                        "<dt><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
+                html = html + "<dd><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"scanFrequency('" + item.serialNumber + "')\">扫频</a></dd>";
             }
 
             html = html + "</dl>" +

@@ -37,7 +37,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">物流号</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="trackNo" id="trackNo">
+                                        <input type="text" class="form-control" placeholder="请输入物流号" name="trackNo" id="trackNo">
                                     </div>
                                 </div>
 

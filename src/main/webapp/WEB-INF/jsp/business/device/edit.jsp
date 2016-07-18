@@ -129,5 +129,8 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
+<script charset="utf-8">
+
+</script>
 <script type="text/javascript" src="${ctx}/js/business/device/edit.js"/>
 

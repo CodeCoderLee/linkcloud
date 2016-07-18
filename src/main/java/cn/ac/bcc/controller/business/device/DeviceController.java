@@ -207,11 +207,43 @@ public class DeviceController extends BaseController<Device> {
     public String modifyUI(Model model) {
         String id = getPara("id");
         DeviceView deviceView = new DeviceView();
+
         if (Common.isNotEmpty(id)) {
             deviceView.setId(Integer.valueOf(id));
             DeviceView device = deviceViewService.selectOne(deviceView);
             model.addAttribute("device", device);
         }
+        JSONObject jsonObject = new JSONObject();
+        if (!Common.isEmpty(getPara("limit"))) {
+            jsonObject.put("limit", Integer.valueOf(getPara("limit")));
+        }
+        if (!Common.isEmpty(getPara("offset"))) {
+            jsonObject.put("offset", Integer.valueOf(getPara("offset")));
+        }
+        if (!Common.isEmpty(getPara("provinceId"))) {
+            jsonObject.put("provinceId", Integer.valueOf(getPara("provinceId")));
+        }
+        if (!Common.isEmpty(getPara("cityId"))) {
+            jsonObject.put("cityId", Integer.valueOf(getPara("cityId")));
+        }
+        if (!Common.isEmpty(getPara("areaId"))) {
+            jsonObject.put("areaId", Integer.valueOf(getPara("areaId")));
+        }
+        if (!Common.isEmpty(getPara("status"))) {
+            jsonObject.put("status", Integer.valueOf(getPara("status")));
+        }
+        if (!Common.isEmpty(getPara("serialNumber"))) {
+            jsonObject.put("serialNumber", getPara("serialNumber"));
+        }
+        model.addAttribute("paramJson", jsonObject.toString());
+
+//        model.addAttribute("limit", getPara("limit"));
+//        model.addAttribute("offset", getPara("offset"));
+//        model.addAttribute("provinceId", getPara("provinceId"));
+//        model.addAttribute("cityId", getPara("cityId"));
+//        model.addAttribute("areaId", getPara("areaId"));
+//        model.addAttribute("status", getPara("status"));
+//        model.addAttribute("serialNumber", getPara("serialNumber"));
         return Common.BACKGROUND_PATH + "/business/device/edit";
     }
 
@@ -224,8 +256,8 @@ public class DeviceController extends BaseController<Device> {
         if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
             deviceView.setSerialNumber(getSession().getAttribute("serialNumber").toString());
         }
-        Example example = getEqualsToExample(deviceView,deviceView.getClass());
-        List<DeviceView> list = deviceViewService.selectByExample(example);
+//        Example example = getEqualsToExample(deviceView,deviceView.getClass());
+        List<DeviceView> list = deviceViewService.selectDeviceView(deviceView);
         PageInfo<DeviceView> pageInfo = new PageInfo<DeviceView>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
