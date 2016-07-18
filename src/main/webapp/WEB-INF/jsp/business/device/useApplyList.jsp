@@ -66,7 +66,7 @@
             </div>
             <div class="m-b-md" style="margin-bottom: 18px">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">设备号</label>
+                    <label class="col-sm-2 control-label">序列号</label>
                     <div class="col-sm-10">
                         <div class="fg-line">
                             <input class="input-medium ui-autocomplete-input"  id="searchSerialNumber"/>

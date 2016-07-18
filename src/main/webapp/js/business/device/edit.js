@@ -8,43 +8,15 @@
 var first = true;
 $(function () {
     onLoadUrl();
-    $('#closeBtn').click(function () {
-        $("#content").load(rootPath + "/device/list.shtml");
-    });
-    $('#form').validate({
-        submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
-            $(form).ajaxSubmit({
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    notify('success', '     设备注册成功      ');
-                    $("#content").load(rootPath + "/device/list.shtml");
-                },
-                error: function (XMLResponse) {
-                    alert(XMLResponse.responseText);
-                }
-            });
-        },
-        rules: {
-            "serialNumber": {
-                required: true,
-            }
-        },
-        messages: {
-            "serialNumber": {
-                required: "请输入序列号"
-            }
-        },
-        errorPlacement: function (error, element) {// 自定义提示错误位置
-            $(".alert-danger").removeClass("hidden");
-            $(".alert-danger").html(error.html());
-        },
-        success: function (label) {// 验证通过后
-            $(".alert-danger").addClass("hidden");
-        }
-    });
+    
+    
 
 
+
+
+});
+
+function loadModifyProvince(){
     $.ajax({
         //提交数据的类型 POST GET
         type: "POST",
@@ -62,13 +34,13 @@ $(function () {
             //alert("dataMap.length::" + dataMap.length);
             console.log("dataMap:::" + dataMap);
             for (var i = 0; i < dataMap.length; i++) {
-                if (dataMap[i].areaName == $('#provinceValue').val()) {
-                    $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#province");
+                if (dataMap[i].areaName == row['provinceId']) {
+                    $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#modifyProvince");
                     if (first) {
-                        showCity(dataMap[i].id, 1);
+                        showModifyCity(dataMap[i].id, 1);
                     }
                 } else {
-                    $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#province");
+                    $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#modifyProvince");
                 }
 
 
@@ -87,11 +59,10 @@ $(function () {
         }
     });
 
-
-});
+}
 
 /*type为1时,表示市,type为2时,表示县*/
-function showCity(id, type) {
+function showModifyCity(id, type) {
     $.ajax({
         type: "POST",
         url: rootPath + "/area/getAreaCity.shtml",
@@ -104,14 +75,12 @@ function showCity(id, type) {
             if (type === 1) {
                 $('#city').html("<option value=\"\">市</option>");
                 for (var i = 0; i < dataMap.length; i++) {
-                    if (dataMap[i].areaName == $('#cityValue').val() && first) {
-                        $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#city");
+                    if (dataMap[i].areaName == row['cityId'] && first) {
+                        $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#modifyCity");
                         showCity(dataMap[i].id, 2);
                     } else {
-                        $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#city");
+                        $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#modifyCity");
                     }
-
-
                 }
                 // $('#city').val("");
                 $('#city').attr("disabled", false);
@@ -120,16 +89,14 @@ function showCity(id, type) {
             } else {
                 $('#county').html("<option value=\"\">县</option>");
                 for (var i = 0; i < dataMap.length; i++) {
-                    if(dataMap[i].id == $('#areaId').val() && first){
-                        $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#county");
+                    if(dataMap[i].id == row['areaId'] && first){
+                        $("<option value='" + dataMap[i].id + "' selected='selected'>" + dataMap[i].areaName + "</option>").appendTo("#modifyCounty");
                         first = false;
                     }else{
-                        $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#county");
+                        $("<option value='" + dataMap[i].id + "'>" + dataMap[i].areaName + "</option>").appendTo("#modifyCounty");
                     }
-
-
                 }
-                $('#county').attr("disabled", false);
+                $('#modifyCounty').attr("disabled", false);
             }
 
 

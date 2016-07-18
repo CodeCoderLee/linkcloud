@@ -21,60 +21,102 @@
                 <input type="hidden" id="msgSerialNumber" name="msgSerialNumber" value="${messenger.msgSerialNumber}"/>
                 <input type="hidden" id="msgUrl" name="msgUrl" value="${messenger.msgUrl}"/>
                 <input type="hidden" id="msgEntrance" name="msgEntrance" value="${messenger.msgEntrance}"/>
-                <div role="tabpanel" id="freqTab">
 
-                    <div class="card">
-                        <div class="card-body card-padding">
-                            <div class="pmbb-view">
-                                <dl class="dl-horizontal">
-                                    <dt>设备状态</dt>
-                                    <dd>${postData.dstat}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>line</dt>
-                                    <dd>${postData.line}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>温度</dt>
-                                    <dd>${postData.temper}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>dtmb状态</dt>
-                                    <dd>${postData.locked}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>dtmb工作频点</dt>
-                                    <dd>${postData.frq}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>dtmb信号强</dt>
-                                    <dd>${postData.strength}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>dtmb信号质量</dt>
-                                    <dd>${postData.snr}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>dtmb节目数量</dt>
-                                    <dd>${postData.dprogs}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>网盘数量</dt>
-                                    <dd>${postData.ndisks}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>摄像头数量</dt>
-                                    <dd>${postData.camers}</dd>
-                                </dl>
-                                <dl class="dl-horizontal">
-                                    <dt>用户正在观看的视频数量</dt>
-                                    <dd>${postData.sessions}</dd>
-                                </dl>
 
-                            </div>
-                        </div>
-                        </div>
-                </div>
+                <div class="row">
+                    <div class="col-sm-12 m-b-20">
+                        <p class="f-500 m-b-20 c-black">授权接口上报数据</p>
+                        <ul class="list-group">
+                            <%--<li class="list-group-item">序列号:${postData.serialNumber}</li>--%>
+                            <li class="list-group-item">privateKey:${postData.privateKey}</li>
+                            <li class="list-group-item">ip1:${postData.ip1}</li>
+                            <li class="list-group-item">ip2:${postData.ip2}</li>
+                            <li class="list-group-item">mac1:${postData.mac1}</li>
+                            <li class="list-group-item">mac2:${postData.mac2}</li>
+                            <li class="list-group-item">version_s:${postData.version1}</li>
+                            <li class="list-group-item">version_t:${postData.version2}</li>
+                            <li class="list-group-item">token:${postData.token}</li>
+                            <li class="list-group-item">是否在线:
+                                <c:choose>
+                                    <c:when test="${postData.onOffLine == 1}">
+                                        是
+                                    </c:when>
+                                    <c:otherwise>否</c:otherwise>
+                                </c:choose>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-12 m-b-20">
+                        <p class="f-500 m-b-20 c-black">上报节目数据</p>
+
+                        <ul class="list-group">
+                            <li class="list-group-item">节目数据:${postData.programs}</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm-12 m-b-20">
+                        <p class="f-500 m-b-20 c-black">上报心跳数据</p>
+
+                        <ul class="list-group">
+                            <li class="list-group-item">节目数据:${postData.heartbeat}</li>
+                        </ul>
+                    </div>
+
+                <%--<div role="tabpanel" id="freqTab">--%>
+
+                    <%--<div class="card">--%>
+                        <%--<div class="card-body card-padding">--%>
+                            <%--<div class="pmbb-view">--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>设备状态</dt>--%>
+                                    <%--<dd>${postData.dstat}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>line</dt>--%>
+                                    <%--<dd>${postData.line}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>温度</dt>--%>
+                                    <%--<dd>${postData.temper}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>dtmb状态</dt>--%>
+                                    <%--<dd>${postData.locked}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>dtmb工作频点</dt>--%>
+                                    <%--<dd>${postData.frq}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>dtmb信号强</dt>--%>
+                                    <%--<dd>${postData.strength}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>dtmb信号质量</dt>--%>
+                                    <%--<dd>${postData.snr}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>dtmb节目数量</dt>--%>
+                                    <%--<dd>${postData.dprogs}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>网盘数量</dt>--%>
+                                    <%--<dd>${postData.ndisks}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>摄像头数量</dt>--%>
+                                    <%--<dd>${postData.camers}</dd>--%>
+                                <%--</dl>--%>
+                                <%--<dl class="dl-horizontal">--%>
+                                    <%--<dt>用户正在观看的视频数量</dt>--%>
+                                    <%--<dd>${postData.sessions}</dd>--%>
+                                <%--</dl>--%>
+
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
+                <%--</div>--%>
                 <div class="footer text-right bg-light lter">
                     <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
                 </div>

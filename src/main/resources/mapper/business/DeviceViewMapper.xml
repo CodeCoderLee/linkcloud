@@ -22,9 +22,30 @@
     <result column="ex_status" jdbcType="INTEGER" property="exStatus" />
     <result column="register_name" jdbcType="VARCHAR" property="registerName" />
     <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="city_id" jdbcType="INTEGER" property="cityId" />
     <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="province_id" jdbcType="INTEGER" property="provinceId" />
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="version1" jdbcType="VARCHAR" property="version1" />
     <result column="version2" jdbcType="VARCHAR" property="version2" />
   </resultMap>
+  <select id="selectDeviceView" resultMap="BaseResultMap">
+    select t.* from bcc_device_view t where 1=1
+    <if test="deviceView.serialNumber != null">
+      <![CDATA[and  (t.serial_number like "%"#{deviceView.serialNumber}"%" or t.serial_number LIKE "%"#{deviceView.serialNumber}"%")  ]]>
+    </if>
+    <if test="deviceView.areaId != null">
+      and t.area_id = #{deviceView.areaId}
+    </if>
+    <if test="deviceView.cityId != null">
+      and t.city_id = #{deviceView.cityId}
+    </if>
+    <if test="deviceView.provinceId != null">
+      and t.province_id = #{deviceView.provinceId}
+    </if>
+    <if test="deviceView.status != null">
+      and t.status = #{deviceView.status}
+    </if>
+    ORDER BY t.register_time desc
+  </select>
 </mapper>

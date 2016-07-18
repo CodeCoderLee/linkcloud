@@ -46,6 +46,10 @@ public class Version {
     @Column(name = "file_name")
     private String fileName;
 
+    @Column(name = "remarks")
+    private String remarks;
+
+
     @Transient
     private String modelName;
 
@@ -61,6 +65,14 @@ public class Version {
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     /**

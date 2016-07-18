@@ -5,19 +5,19 @@
 
 <div class="container">
     <div class="block-header">
-        <h2>添加版本信息</h2>
+        <h2>修改版本信息</h2>
     </div>
     <div class="line line-dashed line-lg pull-in"></div>
     <div class="card">
         <div class="card-header">
             <div class="m-b-md" style="margin-bottom: 18px">
                 <input type="hidden" name="entrance" value="${entrance}" id="entrance"/>
-
+                <input type="hidden" name="id" value="${version.id}" id="id"/>
                 <div class="alert alert-danger hidden" role="alert">
                 </div>
                 <div class="card-body">
                     <form id="form" name="form" class="form-horizontal" method="post"
-                          action="${ctx}/version/add.shtml" enctype="multipart/form-data">
+                          action="${ctx}/version/modify.shtml" enctype="multipart/form-data">
                         <input type="hidden" name="industryName" id="industryName"/>
                         <input type="hidden" name="areaName" id="areaName"/>
                         <section class="panel panel-default">
@@ -26,7 +26,7 @@
                                     <label class=" col-sm-3 control-label">版本名称</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control"
-                                               placeholder="请输入版本名称" name="name" id="name">
+                                               placeholder="请输入版本名称" name="name" id="name" value="${version.name}">
                                     </div>
                                 </div>
 
@@ -34,7 +34,7 @@
                                     <label class=" col-sm-3 control-label">版本号</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control"
-                                               placeholder="请输入版本号" name="version" id="version">
+                                               placeholder="请输入版本号" name="version" id="version" value="${version.version}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -44,9 +44,9 @@
                                             <div class="select">
                                                 <select class="form-control" id="type" name="type">
                                                     <option value="">请选择类型</option>
-                                                    <option value="1">引导模块</option>
-                                                    <option value="2">转码模块</option>
-                                                    <option value="3">流媒体模块</option>
+                                                    <option value="1" <c:if test="${version.type==1}">selected</c:if>>引导模块 </option>
+                                                    <option value="2" <c:if test="${version.type==2}">selected</c:if>>转码模块</option>
+                                                    <option value="3" <c:if test="${version.type==3}">selected</c:if>>流媒体模块</option>
 
                                                 </select>
                                             </div>
@@ -57,7 +57,8 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">上传版本文件</label>
                                     <div class="col-sm-9">
-                                        <input type="file" name="file">
+                                        <input type="file" name="file" >
+                                        <label>${version.fileName}</label>
                                     </div>
                                 </div>
 
@@ -72,7 +73,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">备注</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" rows="3" name="remarks"></textarea>
+                                        <textarea class="form-control" rows="3" name="remarks">${version.remarks}</textarea>
                                     </div>
                                 </div>
 
@@ -94,4 +95,4 @@
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
 <script charset="utf-8" src="${ctx}/js/common/area.js"></script>
 <script charset="utf-8" src="${ctx}/js/common/industry.js"></script>
-<script charset="utf-8" src="${ctx}/js/business/version/add.js"></script>
+<script charset="utf-8" src="${ctx}/js/business/version/edit.js"></script>

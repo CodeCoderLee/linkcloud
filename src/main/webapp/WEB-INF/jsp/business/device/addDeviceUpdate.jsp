@@ -15,7 +15,15 @@
         <h2>更新升级版本</h2>
     </div>
     <div class="line line-dashed line-lg pull-in"></div>
+
     <div class="card">
+        <div class="card-header">
+            <div class="m-b-md" style="margin-top: 8px">
+                <div class="form-group">
+                    <label class=" h4 control-label">${serialNumbers}</label>
+                </div>
+            </div>
+        </div>
         <div class="card-body card-padding">
             <input type="hidden" name="serialNumbers" id="serialNumbers" value="${serialNumbers}"/>
             <input type="hidden" name="msgEntrance" id="msgEntrance" value="${messenger.msgEntrance}"/>
@@ -43,6 +51,7 @@
 <script charset="utf-8">
     var serialNumber = [];
     $(document).ready(function () {
+
         $.ajax({
             method: 'get',
             url: rootPath + "/version/searchVersionList.shtml",

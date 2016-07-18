@@ -100,11 +100,17 @@ public class DeviceView {
     @Column(name = "area_name")
     private String areaName;
 
+    @Column(name = "city_id")
+    private Integer cityId;
+
     /**
      * 区域名称
      */
     @Column(name = "city")
     private String city;
+
+    @Column(name = "province_id")
+    private Integer provinceId;
 
     /**
      * 区域名称
@@ -462,5 +468,21 @@ public class DeviceView {
 
     public void setVersion2(String version2) {
         this.version2 = version2;
+    }
+
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+    }
+
+    public Integer getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
     }
 }
