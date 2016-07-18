@@ -14,6 +14,10 @@ public class DeviceAuthen {
     @Column(name = "private_key")
     private String privateKey;
 
+    private String heartbeat;
+
+    private String programs;
+
     private String ip1;
 
     private String ip2;
@@ -177,5 +181,22 @@ public class DeviceAuthen {
      */
     public void setToken(String token) {
         this.token = token;
+    }
+
+
+    public String getHeartbeat() {
+        return heartbeat;
+    }
+
+    public void setHeartbeat(String heartbeat) {
+        this.heartbeat = heartbeat;
+    }
+
+    public String getPrograms() {
+        return programs;
+    }
+
+    public void setPrograms(String programs) {
+        this.programs = programs;
     }
 }

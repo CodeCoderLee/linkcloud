@@ -369,10 +369,24 @@ public class DeviceAPI {
     public String reportPrograms(HttpRequest request, String postData, List<NameValuePair> nvList) {
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
+
         boolean validation = true;
         if (serialNumber != null) {
+            try {
+                DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
+                DeviceAuthen deviceAuthen = new DeviceAuthen();
+                deviceAuthen.setSerialNumber(serialNumber);
+                deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
+                if(deviceAuthen != null){
+                    deviceAuthen.setPrograms(postData);
+                    deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
+                }
+            }catch (Exception e){
+
+            }
             parseReportProgram(postData, token, serialNumber);
         }
+
         //TODO
         Map<String, Object> map = new HashMap<String, Object>();
         if (validation) {
@@ -830,7 +844,17 @@ public class DeviceAPI {
         //{"dstat":"0","line":"480","temper":"68","locked":"1","frq":"786000000","strength":"179","snr":"13","dprogs":"3","ndisks":"0","camers":"0","sessions":"0"}
         String serialNumber = getDeviceSerialNumber(token);
         long oldTime = HeartBeatMap.getTimestamp(serialNumber);
-        HeartBeatMap.add(serialNumber, postData);
+        boolean isUpdate = HeartBeatMap.add(serialNumber, postData);
+        if(isUpdate){
+            DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
+            DeviceAuthen deviceAuthen = new DeviceAuthen();
+            deviceAuthen.setSerialNumber(serialNumber);
+            deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
+            if(deviceAuthen != null){
+                deviceAuthen.setHeartbeat(postData);
+                deviceAuthenService.updateByPrimaryKeySelective(deviceAuthen);
+            }
+        }
 
         Map<String, Object> map = new HashMap<String, Object>();
         if (validation) {
