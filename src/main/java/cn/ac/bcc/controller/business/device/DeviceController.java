@@ -11,7 +11,6 @@ import cn.ac.bcc.model.core.Resources;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.service.business.area.AreaService;
 import cn.ac.bcc.service.business.device.DeviceViewService;
-import cn.ac.bcc.service.system.resources.ResourcesService;
 import cn.ac.bcc.util.Messenger;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
@@ -467,8 +466,8 @@ public class DeviceController extends BaseController<Device> {
 
         String postData = HeartBeatMap.get("serialNumber");
         JSONObject json = null;
-        if(postData == null){
-            JSONObject.fromObject(postData);
+        if(postData != null){
+            json = JSONObject.fromObject(postData);
         }else{
             json = new JSONObject();
         }

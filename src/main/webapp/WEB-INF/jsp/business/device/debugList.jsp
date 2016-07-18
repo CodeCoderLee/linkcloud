@@ -6,7 +6,7 @@
 <div class="container" id="myContainer">
     <div class="block-header">
         <h2>设备调试</h2>
-        <form id="spaceForm">
+        <form id="spaceForm" name="spaceForm" >
             <input type="hidden" id="openId" name="openId" value="${openId}"/>
             <input type="hidden" id="resId" name="resId" value="${resId}"/>
             <input type="hidden" id="msgPageSize" name="msgPageSize" value="${messenger.msgPageSize}"/>
