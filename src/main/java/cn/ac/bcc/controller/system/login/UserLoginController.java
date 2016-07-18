@@ -72,19 +72,19 @@ public class UserLoginController extends BaseController {
 
 
     @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
-    public String index(Model model, String base64) {
+    public String index(Model model, String messenger) {
         System.out.println("index");
-        Messenger messenger = new Messenger();
-        if (!Common.isEmpty(base64)) {
+        Messenger messengerObj = new Messenger();
+        if (!Common.isEmpty(messenger)) {
             BASE64Decoder base64Decoder = new BASE64Decoder();
             try {
-                byte[] bytes = base64Decoder.decodeBuffer(base64);
+                byte[] bytes = base64Decoder.decodeBuffer(messenger);
                 String messengerStr = new String(bytes);
                 JSONObject jsonObject = JSONObject.fromObject(messengerStr);
-                messenger.setMsgPageSize(jsonObject.getInt("msgPageSize"));
-                messenger.setMsgPageNumber(jsonObject.getInt("msgPageNumber"));
-                messenger.setMsgSerialNumber(jsonObject.getString("msgSerialNumber"));
-                messenger.setMsgUrl(jsonObject.getString("msgUrl"));
+                messengerObj.setMsgPageSize(jsonObject.getInt("msgPageSize"));
+                messengerObj.setMsgPageNumber(jsonObject.getInt("msgPageNumber"));
+                messengerObj.setMsgSerialNumber(jsonObject.getString("msgSerialNumber"));
+                messengerObj.setMsgUrl(jsonObject.getString("msgUrl"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -127,7 +127,7 @@ public class UserLoginController extends BaseController {
             model.addAttribute("list", ns);
             // 登陆的信息回传页面
             model.addAttribute("user", user1);
-            model.addAttribute("messenger", messenger);
+            model.addAttribute("messenger", messengerObj);
 
             //return jsonObject;
             return "/index";
