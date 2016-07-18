@@ -127,7 +127,9 @@
                 </div>
                 <div class="mindex-detail">
                     <p class="mindex-title"><a
-                            href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a>
+                            href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a
+                                href="${ctx}/space/play/${serialNumber}.shtml?frame=true&programId=${item.id}&openId=${openId}">${item.pname}切换帧测试</a>
                     </p>
                 </div>
             </li>
