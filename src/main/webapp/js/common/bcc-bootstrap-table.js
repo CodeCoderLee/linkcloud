@@ -54,7 +54,7 @@ $(document).ready(function () {
             return;
         }
         var options = $('#bccTable').bootstrapTable('getOptions');
-        $("#content").load(modifyUrl + ids[0] +"&limit="+options['pageSize'] + "&offset="+(options['pageNumber']-1)+"&sortName="+options['sortName']+"&sortOrder="+options['sortOrder']);
+        $("#content").load(modifyUrl + ids[0] +"&limit="+options['pageSize'] + "&offset="+((options['pageNumber']-1)*options['pageSize'])+"&sortName="+options['sortName']+"&sortOrder="+options['sortOrder']);
         // $("#content").load(modifyUrl + ids[0]);
         ids = [];
     });

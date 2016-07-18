@@ -496,6 +496,16 @@ public class DeviceController extends BaseController<Device> {
         return SUCCESS;
     }
 
+    @ResponseBody
+    @RequestMapping("searchAvailableDevice")
+    public List<Device>  searchAvailableDevice(){
+        Device device = new Device();
+        device.setStatus(4);
+        List<Device> list = deviceService.select(device);
+        return list;
+    }
+
+
 
 
 

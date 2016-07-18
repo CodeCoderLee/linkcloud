@@ -3,10 +3,7 @@ package cn.ac.bcc.controller.business.device;
 import cn.ac.bcc.annotation.SystemLog;
 import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.mapper.business.DeviceApplyMapper;
-import cn.ac.bcc.model.business.Area;
-import cn.ac.bcc.model.business.Device;
-import cn.ac.bcc.model.business.DeviceApply;
-import cn.ac.bcc.model.business.DeviceUseApply;
+import cn.ac.bcc.model.business.*;
 import cn.ac.bcc.service.business.area.AreaService;
 import cn.ac.bcc.service.business.device.DeviceApplyService;
 import cn.ac.bcc.service.business.device.DeviceService;
@@ -110,6 +107,7 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
                 }
             }
             deviceUseApply.setIsStockOut(1);
+            deviceUseApply.setStockOutTime(new Date());
             deviceUseApplyService.updateByPrimaryKeySelective(deviceUseApply);
         }
 
@@ -118,10 +116,10 @@ public class DeviceUseApplyController extends BaseController<DeviceUseApply> {
 
     @ResponseBody
     @RequestMapping("search")
-    public ResponseData search(DeviceUseApply deviceUseApply, Integer pageNum, Integer pageSize) {
+    public ResponseData search(DeviceUseApplyView deviceUseApply, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<DeviceUseApply> list = deviceUseApplyService.selectDeviceUseApply(deviceUseApply);
-        PageInfo<DeviceUseApply> pageInfo = new PageInfo<DeviceUseApply>(list);
+        List<DeviceUseApplyView> list = deviceUseApplyService.selectDeviceUseApply(deviceUseApply);
+        PageInfo<DeviceUseApplyView> pageInfo = new PageInfo<DeviceUseApplyView>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
         responseData.setRows(list);

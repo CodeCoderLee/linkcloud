@@ -271,6 +271,12 @@
 
         });
 
+        $('#closeBtn').click(function(){
+            $('#bccTable').bootstrapTable('uncheckAll');
+            $(".modifyPage").addClass("hidden");
+            $(".listPage").removeClass("hidden");
+        });
+
         /*修改按钮点击事件绑定,打开修改窗口*/
         $('#modifyBtn').click(function () {
             var rows = $('#bccTable').bootstrapTable('getSelections');
@@ -355,16 +361,12 @@
             if ($('#province').val() == "") {
                 resetProvinceSelect();
                 return;
-            } else {
-                refreshTable();
             }
         }
         if (type == 2) {
             if ($('#city').val() == "") {
                 resetCountySelect();
                 return;
-            } else {
-                refreshTable();
             }
         }
         $.ajax({
@@ -395,7 +397,7 @@
                     $('#county').attr("disabled", false);
                 }
 
-
+                refreshTable();
             },
             error: function () {
                 //请求出错处理
