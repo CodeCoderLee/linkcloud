@@ -1,6 +1,6 @@
-<%@ page language="java"  pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<%@ page language="java" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <!--[if IE 9 ]><html class="ie9"><![endif]-->
 <head>
@@ -31,47 +31,44 @@
         var tb = $("#content");
         tb.html(loadingHtml());
         var obj = {};
-        var messenger = $('#messenger').val();
-        if (messenger != null && messenger!="") {
-            obj = eval('(' + messenger + ')');
-            if ($.isEmptyObject(obj)) {
-                initMenu();
-            }else {
-                if (obj.msgUrl != null && obj.msgUrl !="") {
-                    $.each($("#menuList ul li a"),function(index,item){
-                        var nav = $(item).attr("nav-n");
-                        var sn = nav.split(",");
-                        alert("sn[2]=="+sn[2]+"&url=="+obj.msgUrl);
-                        if (obj.url == sn[2]) {
-                            $(item).addClass("active");
-                            $(item).parents("li").addClass("active");
-                            if ($(item).parents("li").length == 2) {//两级菜单,展开
-                                $($(item).parents("li")[1]).addClass("toggled");
-                            }
-                            return true;
-                        }
-
-                    });
-                }else {
-                    initMenu();
+        var msgUrl = $('#indexMsgUrl').val();
+        if (msgUrl != null && msgUrl != "") {
+            $.each($("#menuList ul li a"), function (index, item) {
+                var nav = $(item).attr("nav-n");
+                var sn = nav.split(",");
+                if (msgUrl == sn[2]) {
+                    $(item).addClass("active");
+                    $(item).parents("li").addClass("active");
+                    if ($(item).parents("li").length == 2) {//两级菜单,展开
+                        $($(item).parents("li")[1]).addClass("toggled");
+                    }
+                    return true;
                 }
-            }
 
-        }else{
+            });
+        } else {
             initMenu();
         }
         /*获取菜单栏中active菜单的url，进行加载*/
-        if($("#menuList ul li.active a.active").length>0){
+        if ($("#menuList ul li.active a.active").length > 0) {
             //判断是否有权限
             var nav = $($("#menuList ul li.active  a.active")[0]).attr("nav-n");
             var sn = nav.split(",");
-            if ($.isEmptyObject(obj)) {
+            if (msgUrl!=null && msgUrl!="") {
+                var msgPageSize = $('#indexMsgPageSize').val();
+                var msgPageNumber = $('#indexMsgPageNumber').val();
+                var msgSerialNumber = $('#indexMsgSerialNumber').val();
+                tb.load(rootPath + sn[2], {
+                    msgPageSize: msgPageSize,
+                    msgPageNumber: msgPageNumber,
+                    msgSerialNumber: msgSerialNumber,
+                    msgUrl: msgUrl
+                });
+            } else {
                 tb.load(rootPath + sn[2]);
-            }else {
-                tb.load(rootPath + sn[2],obj);
             }
 
-        }else{
+        } else {
             /*一个权限都没有*/
 //            tb.load(rootPath + "/WEB-INF/jsp/system/user/list.jsp");
             tb.load(rootPath + "/denied.jsp");
@@ -89,26 +86,30 @@
             });
         });
 
-    });
+    })
+    ;
 
-    function initMenu(){
+    function initMenu() {
         //判断有没有li标签
-        if ($("#menuList ul li").length>0) {//等于0则无权限
+        if ($("#menuList ul li").length > 0) {//等于0则无权限
             var firstLi = $("#menuList ul li")[0];
             $(firstLi).addClass("active");
-            if ($(firstLi).find("ul").length>0) {//目录,有子菜单
+            if ($(firstLi).find("ul").length > 0) {//目录,有子菜单
                 $(firstLi).addClass("toggled");//展开
                 $($(firstLi).find("ul").find("li")[0]).addClass("active");
                 $($(firstLi).find("ul").find("li a")[0]).addClass("active");
-            }else{
+            } else {
                 $(firstLi).addClass("toggled");//没有子菜单.
             }
         }
     }
 </script>
 <body>
-<%@include file="header.jsp"%>
-<input type="hidden" value="${messenger}" id="messenger"/>
+<%@include file="header.jsp" %>
+<input type="hidden" id="indexMsgPageSize"  value="${messenger.msgPageSize}"/>
+<input type="hidden" id="indexMsgPageNumber"  value="${messenger.msgPageNumber}"/>
+<input type="hidden" id="indexMsgSerialNumber"  value="${messenger.msgSerialNumber}"/>
+<input type="hidden" id="indexMsgUrl"  value="${messenger.msgUrl}"/>
 <section id="main">
     <aside id="sidebar">
         <div class="sidebar-inner c-overflow">
@@ -161,17 +162,20 @@
                         3.如果有二级目录,并且是第一个目录,那么默认展开,选中二级目录中的第一个--%>
                         <li class="level_1 <c:if test="${key.children.size()>0}"> sub-menu </c:if>
                                 <%--<c:if test="${s.index==0}"> active </c:if>--%>
-                                <%--<c:if test="${key.children.size()>0&&s.index==0}"> toggled </c:if>--%>" >
-                        <%--为菜单栏中的<a>标签,添加load的class,只有拥有load类的标签的点击事件才会加载页面--%>
-                        <a href="javascript:void(0)" class="<c:if test="${key.children.size()==0} load"></c:if> <%--<c:if test="${s.index==0&&key.children.size()==0}"> active </c:if>--%>" nav-n="${key.name},${key.name},${key.resUrl}?id=${kc.id}">
-                        <i class="zmdi zmdi-widgets"></i>${key.name}
-                        </a>
+                                <%--<c:if test="${key.children.size()>0&&s.index==0}"> toggled </c:if>--%>">
+                                <%--为菜单栏中的<a>标签,添加load的class,只有拥有load类的标签的点击事件才会加载页面--%>
+                            <a href="javascript:void(0)"
+                               class="<c:if test="${key.children.size()==0} load"></c:if> <%--<c:if test="${s.index==0&&key.children.size()==0}"> active </c:if>--%>"
+                               nav-n="${key.name},${key.name},${key.resUrl}?id=${kc.id}">
+                                <i class="zmdi zmdi-widgets"></i>${key.name}
+                            </a>
                             <ul>
                                 <c:forEach var="kc" items="${key.children}" varStatus="kcs">
                                     <%--<li <c:if test="${kcs.index==0}">class="active"</c:if> >--%>
                                     <li>
-                                        <%--二级目录的菜单,都需要加载页面,所以添加class添加load--%>
-                                        <a href="javascript:void(0)"  class="load <%--<c:if test="${kcs.index==0&&s.index==0}"> active </c:if>--%>"
+                                            <%--二级目录的菜单,都需要加载页面,所以添加class添加load--%>
+                                        <a href="javascript:void(0)"
+                                           class="load <%--<c:if test="${kcs.index==0&&s.index==0}"> active </c:if>--%>"
                                            nav-n="${key.name},${kc.name},${kc.resUrl}?id=${kc.id}"> <i
                                                 class="fa fa-angle-right"></i> <span>${kc.name}</span>
                                         </a></li>
@@ -188,7 +192,7 @@
 
     </section>
 </section>
-<%@include file="footer.jsp"%>
+<%@include file="footer.jsp" %>
 
 <!-- Javascript Libraries -->
 <script src="${ctx}/vendors/bower_components/jquery/dist/jquery.min.js"></script>

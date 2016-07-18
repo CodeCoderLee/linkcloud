@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.ac.bcc.mapper.business.DeviceUseApplyViewMapper" >
+  <resultMap id="BaseResultMap" type="cn.ac.bcc.model.business.DeviceUseApplyView" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="industry_code" property="industryCode" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="is_stock_out" property="isStockOut" jdbcType="INTEGER" />
+    <result column="stock_out_time" property="stockOutTime" jdbcType="TIMESTAMP" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="province_id" property="provinceId" jdbcType="INTEGER" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="industry_full_name" property="industryFullName" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_full_name" property="companyFullName" jdbcType="VARCHAR" />
+    <result column="serial_number" property="serialNumber" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectDeviceUseApply" resultType="cn.ac.bcc.model.business.DeviceUseApplyView" parameterType="cn.ac.bcc.model.business.DeviceUseApplyView">
+    select t.id id, t.area_id areaId,t.industry_code industryCode,t.company_id companyId,
+    t.contact_name contactName,t.contact_phone contactPhone, t.apply_time applyTime,t.status status, t.is_stock_out isStockOut,
+    t.stock_out_time stouckOutTime, t.area_name areaName, t.city_id cityId, t.city city, t.province_id provinceId, t.province province,
+    t.industry_full_name industryFullName, t.company_name companyName, t.company_full_name companyFull_name,
+    t.serial_number serialNumber, group_concat(t.serial_number) serialNumbers from bcc_device_use_apply_view t where 1=1
+    <if test="deviceUseApply.contactName != null and deviceUseApply.contactName != ''">
+      <![CDATA[and  (t.contact_name like "%"#{deviceUseApply.contactName}"%" or t.company_name LIKE "%"#{deviceUseApply.contactName}"%" or t.company_full_name like "%"#{deviceUseApply.contactName}"%")  ]]>
+
+    </if>
+    <if test="deviceUseApply.serialNumber != null and deviceUseApply.serialNumber != ''">
+      <![CDATA[and t.serial_number like "%"#{deviceUseApply.serialNumber}"%"  ]]>
+    </if>
+    <if test="deviceUseApply.areaId != null ">
+      and t.area_id = #{deviceUseApply.areaId}
+    </if>
+    <if test="deviceUseApply.cityId != null ">
+      and t.city_id = #{deviceUseApply.cityId}
+    </if>
+    <if test="deviceUseApply.provinceId != null ">
+      and t.province_id = #{deviceUseApply.provinceId}
+    </if>
+    <if test="deviceUseApply.industryCode != null and deviceUseApply.industryCode != ''">
+      and t.industry_code = #{deviceUseApply.industryCode}
+    </if>
+    group by t.id order by t.apply_time desc
+  </select>
+</mapper>

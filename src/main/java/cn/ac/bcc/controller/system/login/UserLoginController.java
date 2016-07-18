@@ -1,5 +1,8 @@
 package cn.ac.bcc.controller.system.login;
 
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +43,8 @@ import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.TreeObject;
 import cn.ac.bcc.util.TreeUtil;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 /**
  * Created by lifm on 2016/2/1.
@@ -69,6 +74,23 @@ public class UserLoginController extends BaseController {
     @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
     public String index(Model model, String messenger) {
         System.out.println("index");
+        Messenger messengerObj = new Messenger();
+        if (!Common.isEmpty(messenger)) {
+            BASE64Decoder base64Decoder = new BASE64Decoder();
+            try {
+                byte[] bytes = base64Decoder.decodeBuffer(messenger);
+                String messengerStr = new String(bytes);
+                JSONObject jsonObject = JSONObject.fromObject(messengerStr);
+                messengerObj.setMsgPageSize(jsonObject.getInt("msgPageSize"));
+                messengerObj.setMsgPageNumber(jsonObject.getInt("msgPageNumber"));
+                messengerObj.setMsgSerialNumber(jsonObject.getString("msgSerialNumber"));
+                messengerObj.setMsgUrl(jsonObject.getString("msgUrl"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         JSONObject jsonObject = new JSONObject();
         try {
             HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
@@ -82,7 +104,7 @@ public class UserLoginController extends BaseController {
                 //return jsonObject;
                 return "/error";
             }
-            getSession().setAttribute("user",user1);
+            getSession().setAttribute("user", user1);
             List<Resources> rs = resourcesService.findUserResourcess("" + user1.getId());
             System.out.println(rs.size());
             List<TreeObject> list = new ArrayList<TreeObject>();
@@ -95,7 +117,7 @@ public class UserLoginController extends BaseController {
                 }
             }
             TreeUtil treeUtil = new TreeUtil();
-            List<TreeObject> ns = treeUtil.getChildTreeObjects(list, list.size()==0?0:list.get(0).getParentId());
+            List<TreeObject> ns = treeUtil.getChildTreeObjects(list, list.size() == 0 ? 0 : list.get(0).getParentId());
             System.out.println(JSONArray.fromObject(ns).toString());
             jsonObject.put("treelists", JSONArray.fromObject(ns).toString());
             jsonObject.put("user", user1);
@@ -105,7 +127,8 @@ public class UserLoginController extends BaseController {
             model.addAttribute("list", ns);
             // 登陆的信息回传页面
             model.addAttribute("user", user1);
-            model.addAttribute("messenger", messenger);
+            model.addAttribute("messenger", messengerObj);
+
             //return jsonObject;
             return "/index";
         } catch (Exception e) {

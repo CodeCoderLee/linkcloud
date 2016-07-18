@@ -64,6 +64,19 @@ public class DeviceUseApply {
     @Column(name = "is_stock_out")
     private Integer isStockOut;
 
+
+    @Column(name = "stock_out_time")
+    private Date stockOutTime;
+
+    @Transient
+    private String serialNumbers;
+
+    @Transient
+    private String city;
+
+    @Transient
+    private String province;
+
     /**
      * 获取主键，自增
      *
@@ -229,5 +242,37 @@ public class DeviceUseApply {
 
     public void setIsStockOut(Integer isStockOut) {
         this.isStockOut = isStockOut;
+    }
+
+    public Date getStockOutTime() {
+        return stockOutTime;
+    }
+
+    public void setStockOutTime(Date stockOutTime) {
+        this.stockOutTime = stockOutTime;
+    }
+
+    public String getSerialNumbers() {
+        return serialNumbers;
+    }
+
+    public void setSerialNumbers(String serialNumbers) {
+        this.serialNumbers = serialNumbers;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 }

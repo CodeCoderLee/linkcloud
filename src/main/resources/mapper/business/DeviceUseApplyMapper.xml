@@ -14,19 +14,40 @@
     <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="is_stock_out" property="isStockOut" jdbcType="INTEGER" />
+    <result column="stock_out_time" property="stockOutTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <select id="selectDeviceUseApply" resultType="cn.ac.bcc.model.business.DeviceUseApply" parameterType="cn.ac.bcc.model.business.DeviceUseApply">
-    select t1.id id, t1.area_id areaId, t2.area_name areaName,
-      t1.industry_code industryCode, t3.full_name industryName,
-      t1.company_id companyId, t4.`name` companyName, t1.contact_name contactName,
-      t1.contact_phone contactPhone, t1.apply_time applyTime, t1.status status,t1.is_stock_out isStockOut
+    select t1.id id, t1.area_id areaId, t2.area_name areaName,t2.city city, t2.province province,
+    t1.industry_code industryCode, t3.full_name industryName,
+    t1.company_id companyId, t4.`name` companyName, t1.contact_name contactName,
+    t1.contact_phone contactPhone, t1.apply_time applyTime, t1.status status,t1.is_stock_out isStockOut,
+    t1.stock_out_time stockOutTime, group_concat(t5.serial_number) serialNumbers
     from bcc_device_use_apply t1
-    left join bcc_area t2 on t1.area_id=t2.id
-	left join bcc_industry t3 on t1.industry_code = t3.full_code
-	left join bcc_company t4 on t1.company_id = t4.ID where 1=1
+    left join bcc_area_view t2 on t1.area_id=t2.id
+    left join bcc_industry t3 on t1.industry_code = t3.full_code
+    left join bcc_company t4 on t1.company_id = t4.ID
+    left join bcc_device_apply t5 on  t1.id = t5.apply_id where 1=1
     <if test="deviceUseApply.contactName != null and deviceUseApply.contactName != ''">
-      and t1.contact_name = #{deviceUseApply.contactName}
+      <![CDATA[and  (t1.contact_name like "%"#{deviceUseApply.contactName}"%" or t4.name LIKE "%"#{deviceUseApply.contactName}"%" or t4.full_name like "%"#{deviceUseApply.contactName}"%")  ]]>
+
     </if>
+    <if test="deviceUseApply.serialNumbers != null and deviceUseApply.serialNumbers != ''">
+      <![CDATA[and t5.serial_number like "%"#{deviceUseApply.serialNumbers}"%"  ]]>
+
+    </if>
+    <if test="deviceUseApply.serialNumbers != null and deviceUseApply.serialNumbers != ''">
+      <![CDATA[and t5.serial_number like "%"#{deviceUseApply.serialNumbers}"%"  ]]>
+
+    </if>
+    <if test="deviceUseApply.serialNumbers != null and deviceUseApply.serialNumbers != ''">
+      <![CDATA[and t5.serial_number like "%"#{deviceUseApply.serialNumbers}"%"  ]]>
+
+    </if>
+    <if test="deviceUseApply.serialNumbers != null and deviceUseApply.serialNumbers != ''">
+      <![CDATA[and t5.serial_number like "%"#{deviceUseApply.serialNumbers}"%"  ]]>
+
+    </if>
+    group by t1.id
 	ORDER BY t1.apply_time desc
   </select>
 </mapper>

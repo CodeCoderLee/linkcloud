@@ -52,12 +52,12 @@ function goSpace(serialNumber) {
 
 function goDebugHeartBeatInfo(serialNumber) {
     setFormData();
-
-
-    var form = document.getElementById("spaceForm");
-    form.setAttribute("action", "/space/goDebugHeartBeatInfo/" + serialNumber + ".shtml");
-    form.setAttribute("method", "post");
-    form.submit();
+    var form = $('#spaceForm');
+    $(form).attr("action","/space/goDebugHeartBeat/" + serialNumber + ".shtml");
+    $(form).submit();
+    // form.setAttribute("action", "/space/goDebugHeartBeat/" + serialNumber + ".shtml");
+    // form.setAttribute("method", "post");
+    // form.submit();
 }
 
 function setFormData() {
@@ -65,7 +65,8 @@ function setFormData() {
     if ($('#msgPageSize').val() == null || $('#msgPageSize').val() == "") {
         $('#msgPageSize').val(6);
     }
-    $('#msgPageNumber').val(pages.current);
+    var pageNumber = pages.current;
+    $('#msgPageNumber').val(pageNumber);
     $('#msgSerialNumber').val($('#searchParam').val());
 }
 
