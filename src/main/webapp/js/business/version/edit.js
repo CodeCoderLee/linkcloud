@@ -27,7 +27,7 @@ $(function () {
                 //     console.log("complete!!");
                 // },
                 success: function (data) {
-                    notify('success', '     版本信息添加成功      ');
+                    notify('success', '     版本信息修改成功      ');
                     $("#content").load(rootPath + "/version/list.shtml");
                 },
                 error: function (XMLResponse) {
