@@ -2,6 +2,7 @@ package cn.ac.bcc.util.helper;
 
 import net.sf.json.JSONObject;
 
+import javax.json.Json;
 import java.util.*;
 
 /**
@@ -10,9 +11,25 @@ import java.util.*;
 public class HeartBeatMap {
     private static Map<String,String> map = new HashMap<String, String>();
 
-    public static void add(String key,String heartBeanData){
+    public static boolean add(String key,String heartBeanData){
+        //检测频率和locked是否发生变化
+        boolean ret = false;
+        try{
+            JSONObject object = JSONObject.fromObject(heartBeanData);
+            String newFrq = object.getString("frq");
+            String newLocked = object.getString("locked");
+            String oldFrq = getFrq(key);
+            String oldLocked = getLocked(key);
+            if(!newFrq.equals(oldFrq) || !newLocked.equals(oldLocked)){
+                ret = true;
+            }
+        }catch (Exception e){
+
+        }
         map.put(key,heartBeanData);
+        return ret;
     }
+
 
     public static List<String> getKeys(){
         Set<String> set = map.keySet();
@@ -39,6 +56,26 @@ public class HeartBeatMap {
             String jsonStr = map.get(key);
             JSONObject json = JSONObject.fromObject(jsonStr);
             return json.getString("seq");
+        }else{
+            return "-1";
+        }
+    }
+
+    public static String getFrq(String key){
+        if(map.containsKey(key)){
+            String jsonStr = map.get(key);
+            JSONObject json = JSONObject.fromObject(jsonStr);
+            return json.getString("frq");
+        }else{
+            return "-1";
+        }
+    }
+
+    public static String getLocked(String key){
+        if(map.containsKey(key)){
+            String jsonStr = map.get(key);
+            JSONObject json = JSONObject.fromObject(jsonStr);
+            return json.getString("locked");
         }else{
             return "-1";
         }

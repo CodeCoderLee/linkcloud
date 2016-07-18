@@ -25,9 +25,9 @@
             <button type="button" class="btn btn-info" id="modifyBtn">
                 <i class="glyphicon glyphicon-edit"></i>修改
             </button>
-            <button type="button" class="btn btn-danger" id="deleteBtn">
-                <i class="glyphicon glyphicon-minus"></i>删除
-            </button>
+            <%--<button type="button" class="btn btn-danger" id="deleteBtn">--%>
+                <%--<i class="glyphicon glyphicon-minus"></i>删除--%>
+            <%--</button>--%>
             <button id="refreshBtn" class="btn btn-default">
                 <i class="glyphicon glyphicon-refresh"></i>刷新
             </button>
@@ -62,6 +62,7 @@
                     <th data-field="url" data-sortable="true">url</th>
                     <th data-field="version">版本号</th>
                     <th data-field="addTime" data-formatter="dateTimeFormatter">更新时间</th>
+                    <th data-field="remarks">备注</th>
                 </tr>
                 </thead>
             </table>
@@ -112,6 +113,7 @@
 
         /*修改按钮点击事件绑定,打开修改窗口*/
         $('#modifyBtn').click(function(){
+            alert("modify");
             if (ids.length==0){
                 alert("请选中一条记录");
                 return;
@@ -122,7 +124,9 @@
             }
 //            var $w = $(document).width();
 //            window.open('user/modifyUI.shtml?id='+ids[0],"",'height=600,width=800,top=200,left='+($w/2-400)+','+'toolbar=no,menubar=yes,scrollbars=no, resizable=no,location=no, status=no');
-            $('#npcForm').attr('src','company/modifyUI.shtml?id='+ids[0]);
+
+            $("#content").load('version/modifyUI.shtml?id='+ids[0]);
+//            $('#npcForm').attr('src','version/modifyUI.shtml?id='+ids[0]);
             $('#npcForm').css({
                 'display':'block'
             });

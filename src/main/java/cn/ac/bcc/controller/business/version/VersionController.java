@@ -86,6 +86,38 @@ public class VersionController extends BaseController<Version> {
         versionService.updateByPrimaryKeySelective(version);
         return SUCCESS;
     }
+    @RequestMapping("modifyUI")
+    public String modifyUI(Model model) {
+        String id = getPara("id");
+        model.addAttribute("limit", getPara("limit"));
+        model.addAttribute("offset", getPara("offset"));
+        model.addAttribute("sortName", getPara("sortName"));
+        model.addAttribute("sortOrder", getPara("sortOrder"));
+        if (Common.isNotEmpty(id)) {
+            Version version = versionService.selectByPrimaryKey(Integer.valueOf(id));
+            model.addAttribute("version", version);
+        }
+        return Common.BACKGROUND_PATH + "/business/version/edit";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "modify")
+    @SystemLog(module = "版本管理", methods = "版本管理-修改版本")//凡需要处理业务逻辑的.都需要记录操作日志
+    public String modify(MultipartFile file,Version version) {
+        if(file != null){
+            String filePath = saveFile(file, rootPath);
+            version.setFilePath(filePath);
+            version.setFileName(file.getOriginalFilename());
+            versionService.insertSelective(version);
+            String url = "/version/download.shtml?id=" + version.getId();
+            version.setUrl(url);
+        }
+        Date date = new Date();
+        version.setAddTime(date);
+        versionService.updateByPrimaryKeySelective(version);
+
+        return SUCCESS;
+    }
 
     @ResponseBody
     @RequestMapping("download")
