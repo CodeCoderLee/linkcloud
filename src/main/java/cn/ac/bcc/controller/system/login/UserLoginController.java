@@ -98,7 +98,7 @@ public class UserLoginController extends BaseController {
             response.setCharacterEncoding("UTF-8");
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             User user1 = (User) Common.findUserSession(request);
-            System.out.println(user1.getId());
+//            System.out.println(user1.getId());
             if (user1 == null) {
                 jsonObject.put("status", 0);
                 //return jsonObject;
