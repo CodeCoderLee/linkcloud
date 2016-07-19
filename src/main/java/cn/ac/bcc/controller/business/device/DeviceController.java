@@ -120,6 +120,7 @@ public class DeviceController extends BaseController<Device> {
 //        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SCANFRQ);
+        System.out.println("下发扫频命令:serialNumber===" + serialNumber + "object====" + object.toString());
         CommandMap.addCommand(serialNumber,object);
 //        ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
 //        scanFreqInfos.setFrqsNum(3);
@@ -503,7 +504,7 @@ public class DeviceController extends BaseController<Device> {
 //        }else{
 //            json = new JSONObject();
 //        }
-        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber("0000000f");
+        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         model.addAttribute("postData",deviceAuthen);
         model.addAttribute("serialNumber",serialNumber);
         model.addAttribute("messenger", messenger);
