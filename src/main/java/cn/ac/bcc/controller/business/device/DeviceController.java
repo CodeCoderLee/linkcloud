@@ -120,6 +120,7 @@ public class DeviceController extends BaseController<Device> {
 //        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SCANFRQ);
+        System.out.println("下发扫频命令:serialNumber===" + serialNumber + "object====" + object.toString());
         CommandMap.addCommand(serialNumber,object);
 //        ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
 //        scanFreqInfos.setFrqsNum(3);
