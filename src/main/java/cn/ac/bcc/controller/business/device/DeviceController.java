@@ -503,7 +503,7 @@ public class DeviceController extends BaseController<Device> {
 //        }else{
 //            json = new JSONObject();
 //        }
-        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber("0000000f");
+        DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         model.addAttribute("postData",deviceAuthen);
         model.addAttribute("serialNumber",serialNumber);
         model.addAttribute("messenger", messenger);
