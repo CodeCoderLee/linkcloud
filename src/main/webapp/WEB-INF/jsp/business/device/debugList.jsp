@@ -74,7 +74,8 @@
 <script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"></script>
 <script charset="utf-8" src="${ctx}/js/bootstrap-paginator.min.js"></script>
 <script charset="utf-8" src="${ctx}/js/common/bcc-bootstrap-table.js"></script>
-<script charset="utf-8" src="${ctx}/js/business/device/commonOperate.js"></script>
+<script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/common/common.js"></script>
 <script type="text/javascript" charset="utf-8">
 
     $(document).ready(function () {
@@ -184,3 +185,4 @@
         })
     }
 </script>
+<script charset="utf-8" src="${ctx}/js/business/device/commonOperate.js"></script>
