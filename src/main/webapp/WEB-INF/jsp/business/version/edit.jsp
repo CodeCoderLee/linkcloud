@@ -73,7 +73,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">备注</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" rows="3" name="remarks">${version.remarks}</textarea>
+                                        <textarea class="form-control auto-sizeß" name="remarks">${version.remarks}</textarea>
                                     </div>
                                 </div>
 
