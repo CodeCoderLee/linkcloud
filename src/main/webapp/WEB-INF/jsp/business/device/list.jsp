@@ -127,7 +127,8 @@
                     <th data-field="serialNumber">序列号</th>
                     <th data-field="trackNo">物流号</th>
                     <th data-field="areaName" data-formatter="areaFormatter">区域</th>
-                    <th data-field="status" data-formatter="statusFormatter">状态</th>
+                    <th data-field="status" data-formatter="statusFormatter">设备状态</th>
+                    <th data-field="onOffLine" data-formatter="onOffLineFormatter">在线状态</th>
                     <th data-field="version1" data-formatter="versionFormatter">Version_s/Version_t</th>
                     <th data-field="registerTime" data-formatter="dateTimeFormatter">注册时间</th>
                 </tr>
@@ -431,6 +432,11 @@
             version2 = row['version2'];
         }
         return version1 + "/" + version2;
+
+    }
+
+    function onOffLineFormatter(value) {
+        return value==1?"是":"否";
 
     }
 

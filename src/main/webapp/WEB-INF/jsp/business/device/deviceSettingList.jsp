@@ -151,12 +151,14 @@
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>是否在线</dt>";
             if (item.onOffLine) {
-                html = html + "<dd>是</dd>";
+                html = html + "<dd>是</dd></dl>";
             } else {
-                html = html + "<dd>否</dd>";
+                html = html + "<dd>否</dd></dl>";
             }
+            html = html + "<dl class=\"dl-horizontal\">" +
+                    "<dt>version_s/version_t</dt>" +
+                    "<dd>"+item.version1+"/"+item.version2+"</dd></dl>";
             html = html +
-                    "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('" + item.id + "','" + item.serialNumber + "')\">设备详情</a></dt>" +
                     "<dd><a class=\"btn btn-info\" href=\"javascript:goSpace('" + item.serialNumber + "')\">设备空间</a></dd>" +

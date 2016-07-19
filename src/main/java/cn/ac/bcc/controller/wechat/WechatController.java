@@ -6,6 +6,7 @@ import cn.ac.bcc.service.system.login.UserLoginService;
 import cn.ac.bcc.service.system.user.UserService;
 import cn.ac.bcc.util.*;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -45,6 +46,8 @@ import java.util.List;
 @RequestMapping("/wechat/")
 public class WechatController {
 
+    private static Logger logger = Logger.getLogger(WechatController.class);
+
     @Autowired
     private UserService userService;
 
@@ -77,6 +80,7 @@ public class WechatController {
 
     @RequestMapping(value = "authen", method = RequestMethod.GET)
     public String authen(HttpServletRequest request, Model model, String uri) throws UnsupportedEncodingException {
+        logger.info("=====================calling authen method uri=="+uri +"=====================");
         StringBuilder url = new StringBuilder();
         url.append("https://open.weixin.qq.com/connect/oauth2/authorize?appid=").append(WechatUtil.getAppId());
         url.append("&redirect_uri=");//http%3a%2f%2flinkcloud.tunnel.qydev.com%2fwechat%2findex.shtml%3furl%3d%2findex
@@ -107,7 +111,7 @@ public class WechatController {
             jsonObject = WechatUtil.getWebOauthAccessToken(code);
         }
         JSONObject userInfo = WechatUtil.getOauthUserInfo(jsonObject.getString("access_token"), jsonObject.getString("openid"));
-        System.out.println("userInfo===" + userInfo.toString());
+        logger.info("=========================="+userInfo.toString()+"====================");
         User user = new User();
         /*通过openId获取user信息*/
         user.setUnionId(userInfo.getString("unionid"));
@@ -214,6 +218,7 @@ public class WechatController {
         //TODO 普通权限的用户仅能进入前台页面
         //return "redirect:/space/device/index.shtml?openId="+user.getOpenId();
         model.addAttribute("openId", user.getOpenId());
+        logger.info("==================user login success, redirect page============");
         if (!Common.isEmpty(isWeb)) {
             return "redirect:/index.shtml";
         }
