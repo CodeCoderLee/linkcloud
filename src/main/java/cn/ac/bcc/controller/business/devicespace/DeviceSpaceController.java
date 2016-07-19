@@ -295,7 +295,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
     }
 
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId){
+    public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId,String frame){
         Program program = programService.selectByPrimaryKey(programId);
         String ptype = "";
         if(program != null)ptype = program.getStype();
@@ -309,8 +309,9 @@ public class DeviceSpaceController extends BaseController<Comment>{
         example.createCriteria().andEqualTo("stype",ptype).andEqualTo("deviceSerialNumber",serialNumber);
         List<Program> list = programService.selectByExample(example);
         list = adjustSort(list,programId);
-//        list.get(1).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
 //        list.get(0).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
+//        list.get(2).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
+//        list.get(4).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
 
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         mode.addAttribute("ip_address",deviceAuthen.getIp1());
@@ -328,7 +329,11 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
         JSONArray array = JSONArray.fromObject(list);
         mode.addAttribute("array",array.toString());
-        return Common.BACKGROUND_PATH + "/business/devicespace/play";
+        if(Common.isNotEmpty(frame)) {
+            return Common.BACKGROUND_PATH + "/business/devicespace/play-slider";
+        }else{
+            return Common.BACKGROUND_PATH + "/business/devicespace/play";
+        }
     }
 
     @RequestMapping(value = "play2/{serialNumber}", produces = "text/html; charset=utf-8")
