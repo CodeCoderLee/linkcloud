@@ -46,20 +46,19 @@ public class StatusListener implements ServletContextListener {
         }
 
         public void run() {
-            int sleep = 200;
-            int maxSpace = 10000;
+            int sleep = 500;
             while (run){
                 try {
                     List<String> keyList = OnOffLineMap.getKeys();
                     for (String serialNumber : keyList) {
                         if (!OnOffLineMap.isOnline(serialNumber)) {
-                            //超过500毫秒判断为离线，更新状态
+                            //超时判断为离线，更新状态
                             DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
                             DeviceService deviceService = ctx.getBean(DeviceService.class);
                             deviceService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
                             deviceAuthenService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
-                            HeartBeatMap.clear(serialNumber);
-                            OnOffLineMap.clear(serialNumber);
+//                            HeartBeatMap.clear(serialNumber);
+//                            OnOffLineMap.clear(serialNumber);
                             if(DeviceAPI.AUTHEN_MAP.containsKey(serialNumber)){
                                 DeviceAPI.AUTHEN_MAP.put(serialNumber,false);
                             }

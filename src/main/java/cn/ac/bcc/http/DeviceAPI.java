@@ -71,6 +71,14 @@ public class DeviceAPI {
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
 
+        if(serialNumber != null && !OnOffLineMap.isOnline(serialNumber)){
+            AUTHEN_MAP.put(serialNumber,true);
+            DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
+            DeviceService deviceService = ctx.getBean(DeviceService.class);
+            deviceService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
+            deviceAuthenService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
+        }
+
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
         log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::::::::" + token + "\r\nserialNumber:::" +  serialNumber + "\r\ndata:::::::::::" + postData);
         String jsonStr = "";
