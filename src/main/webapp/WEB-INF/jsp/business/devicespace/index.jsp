@@ -167,8 +167,8 @@
                         </p>
                     </c:if>
                     <c:if test="${item.isDir == 0}">
-                        <p class="mindex-title"><a
-                                href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a>
+                        <p class="mindex-title">
+                            <a href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a>
                         </p>
                     </c:if>
                 </div>
@@ -195,8 +195,9 @@
                     <img class="mindex-ulImg" src="${ctx}/assets/i/remote.png" alt=""/>
                 </div>
                 <div class="mindex-detail">
-                    <p class="mindex-title"><a
-                            href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a>
+                    <p class="mindex-title">
+                        <a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a>
+                        <a href="${ctx}/space/play/${serialNumber}.shtml?frame=true&programId=${item.id}&openId=${openId}">测试</a>
                     </p>
                 </div>
             </li>

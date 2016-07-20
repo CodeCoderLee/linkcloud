@@ -21,4 +21,8 @@
     update bcc_device_authen d SET d.on_off_line = #{onOffLine}
     where d.serial_number = #{serialNumber}
   </update>
+
+  <update id="updateOnOffLineAll">
+    update bcc_device_authen d SET d.on_off_line = #{onOffLine}
+  </update>
 </mapper>

@@ -18,4 +18,6 @@ public interface DeviceMapper extends Mapper<Device> {
     List<Device> selectSettingDevice(@Param("userId") Integer userId, @Param("device") Device device);
 
     void updateWorkFrequencyAndProgramIds(@Param("frequency") String frequency,@Param("programIds") String programIds, @Param("serialNumber") String serialNumber);
+
+    int updateOnOffLineAll(@Param("onOffLine") Integer onOffLine);
 }

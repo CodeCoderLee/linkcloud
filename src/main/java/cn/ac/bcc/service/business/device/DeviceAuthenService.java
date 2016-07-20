@@ -25,6 +25,10 @@ public class DeviceAuthenService extends BaseService<DeviceAuthen>{
         return deviceAuthenMapper.updateOnOffLineByNum(serialNumber,onOffLine);
     }
 
+    public int updateOnOffLineAll(Integer onOffLine){
+        return deviceAuthenMapper.updateOnOffLineAll(onOffLine);
+    }
+
     public DeviceAuthen findDeviceBySerialNumber(String serialNumber){
         DeviceAuthen deviceAuthen = new DeviceAuthen();
         deviceAuthen.setSerialNumber(serialNumber);

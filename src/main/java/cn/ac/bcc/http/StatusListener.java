@@ -30,6 +30,16 @@ public class StatusListener implements ServletContextListener {
     {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
+
+        try {
+            DeviceAuthenService deviceAuthenService = springContext.getBean(DeviceAuthenService.class);
+            DeviceService deviceService = springContext.getBean(DeviceService.class);
+            deviceService.updateOnOffLineAll(HelperUtils.OFF_LINE);
+            deviceAuthenService.updateOnOffLineAll(HelperUtils.OFF_LINE);
+        }catch (Exception e){
+
+        }
+
         Timer timer = new Timer();
         timer.schedule(new MyTask(springContext, sc, timer), 3000);
     }

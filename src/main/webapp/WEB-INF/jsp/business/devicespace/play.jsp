@@ -192,8 +192,8 @@
       }
       console.log('当前视频 video index:',current,ev.deltaX>0? '滑动向右' : '滑动向左');
       $("input[name=programId]").attr("value",videoArray[current].programId);
-      setTimeout("videoArray[current].startOrRePlay(oldVideo)",10);
-      setTimeout("videoArray[current].changeComment()",10);
+      setTimeout(videoArray[current].startOrRePlay(oldVideo),10);
+      setTimeout(videoArray[current].changeComment(),10);
     });
 
       var programArray = eval("("+ '${array}'+")");
