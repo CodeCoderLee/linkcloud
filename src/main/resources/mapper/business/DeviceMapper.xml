@@ -80,6 +80,10 @@
         where d.serial_number = #{serialNumber}
     </update>
 
+    <update id="updateOnOffLineAll">
+        update BCC_DEVICE d SET d.on_off_line = #{onOffLine}
+    </update>
+
     <update id="updateWorkFrequencyAndProgramIds">
         update BCC_DEVICE d SET d.work_frequency = #{frequency} , d.program_ids = #{programIds}
         where d.serial_number = #{serialNumber}

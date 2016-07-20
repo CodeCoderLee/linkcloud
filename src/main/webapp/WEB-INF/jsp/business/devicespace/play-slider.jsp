@@ -16,6 +16,7 @@
   <!-- No Baidu Siteapp-->
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <link rel="icon" type="image/png" href="${ctx}/assets/i/favicon.png">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.10.2/alt/video-js-cdn.css" rel="stylesheet">
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="icon" sizes="192x192" href="${ctx}/assets/i/app-icon72x72@2x.png">
@@ -53,24 +54,24 @@
   </div>
 </div>
 <div class="mobile-main">
-  <video width="100%" height="360" controls="" autoplay="" id="video-contrl">
+  <video width="100%" height="360" id="video-contrl" class="video-js vjs-default-skin" controls>
     <!-- MP4 must be first for iPad! -->
     <%--<source src="${program.purl}" type="video/mp4"><!-- Safari / iOS, IE9 -->--%>
   </video>
-    <div class="mobile-sliderWrapper">
-      <div data-am-widget="slider" class="mobile-slider am-slider am-slider-c2" data-am-slider='{"directionNav":false,"slideshow":false,"controlNav":true}' >
+  <div class="mobile-sliderWrapper">
+     <div data-am-widget="slider" class="mobile-slider am-slider am-slider-c2" data-am-slider='{"directionNav":false,"slideshow":false,"controlNav":true}' >
         <ul id="videoSlider" class="am-slides video-slider">
-          <c:if test="${list.size() > 0}">
-            <c:forEach items="${list}" var="item" varStatus="status">
-              <li>
-                <img class="v-${status.index}" data-pos=0  src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/live.jpg'" alt="" height="120px;"/>
-                <div class="am-slider-desc">${item.pname}</div>
-              </li>
-            </c:forEach>
+           <c:if test="${list.size() > 0}">
+              <c:forEach items="${list}" var="item" varStatus="status">
+                 <li>
+                    <img class="v-${status.index}" data-pos=0  src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/live.jpg'" alt="" height="120px;"/>
+                    <div class="am-slider-desc">${item.pname}</div>
+                 </li>
+              </c:forEach>
           </c:if>
         </ul>
-      </div>
-    </div>
+     </div>
+  </div>
   <div class="mobile-getComment">
     <form method="post" id="commentForm">
       <textarea class="mobile-vi-textarea" rows="5" name="text" placeholder="请输入你的评论^_^"></textarea>
@@ -160,6 +161,8 @@
 <script charset="utf-8" src="${ctx}/assets/js/business/comment.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/business/analysis-slider.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/hammer.min.js"></script>
+<script charset="utf-8" src="${ctx}/assets/js/video.js/video.js"></script>
+<script charset="utf-8" src="${ctx}/assets/js/video.js/videojs-contrib-hls.min.js"></script>
 <script>
   var commentMoreUrl = '${ctx}/space/commentList.shtml';
   var pageNum = ${responseData.pageNum};
@@ -176,7 +179,8 @@
   var pname_analysis = null;
 
   var frameArray = [];
-  var video = $('#video-contrl').get(0);
+//  var video = $('#video-contrl').get(0);
+  var video = videojs('video-contrl');
 
   video.onloadedmetadata = function () {
     var that = frameArray[current];

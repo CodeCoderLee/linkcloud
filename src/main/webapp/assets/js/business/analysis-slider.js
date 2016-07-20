@@ -146,6 +146,9 @@ VideoWrapper.prototype.startOrRePlay = function(){
         });
     }else{
         video.pause();
+        if (this.playIndex >= this.playListLen){
+            this.playIndex -- ;
+        }
         me.play();
     }
 }

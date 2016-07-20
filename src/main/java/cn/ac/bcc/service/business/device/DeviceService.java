@@ -37,4 +37,8 @@ public class DeviceService extends BaseService<Device> {
     public void updateWorkFrequencyAndProgramIds(String serialNumber, String frequency, String programIds){
         deviceMapper.updateWorkFrequencyAndProgramIds(frequency,programIds,serialNumber);
     }
+
+    public int updateOnOffLineAll(Integer onOffLine){
+        return deviceMapper.updateOnOffLineAll(onOffLine);
+    }
 }
