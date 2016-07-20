@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import tk.mybatis.mapper.entity.Example;
 
@@ -54,7 +55,7 @@ public class DeviceAPI {
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
 
-    private static Log log = LogFactory.getLog(DeviceAPI.class);
+    private static Logger logger = Logger.getLogger(DeviceAPI.class);
     private ApplicationContext ctx;
 
     public DeviceAPI(ApplicationContext applicationContext) {
@@ -77,15 +78,16 @@ public class DeviceAPI {
             DeviceService deviceService = ctx.getBean(DeviceService.class);
             deviceService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
             deviceAuthenService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
+            logger.debug(serialNumber + "离线后重新上线");
         }
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
-        log.info("date::" + new Date() + "  uri:" + uri + "\r\n" + "token::::::::::" + token + "\r\nserialNumber:::" +  serialNumber + "\r\ndata:::::::::::" + postData);
         String jsonStr = "";
         String sessionID = null;
 
         uri = uri.toLowerCase();
         boolean is_ok = false;
+        logger.debug("uri:" + uri + "\r\n" + "token::::::::::" + token + "\r\nserialNumber:::" +  serialNumber + "\r\ndata:::::::::::" + postData);
         if (uri.contains(URI_LINKHELLO)) {
             UUID uuid = UUID.randomUUID();
             token = uuid.toString();
@@ -93,17 +95,21 @@ public class DeviceAPI {
             sessionID = ServerCookieEncoder.encode("PHPSESSID", token);
             jsonStr = linkHello(request, postData, nvList, token);
             is_ok = true;
+            logger.debug(serialNumber + "---linkHello over..");
         } else if (uri.contains(URI_AUTHEN)) {
             jsonStr = authen(request, postData, nvList);
             is_ok = true;
+            logger.debug(serialNumber + "---authen over..");
         } else if (uri.contains(URI_REPORT_PROGRAMS)  && getAuthen(serialNumber)) {
             jsonStr = reportPrograms(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---reportPrograms over..");
         } else if (uri.contains(URI_ANALYSISV) && getAuthen(serialNumber)) {
             jsonStr = analysisv(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---reportPrograms over..");
         } else if (uri.contains(URI_REMOTECHECK) && getAuthen(serialNumber)) {
             jsonStr = remoteCheck(request, postData, nvList);
             is_ok = true;
@@ -112,40 +118,42 @@ public class DeviceAPI {
             jsonStr = remoteWatch(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---remoteWatch over..");
         } else if (uri.contains(URI_SCANFRQ) && getAuthen(serialNumber)) {
             jsonStr = scanFrq(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---scanFrq over..");
         } else if (uri.contains(URI_SETAD) && getAuthen(serialNumber)) {
             jsonStr = setAd(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---setAd over..");
         } else if (uri.contains(URI_UPDATEAD) && getAuthen(serialNumber)) {
             jsonStr = updateAd(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---updateAd over..");
         } else if (uri.contains(URI_SETFRQ) && getAuthen(serialNumber)) {
             jsonStr = setFrq(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---setFrq over..");
         } else if (uri.contains(URI_SHOCK) && getAuthen(serialNumber)) {
             jsonStr = shock(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---shock over..");
         } else if (uri.contains(URI_HEARTBEAT) && getAuthen(serialNumber)) {
             jsonStr = heartBeat(request, postData, nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
-        }
-//        else if(uri.contains(URI_GETUPDATEINFO) && getAuthen(serialNumber)){
-//            jsonStr = getUpdateInfo(request,postData,nvList);
-//            is_ok = true;
-//            OnOffLineMap.online(serialNumber);
-//        }
-        else if(uri.contains(URI_GETUPDATEINFO)){
+            logger.debug(serialNumber + "---heartBeat over..");
+        }  else if(uri.contains(URI_GETUPDATEINFO)){
             jsonStr = getUpdateInfo(request,postData,nvList);
             is_ok = true;
             OnOffLineMap.online(serialNumber);
+            logger.debug(serialNumber + "---getUpdateInfo over..");
         }
 
         FullHttpResponse response = null;
@@ -154,8 +162,10 @@ public class DeviceAPI {
             if (sessionID != null) {
                 response.headers().set(SET_COOKIE, sessionID);
             }
+            logger.debug(serialNumber + "---http 200 ok response..");
         }else{
             response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.NON_AUTHORITATIVE_INFORMATION, Unpooled.wrappedBuffer("".getBytes("UTF-8")));
+            logger.debug(serialNumber + "---http 203 ok response..");
         }
         return response;
     }
@@ -249,11 +259,13 @@ public class DeviceAPI {
 
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
+            logger.debug(serialNumber + "---通过授权..");
         } else {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error.");
 
             AUTHEN_MAP.put(serialNumber,false);
+            logger.debug(serialNumber + "---没有通过授权..");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
         map.put(HelperUtils.KEY_FRQ, frq);
