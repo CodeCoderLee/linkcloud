@@ -82,7 +82,7 @@
                 data: {serialNumber: serialNumber},
                 dataType: 'json',
                 success: function (data) {
-                    alert("扫频命令下发成功");
+                    alert("扫频命令下发成功,请等待");
                     int = setInterval("getScanFrequency()", 3000);
                     flag = true;
                     $('#info').html("扫描到0个可用频点");

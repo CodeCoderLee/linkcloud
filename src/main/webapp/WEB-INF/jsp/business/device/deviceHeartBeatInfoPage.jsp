@@ -59,7 +59,7 @@
                         <p class="f-500 m-b-20 c-black">上报心跳数据</p>
 
                         <ul class="list-group">
-                            <li class="list-group-item">节目数据:${postData.heartbeat}</li>
+                            <li class="list-group-item">心跳数据:${postData.heartbeat}</li>
                         </ul>
                     </div>
 

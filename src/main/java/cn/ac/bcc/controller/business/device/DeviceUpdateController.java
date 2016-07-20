@@ -16,6 +16,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,7 @@ import java.util.List;
 @Controller
 @RequestMapping("deviceUpdate")
 public class DeviceUpdateController extends BaseController<DeviceUpdate> {
+    private static Logger logger = Logger.getLogger(DeviceUpdateController.class);
     @Autowired
     private DeviceUpdateService deviceUpdateService;
 
@@ -102,6 +104,7 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
             //心跳包下发指令
             JSONObject object = new JSONObject();
             object.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_UPDATE_VERSION);
+            logger.info("===============下发设备升级版本命令,serialNumber="+serialNumber[i]+",data="+object.toString()+"==============");
             CommandMap.addCommand(serialNumber[i], object);
 
             JSONObject jsonObject = new JSONObject();

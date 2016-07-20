@@ -43,7 +43,7 @@
             and d.id = #{device.id}
         </if>
         <if test="device.serialNumber != null and device.serialNumber != ''">
-            and d.serial_number = #{device.serialNumber}
+            <![CDATA[and d.serial_number like "%"#{device.serialNumber}"%"  ]]>
         </if>
         <if test="device.registerAccount != null">
             and d.register_account = #{device.registerAccount}

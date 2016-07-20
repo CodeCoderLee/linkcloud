@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import cn.ac.bcc.util.Messenger;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -52,7 +53,7 @@ import sun.misc.BASE64Encoder;
 @Controller
 @RequestMapping("/")
 public class UserLoginController extends BaseController {
-
+    private static Logger logger = org.apache.log4j.Logger.getLogger(UserLoginController.class);
     @Autowired
     private UserLoginService userLoginService;
 
@@ -73,6 +74,7 @@ public class UserLoginController extends BaseController {
 
     @RequestMapping(value = "index", produces = "text/html; charset=utf-8")
     public String index(Model model, String messenger) {
+        logger.info("================calling index method===========");
         System.out.println("index");
         Messenger messengerObj = new Messenger();
         if (!Common.isEmpty(messenger)) {
@@ -98,7 +100,7 @@ public class UserLoginController extends BaseController {
             response.setCharacterEncoding("UTF-8");
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             User user1 = (User) Common.findUserSession(request);
-            System.out.println(user1.getId());
+//            System.out.println(user1.getId());
             if (user1 == null) {
                 jsonObject.put("status", 0);
                 //return jsonObject;
@@ -128,7 +130,7 @@ public class UserLoginController extends BaseController {
             // 登陆的信息回传页面
             model.addAttribute("user", user1);
             model.addAttribute("messenger", messengerObj);
-
+            logger.info("=============="+user1.getNickName()+"===calling index end=========");
             //return jsonObject;
             return "/index";
         } catch (Exception e) {

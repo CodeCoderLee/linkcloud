@@ -13,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/videoPublish/")
 public class VideoPublishController extends BaseController<VideoPublish> {
+    private static Logger logger = Logger.getLogger(VideoPublishController.class);
     @Autowired
     private VideoPublishService videoPublishService;
 
@@ -141,6 +143,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             //心跳包下发指令
             JSONObject heartObj = new JSONObject();
             heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
+            logger.info("=============下发视频广告更新命令,serialNumber="+serialNumber[i]+",data="+heartObj.toString()+"==========");
             CommandMap.addCommand(serialNumber[i],heartObj);
         }
 
@@ -165,6 +168,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             //心跳包下发指令
             JSONObject heartObj = new JSONObject();
             heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
+            logger.info("=============下发解绑视频广告命令,serialNumber="+serialNumber[i]+",data="+heartObj.toString()+"==========");
             CommandMap.addCommand(serialNumber[i],heartObj);
         }
         return SUCCESS;

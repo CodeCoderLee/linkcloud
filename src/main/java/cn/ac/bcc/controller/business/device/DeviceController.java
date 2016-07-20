@@ -22,6 +22,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +40,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/device/")
 public class DeviceController extends BaseController<Device> {
+    private static Logger logger = Logger.getLogger(DeviceController.class);
 
     @Autowired
     private DeviceService deviceService;
@@ -55,12 +57,14 @@ public class DeviceController extends BaseController<Device> {
 
     @RequestMapping("list")
     public String listUI(Model model) throws Exception {
+        logger.info("===============跳转设备注册页面===============");
         model.addAttribute("res", findByRes());
         return Common.BACKGROUND_PATH + "/business/device/list";
     }
 
     @RequestMapping("debugList")
     public String debugListUI(Model model,HttpServletRequest request,Messenger messenger) throws Exception {
+        logger.info("===============跳转设备调试页面===============");
         model.addAttribute("res", findByRes());
         /*向前台传递资源id,为了传递给扫频页面,在扫频页面判断是否有设置默认频点的权限*/
         model.addAttribute("resId", getPara("id"));
@@ -75,6 +79,7 @@ public class DeviceController extends BaseController<Device> {
 
     @RequestMapping("showList")
     public String showListUI(Model model) throws Exception {
+        logger.info("===============跳转设备演示页面===============");
         model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/showList";
@@ -82,6 +87,7 @@ public class DeviceController extends BaseController<Device> {
 
     @RequestMapping("settingList")
     public String settingListUI(Model model, Messenger messenger) throws Exception {
+        logger.info("===============跳转设备配置页面===============");
         model.addAttribute("res", findByRes());
         /*向前台传递资源id,为了传递给扫频页面,在扫频页面判断是否有设置默认频点的权限*/
         model.addAttribute("resId", getPara("id"));
@@ -96,6 +102,7 @@ public class DeviceController extends BaseController<Device> {
 
     @RequestMapping("scanFrequencyUI")
     public String scanFrequencyUI(Model model,String serialNumber,Messenger messenger) throws Exception {
+        logger.info("===============跳转扫频页面===============");
         model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         model.addAttribute("serialNumber", serialNumber);
@@ -120,7 +127,7 @@ public class DeviceController extends BaseController<Device> {
 //        map.put(HelperUtils.KEY_FRQ, HelperUtils.KEY_FRQ);
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SCANFRQ);
-        System.out.println("下发扫频命令:serialNumber===" + serialNumber + "object====" + object.toString());
+        logger.info("===============下发扫频命令:serialNumber===" + serialNumber + "data====" + object.toString()+"===============");
         CommandMap.addCommand(serialNumber,object);
 //        ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
 //        scanFreqInfos.setFrqsNum(3);
@@ -194,6 +201,7 @@ public class DeviceController extends BaseController<Device> {
 
     @RequestMapping("deviceSetting")
     public String deviceSetting(Model model) throws Exception {
+        logger.info("===============跳转设备配置页面===============");
         model.addAttribute("res", findByRes());
         model.addAttribute("openId",((User)Common.findUserSession(getRequest())).getOpenId());
         return Common.BACKGROUND_PATH + "/business/device/deviceSetting";
@@ -201,50 +209,21 @@ public class DeviceController extends BaseController<Device> {
 
     @RequestMapping("addUI")
     public String addUI() {
+        logger.info("===============跳转设备添加页面===============");
         return Common.BACKGROUND_PATH + "/business/device/add";
     }
 
     @RequestMapping("modifyUI")
-    public String modifyUI(Model model) {
+    public String modifyUI(Model model) {//目前无用了,2016-07-19
         String id = getPara("id");
         DeviceView deviceView = new DeviceView();
-
+        logger.info("===============跳转设备修改页面===============");
         if (Common.isNotEmpty(id)) {
             deviceView.setId(Integer.valueOf(id));
             DeviceView device = deviceViewService.selectOne(deviceView);
             model.addAttribute("device", device);
         }
-        JSONObject jsonObject = new JSONObject();
-        if (!Common.isEmpty(getPara("limit"))) {
-            jsonObject.put("limit", Integer.valueOf(getPara("limit")));
-        }
-        if (!Common.isEmpty(getPara("offset"))) {
-            jsonObject.put("offset", Integer.valueOf(getPara("offset")));
-        }
-        if (!Common.isEmpty(getPara("provinceId"))) {
-            jsonObject.put("provinceId", Integer.valueOf(getPara("provinceId")));
-        }
-        if (!Common.isEmpty(getPara("cityId"))) {
-            jsonObject.put("cityId", Integer.valueOf(getPara("cityId")));
-        }
-        if (!Common.isEmpty(getPara("areaId"))) {
-            jsonObject.put("areaId", Integer.valueOf(getPara("areaId")));
-        }
-        if (!Common.isEmpty(getPara("status"))) {
-            jsonObject.put("status", Integer.valueOf(getPara("status")));
-        }
-        if (!Common.isEmpty(getPara("serialNumber"))) {
-            jsonObject.put("serialNumber", getPara("serialNumber"));
-        }
-        model.addAttribute("paramJson", jsonObject.toString());
 
-//        model.addAttribute("limit", getPara("limit"));
-//        model.addAttribute("offset", getPara("offset"));
-//        model.addAttribute("provinceId", getPara("provinceId"));
-//        model.addAttribute("cityId", getPara("cityId"));
-//        model.addAttribute("areaId", getPara("areaId"));
-//        model.addAttribute("status", getPara("status"));
-//        model.addAttribute("serialNumber", getPara("serialNumber"));
         return Common.BACKGROUND_PATH + "/business/device/edit";
     }
 
@@ -252,6 +231,7 @@ public class DeviceController extends BaseController<Device> {
     @ResponseBody
     @RequestMapping("search")
     public ResponseData search(DeviceView deviceView, Integer limit, Integer offset) throws Exception {
+        logger.info("===============搜索设备注册列表数据===============");
         PageHelper.offsetPage(offset, limit);
         String serialNumber = deviceView.getSerialNumber();
         if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
@@ -269,19 +249,20 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("searchByPage")
-    public ResponseData searchByPage(Device device, Integer pageNum, Integer pageSize) throws Exception {
+    public ResponseData searchByPage(DeviceView deviceView, Integer pageNum, Integer pageSize) throws Exception {
+        logger.info("===============搜索设备数据===============");
 //        if (device.getStatus() != null && device.getStatus() == 1) {
 //            Integer userId = Common.findUserSessionId(getRequest());
 //            device.setRegisterAccount(userId);
 //            device.setDebugAccount(userId);
 //        }
         PageHelper.startPage(pageNum, pageSize);
-        String serialNumber = device.getSerialNumber();
+        String serialNumber = deviceView.getSerialNumber();
         if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
-            device.setSerialNumber(getSession().getAttribute("serialNumber").toString());
+            deviceView.setSerialNumber(getSession().getAttribute("serialNumber").toString());
         }
-        List<Device> list = deviceService.selectDebugDevice(device);
-        PageInfo<Device> pageInfo = new PageInfo<Device>(list);
+        List<DeviceView> list = deviceViewService.selectDeviceView(deviceView);
+        PageInfo<DeviceView> pageInfo = new PageInfo<DeviceView>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
         responseData.setRows(list);
@@ -293,17 +274,18 @@ public class DeviceController extends BaseController<Device> {
 
     @ResponseBody
     @RequestMapping("searchDeviceSettingList")
-    public ResponseData searchDeviceSettingList(Device device, Integer pageNum, Integer pageSize){
+    public ResponseData searchDeviceSettingList(DeviceView deviceView, Integer pageNum, Integer pageSize){
+        logger.info("===============搜索设备配置===============");
         Integer userId = Common.findUserSessionId(getRequest());
 //        device.setRegisterAccount(userId);
 //        device.setDebugAccount(userId);
         PageHelper.startPage(pageNum, pageSize);
-        String serialNumber = device.getSerialNumber();
+        String serialNumber = deviceView.getSerialNumber();
         if (Common.isEmpty(serialNumber) && getSession().getAttribute("serialNumber") != null) {
-            device.setSerialNumber(getSession().getAttribute("serialNumber").toString());
+            deviceView.setSerialNumber(getSession().getAttribute("serialNumber").toString());
         }
-        List<Device> list = deviceService.selectSettingDevice(userId, device);
-        PageInfo<Device> pageInfo = new PageInfo<Device>(list);
+        List<DeviceView> list = deviceViewService.selectDeviceView(deviceView);
+        PageInfo<DeviceView> pageInfo = new PageInfo<DeviceView>(list);
         ResponseData responseData = new ResponseData();
         responseData.setTotal(pageInfo.getTotal());
         responseData.setRows(list);
@@ -317,6 +299,7 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("add")
     @SystemLog(module = "设备管理", methods = "设备管理-设备注册")//凡需要处理业务逻辑的.都需要记录操作日志
     public String add(Device device) {
+        logger.info("===============设备添加开始===============");
         try {
             List<Device> deviceList = deviceService.select(device);
             if (Common.isEmpty(device.getPrivateKey())) {
@@ -343,6 +326,7 @@ public class DeviceController extends BaseController<Device> {
             }
             device.setProgramIds(programIds.equals("") ? null : programIds.substring(0, programIds.length() - 1));
             if(!(deviceList!=null && deviceList.size()>0)){
+                logger.info("===============插入设备数据,deviceService.insert(device)===============");
                 deviceService.insert(device);
             }
 
@@ -352,6 +336,7 @@ public class DeviceController extends BaseController<Device> {
 
             List<DeviceAuthen> deviceAuthenList = deviceAuthenService.select(deviceAuthen);
             if(!(deviceAuthenList != null && deviceAuthenList.size()>0)){
+                logger.info("===============插入设备认证表数据,deviceAuthenService.insertSelective(deviceAuthen)===============");
                 deviceAuthenService.insertSelective(deviceAuthen);
             }
 
@@ -387,9 +372,11 @@ public class DeviceController extends BaseController<Device> {
                 device.setProgramIds(programIds.equals("")?null:programIds.substring(0, programIds.length() - 1));
                 device.setWorkFrequency(oldDevice.getWorkFrequency());
             }
+            logger.info("===============修改设备数据===============");
             deviceService.updateByPrimaryKeySelective(device);
             return SUCCESS;
         } catch (Exception e) {
+            logger.info("===============修改设备异常===============");
             throw new SystemException("修改设备异常");
         }
 
@@ -439,6 +426,7 @@ public class DeviceController extends BaseController<Device> {
         //心跳包下发指令
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SETFRQ);
+        logger.info("============下发设置频点命令,serialNumber="+serialNumber+"|||data="+object.toString()+"=================");
         CommandMap.addCommand(serialNumber,object);
         //设备再次请求SetFrq指令时需要的命令数据
         JSONObject obj = new JSONObject();
@@ -457,6 +445,7 @@ public class DeviceController extends BaseController<Device> {
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SHOCK);
         CommandMap.addCommand(serialNumber, object);
+        logger.info("============下发连通性测试命令,serialNumber="+serialNumber+"|||data="+object.toString()+"=================");
         return SUCCESS;
     }
 
@@ -469,6 +458,7 @@ public class DeviceController extends BaseController<Device> {
         if(scanFreqInfos == null){
             scanFreqInfos = new ScanFreqInfos();
         }
+        logger.info("============获取扫频数据,data="+scanFreqInfos.toString()+"=================");
         return scanFreqInfos;
     }
 
@@ -508,6 +498,7 @@ public class DeviceController extends BaseController<Device> {
         model.addAttribute("postData",deviceAuthen);
         model.addAttribute("serialNumber",serialNumber);
         model.addAttribute("messenger", messenger);
+
         return Common.BACKGROUND_PATH + "/business/device/deviceHeartBeatInfoPage";
     }
 
@@ -517,6 +508,7 @@ public class DeviceController extends BaseController<Device> {
     public String lockDevice(String serialNumber,Device device){
         getSession().setAttribute("serialNumber", serialNumber);
         getSession().setAttribute("isLock", 1);
+        logger.info("===============设备锁定,serialNumber="+serialNumber+"===============");
         return SUCCESS;
     }
 
@@ -526,12 +518,14 @@ public class DeviceController extends BaseController<Device> {
     public String unlockDevice(){
         getSession().removeAttribute("serialNumber");
         getSession().setAttribute("isLock", 0);
+        logger.info("===============设备解锁================");
         return SUCCESS;
     }
 
     @ResponseBody
     @RequestMapping("searchAvailableDevice")
     public List<Device>  searchAvailableDevice(){
+        logger.info("===============搜索可用设备数据===============");
         Device device = new Device();
         device.setStatus(4);
         List<Device> list = deviceService.select(device);

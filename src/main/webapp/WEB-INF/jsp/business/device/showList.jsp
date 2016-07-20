@@ -18,7 +18,7 @@
                                 class="h4 font-thin v-middle">序列号:</span></label>
                         <input class="input-medium ui-autocomplete-input" id="searchParam" name="serialNumber"/>
                     </div>
-                    <a class="btn btn-default" id="search">查询</a>
+                    <a class="btn btn-default" id="searchBtn">查询</a>
                 </form>
             </div>
         </div>
@@ -68,12 +68,17 @@
     $(document).ready(function () {
         loadDevice(1, 6);
     });
+
+    $('#searchBtn').click(function () {
+        loadDevice(1,6);
+    });
     function loadDevice(pageNum, pageSize) {
+        var serialNumber = $('#searchParam').val();
         $.ajax({
             method: 'get',
             url: 'device/searchByPage.shtml',
             dataType: 'json',
-            data: {status:3,pageNum: pageNum, pageSize: pageSize},
+            data: {status:3,pageNum: pageNum, pageSize: pageSize,serialNumber:serialNumber},
             success: function (data) {
                 /*刷新数据*/
                 refreshData(data.rows);
@@ -88,7 +93,7 @@
                             scrollTo(0,0);
                             loadDevice(newPage, 6);
                         }
-                    }
+                    };
                     $('#pagination').bootstrapPaginator(options);
                 }
             },
