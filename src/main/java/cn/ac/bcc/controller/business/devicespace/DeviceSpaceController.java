@@ -169,21 +169,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         log.info("openId:::" + openId);
         boolean hasRole = false;
         boolean isScan = false;
-        if(openId != null){
-            User user = new User();
-            /*通过openId获取user信息*/
-            user.setAccountname(openId);
-            user = userService.selectOne(user);
-            if(user != null){
-                Integer userId = user.getId();
-                UserRole userRole = new UserRole();
-                userRole.setUserid(userId);
-                List<UserRole> urList = userRoleService.select(userRole);
-                if(urList != null && urList.size() > 0){
-                    hasRole = true;
-                }
-            }
-        }
+
         JSONArray array = advertisementPublishService.getAdList(serialNumber);
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
@@ -206,7 +192,9 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("netdiskList",lst);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
-        mode.addAttribute("hasRole",hasRole);
+        if(messenger != null) {
+            mode.addAttribute("hasRole", true);
+        }
 //        mode.addAttribute("type",type);
         if(type != null)getSession().setAttribute("_type_",type);
         mode.addAttribute("array",array);
@@ -318,7 +306,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
         ResponseData responseData = getCommentList(programId,1);
         mode.addAttribute("responseData",responseData);
-//        mode.addAttribute("program",program);
+        mode.addAttribute("program",program);
 //        mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("ptype",ptype);
