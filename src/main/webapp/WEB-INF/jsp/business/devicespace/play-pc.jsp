@@ -16,7 +16,6 @@
   <!-- No Baidu Siteapp-->
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <link rel="icon" type="image/png" href="${ctx}/assets/i/favicon.png">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/5.10.2/alt/video-js-cdn.css" rel="stylesheet">
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="icon" sizes="192x192" href="${ctx}/assets/i/app-icon72x72@2x.png">
@@ -36,7 +35,8 @@
   -->
   <link rel="stylesheet" href="${ctx}/assets/css/base.min.css">
   <link rel="stylesheet" href="${ctx}/assets/css/base.videojs.css"/>
-  <link rel="stylesheet" href="${ctx}/assets/css/mobile.css">
+  <link rel="stylesheet" href="${ctx}/assets/build/mediaelementplayer.min.css" />
+  <link rel="stylesheet" href="${ctx}/assets/css/pc.css">
 </head>
 <body class="vi-mobile vi-mobileList">
 <div data-am-widget="header" class="am-header am-header-default">
@@ -54,24 +54,26 @@
   </div>
 </div>
 <div class="mobile-main">
-  <video width="100%" height="360" id="video-contrl" class="video-js vjs-default-skin" controls>
-    <!-- MP4 must be first for iPad! -->
-    <%--<source src="${program.purl}" type="video/mp4"><!-- Safari / iOS, IE9 -->--%>
-  </video>
-  <div class="mobile-sliderWrapper">
-     <div data-am-widget="slider" class="mobile-slider am-slider am-slider-c2" data-am-slider='{"directionNav":false,"slideshow":false,"controlNav":true}' >
-        <ul id="videoSlider" class="am-slides video-slider">
-           <c:if test="${list.size() > 0}">
-              <c:forEach items="${list}" var="item" varStatus="status">
-                 <li>
-                    <img class="v-${status.index}" data-pos=0  src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/live.jpg'" alt="" height="120px;"/>
-                    <div class="am-slider-desc">${item.pname}</div>
-                 </li>
-              </c:forEach>
-          </c:if>
-        </ul>
-     </div>
+  <div style="width: 1124px;height:600px;margin: auto;">
+    <div style="width:800px;height: 600px;float:left;">
+      <video width="800" height="600" id="player1">
+        <source type="application/x-mpegURL" src="http://www.streambox.fr/playlists/test_001/stream.m3u8" />
+      </video>
+    </div>
+    <div style="float:left;width: 300px;margin-left:20px;">
+      <ul class="am-slides program-change">
+        <li><B>节目列表</B></li>
+        <c:if test="${list.size() > 0}">
+          <c:forEach items="${list}" var="item" varStatus="status">
+            <li>
+              <a href="javascript:void(0);" data-url="${item.purl}" data-index="${status.index}">${item.pname}</a>
+            </li>
+          </c:forEach>
+        </c:if>
+      </ul>
+    </div>
   </div>
+
   <div class="mobile-getComment">
     <form method="post" id="commentForm">
       <textarea class="mobile-vi-textarea" rows="5" name="text" placeholder="请输入你的评论^_^"></textarea>
@@ -102,7 +104,7 @@
         </div>
       </div>
     </article>
-    <c:set var="commentList" value="${responseData.rows}" />
+  <c:set var="commentList" value="${responseData.rows}" />
   <c:forEach items="${commentList}" var="comment"  varStatus="status">
     <article class="am-comment mobile-comment">
         <a href="#link-to-user-home">
@@ -155,14 +157,13 @@
     <p>京ICP备xxxxxx</p>
   </div>
 </footer>
-<script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
+<%--<script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>--%>
+<script charset="utf-8" src="${ctx}/assets/build/jquery.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/business/comment.js"></script>
-<script charset="utf-8" src="${ctx}/assets/js/business/analysis-slider.js"></script>
-<script charset="utf-8" src="${ctx}/assets/js/hammer.min.js"></script>
-<script charset="utf-8" src="${ctx}/assets/js/video.js/video.js"></script>
-<script charset="utf-8" src="${ctx}/assets/js/video.js/videojs-contrib-hls.min.js"></script>
+<script charset="utf-8" src="${ctx}/assets/js/business/analysis-pc.js"></script>
+<script charset="utf-8" src="${ctx}/assets/build/mediaelement-and-player.min.js"></script>
 <script>
   var commentMoreUrl = '${ctx}/space/commentList.shtml';
   var pageNum = ${responseData.pageNum};
@@ -180,75 +181,91 @@
 
   var frameArray = [];
 //  var video = $('#video-contrl').get(0);
-  var video = videojs('video-contrl');
+//  var video = videojs('video-contrl');
+  $('.program-change li a').on('click',function(){
+    player.pause();
+    var url = $(this).attr("data-url");
+    var index = $(this).attr("data-index");
+    console.log('index',index);
+    frameArray[index].startOrRePlay();
+  })
 
-  video.onloadedmetadata = function () {
-    var that = frameArray[current];
-    that.pid = that.getPid(that.cur_url);
-    that.stime = that.getDateTime();
-    that.ptype_analysis = that.ptype_analysis;
-    that.pname_analysis = that.pname_analysis;
+  $('video').mediaelementplayer({
+    success: function(media, node, player) {
+      media.addEventListener('timeupdate', function(e) {
+//        console.log("ontimeupdate");
+      }, false);
 
-    me = that;
-    that.interval = setInterval("doSubmitAnalysisV(me)",3000)
-    console.log("onloadedmetadata--interval--" + that.interval,'cls',me.cls);
-  };
+      media.addEventListener('loadedmetadata',function(e){
+        var that = frameArray[current];
+        that.pid = that.getPid(that.cur_url);
+        that.stime = that.getDateTime();
+        that.ptype_analysis = that.ptype_analysis;
+        that.pname_analysis = that.pname_analysis;
 
-  video.onended = function () {
-    var that = frameArray[current];
-    if(that.interval != -1) {
-      clearInterval(that.interval);
-      console.log("ended--interval--" + that.interval,'cls',me.cls);
+        me = that;
+        that.interval = setInterval("doSubmitAnalysisV(me)",3000)
+        console.log("onloadedmetadata--interval--" + that.interval,'cls',me.cls);
+      },false);
+
+      media.addEventListener('ended',function(e){
+        var that = frameArray[current];
+        if(that.interval != -1) {
+          clearInterval(that.interval);
+          console.log("ended--interval--" + that.interval,'cls',me.cls);
+        }
+        that.play();
+      },false);
+
+      media.addEventListener('playing',function(e){
+        console.log("onplaying--");
+      },false);
+
+      media.addEventListener('pause',function(e){
+        console.log("onpause");
+      },false);
     }
-    that.play();
-  };
+  });
 
-  video.ontimeupdate = function(){
-    var that = frameArray[current];
-    console.log("ontimeupdate",'cls',me.cls);
+  function changeProgram(e){
+
   }
 
-  video.onplaying = function(){
-    console.log("onplaying--");
-  }
-
-  video.onpause = function(){
-    console.log("onpause");
-  }
+  var player = $('video')[0].player;
 
   var current = 0;
   $(document).ready(function() {
-    var num = 0;
-    var clsArr = [];
-    var vSlider = document.getElementById('videoSlider');
+    var slider = $('#demo-slider-0').data('flexslider');
 
-    var vSliderMc = new Hammer(vSlider);
-    var max = null;
-    vSliderMc.on("swipe", function(ev) {
-      clsArr = ev.target.className.split(' ');
-      num = Number(clsArr[clsArr.length-1].split('-')[1]);
-      max = $('.video-slider li:not(.clone)').length-1;
-      if (ev.deltaX<0) {
-        num === max ? current = 0 : current = num+1;
-      } else if (ev.deltaX>0) {
-        num === 0 ? current = max : current = num-1;
+    $('#demo-slider-0').flexslider({
+      playAfterPaused: 8000,
+      before: function(slider) {
+        if (slider._pausedTimer) {
+          window.clearTimeout(slider._pausedTimer);
+          slider._pausedTimer = null;
+        }
+      },
+      after: function(slider) {
+        var pauseTime = slider.vars.playAfterPaused;
+        if (pauseTime && !isNaN(pauseTime) && !slider.playing) {
+          if (!slider.manualPause && !slider.manualPlay && !slider.stopped) {
+            slider._pausedTimer = window.setTimeout(function() {
+              slider.play();
+            }, pauseTime);
+          }
+        }
       }
-      console.log('当前视频 video index:',current,ev.deltaX>0? '滑动向右' : '滑动向左');
-      $("input[name=programId]").attr("value",frameArray[current].programId);
-      setTimeout("frameArray[current].startOrRePlay()",10);
-      setTimeout("frameArray[current].changeComment()",10);
     });
 
-      var programArray = eval("("+ '${array}'+")");
-      for(var k = 0;k<programArray.length;k++){
-          var program = programArray[k];
-          var cls = $('ul li:not(.clone) img').eq(k).attr('class');
-          var videoWrapper = new VideoWrapper(program,cls);
-         frameArray[k] = videoWrapper;
-      }
+    var programArray = eval("("+ '${array}'+")");
+    for(var k = 0;k<programArray.length;k++){
+        var program = programArray[k];
+        var cls = $('ul li:not(.clone) img').eq(k).attr('class');
+        var videoWrapper = new VideoWrapper(program,cls);
+       frameArray[k] = videoWrapper;
+    }
 
     frameArray[0].startOrRePlay();
-
   });
 
   function getDateTime(){
@@ -256,13 +273,11 @@
     var timestamp = Date.parse(new Date());
     timestamp = timestamp / 1000;
     //当前时间戳为：1403149534
-//    console.log("当前时间戳为：" + timestamp);
     return timestamp.toString();
   }
 
   function doSubmitAnalysisV(me){
     var here = me;
-//    console.log('here:stime:::',here.stime);
     here.ctime = getDateTime();
     ajax2({
       url: analysis_url,

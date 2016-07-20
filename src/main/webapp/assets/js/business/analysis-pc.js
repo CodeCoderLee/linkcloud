@@ -36,8 +36,6 @@ function ajax2(a) {
 }
 
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                         video 封装对象                                                //////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,15 +112,16 @@ VideoWrapper.prototype.play = function(e) {
          return;
     }
     this.cur_url = this.playList[this.playIndex];
-    video.src = this.cur_url;
-    video.load();
-    video.play();
+    player.pause();
+    player.setSrc(this.cur_url);
+    player.load();
+    player.play();
     this.playIndex++;
 }
 
 VideoWrapper.prototype.startOrRePlay = function(){
     var me = this;
-    $(".am-header-title a").text(this.program.pname + "--" + this.cls);
+    $(".am-header-title a").text(this.program.pname);
     console.log('me.cls',me.cls);
     //第一次启动
     console.log('startOrRePlay','class--',this.cls,'start -- init');
@@ -145,7 +144,7 @@ VideoWrapper.prototype.startOrRePlay = function(){
             }
         });
     }else{
-        video.pause();
+        player.pause();
         if (this.playIndex >= this.playListLen){
             this.playIndex -- ;
         }
