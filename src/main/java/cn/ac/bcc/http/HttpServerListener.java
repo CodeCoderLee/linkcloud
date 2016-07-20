@@ -3,6 +3,7 @@ package cn.ac.bcc.http;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.HelperUtils;
+import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -16,7 +17,7 @@ import java.util.TimerTask;
  * Created by lenovo on 2016-05-31.
  */
 public class HttpServerListener implements ServletContextListener {
-
+    Logger logger = Logger.getLogger(HttpServerListener.class);
     HttpServer httpServer;
     public void contextDestroyed(ServletContextEvent arg0)
     {
@@ -30,12 +31,12 @@ public class HttpServerListener implements ServletContextListener {
     {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
-
         try {
             DeviceAuthenService deviceAuthenService = springContext.getBean(DeviceAuthenService.class);
             DeviceService deviceService = springContext.getBean(DeviceService.class);
             deviceService.updateOnOffLineAll(HelperUtils.OFF_LINE);
             deviceAuthenService.updateOnOffLineAll(HelperUtils.OFF_LINE);
+            logger.debug("初始化所有设备状态为离线");
         }catch (Exception e){
 
         }
@@ -61,11 +62,12 @@ public class HttpServerListener implements ServletContextListener {
                 httpServer = new HttpServer(springContext);
                 try {
                     httpServer.start(8080);
+                    logger.debug("接口服务启动成功，在8080端口");
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("接口服务启动失败，在8080端口");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("接口服务启动失败，在8080端口");
             }
         }
     }

@@ -26,6 +26,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,24 +77,19 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private final int PAGE_SIZE = 10;
     private final int SHOW_STATUS = 3;
     private final int DEBUG_STATUS = 1;
-    private static Log log = LogFactory.getLog(DeviceSpaceController.class);
+    private static Logger logger = Logger.getLogger(DeviceSpaceController.class);
 
     @RequestMapping(value = "debug", produces = "text/html; charset=utf-8")
     public String debug(Model mode,String openId,String type, Integer pageNum){
         boolean hasRole = false;
-        if(openId != null){
-            User user = new User();
-            /*通过openId获取user信息*/
-            user.setAccountname(openId);
-            user = userService.selectOne(user);
-            if(user != null){
-                Integer userId = user.getId();
-                UserRole userRole = new UserRole();
-                userRole.setUserid(userId);
-                List<UserRole> urList = userRoleService.select(userRole);
-                if(urList != null && urList.size() > 0){
-                    hasRole = true;
-                }
+        User user =(User)Common.findUserSession(getRequest());
+        if(user != null){
+            Integer userId = user.getId();
+            UserRole userRole = new UserRole();
+            userRole.setUserid(userId);
+            List<UserRole> urList = userRoleService.select(userRole);
+            if(urList != null && urList.size() > 0){
+                hasRole = true;
             }
         }
         Device device = new Device();
@@ -137,7 +133,6 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
     @RequestMapping(value = "show", produces = "text/html; charset=utf-8")
     public String show(Model mode,String openId,String type, Integer pageNum){
-        log.info("openId:::" + openId);
 
         boolean hasRole = false;
         if(openId != null){
@@ -166,9 +161,18 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
     @RequestMapping(value = "device/{serialNumber}", produces = "text/html; charset=utf-8")
     public String index(@PathVariable String serialNumber, String openId, String type, Model mode, Messenger messenger){
-        log.info("openId:::" + openId);
         boolean hasRole = false;
         boolean isScan = false;
+        User user =(User)Common.findUserSession(getRequest());
+        if(user != null){
+            Integer userId = user.getId();
+            UserRole userRole = new UserRole();
+            userRole.setUserid(userId);
+            List<UserRole> urList = userRoleService.select(userRole);
+            if(urList != null && urList.size() > 0){
+                hasRole = true;
+            }
+        }
 
         JSONArray array = advertisementPublishService.getAdList(serialNumber);
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
@@ -192,9 +196,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("netdiskList",lst);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
-        if(messenger != null) {
-            mode.addAttribute("hasRole", true);
-        }
+        mode.addAttribute("hasRole", hasRole);
 //        mode.addAttribute("type",type);
         if(type != null)getSession().setAttribute("_type_",type);
         mode.addAttribute("array",array);
