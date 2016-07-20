@@ -104,11 +104,17 @@ public class WechatController {
     public String index(HttpServletRequest request, Model model, String url) {
         String code = request.getParameter("code");
         String isWeb = request.getParameter("isWeb");
+        if (Common.isEmpty(code)) {
+            return "redirect:/wechat/authen.shtml?uri=/index";
+        }
         JSONObject jsonObject;
         if (Common.isEmpty(isWeb)) {
             jsonObject = WechatUtil.getOauthAccessToken(code);
         } else {
             jsonObject = WechatUtil.getWebOauthAccessToken(code);
+        }
+        if (!jsonObject.containsKey("access_token")||Common.isEmpty(jsonObject.getString("access_token"))) {
+            return "redirect:/wechat/authen.shtml?uri=/index";
         }
         JSONObject userInfo = WechatUtil.getOauthUserInfo(jsonObject.getString("access_token"), jsonObject.getString("openid"));
         logger.info("=========================="+userInfo.toString()+"====================");
