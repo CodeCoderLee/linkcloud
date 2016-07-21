@@ -152,8 +152,11 @@
                 html = html + "<dd>否</dd></dl>";
             }
             html = html + "<dl class=\"dl-horizontal\">" +
-                    "<dt>version_s/version_t</dt>" +
-                "<dd>"+item.version1+"/"+item.version2+"</dd></dl>";
+                    "<dt>version_s</dt>" +
+                "<dd>"+item.version1+"</dd></dl>" +
+                    "<dl class=\"dl-horizontal\">" +
+                    "<dt>version_t</dt>" +
+                    "<dd>"+item.version2+"</dd></dl>";
             html = html +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('" + item.id + "','" + item.serialNumber + "')\">设备详情</a></dt>" +
