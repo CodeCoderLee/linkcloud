@@ -45,7 +45,7 @@
 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
     <h2 class="am-titlebar-title ">
         <button class="btn btn-info myButton shock-cmd-op">SHOCK</button>
-        <button class="btn btn-info myButton start-stop">停止</button>
+        <button class="btn btn-info myButton start-stop" data="stop">停止</button>
         <button class="btn btn-info myButton back-btn" id="back">返回</button>
         <input type="hidden" class="from-space" value="${space}">
         <form action="${ctx}/index.shtml" id="gohome-form" style="float:right;">
@@ -102,13 +102,15 @@
     }
 
     $('.start-stop').on("click",function(){
-        var v = $(this).attr("value");
-        if(v == "开始"){
+        var v = $(this).attr("data");
+        if(v == "start"){
             interval = self.setInterval("heartbeat()",1000)
-            $(this).attr("value","停止");
-        }else if(v == '停止'){
+            $(this).attr("data","stop");
+            $(this).text("停止");
+        }else if(v == 'stop'){
             clearInterval(interval);
-            $(this).attr("value","开始");
+            $(this).attr("data","start");
+            $(this).text("开始");
         }
 
     })
