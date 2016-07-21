@@ -80,7 +80,7 @@
                                     <label class="col-sm-3 control-label">上传视频广告素材</label>
                                     <div class="col-sm-9">
                                         <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <span class="btn btn-primary btn-file m-r-10">
+                                            <span class="btn myButton  btn-primary btn-file m-r-10">
                                                 <span class="fileinput-new">选择视频文件</span>
                                                 <span class="fileinput-exists">重新选择</span>
                                                 <input type="file" name="file">
@@ -92,8 +92,8 @@
                                 </div>
                             </div>
                             <div class="footer text-right bg-light lter">
-                                <button class="btn btn-success btn-s-xs">提交</button>
-                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                <button class="btn myButton  btn-success btn-s-xs">提交</button>
+                                <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                             </div>
                         </section>
                     </form>

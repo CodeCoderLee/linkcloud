@@ -17,23 +17,23 @@
                             class="input-medium ui-autocomplete-input" id="searchParam"
                             name="name">
                     </div>
-                    <a href="javascript:void(0)" class="btn btn-default" id="search">查询</a>
+                    <a href="javascript:void(0)" class="btn myButton  btn-default" id="search">查询</a>
                 </form>
             </div>
 
-            <button type="button" class="btn btn-success" id="newBtn">
+            <button type="button" class="btn myButton  btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-plus"></i>新增
             </button>
-            <button type="button" class="btn btn-info" id="modifyBtn">
+            <button type="button" class="btn myButton  btn-info" id="modifyBtn">
                 <i class="glyphicon glyphicon-edit"></i>修改
             </button>
-            <button type="button" class="btn btn-danger" id="deleteBtn">
+            <button type="button" class="btn myButton  btn-danger" id="deleteBtn">
                 <i class="glyphicon glyphicon-minus"></i>删除
             </button>
-            <button id="permissionBtn" class="btn btn-warning">
+            <button id="permissionBtn" class="btn myButton  btn-warning">
                 <i class="glyphicon glyphicon-cog"></i>分配权限
             </button>
-            <button id="refreshBtn" class="btn btn-default">
+            <button id="refreshBtn" class="btn myButton  btn-default">
                 <i class="glyphicon glyphicon-refresh"></i>刷新
             </button>
         </div>

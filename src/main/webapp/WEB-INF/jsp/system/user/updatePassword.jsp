@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			<footer class="panel-footer text-right bg-light lter">
-				<button type="submit" class="btn btn-success btn-s-xs">修改</button>
+				<button type="submit" class="btn myButton  btn-success btn-s-xs">修改</button>
 			</footer> 
 		</section>
 	</form>

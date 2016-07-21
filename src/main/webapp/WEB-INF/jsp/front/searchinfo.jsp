@@ -52,13 +52,13 @@
 				<span class="input-group-btn">
 					<input type="hidden" id="starttime0" name="starttime0" />
 					<input type="hidden" id="endtime0"  name="endtime0" />
-					<button type="button" name="时间" id="searchtime0" class="btn btn-flat ">
+					<button type="button" name="时间" id="searchtime0" class="btn myButton  btn-flat ">
 						<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
 					</button>
-					<button type="button" name="搜索" id="search-btn" class="btn btn-flat  btn-primary" onclick="goSub0()">
+					<button type="button" name="搜索" id="search-btn" class="btn myButton  btn-flat  btn-primary" onclick="goSub0()">
 						<i class="fa fa-search"></i>
 					</button> 
-					<a data-toggle="modal" data-target="#myModal1" class="btn btn-success active" role="button">高级搜索</a>
+					<a data-toggle="modal" data-target="#myModal1" class="btn myButton  btn-success active" role="button">高级搜索</a>
 				</span>
 			</div>
 			<div class="input-group col-sm-8 my-label">
@@ -249,8 +249,8 @@
 							
 							<div class="timeline-footer btn-footer">
 							<c:if test="${((res.mobiles)!= null && fn:length(res.mobiles) > 0) || ((res.mobiles)!= null && fn:length(res.mobiles) > 0) || ((res.faces)!= null && fn:length(res.faces) > 0)}">
-								<!-- <a class="btn btn-primary" onclick="goDetaile(this)">查看详情</a> -->
-								<button class="btn btn-primary my-btn " type="submit">查看详情</button>
+								<!-- <a class="btn myButton  btn-primary" onclick="goDetaile(this)">查看详情</a> -->
+								<button class="btn myButton  btn-primary my-btn " type="submit">查看详情</button>
 							</c:if>
 							</div>
 							
@@ -374,8 +374,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" onclick="doComSub()" data-dismiss="modal">确定</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn myButton  btn-primary" onclick="doComSub()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn myButton  btn-default" data-dismiss="modal">关闭</button>
 				</div>
 				</form>
 				

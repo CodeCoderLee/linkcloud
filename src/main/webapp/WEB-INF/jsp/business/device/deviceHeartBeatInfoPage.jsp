@@ -118,7 +118,7 @@
                         <%--</div>--%>
                 <%--</div>--%>
                 <div class="footer text-right bg-light lter">
-                    <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                    <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                 </div>
             </form>
         </div>

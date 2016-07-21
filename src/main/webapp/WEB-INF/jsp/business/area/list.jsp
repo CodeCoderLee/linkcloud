@@ -54,16 +54,16 @@
                 </div>
             </div>
             <div class="m-b-md">
-                <%--<button type="button" class="btn btn-success" id="newBtn">--%>
+                <%--<button type="button" class="btn myButton  btn-success" id="newBtn">--%>
                 <%--<i class="glyphicon glyphicon-plus"></i>新增--%>
                 <%--</button>--%>
-                <button type="button" class="btn btn-info" id="modifyAreaBtn">
+                <button type="button" class="btn myButton  btn-info" id="modifyAreaBtn">
                     <i class="glyphicon glyphicon-edit"></i>修改
                 </button>
-                <%--<button type="button" class="btn btn-danger" id="deleteBtn">--%>
+                <%--<button type="button" class="btn myButton  btn-danger" id="deleteBtn">--%>
                 <%--<i class="glyphicon glyphicon-minus"></i>删除--%>
                 <%--</button>--%>
-                <button id="refreshBtn" class="btn btn-default">
+                <button id="refreshBtn" class="btn myButton  btn-default">
                     <i class="glyphicon glyphicon-refresh"></i>刷新
                 </button>
             </div>
@@ -153,8 +153,8 @@
                                 </div>
                             </div>
                             <div class="footer text-right bg-light lter">
-                                <button class="btn btn-success btn-s-xs" id="subBtn">提交</button>
-                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                <button class="btn myButton  btn-success btn-s-xs" id="subBtn">提交</button>
+                                <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                             </div>
                         </section>
                     </form>

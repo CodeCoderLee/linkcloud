@@ -16,19 +16,19 @@
                                 class="h4 font-thin v-middle">行业名称:</span></label>
                         <input class="input-medium ui-autocomplete-input" name="fullName" id="fullName"/>
                     </div>
-                    <a class="btn btn-default" id="search">查询</a>
+                    <a class="btn myButton  btn-default" id="search">查询</a>
                 </form>
             </div>
-            <button type="button" class="btn btn-success" id="newBtn">
+            <button type="button" class="btn myButton  btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-edit"></i>新增
             </button>
-            <button type="button" class="btn btn-info" id="modifyBtn">
+            <button type="button" class="btn myButton  btn-info" id="modifyBtn">
                 <i class="glyphicon glyphicon-edit"></i>修改
             </button>
-            <button type="button" class="btn btn-danger" id="deleteBtn">
+            <button type="button" class="btn myButton  btn-danger" id="deleteBtn">
                 <i class="glyphicon glyphicon-minus"></i>删除
             </button>
-            <button id="refreshBtn" class="btn btn-default">
+            <button id="refreshBtn" class="btn myButton  btn-default">
                 <i class="glyphicon glyphicon-refresh"></i>刷新
             </button>
         </div>

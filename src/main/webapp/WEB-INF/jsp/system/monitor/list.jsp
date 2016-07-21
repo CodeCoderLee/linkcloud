@@ -10,7 +10,7 @@
 					class="input-medium ui-autocomplete-input" id="accountName"
 					name="serverInfoFormMap.accountName">
 			</div>
-			<a href="javascript:void(0)" class="btn btn-default" id="search">查询</a>
+			<a href="javascript:void(0)" class="btn myButton  btn-default" id="search">查询</a>
 		</form>
 	</div>
 	<div class="table-responsive">

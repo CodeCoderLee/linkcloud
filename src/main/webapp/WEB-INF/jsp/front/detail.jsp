@@ -107,7 +107,7 @@
 									</p></li>
 								<li class="user-footer">
 									<div class="pull-right">
-										<a href="logout.shtml" class="btn btn-default btn-flat">退出</a>
+										<a href="logout.shtml" class="btn myButton  btn-default btn-flat">退出</a>
 									</div>
 								</li>
 							</ul></li>

@@ -200,8 +200,8 @@ html>body td {
 		</table>
 		<br>
 		<div class="doc-buttons" style="text-align: center;">
-			<a href="#" class="btn btn-s-md btn-success btn-rounded" onclick="sub()">保存</a> 
-			<a href="#" class="btn btn-s-md btn-info btn-rounded" onclick="closeWin();">关闭</a>
+			<a href="#" class="btn myButton  btn-s-md btn-success btn-rounded" onclick="sub()">保存</a> 
+			<a href="#" class="btn myButton  btn-s-md btn-info btn-rounded" onclick="closeWin();">关闭</a>
 		</div>
 		<br>
 	</form>

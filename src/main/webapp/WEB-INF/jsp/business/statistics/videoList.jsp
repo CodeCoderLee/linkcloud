@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-sm-1">
                         <div class="fg-line">
-                            <button id="subBtn" class="btn btn-success btn-s-xs">统计</button>
+                            <button id="subBtn" class="btn myButton  btn-success btn-s-xs">统计</button>
                         </div>
                     </div>
                 </div>

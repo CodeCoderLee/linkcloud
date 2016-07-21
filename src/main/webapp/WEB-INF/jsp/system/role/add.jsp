@@ -45,9 +45,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">角色状态</label>
                                     <div class="col-sm-9">
-                                        <div class="btn-group m-r">
+                                        <div class="btn myButton -group m-r">
                                             <button data-toggle="dropdown"
-                                                    class="btn btn-sm btn-default dropdown-toggle">
+                                                    class="btn myButton  btn-sm btn-default dropdown-toggle">
                                                 <span class="dropdown-label">是</span> <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-select">
@@ -63,8 +63,8 @@
                                 <div class="line line-dashed line-lg pull-in"></div>
                             </div>
                             <div class="panel-footer text-right bg-light lter">
-                                <button type="submit" class="btn btn-success btn-s-xs">提交</button>
-                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                <button type="submit" class="btn myButton  btn-success btn-s-xs">提交</button>
+                                <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                             </div>
                         </section>
                     </form>

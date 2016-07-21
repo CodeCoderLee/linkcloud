@@ -47,9 +47,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">是否禁用</label>
                                     <div class="col-sm-9">
-                                        <div class="btn-group m-r">
+                                        <div class="btn myButton -group m-r">
                                             <button data-toggle="dropdown"
-                                                    class="btn btn-sm btn-default dropdown-toggle">
+                                                    class="btn myButton  btn-sm btn-default dropdown-toggle">
                                                 <span class="dropdown-label">是</span>
                                                 <span class="caret"></span>
                                             </button>
@@ -78,8 +78,8 @@
                                 </div>
                             </div>
                             <div class="footer text-right bg-light lter">
-                                <button class="btn btn-success btn-s-xs">提交</button>
-                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                <button class="btn myButton  btn-success btn-s-xs">提交</button>
+                                <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                             </div>
                         </section>
                     </form>

@@ -23,7 +23,7 @@
                 扫描到0个可用频点
             </div>
             <div class="footer text-right bg-light lter">
-                ` <a id="scanFrequencyBtn" class="btn btn-success btn-s-xs">扫频</a>
+                ` <a id="scanFrequencyBtn" class="btn myButton  btn-success btn-s-xs">扫频</a>
             </div>
         </div>
     </div>
@@ -39,16 +39,16 @@
                 <div role="tabpanel" id="freqTab">
                 </div>
                 <div class="footer text-right bg-light lter">
-                    <button id="subBtn" class="btn btn-success btn-s-xs hidden">设为工作频点</button>
+                    <button id="subBtn" class="btn myButton  btn-success btn-s-xs hidden">设为工作频点</button>
                     <c:if test="${areaId != null && areaId != ''}">
                         <c:forEach items="${res}" var="key">
                             <a id="setDefaultFrequencyBtn" onclick="setDefaultFrequency('${key.resurl}')"
-                               class="btn btn-success btn-s-xs hidden">设为默认频点</a>
+                               class="btn myButton  btn-success btn-s-xs hidden">设为默认频点</a>
                         </c:forEach>
                     </c:if>
 
-                    <%--<a id="setDefaultFrequencyBtn" class="btn btn-success btn-s-xs hidden">设为默认频点</a>--%>
-                    <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                    <%--<a id="setDefaultFrequencyBtn" class="btn myButton  btn-success btn-s-xs hidden">设为默认频点</a>--%>
+                    <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                 </div>
             </form>
         </div>

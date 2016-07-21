@@ -28,7 +28,7 @@
         <%--class="h4 font-thin v-middle">序列号:</span></label>--%>
         <%--<input class="input-medium ui-autocomplete-input" id="searchParam" name="serialNumber"/>--%>
         <%--</div>--%>
-        <%--<a class="btn btn-default" id="searchBtn">查询</a>--%>
+        <%--<a class="btn myButton  btn-default" id="searchBtn">查询</a>--%>
         <%--</form>--%>
         <%--</div>--%>
         <%--</div>--%>

@@ -27,16 +27,16 @@
 								class="h4 font-thin v-middle">菜单名:</span></label>
 						<input class="input-medium ui-autocomplete-input" id="accountName"/>
 					</div>
-					<a class="btn btn-default" id="search">查询</a>
+					<a class="btn myButton  btn-default" id="search">查询</a>
 				</form>
 			</div>
-			<button type="button" class="btn btn-success" id="newBtn">
+			<button type="button" class="btn myButton  btn-success" id="newBtn">
 				<i class="glyphicon glyphicon-plus"></i>新增
 			</button>
-			<button type="button" class="btn btn-info" id="modifyBtn">
+			<button type="button" class="btn myButton  btn-info" id="modifyBtn">
 				<i class="glyphicon glyphicon-edit"></i>修改
 			</button>
-			<button type="button" class="btn btn-danger" id="deleteBtn">
+			<button type="button" class="btn myButton  btn-danger" id="deleteBtn">
 				<i class="glyphicon glyphicon-minus"></i>删除
 			</button>
 		</div>

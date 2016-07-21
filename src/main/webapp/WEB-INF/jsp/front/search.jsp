@@ -37,11 +37,11 @@ var rootPath = '${base}';
 					<span class="input-group-btn">
 					<input type="hidden" id="starttime" name="starttime" />
 					<input type="hidden" id="endtime"  name="endtime" />
-					<button type="button" name="时间" id="searchtime" class="btn btn-flat btn-lg">
+					<button type="button" name="时间" id="searchtime" class="btn myButton  btn-flat btn-lg">
 						<i class="fa fa-calendar"></i></button> 
-					<button type="button" name="搜索" id="search-btn" class="btn btn-flat btn-primary btn-lg" onclick="goSub()">
+					<button type="button" name="搜索" id="search-btn" class="btn myButton  btn-flat btn-primary btn-lg" onclick="goSub()">
 						<i class="fa fa-search"></i></button> 
-					<a data-toggle="modal" data-target="#myModal1" class="btn btn-success btn-lg active" role="button">高级搜索</a>
+					<a data-toggle="modal" data-target="#myModal1" class="btn myButton  btn-success btn-lg active" role="button">高级搜索</a>
 					</span>
 				</div>
 			</form>
@@ -155,8 +155,8 @@ var rootPath = '${base}';
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" onclick="doComSub()" data-dismiss="modal">确定</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn myButton  btn-primary" onclick="doComSub()" data-dismiss="modal">确定</button>
+					<button type="button" class="btn myButton  btn-default" data-dismiss="modal">关闭</button>
 				</div>
 				</form>
 				

@@ -46,8 +46,8 @@
                                 </div>
                             </div>
                             <div class="footer text-right bg-light lter">
-                                <button class="btn btn-success btn-s-xs" id="sub">出库</button>
-                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                <button class="btn myButton  btn-success btn-s-xs" id="sub">出库</button>
+                                <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                             </div>
                         </section>
                     </form>

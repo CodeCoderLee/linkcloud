@@ -102,8 +102,8 @@
                                 </div>
                             </div>
                             <footer class="panel-footer text-right bg-light lter">
-                                <button type="submit" class="btn btn-success btn-s-xs">提交</button>
-                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                <button type="submit" class="btn myButton  btn-success btn-s-xs">提交</button>
+                                <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                             </footer>
                         </section>
                     </form>

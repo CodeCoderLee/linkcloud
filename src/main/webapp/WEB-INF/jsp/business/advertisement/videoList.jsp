@@ -22,16 +22,16 @@
                     <label class="control-label"> <span
                             class="h4 font-thin v-middle">来源:</span></label>
                     <input class="input-medium ui-autocomplete-input" id="searchParam" name="fileName"/>
-                    <%--<a class="btn btn-default" id="search">查询</a>--%>
-                    <button class="btn btn-default" id="search">查询</button>
+                    <%--<a class="btn myButton  btn-default" id="search">查询</a>--%>
+                    <button class="btn myButton  btn-default" id="search">查询</button>
                 </div>
 
                 <%--</form>--%>
             </div>
-            <button type="button" class="btn btn-success" id="newBtn">
+            <button type="button" class="btn myButton  btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-plus"></i>新增
             </button>
-            <button id="refreshBtn" class="btn btn-default">
+            <button id="refreshBtn" class="btn myButton  btn-default">
                 <i class="glyphicon glyphicon-refresh"></i>刷新
             </button>
         </div>

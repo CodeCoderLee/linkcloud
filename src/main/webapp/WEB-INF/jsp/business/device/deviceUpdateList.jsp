@@ -24,10 +24,10 @@
                                 class="h4 font-thin v-middle">序列号:</span></label>
                         <input class="input-medium ui-autocomplete-input" id="searchParam" name="serialNumber"/>
                     </div>
-                    <a class="btn btn-default" id="search">查询</a>
+                    <a class="btn myButton  btn-default" id="search">查询</a>
                 </form>
             </div>
-            <button type="button" class="btn btn-success" id="newBtn">
+            <button type="button" class="btn myButton  btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-edit"></i>升级
             </button>
         </div>

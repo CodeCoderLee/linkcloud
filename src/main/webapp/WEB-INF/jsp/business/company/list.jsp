@@ -70,20 +70,20 @@
                     <div class="col-sm-11">
                         <div class="fg-line">
                             <input class="input-medium ui-autocomplete-input" name="fullName" id="fullName"/>
-                            <a class="btn btn-default" id="search">查询</a>
+                            <a class="btn myButton  btn-default" id="search">查询</a>
                         </div>
                     </div>
 
                 </div>
             </div>
             <div class="m-b-md" style="margin-bottom: 18px">
-                <button type="button" class="btn btn-success" id="newBtn">
+                <button type="button" class="btn myButton  btn-success" id="newBtn">
                     <i class="glyphicon glyphicon-edit"></i>新增
                 </button>
-                <button type="button" class="btn btn-info" id="modifyBtn">
+                <button type="button" class="btn myButton  btn-info" id="modifyBtn">
                     <i class="glyphicon glyphicon-edit"></i>修改
                 </button>
-                <button id="refreshBtn" class="btn btn-default">
+                <button id="refreshBtn" class="btn myButton  btn-default">
                     <i class="glyphicon glyphicon-refresh"></i>刷新
                 </button>
             </div>
@@ -216,8 +216,8 @@
                                     </div>
                                 </div>
                                 <div class="footer text-right bg-light lter">
-                                    <button id="subBtn" class="btn btn-success btn-s-xs">修改</button>
-                                    <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                    <button id="subBtn" class="btn myButton  btn-success btn-s-xs">修改</button>
+                                    <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                                 </div>
                             </div>
                         </section>

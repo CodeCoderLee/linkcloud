@@ -74,26 +74,26 @@
                     <div class="col-sm-10">
                         <div class="fg-line">
                             <input class="input-medium ui-autocomplete-input" id="searchSerialNumber"/>
-                            <a class="btn btn-default" id="searchBtn">查询</a>
+                            <a class="btn myButton  btn-default" id="searchBtn">查询</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="m-b-md" style="margin-bottom: 18px">
-                <button type="button" class="btn btn-success" id="newBtn">
+                <button type="button" class="btn myButton  btn-success" id="newBtn">
                     <i class="glyphicon glyphicon-edit">注册</i>
                 </button>
-                <button type="button" class="btn btn-info" id="deviceModifyBtn">
+                <button type="button" class="btn myButton  btn-info" id="deviceModifyBtn">
                     <i class="glyphicon glyphicon-edit">修改</i>
                 </button>
-                <button type="button" class="btn btn-primary" id="lockBtn">
+                <button type="button" class="btn myButton  btn-primary" id="lockBtn">
                     <i class="glyphicon glyphicon-edit">锁定</i>
                 </button>
-                <%--<button type="button" class="btn btn-danger" id="deleteBtn">--%>
+                <%--<button type="button" class="btn myButton  btn-danger" id="deleteBtn">--%>
                 <%--<i class="glyphicon glyphicon-minus"></i>删除--%>
                 <%--</button>--%>
-                <button id="refreshBtn" class="btn btn-default">
+                <button id="refreshBtn" class="btn myButton  btn-default">
                     <i class="glyphicon glyphicon-refresh"></i>刷新
                 </button>
             </div>
@@ -235,8 +235,8 @@
                                 </div>
                             </div>
                             <div class="footer text-right bg-light lter">
-                                <button class="btn btn-success btn-s-xs">修改</button>
-                                <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                                <button class="btn myButton  btn-success btn-s-xs">修改</button>
+                                <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                             </div>
                         </section>
                     </form>

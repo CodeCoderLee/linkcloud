@@ -42,18 +42,18 @@
                     </div>
                     <div class="col-sm-1">
                         <div class="fg-line">
-                            <button id="subBtn" class="btn btn-success btn-s-xs">确定</button>
+                            <button id="subBtn" class="btn myButton  btn-success btn-s-xs">确定</button>
                         </div>
                     </div>
                     <div class="col-sm-1">
                         <div class="fg-line">
-                            <a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>
+                            <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                         </div>
                     </div>
                 </div>
                 <%--<div class="footer text-right bg-light lter">--%>
-                <%--<button id="subBtn" class="btn btn-success btn-s-xs">确定</button>--%>
-                <%--<a id="closeBtn" class="btn btn-success btn-s-xs">返回</a>--%>
+                <%--<button id="subBtn" class="btn myButton  btn-success btn-s-xs">确定</button>--%>
+                <%--<a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>--%>
                 <%--</div>--%>
 
             </div>
