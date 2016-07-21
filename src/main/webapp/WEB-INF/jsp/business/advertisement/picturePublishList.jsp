@@ -24,10 +24,10 @@
                                 class="h4 font-thin v-middle">序列号:</span></label>
                         <input class="input-medium ui-autocomplete-input" id="searchParam" name="serialNumber"/>
                     </div>
-                    <a class="btn myButton  btn-default" id="search">查询</a>
+                    <a class="btn btn-default" id="search">查询</a>
                 </form>
             </div>
-            <button type="button" class="btn myButton  btn-success" id="newBtn">
+            <button type="button" class="btn btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-edit"></i>绑定广告
             </button>
         </div>
@@ -83,6 +83,10 @@
     $(document).ready(function () {
         loadDevice(1, 6);
 
+        $('#searchBtn').click(function () {
+            loadDevice(1, 6);
+        });
+
         /*新增按钮点击事件绑定,打开新增窗口*/
         $('#newBtn').click(function () {
             if (serialNumbers.length == 0) {
@@ -93,11 +97,12 @@
         });
     });
     function loadDevice(pageNum, pageSize) {
+        var serialNumber = $('#searchParam').val();
         $.ajax({
             method: 'get',
             url: 'advertisementPublish/search.shtml',
             dataType: 'json',
-            data: {pageNum: pageNum, pageSize: pageSize},
+            data: {pageNum: pageNum, pageSize: pageSize, serialNumber: serialNumber},
             success: function (data) {
                 /*刷新数据*/
 
@@ -141,10 +146,10 @@
                     "<i class=\"input-helper\"></i>" +
                     "</label></dt>" +
                     "<dd>" + item.serialNumber + "</dd>" +
-                    "</dl>"+
-                    "<dl>"+
+                    "</dl>" +
+                    "<dl>" +
                     "<dt>更新时间</dt>" +
-                    "<dd>"+dateTimeFormatter(item.updateTime)+"</dd>" +
+                    "<dd>" + dateTimeFormatter(item.updateTime) + "</dd>" +
                     "</dl>";
             html = html +
                     "<dl class=\"dl-horizontal\">" +
@@ -194,7 +199,7 @@
 //                + ":" + date.getMinutes() + ":" + date.getSeconds();
     }
 
-    function adInfoHtml(adInfo){
+    function adInfoHtml(adInfo) {
         var html = "";
         if (adInfo) {
 //            html = html +

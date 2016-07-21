@@ -5,6 +5,18 @@
 (function ($) {
 })(jQuery);
 
+// $(document).ready(function () {
+    // $('.btn').mousedown(function(){
+    //     $(this).removeClass('btn-success');
+    //     $(this).addClass('btn-warning');
+    // });
+    //
+    // $('.btn').mouseup(function(){
+    //     $(this).removeClass('btn-warning');
+    //     $(this).addClass('btn-success');
+    // });
+// });
+
 /**/
 function onLoadUrl() {
     $("[data-url]").each(function () {
@@ -65,4 +77,4 @@ function notify(type, message) {
         '<a href="#" data-growl="url"></a>' +
         '</div>'
     });
-};
+}
