@@ -56,8 +56,11 @@
 <div class="mobile-main">
   <div style="width: 1124px;height:600px;margin: auto;">
     <div style="width:800px;height: 600px;float:left;">
-      <video width="800" height="600" id="player1">
-        <source type="application/x-mpegURL" src="http://www.streambox.fr/playlists/test_001/stream.m3u8" />
+      <video width="800" height="600" id="player1" autoplay>
+        <!-- Pseudo HTML5 -->
+        <%--<source type="video/mp4" src="myvideo.mp4" />--%>
+        <source type="application/x-mpegURL" src="${program.purl}" />
+        你的浏览器不支持视频格式
       </video>
     </div>
     <div style="float:left;width: 300px;margin-left:20px;">
@@ -157,13 +160,13 @@
     <p>京ICP备xxxxxx</p>
   </div>
 </footer>
-<%--<script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>--%>
-<script charset="utf-8" src="${ctx}/assets/build/jquery.js"></script>
+<script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
+<%--<script charset="utf-8" src="${ctx}/assets/build/jquery.js"></script>--%>
 <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
+<script charset="utf-8" src="${ctx}/assets/build/mediaelement-and-player.min.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/business/comment.js"></script>
 <script charset="utf-8" src="${ctx}/assets/js/business/analysis-pc.js"></script>
-<script charset="utf-8" src="${ctx}/assets/build/mediaelement-and-player.min.js"></script>
 <script>
   var commentMoreUrl = '${ctx}/space/commentList.shtml';
   var pageNum = ${responseData.pageNum};
@@ -182,12 +185,15 @@
   var frameArray = [];
 //  var video = $('#video-contrl').get(0);
 //  var video = videojs('video-contrl');
+  var index = 0;
   $('.program-change li a').on('click',function(){
     player.pause();
     var url = $(this).attr("data-url");
-    var index = $(this).attr("data-index");
+    index = $(this).attr("data-index");
     console.log('index',index);
+    $("input[name=programId]").attr("value",frameArray[index].programId);
     frameArray[index].startOrRePlay();
+    frameArray[index].changeComment();
   })
 
   $('video').mediaelementplayer({
@@ -197,7 +203,7 @@
       }, false);
 
       media.addEventListener('loadedmetadata',function(e){
-        var that = frameArray[current];
+        var that = frameArray[index];
         that.pid = that.getPid(that.cur_url);
         that.stime = that.getDateTime();
         that.ptype_analysis = that.ptype_analysis;
@@ -209,7 +215,7 @@
       },false);
 
       media.addEventListener('ended',function(e){
-        var that = frameArray[current];
+        var that = frameArray[index];
         if(that.interval != -1) {
           clearInterval(that.interval);
           console.log("ended--interval--" + that.interval,'cls',me.cls);
@@ -233,7 +239,6 @@
 
   var player = $('video')[0].player;
 
-  var current = 0;
   $(document).ready(function() {
     var slider = $('#demo-slider-0').data('flexslider');
 
@@ -265,7 +270,8 @@
        frameArray[k] = videoWrapper;
     }
 
-    frameArray[0].startOrRePlay();
+    setTimeout(frameArray[0].startOrRePlay(),1500);
+
   });
 
   function getDateTime(){

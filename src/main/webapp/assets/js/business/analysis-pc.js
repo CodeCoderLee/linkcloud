@@ -111,8 +111,8 @@ VideoWrapper.prototype.play = function(e) {
     if (this.playIndex >= this.playListLen) {
          return;
     }
-    this.cur_url = this.playList[this.playIndex];
     player.pause();
+    this.cur_url = this.playList[this.playIndex];
     player.setSrc(this.cur_url);
     player.load();
     player.play();
@@ -130,19 +130,21 @@ VideoWrapper.prototype.startOrRePlay = function(){
     }
     if(this.startFlag){
         this.startFlag = false;
-        ajax({
-            url: ad_url,
-            data: {},
-            success: function (a) {
-                var json_obj = JSON.parse(a);
-                me.playList[0] = json_obj.url;
-                me.play();
-            },
-            fail: function (a) {
-                me.playIndex++;
-                me.play();
-            }
-        });
+        //ajax({
+        //    url: ad_url,
+        //    data: {},
+        //    success: function (a) {
+        //        var json_obj = JSON.parse(a);
+        //        me.playList[0] = json_obj.url;
+        //        me.play();
+        //    },
+        //    fail: function (a) {
+        //        me.playIndex++;
+        //        me.play();
+        //    }
+        //});
+        me.playIndex++;
+        me.play();
     }else{
         player.pause();
         if (this.playIndex >= this.playListLen){
