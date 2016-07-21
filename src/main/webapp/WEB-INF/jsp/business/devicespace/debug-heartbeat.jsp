@@ -44,11 +44,11 @@
 </div>
 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
     <h2 class="am-titlebar-title ">
-        <input type="button" value="SHOCK" class="shock-cmd-op">
-        <input type="button" value="停止" class="start-stop">
+        <input type="button" value="SHOCK" class="shock-cmd-op btn btn-info myButton">
+        <input type="button" value="停止" class="start-stop btn btn-info myButton">
         <form action="${ctx}/index.shtml" id="gohome-form" style="float:right;">
-            <input type="button" value="返回" name="back">
-            <input type="hidden" value="${base64}" name="messenger">
+            <input type="button" class="btn btn-info myButton" value="返回" name="back">
+            <input type="hidden" class="btn btn-info myButton" value="${base64}" name="messenger">
         </form>
     </h2>
 </div>
