@@ -103,7 +103,7 @@
 											<td>使用率超出</td>
 											<td><input class='inputclass' name='cpu' id='cpu'
 												type='text' value='${cpu}' /> %,</td>
-											<td>发送邮箱提示 <a class='btn btn-info'
+											<td>发送邮箱提示 <a class='btn btn-info myButton  '
 												href='javascript:void(0)' onclick='modifySer("cpu");'>
 													修改 </a></td>
 										</tr>
@@ -112,7 +112,7 @@
 								<td rowspan='3' align="center" style="vertical-align: middle;"><input
 									class='inputclass' style='width: 250px; height: 32px;'
 									name='toEmail' id='toEmail' type='text'
-									value='${toEmail}' /><a class='btn btn-info'
+									value='${toEmail}' /><a class='btn btn-info myButton  '
 									href='javascript:void(0)' onclick='modifySer("toEmail");'>
 										修改 </a></td>
 							</tr>
@@ -127,7 +127,7 @@
 											<td>使用率超出</td>
 											<td><input class='inputclass' name='ram' id='ram'
 												type='text' value='${ram}' /> %,</td>
-											<td>发送邮箱提示 <a class='btn btn-info'
+											<td>发送邮箱提示 <a class='btn btn-info myButton  '
 												href='javascript:void(0)' onclick='modifySer("ram");'>
 													修改 </a></td>
 										</tr>
@@ -146,7 +146,7 @@
 											<td>使用率超出</td>
 											<td><input class='inputclass' name='jvm' id='jvm'
 												type='text' value='${jvm}' /> %,</td>
-											<td>发送邮箱提示 <a class='btn btn-info'
+											<td>发送邮箱提示 <a class='btn btn-info myButton  '
 												href='javascript:void(0)' onclick='modifySer("jvm");'>
 													修改 </a></td>
 										</tr>

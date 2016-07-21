@@ -81,7 +81,7 @@
                     <div class="col-sm-10">
                         <div class="fg-line">
                             <input class="input-medium ui-autocomplete-input"  id="searchContactName"/>
-                            <a class="btn myButton  btn-default" id="search">查询</a>
+                            <a class="btn myButton btn-default" id="search">查询</a>
                         </div>
                     </div>
                 </div>
@@ -344,7 +344,7 @@
 
                         "<dl class=\"dl-horizontal\">" +
                         "<dt>出库时间</dt>" +
-                        "<dd>未出库<a class='btn btn-info' onclick='stockOutBtn(" + item.id + ")' >出库</a></dd>" +
+                        "<dd>未出库<a class='btn btn-info myButton  ' onclick='stockOutBtn(" + item.id + ")' >出库</a></dd>" +
                         "</dl>";
             } else {
                 html = html +
@@ -357,8 +357,8 @@
                         "<dd>" + item.serialNumbers + "</dd>" +
                         "</dl>"
             }
-//                    "<dd><button class='btn btn-info' onclick='stockOutBtn("+item.id+")' >出库</button></dd>" +
-//                    "<dd><button class='btn btn-info' onclick='cancleBtn("+item.id+")' >取消出库</button></dd>" +
+//                    "<dd><button class='btn btn-info myButton  ' onclick='stockOutBtn("+item.id+")' >出库</button></dd>" +
+//                    "<dd><button class='btn btn-info myButton  ' onclick='cancleBtn("+item.id+")' >取消出库</button></dd>" +
             html = html +
                     "</div>" +
                     "</div>" +

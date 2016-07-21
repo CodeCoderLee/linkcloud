@@ -18,7 +18,7 @@
                                 class="h4 font-thin v-middle">序列号:</span></label>
                         <input class="input-medium ui-autocomplete-input" id="searchParam" name="serialNumber"/>
                     </div>
-                    <a class="btn myButton  btn-default" id="searchBtn">查询</a>
+                    <a class="btn myButton btn-default" id="searchBtn">查询</a>
                 </form>
             </div>
         </div>
@@ -131,7 +131,7 @@
                     "<dd>是</dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dd><a class='btn btn-info' href=\"/space/device/" + item.serialNumber + ".shtml?type=show&openId="+$('#openId').val()+"\">演示</a></dd>" +
+                    "<dd><a class='btn btn-info myButton  ' href=\"/space/device/" + item.serialNumber + ".shtml?type=show&openId="+$('#openId').val()+"\">演示</a></dd>" +
                     "</dl>" +
                     "</div>" +
                     "</div>" +

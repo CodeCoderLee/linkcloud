@@ -187,7 +187,7 @@
 
 							</div>
 							<div class="timeline-footer btn-footer">
-								<!-- <a class="btn myButton  btn-primary" onclick="goDetaile(this)">查看详情</a> -->
+								<!-- <a class="btn myButton btn-primary" onclick="goDetaile(this)">查看详情</a> -->
 								<button class="btn myButton  btn-primary my-btn" type="submit">查看详情</button>
 							</div>
 						</form>

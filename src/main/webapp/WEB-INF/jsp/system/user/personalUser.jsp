@@ -16,7 +16,7 @@
                                 class="h4 font-thin v-middle">账号:</span></label>
                         <input class="input-medium ui-autocomplete-input" id="accountName"/>
                     </div>
-                    <a class="btn myButton  btn-default" id="search">查询</a>
+                    <a class="btn myButton btn-default" id="search">查询</a>
                 </form>
             </div>
             <button type="button" class="btn myButton  btn-success" id="newBtn">

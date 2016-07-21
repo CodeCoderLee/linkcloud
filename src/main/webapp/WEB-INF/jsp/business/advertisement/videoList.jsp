@@ -22,7 +22,7 @@
                     <label class="control-label"> <span
                             class="h4 font-thin v-middle">来源:</span></label>
                     <input class="input-medium ui-autocomplete-input" id="searchParam" name="fileName"/>
-                    <%--<a class="btn myButton  btn-default" id="search">查询</a>--%>
+                    <%--<a class="btn myButton btn-default" id="search">查询</a>--%>
                     <button class="btn myButton  btn-default" id="search">查询</button>
                 </div>
 

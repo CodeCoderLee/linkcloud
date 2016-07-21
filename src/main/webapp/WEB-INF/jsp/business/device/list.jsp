@@ -74,7 +74,7 @@
                     <div class="col-sm-10">
                         <div class="fg-line">
                             <input class="input-medium ui-autocomplete-input" id="searchSerialNumber"/>
-                            <a class="btn myButton  btn-default" id="searchBtn">查询</a>
+                            <a class="btn myButton btn-default" id="searchBtn">查询</a>
                         </div>
                     </div>
                 </div>

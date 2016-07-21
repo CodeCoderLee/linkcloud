@@ -28,7 +28,7 @@
                                 class="h4 font-thin v-middle">序列号:</span></label>
                         <input class="input-medium ui-autocomplete-input" id="searchParam" name="serialNumber"/>
                     </div>
-                    <a class="btn myButton  btn-default" id="searchBtn">查询</a>
+                    <a class="btn myButton btn-default" id="searchBtn">查询</a>
                 </form>
             </div>
         </div>
@@ -163,23 +163,23 @@
                     "<dd>"+item.version2+"</dd></dl>";
             html = html +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt><a class=\"btn btn-info\" href=\"javascript:getHeartBeatInfo('" + item.id + "','" + item.serialNumber + "')\">设备详情</a></dt>" +
-                    "<dd><a class=\"btn btn-info\" href=\"javascript:goSpace('" + item.serialNumber + "')\">设备空间</a></dd>" +
+                    "<dt><a class=\"btn btn-info myButton  \" href=\"javascript:getHeartBeatInfo('" + item.id + "','" + item.serialNumber + "')\">设备详情</a></dt>" +
+                    "<dd><a class=\"btn btn-info myButton  \" href=\"javascript:goSpace('" + item.serialNumber + "')\">设备空间</a></dd>" +
                     "</dl>" +
                     "<dl class=\"dl-horizontal\">" +
-                    "<dt><a class=\"btn btn-info\" href=\"javascript:goDebugHeartBeatInfo('" + item.serialNumber + "')\">调试页</a></dt>" +
-                    "<dd><a class=\"btn btn-info\" href=\"javascript:getDeviceUpdate('" + item.serialNumber + "')\">设备升级</a></dd>" +
+                    "<dt><a class=\"btn btn-info myButton  \" href=\"javascript:goDebugHeartBeatInfo('" + item.serialNumber + "')\">调试页</a></dt>" +
+                    "<dd><a class=\"btn btn-info myButton  \" href=\"javascript:getDeviceUpdate('" + item.serialNumber + "')\">设备升级</a></dd>" +
                     "</dl>";
             if (item.onOffLine) {
                 html = html +
                         "<dl class=\"dl-horizontal\">" +
-                        "<dt><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
-                html = html + "<dd><a class='btn btn-info' href=\"javascript:void(0)\" onclick=\"scanFrequency('" + item.serialNumber + "')\">扫频</a></dd>";
+                        "<dt><a class='btn btn-info myButton  ' href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
+                html = html + "<dd><a class='btn btn-info myButton  ' href=\"javascript:void(0)\" onclick=\"scanFrequency('" + item.serialNumber + "')\">扫频</a></dd>";
             } else {
                 html = html +
                         "<dl class=\"dl-horizontal\">" +
-                        "<dt><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
-                html = html + "<dd><a class='btn btn-info' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"scanFrequency('" + item.serialNumber + "')\">扫频</a></dd>";
+                        "<dt><a class='btn btn-info myButton  ' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"shock('" + item.serialNumber + "')\">连通性测试</a></dt>";
+                html = html + "<dd><a class='btn btn-info myButton  ' disabled=\"disabled\" href=\"javascript:void(0)\" onclick=\"scanFrequency('" + item.serialNumber + "')\">扫频</a></dd>";
             }
 
             html = html + "</dl>" +

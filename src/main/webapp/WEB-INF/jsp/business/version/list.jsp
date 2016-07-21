@@ -16,7 +16,7 @@
                                 class="h4 font-thin v-middle">版本名称:</span></label>
                         <input class="input-medium ui-autocomplete-input" name="name" id="name"/>
                     </div>
-                    <a class="btn myButton  btn-default" id="search">查询</a>
+                    <a class="btn myButton btn-default" id="search">查询</a>
                 </form>
             </div>
             <button type="button" class="btn myButton  btn-success" id="newBtn">

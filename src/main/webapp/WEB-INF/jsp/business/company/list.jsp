@@ -70,7 +70,7 @@
                     <div class="col-sm-11">
                         <div class="fg-line">
                             <input class="input-medium ui-autocomplete-input" name="fullName" id="fullName"/>
-                            <a class="btn myButton  btn-default" id="search">查询</a>
+                            <a class="btn myButton btn-default" id="search">查询</a>
                         </div>
                     </div>
 

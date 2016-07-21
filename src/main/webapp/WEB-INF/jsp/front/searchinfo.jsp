@@ -249,7 +249,7 @@
 							
 							<div class="timeline-footer btn-footer">
 							<c:if test="${((res.mobiles)!= null && fn:length(res.mobiles) > 0) || ((res.mobiles)!= null && fn:length(res.mobiles) > 0) || ((res.faces)!= null && fn:length(res.faces) > 0)}">
-								<!-- <a class="btn myButton  btn-primary" onclick="goDetaile(this)">查看详情</a> -->
+								<!-- <a class="btn myButton btn-primary" onclick="goDetaile(this)">查看详情</a> -->
 								<button class="btn myButton  btn-primary my-btn " type="submit">查看详情</button>
 							</c:if>
 							</div>
