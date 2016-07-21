@@ -184,7 +184,7 @@
             摄像头
         </h2>
         <nav class="am-titlebar-nav">
-            <a href="${ctx}/space/device/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="" style="color:blue;">更多</a>
+            <a href="${ctx}/space/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="" style="color:blue;">更多</a>
         </nav>
     </div>
     <c:if test="${not empty(map[entry.key])}">
