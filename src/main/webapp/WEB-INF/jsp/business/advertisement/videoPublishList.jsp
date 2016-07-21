@@ -24,7 +24,7 @@
                                 class="h4 font-thin v-middle">序列号:</span></label>
                         <input class="input-medium ui-autocomplete-input" id="searchParam" name="serialNumber"/>
                     </div>
-                    <a class="btn btn-default" id="search">查询</a>
+                    <a class="btn btn-default" id="searchBtn">查询</a>
                 </form>
             </div>
             <button type="button" class="btn btn-success" id="newBtn">
@@ -86,6 +86,10 @@
     $(document).ready(function () {
         loadDevice(1, 6);
 
+        $('#searchBtn').click(function () {
+            loadDevice(1, 6);
+        });
+
         /*新增按钮点击事件绑定,打开新增窗口*/
         $('#newBtn').click(function () {
             if (serialNumbers.length == 0) {
@@ -96,11 +100,12 @@
         });
     });
     function loadDevice(pageNum, pageSize) {
+        var serialNumber = $('#searchParam').val();
         $.ajax({
             method: 'get',
             url: 'videoPublish/search.shtml',
             dataType: 'json',
-            data: {pageNum: pageNum, pageSize: pageSize},
+            data: {pageNum: pageNum, pageSize: pageSize, serialNumber:serialNumber},
             success: function (data) {
                 /*刷新数据*/
 
