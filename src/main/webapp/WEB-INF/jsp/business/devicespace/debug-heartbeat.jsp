@@ -47,6 +47,7 @@
         <button class="btn btn-info myButton shock-cmd-op">SHOCK</button>
         <button class="btn btn-info myButton start-stop"  data="stop">停止</button>
         <button class="btn btn-info myButton back-btn" id="back">返回</button>
+        <input type="hidden" class="from-space" value="${space}">
         <form action="${ctx}/index.shtml" id="gohome-form" style="float:right;">
             <input type="hidden" class="btn btn-info myButton" value="${base64}" name="messenger">
         </form>
