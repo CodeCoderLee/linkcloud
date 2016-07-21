@@ -19,7 +19,7 @@
     t2.company_video_info companyVideoInfo, t2.custom_video_info customVideoInfo, t2.update_time updateTime from bcc_device t1 LEFT  JOIN  bcc_device_to_video t2
     on t1.serial_number = t2.serial_number where 1=1
     <if test="serialNumber != null and serialNumber != ''">
-      and t1.serial_number = #{serialNumber}
+      <![CDATA[and t1.serial_number like "%"#{serialNumber}"%"  ]]>
     </if>
     ORDER BY t1.register_time DESC
   </select>
