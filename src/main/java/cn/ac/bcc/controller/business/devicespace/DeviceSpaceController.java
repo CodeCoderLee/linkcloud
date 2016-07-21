@@ -133,7 +133,6 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
     @RequestMapping(value = "show", produces = "text/html; charset=utf-8")
     public String show(Model mode,String openId,String type, Integer pageNum){
-
         boolean hasRole = false;
         if(openId != null){
             User user = new User();
@@ -481,13 +480,14 @@ public class DeviceSpaceController extends BaseController<Comment>{
     }
 
     @RequestMapping(value = "goDebugHeartBeat/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String goDebugHeartBeat(@PathVariable String serialNumber,Model mode,Messenger messenger) throws IOException {
+    public String goDebugHeartBeat(@PathVariable String serialNumber,Model mode,Messenger messenger,String space) throws IOException {
         mode.addAttribute("serialNumber",serialNumber);
         JSONObject jsonObject = JSONObject.fromObject(messenger);
         String json = jsonObject.toString();
         BASE64Encoder base64Encoder = new BASE64Encoder();
         String base64 = base64Encoder.encode(json.getBytes());
         mode.addAttribute("base64",base64);
+        mode.addAttribute("space",space);
         if(Common.check(getRequest(),getResponse())){
             //移动端访问
             return Common.BACKGROUND_PATH + "/business/devicespace/debug-heartbeat";
