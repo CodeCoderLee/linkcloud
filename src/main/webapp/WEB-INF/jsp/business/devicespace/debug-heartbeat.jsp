@@ -127,7 +127,12 @@
     });
 
     $(".back-btn").on("click",function(){
-        $('#gohome-form').submit();
+        var space = $('.from-space').attr("value");
+        if(space){
+            location.href = "${ctx}/space/device/${serialNumber}.shtml";
+        }else {
+            $('#gohome-form').submit();
+        }
     })
 </script>
 </body>
