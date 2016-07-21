@@ -99,11 +99,11 @@
     <c:forEach items="${map}" var="entry">
     <c:if test="${entry.key eq 'tv'}">
     <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header">
-        <h2 class="am-titlebar-title ">
+        <h2 class="am-titlebar-title " style="color:black;">
             电视直播
         </h2>
         <nav class="am-titlebar-nav">
-            <a href="${ctx}/space/list/${serialNumber}.shtml?stype=dtmb&openId=${openId}" class="">更多</a>
+            <a href="${ctx}/space/list/${serialNumber}.shtml?stype=dtmb&openId=${openId}" class="" style="color:blue;">更多</a>
         </nav>
     </div>
 
@@ -141,11 +141,11 @@
     </c:if>
 
     <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header">
-        <h2 class="am-titlebar-title ">
+        <h2 class="am-titlebar-title " style="color:black;">
             视频点播
         </h2>
         <nav class="am-titlebar-nav">
-            <a href="${ctx}/space/list2/${serialNumber}.shtml?stype=netdisk&title1=${title2}&title2=${item.pname}&parentId=0" class="">更多</a>
+            <a href="${ctx}/space/list2/${serialNumber}.shtml?stype=netdisk&title1=${title2}&title2=${item.pname}&parentId=0" class="" style="color:blue;">更多</a>
         </nav>
     </div>
     <ul class="mindex-ul">
@@ -180,11 +180,11 @@
     <c:forEach items="${map}" var="entry">
     <c:if test="${entry.key eq 'camera' and not empty(map[entry.key])}">
     <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header">
-        <h2 class="am-titlebar-title ">
+        <h2 class="am-titlebar-title " style="color:black;">
             摄像头
         </h2>
         <nav class="am-titlebar-nav">
-            <a href="${ctx}/space/device/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="">更多</a>
+            <a href="${ctx}/space/device/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="" style="color:blue;">更多</a>
         </nav>
     </div>
     <c:if test="${not empty(map[entry.key])}">
@@ -210,8 +210,8 @@
 
 
     <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header">
-        <h2 class="am-titlebar-title ">
-            IP地址：${ip_address}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#2fb3ff;" href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml" target="_blank">点击进入调式详情</a>
+        <h2 class="am-titlebar-title " style="color:black;">
+            IP地址：${ip_address}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#2fb3ff;" href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml?space=true">点击进入调式详情</a>
         </h2>
     </div>
 

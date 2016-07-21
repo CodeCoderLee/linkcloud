@@ -44,10 +44,10 @@
 </div>
 <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header" >
     <h2 class="am-titlebar-title ">
-        <input type="button" value="SHOCK" class="shock-cmd-op btn btn-info myButton">
-        <input type="button" value="停止" class="start-stop btn btn-info myButton">
+        <button class="btn btn-info myButton shock-cmd-op">SHOCK</button>
+        <button class="btn btn-info myButton start-stop">停止</button>
+        <button class="btn btn-info myButton back-btn" id="back">返回</button>
         <form action="${ctx}/index.shtml" id="gohome-form" style="float:right;">
-            <input type="button" class="btn btn-info myButton" value="返回" name="back">
             <input type="hidden" class="btn btn-info myButton" value="${base64}" name="messenger">
         </form>
     </h2>
@@ -123,7 +123,7 @@
         });
     });
 
-    $("input[name=back]").on("click",function(){
+    $(".back-btn").on("click",function(){
         $('#gohome-form').submit();
     })
 </script>
