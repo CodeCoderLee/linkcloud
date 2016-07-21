@@ -5,6 +5,7 @@ import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.helper.OnOffLineMap;
+import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -19,6 +20,7 @@ import java.util.TimerTask;
  * Created by lenovo on 2016-05-31.
  */
 public class StatusListener implements ServletContextListener {
+    Logger logger = Logger.getLogger(HttpServerListener.class);
     boolean run = true;
     public void contextDestroyed(ServletContextEvent arg0)
     {
@@ -30,15 +32,6 @@ public class StatusListener implements ServletContextListener {
     {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
-
-        try {
-            DeviceAuthenService deviceAuthenService = springContext.getBean(DeviceAuthenService.class);
-            DeviceService deviceService = springContext.getBean(DeviceService.class);
-            deviceService.updateOnOffLineAll(HelperUtils.OFF_LINE);
-            deviceAuthenService.updateOnOffLineAll(HelperUtils.OFF_LINE);
-        }catch (Exception e){
-
-        }
 
         Timer timer = new Timer();
         timer.schedule(new MyTask(springContext, sc, timer), 3000);
@@ -57,6 +50,7 @@ public class StatusListener implements ServletContextListener {
 
         public void run() {
             int sleep = 500;
+            logger.info("离线状态监听程序成功启动");
             while (run){
                 try {
                     List<String> keyList = OnOffLineMap.getKeys();
@@ -72,12 +66,13 @@ public class StatusListener implements ServletContextListener {
                             if(DeviceAPI.AUTHEN_MAP.containsKey(serialNumber)){
                                 DeviceAPI.AUTHEN_MAP.put(serialNumber,false);
                             }
+                            logger.info(serialNumber + "设备离线");
                             System.out.println("off-line");
                         }
                     }
                     Thread.sleep(sleep);
                 }catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("error",e);
                     try {
                         Thread.sleep(sleep);
                     } catch (InterruptedException e1) {

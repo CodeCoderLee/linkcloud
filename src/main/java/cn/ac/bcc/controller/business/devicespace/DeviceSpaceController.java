@@ -26,6 +26,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,24 +77,19 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private final int PAGE_SIZE = 10;
     private final int SHOW_STATUS = 3;
     private final int DEBUG_STATUS = 1;
-    private static Log log = LogFactory.getLog(DeviceSpaceController.class);
+    private static Logger logger = Logger.getLogger(DeviceSpaceController.class);
 
     @RequestMapping(value = "debug", produces = "text/html; charset=utf-8")
     public String debug(Model mode,String openId,String type, Integer pageNum){
         boolean hasRole = false;
-        if(openId != null){
-            User user = new User();
-            /*通过openId获取user信息*/
-            user.setAccountname(openId);
-            user = userService.selectOne(user);
-            if(user != null){
-                Integer userId = user.getId();
-                UserRole userRole = new UserRole();
-                userRole.setUserid(userId);
-                List<UserRole> urList = userRoleService.select(userRole);
-                if(urList != null && urList.size() > 0){
-                    hasRole = true;
-                }
+        User user =(User)Common.findUserSession(getRequest());
+        if(user != null){
+            Integer userId = user.getId();
+            UserRole userRole = new UserRole();
+            userRole.setUserid(userId);
+            List<UserRole> urList = userRoleService.select(userRole);
+            if(urList != null && urList.size() > 0){
+                hasRole = true;
             }
         }
         Device device = new Device();
@@ -137,7 +133,6 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
     @RequestMapping(value = "show", produces = "text/html; charset=utf-8")
     public String show(Model mode,String openId,String type, Integer pageNum){
-        log.info("openId:::" + openId);
 
         boolean hasRole = false;
         if(openId != null){
@@ -166,24 +161,19 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
     @RequestMapping(value = "device/{serialNumber}", produces = "text/html; charset=utf-8")
     public String index(@PathVariable String serialNumber, String openId, String type, Model mode, Messenger messenger){
-        log.info("openId:::" + openId);
         boolean hasRole = false;
         boolean isScan = false;
-        if(openId != null){
-            User user = new User();
-            /*通过openId获取user信息*/
-            user.setAccountname(openId);
-            user = userService.selectOne(user);
-            if(user != null){
-                Integer userId = user.getId();
-                UserRole userRole = new UserRole();
-                userRole.setUserid(userId);
-                List<UserRole> urList = userRoleService.select(userRole);
-                if(urList != null && urList.size() > 0){
-                    hasRole = true;
-                }
+        User user =(User)Common.findUserSession(getRequest());
+        if(user != null){
+            Integer userId = user.getId();
+            UserRole userRole = new UserRole();
+            userRole.setUserid(userId);
+            List<UserRole> urList = userRoleService.select(userRole);
+            if(urList != null && urList.size() > 0){
+                hasRole = true;
             }
         }
+
         JSONArray array = advertisementPublishService.getAdList(serialNumber);
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
@@ -206,7 +196,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("netdiskList",lst);
         mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
-        mode.addAttribute("hasRole",hasRole);
+        mode.addAttribute("hasRole", hasRole);
 //        mode.addAttribute("type",type);
         if(type != null)getSession().setAttribute("_type_",type);
         mode.addAttribute("array",array);
@@ -295,7 +285,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
     }
 
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
-    public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId,String frame){
+    public String play(@PathVariable String serialNumber,Model mode,Integer programId, String openId,String frame) throws IOException {
         Program program = programService.selectByPrimaryKey(programId);
         String ptype = "";
         if(program != null)ptype = program.getStype();
@@ -309,16 +299,17 @@ public class DeviceSpaceController extends BaseController<Comment>{
         example.createCriteria().andEqualTo("stype",ptype).andEqualTo("deviceSerialNumber",serialNumber);
         List<Program> list = programService.selectByExample(example);
         list = adjustSort(list,programId);
-//        list.get(0).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
-//        list.get(2).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
-//        list.get(4).setPurl("http://www.zhangxinxu.com/study/media/cat.mp4");
+//        list.get(0).setPurl("http://streambox.fr/playlists/issue_067/stream.m3u8");
+//        list.get(1).setPurl("http://streambox.fr/playlists/test_001/stream.m3u8");
+//        list.get(2).setPurl("http://m4stv.inqb8r.tv/studentTV/studentTV.stream_360p/playlist.m3u8");
+//        list.get(3).setPurl("http://streambox.fr/playlists/test_001/stream.m3u8");
 
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         mode.addAttribute("ip_address",deviceAuthen.getIp1());
 
         ResponseData responseData = getCommentList(programId,1);
         mode.addAttribute("responseData",responseData);
-//        mode.addAttribute("program",program);
+        mode.addAttribute("program",program);
 //        mode.addAttribute("openId",openId);
         mode.addAttribute("serialNumber",serialNumber);
         mode.addAttribute("ptype",ptype);
@@ -329,10 +320,12 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
         JSONArray array = JSONArray.fromObject(list);
         mode.addAttribute("array",array.toString());
-        if(Common.isNotEmpty(frame)) {
-            return Common.BACKGROUND_PATH + "/business/devicespace/play-slider";
-        }else{
+        if(Common.check(getRequest(),getResponse())){
+            //移动端访问
             return Common.BACKGROUND_PATH + "/business/devicespace/play";
+        }else{
+            //pc端访问
+            return Common.BACKGROUND_PATH + "/business/devicespace/play-pc";
         }
     }
 
