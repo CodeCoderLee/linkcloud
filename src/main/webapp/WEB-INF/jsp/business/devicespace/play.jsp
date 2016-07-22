@@ -52,7 +52,7 @@
   </div>
 </div>
 <div class="mobile-main">
-  <video width="100%" height="360" controls="" autoplay="" id="player1">
+  <video width="100%" height="360" webkit-playsinline controls="" autoplay="" id="player1">
     <!-- MP4 must be first for iPad! -->
     <%--<source src="${program.purl}" type="video/mp4"><!-- Safari / iOS, IE9 -->--%>
   </video>
@@ -200,7 +200,7 @@
     var programArray = eval("("+ '${array}'+")");
     for(var k = 0;k<programArray.length;k++){
       var program = programArray[k];
-      program.pname = 'test' + k;
+//      program.pname = 'test' + k;
       var videoWrapper = new VideoWrapper(program,k);
       frameArray[k] = videoWrapper;
     }
