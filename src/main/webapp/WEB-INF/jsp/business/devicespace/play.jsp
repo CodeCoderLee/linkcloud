@@ -222,11 +222,10 @@
     function changeMouse() {
       $mobileBtn.css({
         'cursor': 'pointer',
-        'color':'#555'
+        'color': '#555'
       }).removeClass('not-allowed');
     }
     function genPragramList() {
-      changeMouse();
       console.log(forwarFlag);
       $pragram = $('.slider-programs span');
       var iarr = [];
@@ -314,12 +313,12 @@
               var videWrapper = frameArray[frameArray.length - 1];
               tempEl = videWrapper.program;
               console.log(tempEl);
-              iarr.push(tempEl);
+              iarr.push(videWrapper);
               return '<span><a href="' + tempEl['purl'] + '">' + tempEl['pname'] + '</a></span>';
             } else {
               var videWrapper = frameArray[index - 1];
               tempEl = videWrapper.program;
-              iarr.push(tempEl);
+              iarr.push(videWrapper);
               return '<span><a href="' + tempEl['purl'] + '">' + tempEl['pname'] + '</a></span>';
             }
           });
@@ -352,12 +351,12 @@
               var videWrapper = frameArray[0];
               tempEl = videWrapper.program;
               console.log(tempEl);
-              iarr.push(tempEl);
+              iarr.push(videWrapper);
               return '<span><a href="' + tempEl['purl'] + '">' + tempEl['pname'] + '</a></span>';
             } else {
               var videWrapper = frameArray[index + 1];
               tempEl = videWrapper.program;
-              iarr.push(tempEl);
+              iarr.push(videWrapper);
               return '<span><a href="' + tempEl['purl'] + '">' + tempEl['pname'] + '</a></span>';
             }
           });
@@ -390,34 +389,39 @@
       /*处理视频切换逻辑*/
       console.log(e.target.href);
     });
+
     function prevHandler() {
       console.clear();
       if(frameArray.length >1) {
-        currentVideoWrapper = frameArray[1];
-        console.log("current", currentVideoWrapper.pname);
         forwarFlag = 0;
         genPragramList();
+        currentVideoWrapper = frameArray[0];
+        console.log("current", currentVideoWrapper.pname);
+        $("input[name=programId]").attr("value",currentVideoWrapper.programId);
+        changeMouse();
+        $(event.target).css({
+          'color': '#10a0ea'
+        });
         setTimeout(currentVideoWrapper.startOrRePlay(), 1500);
       }
     }
+
     function nextHandler() {
       console.clear();
       if(frameArray.length >1) {
-        currentVideoWrapper = frameArray[1];
-        console.log("current", currentVideoWrapper.pname);
         forwarFlag = 1;
         genPragramList();
+        currentVideoWrapper = frameArray[2];
+        $("input[name=programId]").attr("value",currentVideoWrapper.programId);
+        console.log("current", currentVideoWrapper.pname);
+        changeMouse();
+        $(event.target).css({
+          'color': '#10a0ea'
+        });
         setTimeout(currentVideoWrapper.startOrRePlay(), 1500);
       }
-
     }
-//    vSliderMc.on("swipe", function(ev) {
-//      if (ev.deltaX<0) {
-//        prevHandler();
-//      } else if (ev.deltaX>0) {
-//        nextHandler();
-//      }
-//    });
+
     $(window).resize(function() {
       $pragram = $('.slider-programs span');
       $pragram.css({
@@ -436,7 +440,7 @@
        */
 
     currentVideoWrapper = frameArray[0];
-    setTimeout(frameArray[0].startOrRePlay(),1500);
+    setTimeout(frameArray[1].startOrRePlay(),1500);
 
   });
 

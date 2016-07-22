@@ -280,7 +280,13 @@ public class DeviceSpaceController extends BaseController<Comment>{
                 retList.add(program);
             }
         }
-        return retList;
+
+        List<Program> tmpList = new ArrayList<Program>();
+        tmpList.add(retList.get(retList.size()-1));
+        for(int i = 0;i<retList.size() -2;i++){
+            tmpList.add(retList.get(i));
+        }
+        return tmpList;
     }
 
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
