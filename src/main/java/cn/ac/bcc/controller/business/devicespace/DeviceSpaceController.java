@@ -260,7 +260,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         return Common.BACKGROUND_PATH + "/business/devicespace/netdisk-list";
     }
 
-    private List<Program> adjustSort(List<Program> list,Integer programId){
+    private List<Program> adjustSortMobile(List<Program> list,Integer programId){
         List<Program> retList = new ArrayList<Program>();
         int index = -1;
         for(int i =0;i<list.size();i++){
@@ -283,10 +283,34 @@ public class DeviceSpaceController extends BaseController<Comment>{
 
         List<Program> tmpList = new ArrayList<Program>();
         tmpList.add(retList.get(retList.size()-1));
-        for(int i = 0;i<retList.size() -2;i++){
+        for(int i = 0;i<retList.size() -1;i++){
             tmpList.add(retList.get(i));
         }
         return tmpList;
+    }
+
+
+    private List<Program> adjustSortPC(List<Program> list,Integer programId){
+        List<Program> retList = new ArrayList<Program>();
+        int index = -1;
+        for(int i =0;i<list.size();i++){
+            Program program = list.get(i);
+            if(programId.equals(program.getId())){
+                index = i;
+                break;
+            }
+        }
+        if(index != -1){
+            for(int i = index;i<list.size();i++){
+                Program program = list.get(i);
+                retList.add(program);
+            }
+            for(int i= 0;i<index;i++){
+                Program program = list.get(i);
+                retList.add(program);
+            }
+        }
+        return retList;
     }
 
     @RequestMapping(value = "play/{serialNumber}", produces = "text/html; charset=utf-8")
@@ -303,7 +327,6 @@ public class DeviceSpaceController extends BaseController<Comment>{
         Example example = new Example(Program.class);
         example.createCriteria().andEqualTo("stype",ptype).andEqualTo("deviceSerialNumber",serialNumber);
         List<Program> list = programService.selectByExample(example);
-        list = adjustSort(list,programId);
 //        list.get(0).setPurl("http://streambox.fr/playlists/issue_067/stream.m3u8");
 //        list.get(1).setPurl("http://streambox.fr/playlists/test_001/stream.m3u8");
 //        list.get(2).setPurl("http://m4stv.inqb8r.tv/studentTV/studentTV.stream_360p/playlist.m3u8");
@@ -327,9 +350,11 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("array",array.toString());
         if(Common.check(getRequest(),getResponse())){
             //移动端访问
+            list = adjustSortMobile(list,programId);
             return Common.BACKGROUND_PATH + "/business/devicespace/play";
         }else{
             //pc端访问
+            list = adjustSortPC(list,programId);
             return Common.BACKGROUND_PATH + "/business/devicespace/play-pc";
         }
     }

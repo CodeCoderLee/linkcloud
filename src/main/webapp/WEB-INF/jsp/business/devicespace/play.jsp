@@ -200,7 +200,6 @@
     var programArray = eval("("+ '${array}'+")");
     for(var k = 0;k<programArray.length;k++){
       var program = programArray[k];
-//      program.pname = 'test' + k;
       var videoWrapper = new VideoWrapper(program,k);
       frameArray[k] = videoWrapper;
     }
@@ -411,7 +410,11 @@
       if(frameArray.length >1) {
         forwarFlag = 1;
         genPragramList();
-        currentVideoWrapper = frameArray[2];
+        if(frameArray.length == 2){
+          currentVideoWrapper = frameArray[0];
+        }else {
+          currentVideoWrapper = frameArray[2];
+        }
         $("input[name=programId]").attr("value",currentVideoWrapper.programId);
         console.log("current", currentVideoWrapper.pname);
         changeMouse();
@@ -438,10 +441,13 @@
      *
      * @type {Object}
        */
-
-    currentVideoWrapper = frameArray[0];
-    setTimeout(frameArray[1].startOrRePlay(),1500);
-
+    if(frameArray.length <= 2){
+      currentVideoWrapper = frameArray[0];
+      setTimeout(currentVideoWrapper.startOrRePlay(),1500);
+    }else{
+      currentVideoWrapper = frameArray[1];
+      setTimeout(currentVideoWrapper.startOrRePlay(),1500);
+    }
   });
 
 
