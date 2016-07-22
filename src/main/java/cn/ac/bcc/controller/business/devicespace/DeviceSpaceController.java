@@ -343,18 +343,22 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("ptype",ptype);
 //        mode.addAttribute("pname",pname);
         mode.addAttribute("userId",userId);
-        mode.addAttribute("list",list);
         mode.addAttribute("current_program_id",programId);
 
-        JSONArray array = JSONArray.fromObject(list);
-        mode.addAttribute("array",array.toString());
+
         if(Common.check(getRequest(),getResponse())){
             //移动端访问
             list = adjustSortMobile(list,programId);
+            mode.addAttribute("list",list);
+            JSONArray array = JSONArray.fromObject(list);
+            mode.addAttribute("array",array.toString());
             return Common.BACKGROUND_PATH + "/business/devicespace/play";
         }else{
             //pc端访问
             list = adjustSortPC(list,programId);
+            mode.addAttribute("list",list);
+            JSONArray array = JSONArray.fromObject(list);
+            mode.addAttribute("array",array.toString());
             return Common.BACKGROUND_PATH + "/business/devicespace/play-pc";
         }
     }
