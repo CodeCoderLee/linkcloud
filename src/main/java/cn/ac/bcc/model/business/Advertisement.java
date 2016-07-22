@@ -2,6 +2,7 @@ package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.NavigableMap;
 
 @Table(name = "bcc_advertisement")
 public class Advertisement {
@@ -58,6 +59,12 @@ public class Advertisement {
 
     @Column(name = "type")
     private Integer type;
+
+    @Column(name = "width")
+    private Integer width;
+
+    @Column(name = "height")
+    private Integer height;
 
     @Transient
     private String companyName;
@@ -253,5 +260,21 @@ public class Advertisement {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 }

@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -81,6 +83,13 @@ public class AdvertisementController extends BaseController<Advertisement>{
         advertisement.setAddTime(date);
         String filePath = saveImage(file, rootPath);
         advertisement.setFilePath(filePath);
+        try {
+            BufferedImage bufferedImage = ImageIO.read(new File(advertisement.getFilePath()));
+            advertisement.setWidth(bufferedImage.getWidth());
+            advertisement.setHeight(bufferedImage.getHeight());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         advertisement.setFileName(file.getOriginalFilename());
         advertisementService.insertSelective(advertisement);
         String url = "/advertisement/getPic/"+filePath.substring(filePath.lastIndexOf('/')+1)+".shtml";
