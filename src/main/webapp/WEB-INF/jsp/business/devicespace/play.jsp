@@ -216,7 +216,7 @@
     //   console.log('当前视频url:',current,ev.deltaX>0? '滑动向右' : '滑动向左');
     // });
     $pragram.css({
-      'width': $(window).width()/3-25 + 'px'
+      'width': $(window).width()/3-30 + 'px'
     });
 
     function changeMouse() {
@@ -249,7 +249,7 @@
           'border': '2px solid #10a0ea'
         });
         $pragram.css({
-          'width': $(window).width() / 3 - 25 + 'px',
+          'width': $(window).width() / 3 - 30 + 'px',
           'margin-right': '5px'
         });
         $mobileBtn.css({
@@ -285,7 +285,7 @@
           'border': '2px solid #10a0ea'
         });
         $pragram.css({
-          'width': $(window).width() / 3 - 25 + 'px',
+          'width': $(window).width() / 3 - 30 + 'px',
           'margin-right': '5px'
         });
         tempArr = iarr;
@@ -299,7 +299,7 @@
           $pragramList.html(pragramHtml.join(''));
           $pragram = $('.slider-programs span');
           $pragram.css({
-            'width': $(window).width() / 3 - 25 + 'px',
+            'width': $(window).width() / 3 - 30 + 'px',
             'margin-right': '5px'
           });
           forwarFlag = 0;
@@ -337,7 +337,7 @@
             'border': '2px solid #10a0ea'
           });
           $pragram.css({
-            'width': $(window).width() / 3 - 25 + 'px',
+            'width': $(window).width() / 3 - 30 + 'px',
             'margin-right': '5px'
           });
           pragramHtml = [];
