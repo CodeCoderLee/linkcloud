@@ -10,7 +10,6 @@
 .vi-mobile .am-header-default .am-header-title, .am-header-default .am-header-title a {
   color: #5f5f5f;
 }
-
 .mobile-header {
   margin: 0;
   padding: 5px 0;
@@ -206,4 +205,106 @@ p.mindex-intro,p.mindex-time {
   #vjs_video_3 {
     height: 350px!important;
   }
+}
+.video-slider {
+  width: 100%;
+}
+.video-slider li {
+  text-align: center;
+  background-color: #000;
+}
+.video-slider video {
+  margin: 0 atuo;
+}
+/*.mejs-container {
+  margin: 0 auto;
+  background-color: #000;
+}*/
+.vi-mobile .am-header .am-header-right {
+  right: 49px;
+}
+.vi-mobile .am-header-default .am-header-nav {
+  color: #2fb3ff;
+  font-weight: bold;
+}
+.program-list {
+  color: #2fb3ff;
+}
+.vi-mobile .am-gallery-default .am-gallery-title {
+  word-break:break-all; /*支持IE，chrome，FF不支持*/
+  　word-wrap:break-word;/*支持IE，chrome，FF*/
+  white-space: normal;
+  line-height: 1.5;
+}
+/*
+  轮播效果
+ */
+.mobile-videoSwitch {
+  margin-top: 10px;
+  position: relative;
+}
+.mobile-videoPrev {
+  position: absolute;
+  left: 0;
+  top: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 3000;
+}
+.mobile-videoNext {
+  position: absolute;
+  right: 0;
+  top: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 3000;
+}
+.mobile-videoSwitch {
+  overflow: hidden;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 80px;
+}
+.slider-programs {
+  width: 400%;
+  padding: 0 4px;
+  text-align: left;
+  /*－webkit-transition: all 0.5s ease-in;*/
+  /*-ms-transition: all 0.5s ease-in;*/
+  /*-o-transition: all 0.5s ease-in;*/
+  /*-moz-transition: all 0.5s ease-in;*/
+  /*transition: all 0.5s ease-in;*/
+}
+.index-slider {
+  width: 100%;
+}
+.slider-programs span {
+  display: inline-block;
+  width: 32%;
+  padding: 2px;
+  border: 1px solid #eee;
+  height: 80px;
+  font-size: 14px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 80px;
+  overflow: hidden;
+}
+.slider-programs span {
+  border: 1px solid #eee;
+  －webkit-transition: border 0.4s ease-in;
+  -ms-transition: border 0.4s ease-in;
+  -o-transition: border 0.4s ease-in;
+  -moz-transition: border 0.4s ease-in;
+  transition: border 0.4s ease-in;
+}
+.slider-programs span:nth-of-type(2) {
+  border:2px solid #10a0ea;
+}
+.slider-programs span a {
+  color: #555;
+}
+.slider-programs span:nth-of-type(2) a {
+  color: #10a0ea;
+  font-weight: bold;
 }
