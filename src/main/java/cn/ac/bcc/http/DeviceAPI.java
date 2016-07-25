@@ -365,6 +365,13 @@ public class DeviceAPI {
                     program.setStype(stype);
                     program.setPnumber(pnumber);
                     program.setPid(pid);
+                    if("camera".equals(stype)){
+                        try {
+                            pname = new String(pname.getBytes("gb2312"), "utf-8");
+                        }catch (Exception e){
+
+                        }
+                    }
                     program.setPname(pname);
                     program.setPtype(ptype);
                     program.setPurl(purl);
