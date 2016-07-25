@@ -12,7 +12,7 @@
 
 <div class="container">
     <div class="block-header">
-        <h2>新增使用申请</h2>
+        <h2>新增图文广告素材</h2>
     </div>
     <div class="line line-dashed line-lg pull-in"></div>
     <div class="card">

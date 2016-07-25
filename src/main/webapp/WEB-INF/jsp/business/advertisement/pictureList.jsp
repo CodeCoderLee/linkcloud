@@ -54,6 +54,7 @@
                 <tr>
                     <th data-checkbox="true"></th>
                     <th data-field="fileName" >文件名</th>
+                    <th data-field="width" data-formatter="widthFormatter" >分辨率</th>
                     <th data-field="companyName" >广告主</th>
                     <th data-field="type" data-formatter="typeFormatter">广告类型</th>
                     <th data-field="industryName">所属行业</th>
@@ -85,6 +86,12 @@
             return '-';
         }
 
+    }
+    function widthFormatter(value,row){
+        if(row['width']!=null && row['height']!=null){
+            return row['width'] + "X" + row['height'];
+        }
+        return '-';
     }
 </script>
 

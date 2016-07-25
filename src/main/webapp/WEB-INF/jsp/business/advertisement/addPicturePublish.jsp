@@ -136,7 +136,7 @@
                     url: 'advertisementPublish/updateAdPublish.shtml',
                     data: {serialNumbers: serialNumbers, adInfos: adInfos.join(",")},
                     success: function (data) {
-                        notify('success', '     设备发布视频广告成功      ');
+                        notify('success', '     设备发布图文广告成功      ');
                         $("#content").load(rootPath + "/advertisementPublish/list.shtml");
                     },
                     error: function (XMLHttpRequest) {
