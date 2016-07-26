@@ -286,7 +286,11 @@ public class DeviceSpaceController extends BaseController<Comment>{
         for(int i = 0;i<retList.size() -1;i++){
             tmpList.add(retList.get(i));
         }
-        return tmpList;
+        if(retList.size() > 2) {
+            return tmpList;
+        }else {
+            return retList;
+        }
     }
 
 
