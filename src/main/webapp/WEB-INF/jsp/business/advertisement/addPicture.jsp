@@ -8,7 +8,16 @@
 <%@page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<%--<head>--%>
+<%--<meta charset="utf-8">--%>
+<%--<meta http-equiv="x-ua-compatible" content="ie=edge">--%>
+<%--<meta name="viewport" content="width=device-width, initial-scale=1">--%>
+
+<%--</head>--%>
 <%--<script type="text/javascript" src="${ctx}/common/common.js"></script>--%>
+<link href="${ctx}/css/fontawesome/font-awesome.min.css" rel="stylesheet">
+<link href="${ctx}/vendors/cropper/cropper.css" rel="stylesheet">
+<link href="${ctx}/vendors/cropper/main.css" rel="stylesheet">
 
 <div class="container">
     <div class="block-header">
@@ -22,11 +31,12 @@
                 </div>
                 <div class="card-body">
                     <form id="form" name="form" class="form-horizontal" method="post"
-                          action="${ctx}/advertisement/add.shtml" enctype="multipart/form-data">
+                         enctype="multipart/form-data">
+                        <input type="hidden" name="fileName" id="fileName"/>
                         <section class="panel panel-default">
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class=" col-sm-3 control-label">选择行业</label>
+                                    <label class=" col-sm-2 control-label">选择行业</label>
                                     <div class="col-sm-5">
                                         <div class="fg-line">
                                             <div class="select">
@@ -41,7 +51,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="company">企业</label>
+                                    <label class="col-sm-2 control-label" for="company">企业</label>
 
                                     <div class="col-sm-5">
                                         <div class="fg-line">
@@ -59,7 +69,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">广告类型</label>
+                                    <label class="col-sm-2 control-label">广告类型</label>
                                     <div class="col-sm-5">
                                         <div class="fg-line">
                                             <div class="select">
@@ -74,18 +84,124 @@
                                 </div>
 
 
+                                <%--<div class="form-group">--%>
+                                <%--<label class="col-sm-2 control-label">上传广告图片</label>--%>
+                                <%--<div class="col-sm-9">--%>
+                                <%--<div class="fileinput fileinput-new" data-provides="fileinput">--%>
+                                <%--<span class="btn myButton  btn-primary btn-file m-r-10">--%>
+                                <%--<span class="fileinput-new">选择图片文件</span>--%>
+                                <%--<span class="fileinput-exists">重新选择</span>--%>
+                                <%--<input type="file" name="file">--%>
+                                <%--</span>--%>
+                                <%--<span class="fileinput-filename"></span>--%>
+                                <%--<a href="#" class="close fileinput-exists"--%>
+                                <%--data-dismiss="fileinput">&times;</a>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+                                <%--</div>--%>
+
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">上传广告图片</label>
-                                    <div class="col-sm-9">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <span class="btn myButton  btn-primary btn-file m-r-10">
-                                                <span class="fileinput-new">选择图片文件</span>
-                                                <span class="fileinput-exists">重新选择</span>
-                                                <input type="file" name="file">
-                                            </span>
-                                            <span class="fileinput-filename"></span>
-                                            <a href="#" class="close fileinput-exists" data-dismiss="fileinput">&times;</a>
+                                    <label class="col-sm-2 control-label">上传广告图片</label>
+                                    <div class="col-sm-6">
+                                        <div class="img-container">
+                                            <img id="image" src="">
                                         </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="docs-preview clearfix">
+                                            <div class="img-preview preview-lg"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10 docs-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary" data-method="zoom"
+                                                    data-option="0.1" title="Zoom In">
+                                                <span class="docs-tooltip" data-toggle="tooltip"
+                                                      title="放大">
+                                                    <span class="fa fa-search-plus"></span>
+                                                </span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary" data-method="zoom"
+                                                    data-option="-0.1" title="Zoom Out">
+                                                <span class="docs-tooltip" data-toggle="tooltip"
+                                                      title="缩小">
+                                                    <span class="fa fa-search-minus"></span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary" data-method="rotate"
+                                                    data-option="-45" title="Rotate Left">
+                                                <span class="docs-tooltip" data-toggle="tooltip"
+                                                      title="左旋45度">
+                                                    <span class="fa fa-rotate-left"></span>
+                                                </span>
+                                            </button>
+                                            <button type="button" class="btn btn-primary" data-method="rotate"
+                                                    data-option="45" title="Rotate Right">
+                                                <span class="docs-tooltip" data-toggle="tooltip"
+                                                      title="右旋45度">
+                                                    <span class="fa fa-rotate-right"></span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="btn-group docs-aspectRatio">
+                                            <label class="btn btn-primary active">
+                                                <input type="radio" class="sr-only" id="aspectRatio0" name="aspectRatio"
+                                                       value="1.7777777777777777" checked="checked">
+                                                <span class="docs-tooltip" data-toggle="tooltip"
+                                                      title="宽高比: 16 / 9">
+                                                  16:9
+                                                </span>
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" class="sr-only" id="aspectRatio1" name="aspectRatio"
+                                                       value="1.3333333333333333">
+                                                <span class="docs-tooltip" data-toggle="tooltip"
+                                                      title="宽高比: 4 / 3">
+                                                  4:3
+                                                </span>
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" class="sr-only" id="aspectRatio2" name="aspectRatio" value="4">
+                                                <span class="docs-tooltip" data-toggle="tooltip" title="宽高比: 4 / 1">
+                                                  4:1
+                                                </span>
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" class="sr-only" id="aspectRatio3" name="aspectRatio" value="3">
+                                                <span class="docs-tooltip" data-toggle="tooltip" title="宽高比: 3 / 1">
+                                                  3:1
+                                                </span>
+                                            </label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" class="sr-only" id="aspectRatio4" name="aspectRatio" value="2">
+                                                <span class="docs-tooltip" data-toggle="tooltip" title="宽高比: 2 / 1">
+                                                  2:1
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <div class="btn-group">
+                                            <%--<button type="button" class="btn btn-primary" id="complete"--%>
+                                                    <%--title="Crop">--%>
+                                            <%--<span class="docs-tooltip" data-toggle="tooltip"--%>
+                                                  <%--title="完成">--%>
+                                                <%--<span class="fa fa-check"></span>--%>
+                                            <%--</span>--%>
+                                            <%--</button>--%>
+                                            <label class="btn btn-primary btn-upload" for="inputImage"
+                                                   title="Upload image file">
+                                                <input type="file" class="sr-only" id="inputImage" name="file"
+                                                       accept="image/*"/>
+                                            <span class="docs-tooltip" data-toggle="tooltip"
+                                                  title="选择图片">
+                                                <span class="fa fa-upload"></span>
+                                            </span>
+                                            </label>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -100,13 +216,25 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="${ctx}/js/jquery-2.1.1.min.js"/>
+<script charset="utf-8" src="${ctx}/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery-validation/jquery.validate.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-<script src="${ctx}/vendors/fileinput/fileinput.min.js"></script>
+<%--<script src="${ctx}/vendors/fileinput/fileinput.min.js"></script>--%>
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
+<script src="${ctx}/vendors/cropper/cropper.min.js"></script>
+<script src="${ctx}/vendors/cropper/main.js"></script>
+<script src="${ctx}/vendors/cropper/canvas-to-blob.js"></script>
 <script type="text/javascript">
     var rootPath = "${ctx}";
+    //    $('.img-container > img').cropper({
+    //        aspectRatio: 16 / 9,
+    //        crop: function (data) {
+    //            // 出来裁切后的图片数据.
+    //        }
+    //    });
+
 </script>
 
 <script type="text/javascript" src="${ctx}/js/business/advertisement/add.js"/>

@@ -18,11 +18,12 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="width" jdbcType="INTEGER" property="width" />
     <result column="height" jdbcType="INTEGER" property="height" />
+    <result column="ratio" jdbcType="FLOAT" property="ratio" />
   </resultMap>
   <select id="selectAdvertisement" resultType="cn.ac.bcc.model.business.Advertisement" parameterType="cn.ac.bcc.model.business.Advertisement">
     select t1.id id, t1.file_path filePath, t1.file_name fileName, t1.state state, t1.source source,
     t1.industry_code industryCode, t1.is_third_party isThirdParty, t1.company_id companyId, t1.url url,t1.add_time addTime,t1.type type,
-    t1.width width, t1.height height,t2.full_name industryName, t3.`name` companyName from bcc_advertisement t1
+    t1.width width, t1.height height,t1.ratio ratio,t2.full_name industryName, t3.`name` companyName from bcc_advertisement t1
     left join bcc_industry t2 on t1.industry_code = t2.full_code
     left join bcc_company t3 on t1.company_id = t3.ID
     where 1=1
@@ -37,7 +38,7 @@
 
   <select id="searchAdvertisement" resultType="cn.ac.bcc.model.business.Advertisement">
     select t1.id id, t1.file_path filePath, t1.file_name fileName, t1.state, t1.industry_code industryCode,
-    t1.company_id companyId, t1.url, t1.add_time addTime,t1.type type,t1.width width, t1.height height, t2.name companyName, t3.full_name industryName from bcc_advertisement t1 left join bcc_company t2 on t1.company_id = t2.id
+    t1.company_id companyId, t1.url, t1.add_time addTime,t1.type type,t1.width width, t1.height height, t1.ratio ratio,t2.name companyName, t3.full_name industryName from bcc_advertisement t1 left join bcc_company t2 on t1.company_id = t2.id
     left join bcc_industry t3 on t1.industry_code = t3.full_code where 1=1
     <if test="advertisement.fileName!=null and advertisement.fileName!=''">
       and t1.file_name like '%'||#{advertisement.fileName}||'%'

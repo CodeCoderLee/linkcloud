@@ -66,6 +66,9 @@ public class Advertisement {
     @Column(name = "height")
     private Integer height;
 
+    @Column(name = "ratio")
+    private Float ratio;
+
     @Transient
     private String companyName;
 
@@ -276,5 +279,13 @@ public class Advertisement {
 
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    public Float getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(Float ratio) {
+        this.ratio = ratio;
     }
 }

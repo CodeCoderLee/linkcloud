@@ -9,10 +9,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <%--<script type="text/javascript" src="${ctx}/common/common.js"></script>--%>
-
+<link rel="stylesheet" href="${ctx}/vendors/viewer/dist/viewer.css" type="text/css">
 <div class="container">
     <div class="block-header">
         <h2>绑定图文广告</h2>
+    </div>
+    <div>
+        <img class="image hidden" src="" alt="">
     </div>
     <div class="line line-dashed line-lg pull-in"></div>
     <div class="card">
@@ -20,7 +23,7 @@
             <div class="m-b-md" style="margin-bottom: 30px">
                 <label class=" col-sm-2 control-label">行业/企业</label>
                 <div class="col-sm-10">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="fg-line">
                             <div class="select">
                                 <select class="form-control" id="industryCode" name="industryCode"
@@ -30,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="fg-line">
                             <div class="select">
                                 <select class="form-control" id="companyId" name="companyId"
@@ -40,12 +43,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <div class="fg-line">
                             <button id="subBtn" class="btn myButton  btn-success btn-s-xs">确定</button>
                         </div>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <div class="fg-line">
                             <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                         </div>
@@ -98,6 +101,7 @@
 <script type="text/javascript" src="${ctx}/js/jquery/jquery.form.js"/>
 <script src="${ctx}/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/common/common.js"/>
+<script charset="utf-8" src="${ctx}/vendors/viewer/dist/viewer.min.js"></script>
 <script type="text/javascript">
     var rootPath = "${ctx}";
 </script>
@@ -106,6 +110,20 @@
     var adIds = [];
     var type = 3;//广告类型,初始化自定义类型
     $(document).ready(function () {
+
+        var options = {
+            navbar: false,
+            toolbar: false,
+            title: false,
+            tooltop: false,
+            movable: false,
+            rotatable: false,
+            scalable: false,
+            transition: false,
+            keyboard: false
+        };
+        $('.image').viewer(options);
+
         loadAd(1, 6);
         /*确定按钮点击事件绑定,打开新增窗口*/
         $('#subBtn').click(function () {
@@ -260,7 +278,7 @@
             html = html +
                     '<i class="input-helper"></i>' +
                     '</label></dt>' +
-                    '<dd>' + item.fileName + '</dd>' +
+                    '<dd>' + '<a onclick="showViewer(\'' + item.url + '\')" >' + item.fileName + '</a>' + '</dd>' +
                     '</dl>' +
                     '<dl class="dl-horizontal">' +
                     '<dt>所属行业</dt>' +
@@ -296,6 +314,16 @@
                 adInfos.splice(adInfos.indexOf(this.value), 1);
             }
         });
+    }
+
+    function showViewer(url) {
+        $('.image').attr("src", rootPath + url);
+        $('.image').viewer('show');
+//        $('.image').viewer({
+//            shown: function () {
+//                $('.image').viewer('show');
+//            }
+//        });
     }
 
     function dateTimeFormatter(value) {
