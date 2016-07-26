@@ -350,21 +350,21 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("current_program_id",programId);
 
 
-//        if(Common.check(getRequest(),getResponse())){
+        if(Common.check(getRequest(),getResponse())){
             //移动端访问
             list = adjustSortMobile(list,programId);
             mode.addAttribute("list",list);
             JSONArray array = JSONArray.fromObject(list);
             mode.addAttribute("array",array.toString());
             return Common.BACKGROUND_PATH + "/business/devicespace/play";
-//        }else{
-//            //pc端访问
-//            list = adjustSortPC(list,programId);
-//            mode.addAttribute("list",list);
-//            JSONArray array = JSONArray.fromObject(list);
-//            mode.addAttribute("array",array.toString());
-//            return Common.BACKGROUND_PATH + "/business/devicespace/play-pc";
-//        }
+        }else{
+            //pc端访问
+            list = adjustSortPC(list,programId);
+            mode.addAttribute("list",list);
+            JSONArray array = JSONArray.fromObject(list);
+            mode.addAttribute("array",array.toString());
+            return Common.BACKGROUND_PATH + "/business/devicespace/play-pc";
+        }
     }
 
     @RequestMapping(value = "play2/{serialNumber}", produces = "text/html; charset=utf-8")
