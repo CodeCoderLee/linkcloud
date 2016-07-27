@@ -213,7 +213,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         String title = "";
         if(stype.equals("dtmb"))title= "电视直播";
         if(stype.equals("netdisk"))title= "视频点播";
-        if(stype.equals("camera"))title= "远程监控";
+        if(stype.equals("camera"))title= "摄像头";
         mode.addAttribute("title",title);
         mode.addAttribute("stype",stype);
         mode.addAttribute("serialNumber",serialNumber);
