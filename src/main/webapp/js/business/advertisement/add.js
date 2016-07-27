@@ -16,6 +16,7 @@ $(document).ready(function () {
             
                 formData.append('image', blob);
                 formData.append('fileName', $('#fileName').val());
+                formData.append('originalFileName', $('#originalFileName').val());
                 formData.append('industryCode', $('#industryCode').val());
                 formData.append('companyId', $('#company').val());
                 formData.append('type', $('#type').val());

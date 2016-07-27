@@ -48,7 +48,7 @@
                    data-page-size="5"
                    data-page-list="[5,10,25,50,100]"
                    data-side-pagination="server"
-                   data-url="advertisement/search.shtml"
+                   data-url="advertisement/search.shtml?hash=<%=new Random().nextFloat()%>"
                    data-refresh="true"
                    data-click-to-select="true"
                    data-locale="zh-CN"

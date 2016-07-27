@@ -102,7 +102,7 @@ public class AdvertisementController extends BaseController<Advertisement>{
     public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request){
         Date date = new Date();
         advertisement.setAddTime(date);
-        String fileName = advertisement.getFileName();
+        String originalFileName = request.getParameter("originalFileName");
         String newFilePath = "";
         if (image!=null&&!image.isEmpty()) {
             try {
@@ -110,7 +110,7 @@ public class AdvertisementController extends BaseController<Advertisement>{
                 if (!filepath.exists())
                     filepath.mkdirs();
                 UUID uuid = UUID.randomUUID();
-                newFilePath = filepath + "/" + uuid.toString()+ fileName.substring(fileName.lastIndexOf("."));
+                newFilePath = filepath + "/" + uuid.toString()+ originalFileName.substring(originalFileName.lastIndexOf("."));
                 image.transferTo(new File(newFilePath));
                 advertisement.setFilePath(newFilePath);
                 try {

@@ -31,8 +31,8 @@
                 </div>
                 <div class="card-body">
                     <form id="form" name="form" class="form-horizontal" method="post"
-                         enctype="multipart/form-data">
-                        <input type="hidden" name="fileName" id="fileName"/>
+                          enctype="multipart/form-data">
+                        <input type="hidden" name="originalFileName" id="originalFileName"/>
                         <section class="panel panel-default">
                             <div class="panel-body">
                                 <div class="form-group">
@@ -111,6 +111,20 @@
                                         <div class="docs-preview clearfix">
                                             <div class="img-preview preview-lg"></div>
                                         </div>
+                                        <div class="docs-data">
+                                            <div class="input-group input-group-sm">
+                                                <label class="input-group-addon" for="dataWidth">宽</label>
+                                                <input class="form-control" id="dataWidth" readonly="readonly"
+                                                       placeholder="0">
+                                                <span class="input-group-addon">px</span>
+                                            </div>
+                                            <div class="input-group input-group-sm">
+                                                <label class="input-group-addon" for="dataHeight">高</label>
+                                                <input class="form-control" id="dataHeight" readonly="readonly"
+                                                       placeholder="0">
+                                                <span class="input-group-addon">px</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -165,19 +179,22 @@
                                                 </span>
                                             </label>
                                             <label class="btn btn-primary">
-                                                <input type="radio" class="sr-only" id="aspectRatio2" name="aspectRatio" value="4">
+                                                <input type="radio" class="sr-only" id="aspectRatio2" name="aspectRatio"
+                                                       value="4">
                                                 <span class="docs-tooltip" data-toggle="tooltip" title="宽高比: 4 / 1">
                                                   4:1
                                                 </span>
                                             </label>
                                             <label class="btn btn-primary">
-                                                <input type="radio" class="sr-only" id="aspectRatio3" name="aspectRatio" value="3">
+                                                <input type="radio" class="sr-only" id="aspectRatio3" name="aspectRatio"
+                                                       value="3">
                                                 <span class="docs-tooltip" data-toggle="tooltip" title="宽高比: 3 / 1">
                                                   3:1
                                                 </span>
                                             </label>
                                             <label class="btn btn-primary">
-                                                <input type="radio" class="sr-only" id="aspectRatio4" name="aspectRatio" value="2">
+                                                <input type="radio" class="sr-only" id="aspectRatio4" name="aspectRatio"
+                                                       value="2">
                                                 <span class="docs-tooltip" data-toggle="tooltip" title="宽高比: 2 / 1">
                                                   2:1
                                                 </span>
@@ -185,10 +202,10 @@
                                         </div>
                                         <div class="btn-group">
                                             <%--<button type="button" class="btn btn-primary" id="complete"--%>
-                                                    <%--title="Crop">--%>
+                                            <%--title="Crop">--%>
                                             <%--<span class="docs-tooltip" data-toggle="tooltip"--%>
-                                                  <%--title="完成">--%>
-                                                <%--<span class="fa fa-check"></span>--%>
+                                            <%--title="完成">--%>
+                                            <%--<span class="fa fa-check"></span>--%>
                                             <%--</span>--%>
                                             <%--</button>--%>
                                             <label class="btn btn-primary btn-upload" for="inputImage"
@@ -202,6 +219,14 @@
                                             </label>
                                         </div>
 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">文件名</label>
+                                    <div class="col-sm-5">
+                                        <div class="fg-line">
+                                            <input class="form-control" id="fileName" name="fileName"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -227,6 +227,7 @@ $(function () {
             var file = $inputImage.val();
             var fileName = getFileName(file);
             $('#fileName').val(fileName);
+            $('#originalFileName').val(fileName);
             var files = this.files;
             var file;
 
