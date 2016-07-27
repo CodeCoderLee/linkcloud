@@ -70,32 +70,27 @@
   <ul class="mindex-ul">
   <c:forEach items="${list}" var="item">
     <li>
-      <div class="mindex-avatar">
-          <c:if test="${stype == 'dtmb'}">
-            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/live.jpg'"  alt=""/>
-          </c:if>
-          <c:if test="${stype == 'netdisk'}">
-            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/video.jpg'"  alt=""/>
-          </c:if>
-          <c:if test="${stype == 'camera'}">
-            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/file.jpg'"  alt=""/>
-          </c:if>
-        </div>
-        <div class="mindex-detail">
-          <p class="mindex-title"><a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a></p>
-        </div>
+        <a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}">
+              <div class="mindex-avatar">
+                  <c:if test="${stype == 'dtmb'}">
+                    <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/error.png'"  alt=""/>
+                  </c:if>
+                  <c:if test="${stype == 'netdisk'}">
+                    <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/live.png'"  alt=""/>
+                  </c:if>
+                  <c:if test="${stype == 'camera'}">
+                    <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/remote.png'"  alt=""/>
+                  </c:if>
+                </div>
+                <div class="mindex-detail">
+                  <p class="mindex-title">${item.pname}</p>
+                </div>
+        </a>
     </li>
   </c:forEach>
   </ul>
 </c:if>
-<footer data-am-widget="footer"
-        class="am-footer am-footer-default"
-         data-am-footer="{  }">
-  <div class="am-footer-miscs ">
-      <p>CopyRight©2016 ihtml5版权所有</p>
-      <p>京ICP备xxxxxx</p>
-  </div>
-</footer>
+<jsp:include page="footer.jsp"/>
   <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>

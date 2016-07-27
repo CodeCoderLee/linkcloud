@@ -102,14 +102,7 @@
          <span style="display:block;"><a href="javascript:void(0)" class="more-comment">显示更多</a></span>
      </div>
      </c:if>
-<footer data-am-widget="footer"
-        class="am-footer am-footer-default"
-         data-am-footer="{  }">
-  <div class="am-footer-miscs ">
-      <p>CopyRight©2016 ihtml5版权所有</p>
-      <p>京ICP备xxxxxx</p>
-  </div>
-</footer>
+  <jsp:include page="footer.jsp"/>
   <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>

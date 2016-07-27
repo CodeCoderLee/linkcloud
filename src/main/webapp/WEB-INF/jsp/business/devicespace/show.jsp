@@ -44,11 +44,11 @@
         管理员
         </c:if>
     </div>
-    <h1 class="am-header-title">
-        <a href="#title-link" class="">
-          演示空间
-        </a>
-    </h1>
+    <%--<h1 class="am-header-title">--%>
+        <%--<a href="#title-link" class="">--%>
+          <%--演示空间--%>
+        <%--</a>--%>
+    <%--</h1>--%>
     <div class="am-header-right am-header-nav">
         <!-- <a href="#right-link" class="">
             <i class="am-header-icon am-icon-bars"></i>
@@ -90,12 +90,12 @@
                  </div>
                 <div>
                  <ul class="mindex-ul device-list">
-                     <li style="display: none;">
+                     <li class="my-li-0" style="display: none;">
                          <div class="mindex-avatar">
                              <img class="mindex-ulImg" src="${ctx}/assets/i/live.png"  alt=""/>
                          </div>
                          <div class="mindex-detail">
-                             <p class="mindex-title"><a class="a-space-device-cls" >${item.serialNumber}</a></p>
+                             <p class="mindex-title"><a class="a-space-device-cls" href="#" >${item.serialNumber}<img class="mindex-ulImg online" src="${ctx}/assets/i/online.png"/><img class="mindex-ulImg offline" src="${ctx}/assets/i/offline.png"/></a></p>
                          </div>
                      </li>
 
@@ -119,14 +119,7 @@
          <span style="display:block;"><a href="javascript:void(0)" class="more-comment">显示更多</a></span>
      </div>
      </c:if>
-<footer data-am-widget="footer"
-        class="am-footer am-footer-default"
-         data-am-footer="{  }">
-  <div class="am-footer-miscs ">
-      <p>CopyRight©2016 ihtml5版权所有</p>
-      <p>京ICP备xxxxxx</p>
-  </div>
-</footer>
+     <jsp:include page="footer.jsp"/>
   <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
@@ -135,6 +128,9 @@
          var baseUrl = '${ctx}/space/device/';
          var openId = '${openId}';
          var postUrl = '${ctx}/space/showList.shtml';
+         var onlineUrl = '${ctx}/assets/i/online.png';
+         var offlineUrl = '${ctx}/assets/i/offline.png';
+
          var pageNum = ${rd.pageNum};
          $("#more .more-comment").on("click",function(){
              //alert('pageNum------' + pageNum);
@@ -150,16 +146,22 @@
                  {
                      var pageInfo = jQuery.parseJSON(data);
                      $('#more').show();
-                     var li0 = $('.device-list li:first');
+                     var li0 = $('.my-li-0');
                      for(var index in pageInfo.rows){
                          var idx = parseInt(index) + 1;
                          var device = pageInfo.rows[index];
                          $('.device-list').append(li0.clone());
                          $('.device-list li:last').attr("style","display:block");
-                         //$('article:eq(' + idx + ')').text(comment.user.accountname);
-                         //${item.serialNumber}.shtml?type=show&openId=${openId}
+
                          $('.device-list li:last .a-space-device-cls').attr("href",baseUrl + device.serialNumber + ".shtml?type=show&openId" + openId ) ;
-                         $('.device-list li:last .a-space-device-cls').text(device.serialNumber);
+                         $('.device-list li:last .a-space-device-cls').html(device.serialNumber + '&nbsp;&nbsp;&nbsp;&nbsp;');
+                         if(device.onOffLine == 1){
+                             //在线
+                             $('.device-list li:last .a-space-device-cls').append('<img class="mindex-ulImg online" src="' + onlineUrl + '"/>');
+                         }else{
+                             $('.device-list li:last .a-space-device-cls').append('<img class="mindex-ulImg online" src="' + offlineUrl + '"/>');
+                         }
+
                      }
                      pageNum = pageInfo.pageNum ;
                      var h = $(document).height()-$(window).height();

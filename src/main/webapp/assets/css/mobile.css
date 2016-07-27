@@ -152,6 +152,7 @@ textarea.mobile-vi-textarea {
 .mindex-ul {
   margin: 0;
   padding: 0;
+  list-style-type: none;
 }
 .mindex-ul li {
   width: 100%;
@@ -159,6 +160,7 @@ textarea.mobile-vi-textarea {
   padding: 5px 5px 0;
   overflow: hidden;
   border-bottom: 1px dashed #eee;
+  list-style-type: none;
 }
 .mindex-ulImg {
   max-width: 100%;
@@ -185,7 +187,8 @@ textarea.mobile-vi-textarea {
   font-size: 12px;
 }
 p.mindex-title {
-  color: #555;
+  font-size: 14px;
+  /*color: #555;*/
   font-weight: bold;
 }
 p.mindex-intro,p.mindex-time {
@@ -246,34 +249,38 @@ p.mindex-intro,p.mindex-time {
 .mobile-videoPrev {
   position: absolute;
   left: 0;
-  top: 0px;
+  top: 20px;
   font-size: 24px;
   cursor: pointer;
   z-index: 3000;
 }
+i.mobile-videoBtn:active,i.mobile-videoBtn:focus {
+  color: #10a0ea;
+}
 .mobile-videoNext {
   position: absolute;
   right: 0;
-  top: 0px;
+  top: 20px;
   font-size: 24px;
   cursor: pointer;
   z-index: 3000;
 }
 .mobile-videoSwitch {
   overflow: hidden;
-  padding-left: 33px;
-  padding-right: 33px;
+  padding-left: 20px;
+  padding-right: 20px;
   height: 80px;
 }
 .slider-programs {
   width: 400%;
   padding: 0 4px;
   text-align: left;
-  /*－webkit-transition: all 0.5s ease-in;*/
-  /*-ms-transition: all 0.5s ease-in;*/
-  /*-o-transition: all 0.5s ease-in;*/
-  /*-moz-transition: all 0.5s ease-in;*/
-  /*transition: all 0.5s ease-in;*/
+  /*－webkit-transition: all 0.5s ease-in;
+  -ms-transition: all 0.5s ease-in;
+  -o-transition: all 0.5s ease-in;
+  -moz-transition: all 0.5s ease-in;
+  transition: all 0.5s ease-in;*/
+  cursor: drag;
 }
 .index-slider {
   width: 100%;
@@ -288,7 +295,7 @@ p.mindex-intro,p.mindex-time {
   text-align: center;
   vertical-align: middle;
   line-height: 80px;
-  overflow: hidden;
+  overflow: auto;
 }
 .slider-programs span {
   border: 1px solid #eee;
@@ -308,6 +315,16 @@ p.mindex-intro,p.mindex-time {
   color: #10a0ea;
   font-weight: bold;
 }
-.mobile-videoBtn {
-  font-size:50px;
+.vi-mobile a {
+  color: #555;
+}
+.vi-mobile  a:visited {
+  color: #0e90d2;
+}
+.vi-mobile  a:hover,.vi-mobile a:active,.vi-mobile  a:focus {
+  color: #0e90d2;
+}
+.vi-mobile .am-titlebar-default a:hover {
+  color: #0e90d2;
+  font-weight: bold;
 }

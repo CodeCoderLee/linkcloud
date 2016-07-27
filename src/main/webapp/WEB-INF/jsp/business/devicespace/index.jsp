@@ -47,9 +47,9 @@
             </a>
         </c:if>
     </div>
-    <h1 class="am-header-title">
-        ${serialNumber}-${onoff}
-    </h1>
+    <%--<h1 class="am-header-title">--%>
+        <%--${serialNumber}-${onoff}--%>
+    <%--</h1>--%>
     <div class="am-header-right am-header-nav">
         <!-- <a href="#right-link" class="">
             <i class="am-header-icon am-icon-bars"></i>
@@ -103,7 +103,7 @@
             电视直播
         </h2>
         <nav class="am-titlebar-nav">
-            <a href="${ctx}/space/list/${serialNumber}.shtml?stype=dtmb&openId=${openId}" class="" style="color:blue;">更多</a>
+            <a href="${ctx}/space/list/${serialNumber}.shtml?stype=dtmb&openId=${openId}" class="">更多</a>
         </nav>
     </div>
 
@@ -121,17 +121,15 @@
     <ul class="mindex-ul" id="ul-tv-2">
         <c:forEach items="${map[entry.key]}" var="item">
             <li>
-                <div class="mindex-avatar">
-                    <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/live.jpg'"
-                         alt=""/>
-                </div>
-                <div class="mindex-detail">
-                    <p class="mindex-title"><a
-                            href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <%--<a--%>
-                                <%--href="${ctx}/space/play/${serialNumber}.shtml?frame=true&programId=${item.id}&openId=${openId}">${item.pname}切换帧测试</a>--%>
-                    </p>
-                </div>
+                <a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">
+                    <div class="mindex-avatar">
+                        <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/error.png'"
+                             alt=""/>
+                    </div>
+                    <div class="mindex-detail">
+                        <p class="mindex-title">${item.pname}</p>
+                    </div>
+                </a>
             </li>
         </c:forEach>
     </ul>
@@ -145,33 +143,35 @@
             视频点播
         </h2>
         <nav class="am-titlebar-nav">
-            <a href="${ctx}/space/list2/${serialNumber}.shtml?stype=netdisk&title1=${title2}&title2=${item.pname}&parentId=0" class="" style="color:blue;">更多</a>
+            <a href="${ctx}/space/list2/${serialNumber}.shtml?stype=netdisk&title1=${title2}&title2=${item.pname}&parentId=0" class="">更多</a>
         </nav>
     </div>
     <ul class="mindex-ul">
         <c:forEach items="${netdiskList}" var="item">
             <li>
-                <div class="mindex-avatar">
-                    <c:if test="${item.isDir == 1}">
-                        <img class="mindex-ulImg" src="${ctx}/assets/i/video/file.jpg" alt=""/>
-                    </c:if>
-                    <c:if test="${item.isDir == 0}">
-                        <img class="mindex-ulImg" src="${ctx}/assets/i/demand.png" alt=""/>
-                    </c:if>
+                <c:if test="${item.isDir == 1}">
+                    <a href="${ctx}/space/list2/${serialNumber}.shtml?stype=netdisk&title1=${title2}&title2=${item.pname}&parentId=${item.id}">
+                        <div class="mindex-avatar">
+                              <img class="mindex-ulImg" src="${ctx}/assets/i/file.png" alt=""/>
+                        </div>
+                        <div class="mindex-detail">
+                               <p class="mindex-title">${item.pname} </p>
+                        </div>
+                    </a>
+                </c:if>
 
-                </div>
-                <div class="mindex-detail">
-                    <c:if test="${item.isDir == 1}">
-                        <p class="mindex-title"><a
-                                href="${ctx}/space/list2/${serialNumber}.shtml?stype=netdisk&title1=${title2}&title2=${item.pname}&parentId=${item.id}">${item.pname}</a>
-                        </p>
-                    </c:if>
-                    <c:if test="${item.isDir == 0}">
-                        <p class="mindex-title">
-                            <a href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a>
-                        </p>
-                    </c:if>
-                </div>
+                <c:if test="${item.isDir == 0}">
+                    <a href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">
+                        <div class="mindex-avatar">
+                                 <img class="mindex-ulImg" src="${ctx}/assets/i/live.png" alt=""/>
+                        </div>
+                        <div class="mindex-detail">
+                                <p class="mindex-title">
+                                    ${item.pname}
+                                </p>
+                         </div>
+                    </a>
+                </c:if>
             </li>
         </c:forEach>
     </ul>
@@ -184,22 +184,21 @@
             摄像头
         </h2>
         <nav class="am-titlebar-nav">
-            <a href="${ctx}/space/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="" style="color:blue;">更多</a>
+            <a href="${ctx}/space/list/${serialNumber}.shtml?stype=camera&openId=${openId}" class="">更多</a>
         </nav>
     </div>
     <c:if test="${not empty(map[entry.key])}">
     <ul class="mindex-ul">
         <c:forEach items="${map[entry.key]}" var="item">
             <li>
-                <div class="mindex-avatar">
-                    <img class="mindex-ulImg" src="${ctx}/assets/i/remote.png" alt=""/>
-                </div>
-                <div class="mindex-detail">
-                    <p class="mindex-title">
-                        <a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">${item.pname}</a>
-                        <%--<a href="${ctx}/space/play/${serialNumber}.shtml?frame=true&programId=${item.id}&openId=${openId}">测试</a>--%>
-                    </p>
-                </div>
+                <a href="${ctx}/space/play/${serialNumber}.shtml?programId=${item.id}&openId=${openId}">
+                    <div class="mindex-avatar">
+                        <img class="mindex-ulImg" src="${ctx}/assets/i/remote.png" alt=""/>
+                    </div>
+                    <div class="mindex-detail">
+                        <p class="mindex-title">${item.pname}</p>
+                    </div>
+                </a>
             </li>
         </c:forEach>
     </ul>
@@ -209,20 +208,11 @@
     </c:if>
 
 
-    <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default mobile-header">
-        <h2 class="am-titlebar-title " style="color:black;">
-            IP地址：${ip_address}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="color:#2fb3ff;" href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml?space=true">点击进入调式详情</a>
-        </h2>
+    <div data-am-widget="titlebar" class="vi-mobile" style="text-align: center;">
+         <a href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml?space=true">点击进入调式详情</a>
     </div>
 
-    <footer data-am-widget="footer"
-            class="am-footer am-footer-default"
-            data-am-footer="{  }">
-        <div class="am-footer-miscs ">
-            <p>CopyRight©2016 ihtml5版权所有</p>
-            <p>京ICP备xxxxxx</p>
-        </div>
-    </footer>
+    <jsp:include page="footer.jsp"/>
     <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
     <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
     <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>

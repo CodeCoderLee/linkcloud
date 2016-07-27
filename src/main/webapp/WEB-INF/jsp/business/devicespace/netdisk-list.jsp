@@ -77,42 +77,32 @@
   <ul class="mindex-ul">
   <c:forEach items="${list}" var="item">
     <li>
-      <div class="mindex-avatar">
-          <c:if test="${stype == 'dtmb'}">
-            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/live.jpg'"  alt=""/>
-          </c:if>
-          <c:if test="${stype == 'netdisk'}">
-             <c:if test="${item.isDir == 1}">
-                <img class="mindex-ulImg" src="${ctx}/assets/i/video/file.jpg" alt=""/>
-             </c:if>
-              <c:if test="${item.isDir == 0}">
-                  <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/video.jpg'"  alt=""/>
-              </c:if>
-          </c:if>
-          <c:if test="${stype == 'camera'}">
-            <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/video/file.jpg'"  alt=""/>
-          </c:if>
-        </div>
-        <div class="mindex-detail">
-            <c:if test="${item.isDir == 1}">
-                <p class="mindex-title"><a href="${ctx}/space/list2/${serialNumber}.shtml?parentId=${item.id}&stype=netdisk&title1=${title2}&title2=${item.pname}">${item.pname}</a></p>
-            </c:if>
-            <c:if test="${item.isDir == 0}">
-                <p class="mindex-title"><a href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">${item.pname}</a></p>
-            </c:if>
-        </div>
+        <c:if test="${item.isDir == 1}">
+            <a href="${ctx}/space/list2/${serialNumber}.shtml?parentId=${item.id}&stype=netdisk&title1=${title2}&title2=${item.pname}">
+                <div class="mindex-avatar">
+                     <img class="mindex-ulImg" src="${ctx}/assets/i/file.png" alt=""/>
+                </div>
+                <div class="mindex-detail">
+                     <p class="mindex-title">${item.pname}</p>
+                </div>
+            </a>
+        </c:if>
+
+        <c:if test="${item.isDir == 0}">
+            <a href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">
+                <div class="mindex-avatar">
+                    <img class="mindex-ulImg" src="${item.pimg}" onerror="this.src='${ctx}/assets/i/live.png'"  alt=""/>
+                </div>
+                <div class="mindex-detail">
+                    <p class="mindex-title">${item.pname}</p>
+                </div>
+            </a>
+        </c:if>
     </li>
   </c:forEach>
   </ul>
 </c:if>
-<footer data-am-widget="footer"
-        class="am-footer am-footer-default"
-         data-am-footer="{  }">
-  <div class="am-footer-miscs ">
-      <p>CopyRight©2016 ihtml5版权所有</p>
-      <p>京ICP备xxxxxx</p>
-  </div>
-</footer>
+<jsp:include page="footer.jsp"/>
   <script charset="utf-8" src="${ctx}/assets/js/jquery.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/base.min.js"></script>
   <script charset="utf-8" src="${ctx}/assets/js/mobile.js"></script>
