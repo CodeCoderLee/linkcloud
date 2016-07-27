@@ -41,8 +41,8 @@ import java.util.UUID;
 @RequestMapping("/advertisement/")
 public class AdvertisementController extends BaseController<Advertisement>{
 
-//    private final String rootPath = "C:/linkcloud/upload/advertisement/";
-    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/advertisement/";
+    private final String rootPath = "C:/linkcloud/upload/advertisement/";
+//    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/advertisement/";
 
     @Autowired
     private AdvertisementService advertisementService;

@@ -103,6 +103,7 @@
                 /upload/** = anon
                 /version/download.shtml = anon
                 /video/download.shtml = anon
+                /advertisement/getPic/** = anon
             </value>
         </property>
     </bean>
