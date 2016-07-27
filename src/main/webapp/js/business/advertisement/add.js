@@ -2,66 +2,119 @@
  * 添加使用申请
  * Created by bcc on 16/5/31.
  */
-jQuery.validator.addMethod("contactPhone", function (value, element) {
-    var tel = /^((0\d{2,3}-\d{7,8})|(1[3584]\d{9}))$/;
-    return this.optional(element) || (tel.test(value));
-}, "请正确填联系电话");
+var errorCount = 0;
 $(document).ready(function () {
 
     $('#form').validate({
         submitHandler: function (form) {// 必须写在验证前面，否则无法ajax提交
-            $(form).ajaxSubmit({
-                type: "post",
-                dataType: "json",
-                success: function (data) {
-                    notify('success', '     图片上传成功      ');
-                    $("#content").load(rootPath + "/advertisement/list.shtml");
-                },
-                error: function (XMLResponse) {
-                    alert(XMLResponse.responseText);
-                }
+            if($('#fileName').val()==''){
+                alert("请选择图片");
+                return;
+            }
+            $('#image').cropper('getCroppedCanvas').toBlob(function (blob) {
+                var formData = new FormData();
+            
+                formData.append('image', blob);
+                formData.append('fileName', $('#fileName').val());
+                formData.append('originalFileName', $('#originalFileName').val());
+                formData.append('industryCode', $('#industryCode').val());
+                formData.append('companyId', $('#company').val());
+                formData.append('type', $('#type').val());
+                formData.append('ratio', $('input[name="aspectRatio"]:checked').val());
+                console.log("formData==", formData);
+
+                $.ajax(rootPath + '/advertisement/add.shtml', {
+                    method: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+
+                        console.log('Upload success');
+                        console.log('data ==',data);
+                        if (data=="EMPTY") {
+                            notify('success', '     图片不能为空      ');
+                        }else{
+                            notify('success', '     图片上传成功      ');
+                            $("#content").load(rootPath + "/advertisement/list.shtml");
+                        }
+                        return false;
+
+                    },
+                    error: function () {
+                        console.log('Upload error');
+                    }
+                });
+                return false;
             });
+            return false;
+
+            // $(form).ajaxSubmit({
+            //     type: "post",
+            //     dataType: "json",
+            //     success: function (data) {
+            //         notify('success', '     图片上传成功      ');
+            //         $("#content").load(rootPath + "/advertisement/list.shtml");
+            //     },
+            //     error: function (XMLResponse) {
+            //         alert(XMLResponse.responseText);
+            //     }
+            // });
+
         },
+        ignore: "",
         rules: {
-            "areaId": {
-                required: true
-            },
+            // "fileName": {
+            //     required: true
+            // },
             "industryCode": {
                 required: true
-            //},
-            //"companyId": {
-            //    required: true
-            //},
-            //"contactName": {
-            //    required: true
-            //},
+            },
+            "companyId": {
+                required: true
+            }
+
             //"contactPhone": {
             //    required: true
-            }
         },
         messages: {
-            "areaId": {
-                required: "请选择区域"
-            },
             "industryCode": {
                 required: "请选择行业"
-            //},
-            //"companyId": {
-            //    required: "请选择企业"
-            //},
-            //"contactName": {
-            //    required: "请填写联系人"
-            //},
-            //"contactPhone": {
-            //    required: "请填写联系电话"
+            },
+            "companyId": {
+                required: "请选择企业"
+            // },
+            // "fileName": {
+            //     required: "请选择图片"
+                //"contactPhone": {
+                //    required: "请填写联系电话"
             }
         },
         errorPlacement: function (error, element) {// 自定义提示错误位置
+            console.log("error===", error.html(), "==element==", element);
+            // if (error.html()!='') {
+            //     $(".alert-danger").removeClass("hidden");
+            //     $(".alert-danger").html(error.html()+'</br>');
+            // }else {
+            //
+            // }
+
+
             $(".alert-danger").removeClass("hidden");
             $(".alert-danger").html(error.html());
         },
         success: function (label) {// 验证通过后
+            console.log("success===", label);
+            // alert(2);
             $(".alert-danger").addClass("hidden");
+            // if (errorCount>0) {
+            //     errorCount--;
+            // }else{
+            //     $(".alert-danger").addClass("hidden");
+            //     $(".alert-danger").html("");
+            // }
+
+
         }
     });
 

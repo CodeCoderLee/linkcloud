@@ -31,6 +31,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 图文广告素材管理
@@ -75,27 +76,64 @@ public class AdvertisementController extends BaseController<Advertisement>{
         return responseData;
     }
 
+//    @ResponseBody
+//    @RequestMapping("upload")
+//    public Integer upload(MultipartFile image){
+//        if (!image.isEmpty()) {
+//            try {
+//                File filepath = new File(rootPath);
+//                if (!filepath.exists())
+//                    filepath.mkdirs();
+//                UUID uuid = UUID.randomUUID();
+//                String newFilePath = filepath + "/" + uuid.toString();
+//                image.transferTo(new File(newFilePath));
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//
+//        }
+//        return 1;
+//    }
+
     @ResponseBody
     @RequestMapping("add")
     @SystemLog(module = "广告管理", methods = "图文广告管理-添加图文广告")//凡需要处理业务逻辑的.都需要记录操作日志
-    public String add(Advertisement advertisement, MultipartFile file, HttpServletRequest request){
+    public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request){
         Date date = new Date();
         advertisement.setAddTime(date);
-        String filePath = saveImage(file, rootPath);
-        advertisement.setFilePath(filePath);
-        try {
-            BufferedImage bufferedImage = ImageIO.read(new File(advertisement.getFilePath()));
-            advertisement.setWidth(bufferedImage.getWidth());
-            advertisement.setHeight(bufferedImage.getHeight());
-        } catch (IOException e) {
-            e.printStackTrace();
+        String originalFileName = request.getParameter("originalFileName");
+        String newFilePath = "";
+        if (image!=null&&!image.isEmpty()) {
+            try {
+                File filepath = new File(rootPath);
+                if (!filepath.exists())
+                    filepath.mkdirs();
+                UUID uuid = UUID.randomUUID();
+                newFilePath = filepath + "/" + uuid.toString()+ originalFileName.substring(originalFileName.lastIndexOf("."));
+                image.transferTo(new File(newFilePath));
+                advertisement.setFilePath(newFilePath);
+                try {
+                    BufferedImage bufferedImage = ImageIO.read(new File(advertisement.getFilePath()));
+                    advertisement.setWidth(bufferedImage.getWidth());
+                    advertisement.setHeight(bufferedImage.getHeight());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String url = "/advertisement/getPic/"+newFilePath.substring(newFilePath.lastIndexOf('/')+1)+".shtml";
+                advertisement.setUrl(url);
+                advertisementService.insertSelective(advertisement);
+//                advertisementService.updateByPrimaryKeySelective(advertisement);
+                return SUCCESS;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return ERROR;
+        }else{
+            return "EMPTY";
         }
-        advertisement.setFileName(file.getOriginalFilename());
-        advertisementService.insertSelective(advertisement);
-        String url = "/advertisement/getPic/"+filePath.substring(filePath.lastIndexOf('/')+1)+".shtml";
-        advertisement.setUrl(url);
-        advertisementService.updateByPrimaryKeySelective(advertisement);
-        return SUCCESS;
+
     }
 
     /**
