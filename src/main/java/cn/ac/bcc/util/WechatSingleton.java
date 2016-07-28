@@ -75,9 +75,7 @@ public class WechatSingleton {
             result = jsapiTicket;
         } else {
             String access_token = getAccessToken();
-            String ticketStr = WechatUtil.getJsapiTicket(access_token);
-            JSONObject jsonObject = JSONObject.fromObject(ticketStr);
-            String ticket = jsonObject.getString("jsapi_ticket");
+            String ticket = WechatUtil.getJsapiTicket(access_token);
             map.put("jsapi_ticket_time", nowDate + "");
             map.put("jsapi_ticket", ticket);
             result = ticket;
