@@ -13,10 +13,7 @@ import cn.ac.bcc.service.business.program.ProgramNetDiskService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.service.system.user.UserRoleService;
 import cn.ac.bcc.service.system.user.UserService;
-import cn.ac.bcc.util.Common;
-import cn.ac.bcc.util.Messenger;
-import cn.ac.bcc.util.ResponseData;
-import cn.ac.bcc.util.WechatUtil;
+import cn.ac.bcc.util.*;
 import cn.ac.bcc.util.helper.HeartBeatMap;
 import cn.ac.bcc.util.helper.MemoryMap;
 import cn.ac.bcc.util.helper.ScanFreqInfos;
@@ -203,9 +200,9 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("arraySize",array.size());
         mode = deviceAuthen.getOnOffLine() != 1 ? mode.addAttribute("onoff", "离线") : mode.addAttribute("onoff", "在线");
 
-        String accessToken  = WechatUtil.getAccessToken(getRequest());
+        String jsapiTicket  = WechatSingleton.getJsapiTicket();
         String url = WechatUtil.getCurrentUrl(getRequest());
-        JSONObject signatureJson = WechatUtil.getSignature(accessToken,url);
+        JSONObject signatureJson = WechatUtil.getSignature(jsapiTicket,url);
         mode.addAttribute("signatureJson",signatureJson);
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }

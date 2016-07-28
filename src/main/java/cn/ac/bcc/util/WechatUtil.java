@@ -19,7 +19,7 @@ import java.util.UUID;
  * Created by bcc on 16/4/17.
  */
 public class WechatUtil {
-//    private static final String APP_ID = "wxe98ab8ed7aa9d5fd";
+    //    private static final String APP_ID = "wxe98ab8ed7aa9d5fd";
 //    private static final String APP_SECRET = "6f552046c2b55b9da5287c4a410afb57";
     private static final String APP_ID = "wx17d50b2c25786690";
     private static final String APP_SECRET = "d237d3fc0ecd175ee1d3a0bdb6adda9d";
@@ -39,8 +39,9 @@ public class WechatUtil {
     private static final String GET_OAUTH_USER_INFO_URL = "https://api.weixin.qq.com/sns/userinfo";
 
     private static final String JSAPI_TICKET_URL = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi";
+    private JSONObject jsonObject;
 
-    public static String getAppId(){
+    public static String getAppId() {
         return APP_ID;
     }
 
@@ -178,44 +179,44 @@ public class WechatUtil {
         }
     }
 
-    public static String getAccessToken(HttpServletRequest request){
-        return (String)request.getSession().getAttribute("access_token");
-
+    public static String getJsapiTicket(String accessToken) {
+        String jsapiTickentUrl = JSAPI_TICKET_URL.replace("ACCESS_TOKEN", accessToken);
+        HttpResponse response = HttpRequest.get(jsapiTickentUrl).send();
+        JSONObject jsonObject = JSONObject.fromObject(response.body());
+        int errcode = jsonObject.getInt("errcode");
+        if (errcode == 0) {
+            return jsonObject.getString("ticket");
+        } else {
+            return null;
+        }
     }
 
-    public static JSONObject getSignature(String accessToken,String url){
+    public static JSONObject getSignature(String jsapiTicket, String url) {
         JSONObject ret = null;
-        String jsapiTickentUrl = JSAPI_TICKET_URL.replace("ACCESS_TOKEN",accessToken);
-        HttpResponse response = HttpRequest.get(jsapiTickentUrl) .send();
-        try {
-            String tmpStr = new String(response.body().getBytes("iso-8859-1"), "utf-8");
-            JSONObject jsonObject = JSONObject.fromObject(tmpStr);
-            int errcode = jsonObject.getInt("errcode");
-            if(errcode == 0){
-                String ticket = jsonObject.getString("ticket");
-                UUID uuid = UUID.randomUUID();
-                String noncestr = uuid.toString();
-                long timestamp = System.currentTimeMillis()/1000;
-                StringBuilder sb = new StringBuilder();
-                sb.append("jsapi_ticket=").append(ticket);
-                sb.append("&noncestr=").append(noncestr);
-                sb.append("&timestamp=").append(timestamp);
-                sb.append("&url=").append(url);
-                String signature = SHA1(sb.toString());
-                ret = new JSONObject();
-                ret.put("appId",APP_ID);
-                ret.put("timestamp",timestamp);
-                ret.put("nonceStr",noncestr);
-                ret.put("signature",signature);
-                ret.put("jsApiList","['showOptionMenu']");
-                return ret;
-            }else{
-                return ret;
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        JSONObject jsonObject = JSONObject.fromObject(jsapiTicket);
+        int errcode = jsonObject.getInt("errcode");
+        if (errcode == 0) {
+            String ticket = jsonObject.getString("ticket");
+            UUID uuid = UUID.randomUUID();
+            String noncestr = uuid.toString();
+            long timestamp = System.currentTimeMillis() / 1000;
+            StringBuilder sb = new StringBuilder();
+            sb.append("jsapi_ticket=").append(ticket);
+            sb.append("&noncestr=").append(noncestr);
+            sb.append("&timestamp=").append(timestamp);
+            sb.append("&url=").append(url);
+            String signature = SHA1(sb.toString());
+            ret = new JSONObject();
+            ret.put("appId", APP_ID);
+            ret.put("timestamp", timestamp);
+            ret.put("nonceStr", noncestr);
+            ret.put("signature", signature);
+            ret.put("jsApiList", "['showOptionMenu']");
+            return ret;
+        } else {
             return ret;
         }
+
     }
 
     public static String SHA1(String decript) {
@@ -241,12 +242,12 @@ public class WechatUtil {
         return "";
     }
 
-    public static String getCurrentUrl(HttpServletRequest request){
+    public static String getCurrentUrl(HttpServletRequest request) {
         String url = "";
-        url = request.getScheme() +"://" + request.getServerName()
-                + ":" +request.getServerPort()
+        url = request.getScheme() + "://" + request.getServerName()
+                + ":" + request.getServerPort()
                 + request.getServletPath();
-        if (request.getQueryString() != null){
+        if (request.getQueryString() != null) {
             url += "?" + request.getQueryString();
         }
         System.out.println(url);
