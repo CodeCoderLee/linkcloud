@@ -200,9 +200,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         mode.addAttribute("arraySize",array.size());
         mode = deviceAuthen.getOnOffLine() != 1 ? mode.addAttribute("onoff", "离线") : mode.addAttribute("onoff", "在线");
 
-        String jsapiTicket  = WechatSingleton.getJsapiTicket();
-        String url = WechatUtil.getCurrentUrl(getRequest());
-        JSONObject signatureJson = WechatUtil.getSignature(jsapiTicket,url);
+        JSONObject signatureJson = WechatUtil.getSignature(getRequest());
         mode.addAttribute("signatureJson",signatureJson);
         return Common.BACKGROUND_PATH + "/business/devicespace/index";
     }

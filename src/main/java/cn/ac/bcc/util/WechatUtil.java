@@ -6,7 +6,9 @@ import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -192,14 +194,15 @@ public class WechatUtil {
         }
     }
 
-    public static JSONObject getSignature(String ticket, String url) {
+    public static JSONObject getSignature(HttpServletRequest request) {
+        String jsapiTicket  = WechatSingleton.getJsapiTicket();
+        String url = WechatUtil.getCurrentUrl(request);
         JSONObject ret = new JSONObject();
 
-        UUID uuid = UUID.randomUUID();
-        String noncestr = uuid.toString();
-        long timestamp = System.currentTimeMillis() / 1000;
+        String noncestr = create_nonce_str();
+        String timestamp = create_timestamp();
         StringBuilder sb = new StringBuilder();
-        sb.append("jsapi_ticket=").append(ticket);
+        sb.append("jsapi_ticket=").append(jsapiTicket);
         sb.append("&noncestr=").append(noncestr);
         sb.append("&timestamp=").append(timestamp);
         sb.append("&url=").append(url);
@@ -214,13 +217,21 @@ public class WechatUtil {
 
     private static String byteToHex(final byte[] hash) {
         Formatter formatter = new Formatter();
-        for(byte b : hash)
+        for (byte b : hash)
         {
             formatter.format("%02x", b);
         }
         String result = formatter.toString();
         formatter.close();
         return result;
+    }
+
+    private static String create_nonce_str() {
+        return UUID.randomUUID().toString();
+    }
+
+    private static String create_timestamp() {
+        return Long.toString(System.currentTimeMillis() / 1000);
     }
 
     public static String SHA1(String decript) {
@@ -245,7 +256,6 @@ public class WechatUtil {
 //            url += "?" + request.getQueryString();
 //        }
 //        System.out.println(url);
-
         StringBuffer requestUrl = request.getRequestURL();
         String queryString = request.getQueryString();
         if(queryString != null){
