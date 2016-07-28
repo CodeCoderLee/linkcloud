@@ -191,32 +191,24 @@ public class WechatUtil {
         }
     }
 
-    public static JSONObject getSignature(String jsapiTicket, String url) {
-        JSONObject ret = null;
-        JSONObject jsonObject = JSONObject.fromObject(jsapiTicket);
-        int errcode = jsonObject.getInt("errcode");
-        if (errcode == 0) {
-            String ticket = jsonObject.getString("ticket");
-            UUID uuid = UUID.randomUUID();
-            String noncestr = uuid.toString();
-            long timestamp = System.currentTimeMillis() / 1000;
-            StringBuilder sb = new StringBuilder();
-            sb.append("jsapi_ticket=").append(ticket);
-            sb.append("&noncestr=").append(noncestr);
-            sb.append("&timestamp=").append(timestamp);
-            sb.append("&url=").append(url);
-            String signature = SHA1(sb.toString());
-            ret = new JSONObject();
-            ret.put("appId", APP_ID);
-            ret.put("timestamp", timestamp);
-            ret.put("nonceStr", noncestr);
-            ret.put("signature", signature);
-            ret.put("jsApiList", "['showOptionMenu']");
-            return ret;
-        } else {
-            return ret;
-        }
+    public static JSONObject getSignature(String ticket, String url) {
+        JSONObject ret = new JSONObject();
 
+        UUID uuid = UUID.randomUUID();
+        String noncestr = uuid.toString();
+        long timestamp = System.currentTimeMillis() / 1000;
+        StringBuilder sb = new StringBuilder();
+        sb.append("jsapi_ticket=").append(ticket);
+        sb.append("&noncestr=").append(noncestr);
+        sb.append("&timestamp=").append(timestamp);
+        sb.append("&url=").append(url);
+        String signature = SHA1(sb.toString());
+        ret.put("appId", APP_ID);
+        ret.put("timestamp", timestamp);
+        ret.put("nonceStr", noncestr);
+        ret.put("signature", signature);
+        ret.put("jsApiList", "['showOptionMenu']");
+        return ret;
     }
 
     public static String SHA1(String decript) {
