@@ -56,11 +56,9 @@ public class WechatSingleton {
             result = accessToken;
         } else {
             String access_token= WechatUtil.getAccessToken();
-            JSONObject jsonObject = JSONObject.fromObject(access_token);
-            String token = jsonObject.getString("access_token");
             map.put("access_token_time", nowDate + "");
-            map.put("access_token", token);
-            result = token;
+            map.put("access_token", access_token);
+            result = access_token;
         }
         return result;
     }
