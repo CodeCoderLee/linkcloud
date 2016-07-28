@@ -116,7 +116,9 @@ public class WechatController {
         if (!jsonObject.containsKey("access_token")||Common.isEmpty(jsonObject.getString("access_token"))) {
             return "redirect:/wechat/authen.shtml?uri=/index";
         }
-        JSONObject userInfo = WechatUtil.getOauthUserInfo(jsonObject.getString("access_token"), jsonObject.getString("openid"));
+        String accessToken = jsonObject.getString("access_token");
+        request.getSession().setAttribute("access_token",accessToken);
+        JSONObject userInfo = WechatUtil.getOauthUserInfo(accessToken, jsonObject.getString("openid"));
         logger.info("=========================="+userInfo.toString()+"====================");
         User user = new User();
         /*通过openId获取user信息*/
