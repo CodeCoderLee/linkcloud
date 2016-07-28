@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -211,22 +212,23 @@ public class WechatUtil {
         return ret;
     }
 
+    private static String byteToHex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for(byte b : hash)
+        {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+    }
+
     public static String SHA1(String decript) {
         try {
             MessageDigest digest = java.security.MessageDigest.getInstance("SHA-1");
             digest.update(decript.getBytes());
             byte messageDigest[] = digest.digest();
-            // Create Hex String
-            StringBuffer hexString = new StringBuffer();
-            // 字节数组转换为 十六进制 数
-            for (int i = 0; i < messageDigest.length; i++) {
-                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
-                if (shaHex.length() < 2) {
-                    hexString.append(0);
-                }
-                hexString.append(shaHex);
-            }
-            return hexString.toString();
+            return byteToHex(messageDigest);
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -236,13 +238,21 @@ public class WechatUtil {
 
     public static String getCurrentUrl(HttpServletRequest request) {
         String url = "";
-        url = request.getScheme() + "://" + request.getServerName()
-                + ":" + request.getServerPort()
-                + request.getServletPath();
-        if (request.getQueryString() != null) {
-            url += "?" + request.getQueryString();
+//        url = request.getScheme() + "://" + request.getServerName()
+//                + ":" + request.getServerPort()
+//                + request.getServletPath();
+//        if (request.getQueryString() != null) {
+//            url += "?" + request.getQueryString();
+//        }
+//        System.out.println(url);
+
+        StringBuffer requestUrl = request.getRequestURL();
+        String queryString = request.getQueryString();
+        if(queryString != null){
+            url  = requestUrl +"?"+queryString;
+        }else {
+            url = requestUrl.toString();
         }
-        System.out.println(url);
         return url;
 
     }
