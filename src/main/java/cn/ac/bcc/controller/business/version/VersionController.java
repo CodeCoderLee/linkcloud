@@ -93,6 +93,7 @@ public class VersionController extends BaseController<Version> {
         versionService.insertSelective(version);
 
         String downUrl = AliUtils.uploadVersionFile(inputStream,version.getId());
+        inputStream.close();
 //        String url = "/version/download.shtml?id=" + version.getId();
         version.setUrl(downUrl);
         versionService.updateByPrimaryKeySelective(version);

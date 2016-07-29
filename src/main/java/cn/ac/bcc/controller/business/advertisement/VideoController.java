@@ -110,6 +110,7 @@ public class VideoController extends BaseController<Video>{
         videoService.insertSelective(video);
 
         String downUrl = AliUtils.uploadVideo(inputStream,video.getId());
+        inputStream.close();
 //        video.setFilePath(filePath);
 //        String url = "/video/download.shtml?id="+video.getId();
         video.setUrl(downUrl);
