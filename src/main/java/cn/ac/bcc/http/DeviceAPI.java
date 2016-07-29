@@ -460,22 +460,24 @@ public class DeviceAPI {
                 String version = jobj.getString("version");
 //                jobj.getString("fileName");
 //                jobj.getString("modelName");
+
+                url = HelperUtils.CombinUrl(DOMAIN,url);
                 int type0 = Integer.parseInt(type);
                 switch (type0){
                     case 1:
                         //引导模块
                         map.put(HelperUtils.KEY_VER_VERSION_B, version);
-                        map.put(HelperUtils.KEY_VER_URL_B, DeviceAPI.DOMAIN + url);
+                        map.put(HelperUtils.KEY_VER_URL_B, url);
                         break;
                     case 2:
                         //转码模块
                         map.put(HelperUtils.KEY_VER_VERSION_T, version);
-                        map.put(HelperUtils.KEY_VER_URL_T, DeviceAPI.DOMAIN + url);
+                        map.put(HelperUtils.KEY_VER_URL_T,url);
                         break;
                     case 3:
                         //流媒体模块
                         map.put(HelperUtils.KEY_VER_VERSION_S, version);
-                        map.put(HelperUtils.KEY_VER_URL_S, DeviceAPI.DOMAIN + url);
+                        map.put(HelperUtils.KEY_VER_URL_S,url);
                         break;
                 }
             }
@@ -797,7 +799,11 @@ public class DeviceAPI {
                 String url = obj.getString("url");
                 String id = obj.getString("id");
                 JSONObject adObj = new JSONObject();
-                adObj.put("url",DOMAIN + url);
+                if(url.startsWith("http")){
+                    adObj.put("url",url);
+                }else{
+                    adObj.put("url",DOMAIN + url);
+                }
                 adObj.put("op","add");
                 adObj.put("pid",id);
                 array.add(adObj);

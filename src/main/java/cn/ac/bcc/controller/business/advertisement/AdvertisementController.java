@@ -7,6 +7,7 @@ import cn.ac.bcc.model.business.Company;
 import cn.ac.bcc.model.business.Video;
 import cn.ac.bcc.service.business.advertisement.AdvertisementService;
 import cn.ac.bcc.service.business.company.CompanyService;
+import cn.ac.bcc.util.AliUtils;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.PageHelper;
@@ -39,7 +40,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/advertisement/")
-public class AdvertisementController extends BaseController<Advertisement>{
+public class AdvertisementController extends BaseController<Advertisement> {
 
     private final String rootPath = "C:/linkcloud/upload/advertisement/";
 //    private final String rootPath = "/Users/bcc/Project/linkcloud/upload/advertisement/";
@@ -60,13 +61,13 @@ public class AdvertisementController extends BaseController<Advertisement>{
     public String addUI(Model model) {
         List<Company> companyList = companyService.selectAll();
 
-        model.addAttribute("companyList",companyList);
+        model.addAttribute("companyList", companyList);
         return Common.BACKGROUND_PATH + "/business/advertisement/addPicture";
     }
 
     @ResponseBody
     @RequestMapping("search")
-    public ResponseData search(Advertisement advertisement, Integer limit, Integer offset){
+    public ResponseData search(Advertisement advertisement, Integer limit, Integer offset) {
         PageHelper.offsetPage(offset, limit);
         List<Advertisement> advertisementList = advertisementService.selectAdvertisement(advertisement);
         PageInfo<Advertisement> pageInfo = new PageInfo<Advertisement>(advertisementList);
@@ -135,19 +136,59 @@ public class AdvertisementController extends BaseController<Advertisement>{
         }
 
     }
+//    public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request) {
+//        Date date = new Date();
+//        advertisement.setAddTime(date);
+//        String originalFileName = request.getParameter("originalFileName");
+//        int extFlag = originalFileName.lastIndexOf(".");
+//        String extName =".jpg";
+//        if(extFlag != -1){
+//            extName = originalFileName.substring(extFlag);
+//        }
+//        String newFilePath = "";
+//        if (image != null && !image.isEmpty()) {
+//            try {
+//                File filepath = new File(rootPath);
+//                if (!filepath.exists())
+//                    filepath.mkdirs();
+//                UUID uuid = UUID.randomUUID();
+//                newFilePath = filepath + "/" + uuid.toString()+ originalFileName.substring(originalFileName.lastIndexOf("."));
+//                File file = new File(newFilePath);
+//                image.transferTo(file);
+//
+//                InputStream inputStream = new FileInputStream(file);
+//                BufferedImage bufferedImage = ImageIO.read(inputStream);
+//                advertisement.setWidth(bufferedImage.getWidth());
+//                advertisement.setHeight(bufferedImage.getHeight());
+//                advertisement.setFileName(originalFileName);
+//                advertisementService.insertSelective(advertisement);
+//
+//                String downUrl = AliUtils.uploadImage(inputStream, advertisement.getId() + extName);
+//                advertisement.setUrl(downUrl);
+//                advertisementService.updateByPrimaryKeySelective(advertisement);
+//                return SUCCESS;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return ERROR;
+//        } else {
+//            return "EMPTY";
+//        }
+//    }
 
     /**
      * 获取照片
+     *
      * @param request
      * @param response
      * @throws Exception
      */
-    @RequestMapping(value={"getPic/{filePath}"},method= RequestMethod.GET)
+    @RequestMapping(value = {"getPic/{filePath}"}, method = RequestMethod.GET)
     public void getPic(@PathVariable("filePath") String filePath, HttpServletRequest request,
-                       HttpServletResponse response) throws Exception{
+                       HttpServletResponse response) throws Exception {
 
 
-        if(StringUtils.isEmpty(filePath)) {
+        if (StringUtils.isEmpty(filePath)) {
             filePath = "";
         }
 
@@ -155,13 +196,13 @@ public class AdvertisementController extends BaseController<Advertisement>{
         File file = new File(fileName);
 
         //判断文件是否存在如果不存在就返回默认图标
-        if(!(file.exists() && file.canRead())) {
+        if (!(file.exists() && file.canRead())) {
             fileName = request.getServletContext().getRealPath("/images//") + "/body.jpg";
             file = new File(fileName);
         }
 
         FileInputStream inputStream = new FileInputStream(file);
-        byte[] data = new byte[(int)file.length()];
+        byte[] data = new byte[(int) file.length()];
         inputStream.read(data);
         inputStream.close();
 

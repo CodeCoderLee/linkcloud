@@ -5,6 +5,7 @@ import cn.ac.bcc.mapper.business.DeviceToAdMapper;
 import cn.ac.bcc.model.business.AdPublish;
 import cn.ac.bcc.model.business.DeviceToAd;
 import cn.ac.bcc.service.base.BaseService;
+import cn.ac.bcc.util.HelperUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,8 @@ public class AdvertisementPublishService extends BaseService<AdPublish>{
                 String url = obj.getString("url");
                 String id = obj.getString("id");
                 JSONObject adObj = new JSONObject();
-                adObj.put("url",DOMAIN + url);
+                url = HelperUtils.CombinUrl(DOMAIN,url);
+                adObj.put("url", url);
                 adObj.put("id",id);
                 array.add(adObj);
             }

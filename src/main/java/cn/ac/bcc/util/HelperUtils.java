@@ -112,4 +112,14 @@ public class HelperUtils {
     public void setResult(String result) {
         this.result = result;
     }
+
+    public static String CombinUrl(String domain,String url){
+        String ret = null;
+        if(url.startsWith("http")){
+            ret = url;
+        }else {
+            ret = domain + url;
+        }
+        return ret;
+    }
 }

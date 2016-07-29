@@ -5,6 +5,7 @@ import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.Version;
 import cn.ac.bcc.service.base.BaseService;
 import cn.ac.bcc.service.business.version.VersionService;
+import cn.ac.bcc.util.AliUtils;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
 import com.github.pagehelper.PageHelper;
@@ -74,15 +75,26 @@ public class VersionController extends BaseController<Version> {
     @RequestMapping("add")
     @ResponseBody
     @SystemLog(module = "版本管理", methods = "版本管理-添加版本")//凡需要处理业务逻辑的.都需要记录操作日志
-    public String add(MultipartFile file, Version version, HttpServletRequest request) {
+    public String add(MultipartFile file, Version version, HttpServletRequest request) throws IOException {
+//        Date date = new Date();
+//        version.setAddTime(date);
+//        String filePath = saveFile(file, rootPath);
+//        version.setFilePath(filePath);
+//        version.setFileName(file.getOriginalFilename());
+//        versionService.insertSelective(version);
+//        String url = "/version/download.shtml?id=" + version.getId();
+//        version.setUrl(url);
+//        versionService.updateByPrimaryKeySelective(version);
+
+        InputStream inputStream = file.getInputStream();
         Date date = new Date();
         version.setAddTime(date);
-        String filePath = saveFile(file, rootPath);
-        version.setFilePath(filePath);
         version.setFileName(file.getOriginalFilename());
         versionService.insertSelective(version);
-        String url = "/version/download.shtml?id=" + version.getId();
-        version.setUrl(url);
+
+        String downUrl = AliUtils.uploadVersionFile(inputStream,version.getId());
+//        String url = "/version/download.shtml?id=" + version.getId();
+        version.setUrl(downUrl);
         versionService.updateByPrimaryKeySelective(version);
         return SUCCESS;
     }

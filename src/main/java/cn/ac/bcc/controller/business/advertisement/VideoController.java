@@ -5,8 +5,11 @@ import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.DeviceUpdate;
 import cn.ac.bcc.model.business.Video;
 import cn.ac.bcc.service.business.advertisement.VideoService;
+import cn.ac.bcc.util.AliUtils;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.ResponseData;
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.PolicyConditions;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +48,15 @@ public class VideoController extends BaseController<Video>{
     public String addUI(Model model, String entrance) {
         model.addAttribute("entrance", entrance);
         return Common.BACKGROUND_PATH + "/business/advertisement/addVideo";
+//
+//        String policy = AliUtils.getPolicy();
+//        String signature = AliUtils.getSignature(policy);
+//        model.addAttribute("entrance", entrance);
+//        model.addAttribute("OSSAccessKeyId",AliUtils.accessKeyId);
+//        model.addAttribute("policy",policy);
+//        model.addAttribute("Signature",signature);
+//        model.addAttribute("key","");
+//        return Common.BACKGROUND_PATH + "/business/advertisement/addVideo-ali";
     }
 
     @ResponseBody
@@ -78,15 +93,26 @@ public class VideoController extends BaseController<Video>{
     @RequestMapping("add")
     @ResponseBody
     @SystemLog(module = "广告管理", methods = "广告管理-添加视频广告")//凡需要处理业务逻辑的.都需要记录操作日志
-    public String add(MultipartFile file, Video video){
+    public String add(MultipartFile file, Video video) throws IOException {
+//        Date date = new Date();
+//        video.setAddTime(date);
+//        String filePath = saveFile(file, rootPath);
+//        video.setFilePath(filePath);
+//        video.setFileName(file.getOriginalFilename());
+//        videoService.insertSelective(video);
+//        String url = "/video/download.shtml?id="+video.getId();
+//        video.setUrl(url);
+//        videoService.updateByPrimaryKeySelective(video);
+        InputStream inputStream = file.getInputStream();
         Date date = new Date();
         video.setAddTime(date);
-        String filePath = saveFile(file, rootPath);
-        video.setFilePath(filePath);
         video.setFileName(file.getOriginalFilename());
         videoService.insertSelective(video);
-        String url = "/video/download.shtml?id="+video.getId();
-        video.setUrl(url);
+
+        String downUrl = AliUtils.uploadVideo(inputStream,video.getId());
+//        video.setFilePath(filePath);
+//        String url = "/video/download.shtml?id="+video.getId();
+        video.setUrl(downUrl);
         videoService.updateByPrimaryKeySelective(video);
         return SUCCESS;
     }
