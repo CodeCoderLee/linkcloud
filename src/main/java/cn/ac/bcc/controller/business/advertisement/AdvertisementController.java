@@ -100,81 +100,76 @@ public class AdvertisementController extends BaseController<Advertisement> {
     @ResponseBody
     @RequestMapping("add")
     @SystemLog(module = "广告管理", methods = "图文广告管理-添加图文广告")//凡需要处理业务逻辑的.都需要记录操作日志
-    public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request){
-        Date date = new Date();
-        advertisement.setAddTime(date);
-        String originalFileName = request.getParameter("originalFileName");
-        String newFilePath = "";
-        if (image!=null&&!image.isEmpty()) {
-            try {
-                File filepath = new File(rootPath);
-                if (!filepath.exists())
-                    filepath.mkdirs();
-                UUID uuid = UUID.randomUUID();
-                newFilePath = filepath + "/" + uuid.toString()+ originalFileName.substring(originalFileName.lastIndexOf("."));
-                image.transferTo(new File(newFilePath));
-                advertisement.setFilePath(newFilePath);
-                try {
-                    BufferedImage bufferedImage = ImageIO.read(new File(advertisement.getFilePath()));
-                    advertisement.setWidth(bufferedImage.getWidth());
-                    advertisement.setHeight(bufferedImage.getHeight());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String url = "/advertisement/getPic/"+newFilePath.substring(newFilePath.lastIndexOf('/')+1)+".shtml";
-                advertisement.setUrl(url);
-                advertisementService.insertSelective(advertisement);
-//                advertisementService.updateByPrimaryKeySelective(advertisement);
-                return SUCCESS;
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return ERROR;
-        }else{
-            return "EMPTY";
-        }
-
-    }
-//    public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request) {
+//    public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request){
 //        Date date = new Date();
 //        advertisement.setAddTime(date);
 //        String originalFileName = request.getParameter("originalFileName");
-//        int extFlag = originalFileName.lastIndexOf(".");
-//        String extName =".jpg";
-//        if(extFlag != -1){
-//            extName = originalFileName.substring(extFlag);
-//        }
 //        String newFilePath = "";
-//        if (image != null && !image.isEmpty()) {
+//        if (image!=null&&!image.isEmpty()) {
 //            try {
 //                File filepath = new File(rootPath);
 //                if (!filepath.exists())
 //                    filepath.mkdirs();
 //                UUID uuid = UUID.randomUUID();
 //                newFilePath = filepath + "/" + uuid.toString()+ originalFileName.substring(originalFileName.lastIndexOf("."));
-//                File file = new File(newFilePath);
-//                image.transferTo(file);
-//
-//                InputStream inputStream = new FileInputStream(file);
-//                BufferedImage bufferedImage = ImageIO.read(inputStream);
-//                advertisement.setWidth(bufferedImage.getWidth());
-//                advertisement.setHeight(bufferedImage.getHeight());
-//                advertisement.setFileName(originalFileName);
+//                image.transferTo(new File(newFilePath));
+//                advertisement.setFilePath(newFilePath);
+//                try {
+//                    BufferedImage bufferedImage = ImageIO.read(new File(advertisement.getFilePath()));
+//                    advertisement.setWidth(bufferedImage.getWidth());
+//                    advertisement.setHeight(bufferedImage.getHeight());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                String url = "/advertisement/getPic/"+newFilePath.substring(newFilePath.lastIndexOf('/')+1)+".shtml";
+//                advertisement.setUrl(url);
 //                advertisementService.insertSelective(advertisement);
-//
-//                String downUrl = AliUtils.uploadImage(inputStream, advertisement.getId() + extName);
-//                advertisement.setUrl(downUrl);
-//                advertisementService.updateByPrimaryKeySelective(advertisement);
+////                advertisementService.updateByPrimaryKeySelective(advertisement);
 //                return SUCCESS;
 //            } catch (IOException e) {
+//                // TODO Auto-generated catch block
 //                e.printStackTrace();
 //            }
 //            return ERROR;
-//        } else {
+//        }else{
 //            return "EMPTY";
 //        }
+//
 //    }
+    public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request) {
+        Date date = new Date();
+        advertisement.setAddTime(date);
+        String originalFileName = request.getParameter("originalFileName");
+        String exname = "jpg";
+        int extFlag = originalFileName.lastIndexOf(".");
+        if(extFlag != -1){
+            exname = originalFileName.substring(extFlag+1);
+        }
+        if (image != null && !image.isEmpty()) {
+            try {
+//                BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
+//                advertisement.setWidth(bufferedImage.getWidth());
+//                advertisement.setHeight(bufferedImage.getHeight());
+//                advertisement.setFileName(originalFileName);
+                advertisementService.insertSelective(advertisement);
+
+//                ByteArrayOutputStream os = new ByteArrayOutputStream();
+//                ImageIO.write(bufferedImage, exname, os);
+//                InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
+
+                String downUrl = AliUtils.uploadImage(image.getInputStream(), advertisement.getId());
+//                inputStream.close();
+                advertisement.setUrl(downUrl);
+                advertisementService.updateByPrimaryKeySelective(advertisement);
+                return SUCCESS;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return ERROR;
+        } else {
+            return "EMPTY";
+        }
+    }
 
     /**
      * 获取照片
