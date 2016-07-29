@@ -48,7 +48,7 @@
         </c:if>
     </div>
     <%--<h1 class="am-header-title">--%>
-        <%--${serialNumber}-${onoff}--%>
+    <%--${serialNumber}-${onoff}--%>
     <%--</h1>--%>
     <div class="am-header-right am-header-nav">
         <!-- <a href="#right-link" class="">
@@ -152,10 +152,10 @@
                 <c:if test="${item.isDir == 1}">
                     <a href="${ctx}/space/list2/${serialNumber}.shtml?stype=netdisk&title1=${title2}&title2=${item.pname}&parentId=${item.id}">
                         <div class="mindex-avatar">
-                              <img class="mindex-ulImg" src="${ctx}/assets/i/file.png" alt=""/>
+                            <img class="mindex-ulImg" src="${ctx}/assets/i/file.png" alt=""/>
                         </div>
                         <div class="mindex-detail">
-                               <p class="mindex-title">${item.pname} </p>
+                            <p class="mindex-title">${item.pname} </p>
                         </div>
                     </a>
                 </c:if>
@@ -163,13 +163,13 @@
                 <c:if test="${item.isDir == 0}">
                     <a href="${ctx}/space/play2/${serialNumber}.shtml?programId=${item.id}">
                         <div class="mindex-avatar">
-                                 <img class="mindex-ulImg" src="${ctx}/assets/i/live.png" alt=""/>
+                            <img class="mindex-ulImg" src="${ctx}/assets/i/live.png" alt=""/>
                         </div>
                         <div class="mindex-detail">
-                                <p class="mindex-title">
+                            <p class="mindex-title">
                                     ${item.pname}
-                                </p>
-                         </div>
+                            </p>
+                        </div>
                     </a>
                 </c:if>
             </li>
@@ -209,7 +209,7 @@
 
 
     <div data-am-widget="titlebar" class="vi-mobile" style="text-align: center;">
-         <a href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml?space=true">点击进入调式详情</a>
+        <a href="${ctx}/space/goDebugHeartBeat/${serialNumber}.shtml?space=true">点击进入调式详情</a>
     </div>
 
     <jsp:include page="footer.jsp"/>
@@ -279,13 +279,33 @@
     <script type="text/javascript" charset="utf-8">
         var signatureJson = '${signatureJson}';
         var wxObj  = jQuery.parseJSON(signatureJson);
+        var timestamp = parseInt(wxObj.timestamp);
         wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: '"' + wxObj.appId +  "'", // 必填，公众号的唯一标识
-            timestamp:wxObj.timestamp , // 必填，生成签名的时间戳
-            nonceStr: '"' + wxObj.nonceStr +  "'", // 必填，生成签名的随机串
-            signature: '"' + wxObj.signature +  "'",// 必填，签名，见附录1
-            jsApiList:['showOptionMenu'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId:  wxObj.appId , // 必填，公众号的唯一标识
+            timestamp:timestamp , // 必填，生成签名的时间戳
+            nonceStr:  wxObj.nonceStr , // 必填，生成签名的随机串
+            signature: wxObj.signature ,// 必填，签名，见附录1
+            jsApiList:['hideOptionMenu','onMenuShareTimeline','onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function(){
+            //alert('ready...');
+            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+            wx.hideOptionMenu();
+
+            wx.onMenuShareTimeline({
+                title: '分享标题', // 分享标题
+                link: '', // 分享链接
+                imgUrl: '', // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    alert('success');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
         });
     </script>
 </body>
