@@ -50,7 +50,7 @@ public class AliUtils {
         return downUrl.toString();
     }
 
-    public static String uploadImage(InputStream inputStream,int id){
+    public static String uploadImage(InputStream inputStream,String id){
         OSSClient client = getOSSClient();
         String key = "image/id/" + id ;
         client.putObject(bucketName,key,inputStream);

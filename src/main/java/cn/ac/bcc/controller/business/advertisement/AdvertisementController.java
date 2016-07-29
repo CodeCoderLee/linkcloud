@@ -139,26 +139,24 @@ public class AdvertisementController extends BaseController<Advertisement> {
     public String add(Advertisement advertisement, MultipartFile image, HttpServletRequest request) {
         Date date = new Date();
         advertisement.setAddTime(date);
+
         String originalFileName = request.getParameter("originalFileName");
-        String exname = "jpg";
+        String exname = ".jpg";
         int extFlag = originalFileName.lastIndexOf(".");
         if(extFlag != -1){
-            exname = originalFileName.substring(extFlag+1);
+            exname = originalFileName.substring(extFlag);
         }
         if (image != null && !image.isEmpty()) {
             try {
-//                BufferedImage bufferedImage = ImageIO.read(image.getInputStream());
-//                advertisement.setWidth(bufferedImage.getWidth());
-//                advertisement.setHeight(bufferedImage.getHeight());
-//                advertisement.setFileName(originalFileName);
+                String widthStr = request.getParameter("width");
+                String heightStr = request.getParameter("height");
+                advertisement.setWidth(Integer.parseInt(widthStr));
+                advertisement.setHeight(Integer.parseInt(heightStr));
+                advertisement.setFileName(originalFileName);
                 advertisementService.insertSelective(advertisement);
 
-//                ByteArrayOutputStream os = new ByteArrayOutputStream();
-//                ImageIO.write(bufferedImage, exname, os);
-//                InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
-
-                String downUrl = AliUtils.uploadImage(image.getInputStream(), advertisement.getId());
-//                inputStream.close();
+                String downUrl = AliUtils.uploadImage(image.getInputStream(), advertisement.getId() + exname);
+                image.getInputStream().close();
                 advertisement.setUrl(downUrl);
                 advertisementService.updateByPrimaryKeySelective(advertisement);
                 return SUCCESS;
