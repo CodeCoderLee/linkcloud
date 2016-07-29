@@ -21,6 +21,8 @@ $(document).ready(function () {
                 formData.append('companyId', $('#company').val());
                 formData.append('type', $('#type').val());
                 formData.append('ratio', $('input[name="aspectRatio"]:checked').val());
+                formData.append('width', $('#dataWidth').val());
+                formData.append('height', $('#dataHeight').val());
                 console.log("formData==", formData);
 
                 $.ajax(rootPath + '/advertisement/add.shtml', {
