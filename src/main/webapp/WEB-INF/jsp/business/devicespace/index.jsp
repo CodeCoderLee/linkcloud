@@ -74,7 +74,7 @@
                     <c:forEach items="${array}" var="item" varStatus="status">
                         <c:if test="${status.index <= 5}">
                             <li>
-                                <img src="${item.url}">
+                                <img class="image-index-${status.index}" src="${item.url}">
                                 <div class="am-slider-desc">广告</div>
                                 <div class="cls_ad_id" style="display: none">${item.id}</div>
                             </li>
