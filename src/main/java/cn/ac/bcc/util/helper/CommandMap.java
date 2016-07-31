@@ -18,10 +18,10 @@ public class CommandMap {
     public static void addCommand(String serialNumber,JSONObject cmmdInfo) throws InterruptedException {
         LinkedBlockingQueue<JSONObject> queue = null;
         MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
-        Object object = memcachedClient.get(serialNumber);
+        Object object = memcachedClient.get(KeyPrefix.COMMAND_PREFIX +serialNumber);
         if (object == null) {
             queue = new LinkedBlockingQueue<JSONObject>(MAX_SIZE);
-            memcachedClient.add(serialNumber, 60 * 60 * 24 * 30, queue);
+            memcachedClient.add(KeyPrefix.COMMAND_PREFIX +serialNumber, 60 * 60 * 24 * 30, queue);
         } else {
             queue = (LinkedBlockingQueue<JSONObject>) object;
         }
@@ -36,7 +36,7 @@ public class CommandMap {
 
     public static JSONObject getCommand(String serialNumber){
         MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
-        Object object = memcachedClient.get(serialNumber);
+        Object object = memcachedClient.get(KeyPrefix.COMMAND_PREFIX +serialNumber);
         if (object != null) {
             LinkedBlockingQueue<JSONObject> queue = (LinkedBlockingQueue<JSONObject>) object;
             JSONObject jsonObject = queue.poll();

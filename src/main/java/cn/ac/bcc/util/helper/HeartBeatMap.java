@@ -29,7 +29,7 @@ public class HeartBeatMap {
 
         }
 //        map.put(key,heartBeanData);
-        MemcachedUtils.getClientInstance().add(key, 60 * 60 * 24 * 30, heartBeanData);
+        MemcachedUtils.getClientInstance().add(KeyPrefix.HEARTBEAT_PREFIX + key, 60 * 60 * 24 * 30, heartBeanData);
         return ret;
     }
 
@@ -46,7 +46,7 @@ public class HeartBeatMap {
 
     public static long getTimestamp(String key){
         MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
-        Object object = memcachedClient.get(key);
+        Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             JSONObject json = JSONObject.fromObject(object.toString());
             return json.getLong("time");
@@ -64,7 +64,7 @@ public class HeartBeatMap {
 
     public static String getSeq(String key){
         MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
-        Object object = memcachedClient.get(key);
+        Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             JSONObject json = JSONObject.fromObject(object.toString());
             return json.getString("seq");
@@ -82,7 +82,7 @@ public class HeartBeatMap {
 
     public static String getFrq(String key){
         MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
-        Object object = memcachedClient.get(key);
+        Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             JSONObject json = JSONObject.fromObject(object.toString());
             return json.getString("frq");
@@ -99,26 +99,42 @@ public class HeartBeatMap {
     }
 
     public static String getLocked(String key){
-        if(map.containsKey(key)){
-            String jsonStr = map.get(key);
-            JSONObject json = JSONObject.fromObject(jsonStr);
+        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+        Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
+        if (object != null) {
+            JSONObject json = JSONObject.fromObject(object.toString());
             return json.getString("locked");
         }else{
             return "-1";
         }
+//        if(map.containsKey(key)){
+//            String jsonStr = map.get(key);
+//            JSONObject json = JSONObject.fromObject(jsonStr);
+//            return json.getString("locked");
+//        }else{
+//            return "-1";
+//        }
     }
 
     public static String get(String key){
-        if(map.containsKey(key)){
-            return map.get(key);
+        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+        Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
+        if (object != null) {
+            return object.toString();
         }else{
             return null;
         }
+//        if(map.containsKey(key)){
+//            return map.get(key);
+//        }else{
+//            return null;
+//        }
     }
 
     public static void clear(String key){
-        map.put(key,null);
-        map.remove(key);
+        MemcachedUtils.getClientInstance().delete(KeyPrefix.HEARTBEAT_PREFIX + key);
+//        map.put(key,null);
+//        map.remove(key);
     }
 
 }
