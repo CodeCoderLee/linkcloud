@@ -139,7 +139,7 @@
             var html = "<div class=\"col-sm-4\">" +
                     "<div class=\"card\">" +
                     "<div class=\"card-body card-padding\">" +
-                    "<div class=\"pmbb-view\">" +
+                    "<div class=\"pmbb-view pre-scrollable\" style=\"min-height:400px;max-height:400px\">" +
                     "<dl class=\"dl-horizontal\">" +
                     "<dt>序列号<label class=\"checkbox checkbox-inline m-r-20\">" +
                     "<input type=\"checkbox\" name=\"serialNumber\" value=\"" + item.serialNumber + "\">" +

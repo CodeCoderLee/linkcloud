@@ -266,7 +266,7 @@
             var html = '<div class="col-sm-4">' +
                     '<div class="card">' +
                     '<div class="card-body card-padding">' +
-                    '<div class="pmbb-view">' +
+                    '<div class="pmbb-view pre-scrollable" style="min-height:300px;max-height:300px">' +
                     '<dl class="dl-horizontal">' +
                     '<dt><label class="checkbox checkbox-inline m-r-20">';
             if (adIds.indexOf(item.id+"") >= 0) {
