@@ -5,6 +5,9 @@ import net.spy.memcached.MemcachedClient;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by lifm on 16/7/31.
  */
@@ -12,9 +15,9 @@ public class SimpleCacheManagerImpl implements SimpleCacheManager {
 
     private MemcachedClient memcachedClient;
 
-    private MemcachedUtils memcachedUtils;
+//    private MemcachedUtils memcachedUtils;
 
-    public SimpleCacheManagerImpl() {
+    public SimpleCacheManagerImpl(MemcachedClient memcachedClient) {
         this.memcachedClient = ShiroMemCache.getClientInstance();
 
 //        this.memcachedClient = MemcachedUtils.getClientInstance();
@@ -28,8 +31,17 @@ public class SimpleCacheManagerImpl implements SimpleCacheManager {
         }
     }
 
+    public Cache<Object, Object> createCache(String name) throws CacheException {
+        Cache<Object,Object> cache = new SimpleMapCache(name,new HashMap<Object, Object>());
+        memcachedClient.set(name, 0, cache);
+        return cache;
+    }
+
     public Cache<Object, Object> getCache(String name) throws CacheException {
         try {
+            if (memcachedClient.get(name) == null) {
+                return createCache(name);
+            }
             return (Cache<Object, Object>) memcachedClient.get(name);
         } catch (Exception e) {
             throw new CacheException(e);

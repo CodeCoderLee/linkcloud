@@ -18,6 +18,8 @@ public interface SimpleCacheManager {
      */
     void createCache(String name, Cache<Object, Object> cache) throws CacheException;
 
+    Cache<Object,Object> createCache(String name) throws CacheException;
+
     /**
      * 获取缓存堆
      *

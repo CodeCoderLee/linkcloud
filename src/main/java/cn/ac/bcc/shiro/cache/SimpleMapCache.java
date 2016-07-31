@@ -13,10 +13,10 @@ import java.util.Set;
 /**
  * Created by lifm on 16/7/31.
  */
-@SuppressWarnings("serial")
+
 public class SimpleMapCache implements Cache<Object, Object>, Serializable {
 
-    private final Map<Object, Object> attributes = null;
+    private final Map<Object, Object> attributes;
 
     private final String name;
 
@@ -27,7 +27,7 @@ public class SimpleMapCache implements Cache<Object, Object>, Serializable {
             throw new IllegalArgumentException("Backing map cannot be null.");
         } else {
             this.name = name;
-            attributes = attributes;
+            this.attributes = attributes;
         }
     }
 
@@ -61,6 +61,9 @@ public class SimpleMapCache implements Cache<Object, Object>, Serializable {
     }
 
     public Collection<Object> values() {
+        if (attributes == null) {
+            return Collections.emptySet();
+        }
         Collection<Object> values = attributes.values();
         if (!CollectionUtils.isEmpty(values))
             return Collections.unmodifiableCollection(values);
