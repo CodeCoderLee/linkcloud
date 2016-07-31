@@ -16,6 +16,7 @@
 <%--</head>--%>
 <%--<script type="text/javascript" src="${ctx}/common/common.js"></script>--%>
 <link href="${ctx}/css/fontawesome/font-awesome.min.css" rel="stylesheet">
+<link href="${ctx}/vendors/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
 <link href="${ctx}/vendors/cropper/cropper.css" rel="stylesheet">
 <link href="${ctx}/vendors/cropper/main.css" rel="stylesheet">
 

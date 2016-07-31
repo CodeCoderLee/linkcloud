@@ -20,7 +20,7 @@
             <div class="m-b-md" style="margin-bottom: 30px">
                 <label class=" col-sm-2 control-label">行业/企业</label>
                 <div class="col-sm-10">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="fg-line">
                             <div class="select">
                                 <select class="form-control" id="industryCode" name="industryCode"
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="fg-line">
                             <div class="select">
                                 <select class="form-control" id="companyId" name="companyId"
@@ -40,12 +40,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <div class="fg-line">
                             <button id="subBtn" class="btn myButton  btn-success btn-s-xs">确定</button>
                         </div>
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <div class="fg-line">
                             <a id="closeBtn" class="btn myButton  btn-success btn-s-xs">返回</a>
                         </div>

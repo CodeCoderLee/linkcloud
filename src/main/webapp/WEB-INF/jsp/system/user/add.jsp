@@ -47,9 +47,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">是否禁用</label>
                                     <div class="col-sm-9">
-                                        <div class="btn myButton -group m-r">
+                                        <div class="btn-group m-r">
                                             <button data-toggle="dropdown"
-                                                    class="btn myButton  btn-sm btn-default dropdown-toggle">
+                                                    class="btn btn-sm btn-default dropdown-toggle">
                                                 <span class="dropdown-label">是</span>
                                                 <span class="caret"></span>
                                             </button>

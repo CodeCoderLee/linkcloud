@@ -44,27 +44,27 @@
                                     </div>
                                 </div>
                                 <div class="line line-dashed line-lg pull-in"></div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">角色状态</label>
-                                    <div class="col-sm-9">
-                                        <div class="btn myButton -group m-r">
-                                            <button data-toggle="dropdown"
-                                                    class="btn myButton  btn-sm btn-default dropdown-toggle">
-                            <span class="dropdown-label"><c:if test="${role.state eq 0}">是</c:if><c:if
-                                    test="${role.state eq 1}">否</c:if></span> <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-select">
-                                                <li class=""><a href="#"><input type="radio"
-                                                                                name="state" value="0"<c:if
-                                                        test="${role.state eq 0}">
-                                                                                checked="checked"</c:if>>是</a></li>
-                                                <li class="active"><a href="#"><input type="radio"
-                                                                                      name="state" value="1" <c:if
-                                                        test="${role.state eq 1}"> checked="checked"</c:if>>否</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="col-sm-3 control-label">角色状态</label>--%>
+                                    <%--<div class="col-sm-9">--%>
+                                        <%--<div class="btn-group m-r">--%>
+                                            <%--<button data-toggle="dropdown"--%>
+                                                    <%--class="btn btn-sm btn-default dropdown-toggle">--%>
+                            <%--<span class="dropdown-label"><c:if test="${role.state eq 0}">是</c:if><c:if--%>
+                                    <%--test="${role.state eq 1}">否</c:if></span> <span class="caret"></span>--%>
+                                            <%--</button>--%>
+                                            <%--<ul class="dropdown-menu dropdown-select">--%>
+                                                <%--<li class=""><a href="#"><input type="radio"--%>
+                                                                                <%--name="state" value="0"<c:if--%>
+                                                        <%--test="${role.state eq 0}">--%>
+                                                                                <%--checked="checked"</c:if>>是</a></li>--%>
+                                                <%--<li class="active"><a href="#"><input type="radio"--%>
+                                                                                      <%--name="state" value="1" <c:if--%>
+                                                        <%--test="${role.state eq 1}"> checked="checked"</c:if>>否</a></li>--%>
+                                            <%--</ul>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="line line-dashed line-lg pull-in"></div>
                             </div>
                             <footer class="panel-footer text-right bg-light lter">

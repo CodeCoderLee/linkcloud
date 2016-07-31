@@ -11,7 +11,7 @@
     <link href="${ctx}/favicon.ico" type="image/x-icon" rel="shortcut icon">
     <title>Link Cloud</title>
     <!-- Vendor CSS -->
-    <link href="${ctx}/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+    <%--<link href="${ctx}/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">--%>
     <link href="${ctx}/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
     <link href="${ctx}/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css"
           rel="stylesheet">
