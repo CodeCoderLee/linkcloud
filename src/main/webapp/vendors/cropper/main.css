@@ -54,14 +54,14 @@ body {
 }
 
 .img-container {
-  min-height: 200px;
-  max-height: 316px;
+  min-height: 516px;
+  max-height: 516px;
   margin-bottom: 20px;
 }
 
 @media (min-width: 768px) {
   .img-container {
-    min-height: 316px;
+    min-height: 516px;
   }
 }
 

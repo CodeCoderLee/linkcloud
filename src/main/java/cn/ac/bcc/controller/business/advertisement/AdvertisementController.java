@@ -152,7 +152,7 @@ public class AdvertisementController extends BaseController<Advertisement> {
                 String heightStr = request.getParameter("height");
                 advertisement.setWidth(Integer.parseInt(widthStr));
                 advertisement.setHeight(Integer.parseInt(heightStr));
-                advertisement.setFileName(originalFileName);
+//                advertisement.setFileName();
                 advertisementService.insertSelective(advertisement);
 
                 String downUrl = AliUtils.uploadImage(image.getInputStream(), advertisement.getId() + exname);
@@ -221,6 +221,22 @@ public class AdvertisementController extends BaseController<Advertisement> {
         responseData.setTotalPages(pageInfo.getPages());
         return responseData;
 
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "delete")
+    @SystemLog(module = "图文广告管理", methods = "图文广告管理-删除图文广告")//凡需要处理业务逻辑的.都需要记录操作日志
+    public String delete() {
+        String adIds = getPara("ids");
+        if (adIds != null && adIds != "") {
+            String[] ids = adIds.split(",");
+            for (String id : ids) {
+                Advertisement advertisement = new Advertisement();
+                advertisement.setId(Integer.valueOf(id));
+                advertisementService.delete(advertisement);
+            }
+        }
+        return SUCCESS;
     }
 
 }

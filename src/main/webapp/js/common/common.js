@@ -57,7 +57,7 @@ function notify(type, message) {
         },
         spacing: 10,
         z_index: 1031,
-        delay: 2500,
+        delay: 1000,
         timer: 1000,
         url_target: '_blank',
         mouse_over: false,

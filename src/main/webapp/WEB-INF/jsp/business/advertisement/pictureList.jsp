@@ -28,6 +28,9 @@
             <button type="button" class="btn myButton  btn-success" id="newBtn">
                 <i class="glyphicon glyphicon-plus"></i>新增
             </button>
+            <button type="button" class="btn myButton  btn-danger" id="deleteBtn">
+                <i class="glyphicon glyphicon-minus"></i>删除
+            </button>
             <button id="refreshBtn" class="btn myButton  btn-default">
                 <i class="glyphicon glyphicon-refresh"></i>刷新
             </button>
@@ -56,13 +59,15 @@
             >
                 <thead>
                 <tr>
-                    <%--<th data-checkbox="true"></th>--%>
+                    <th data-checkbox="true"></th>
                     <th data-field="fileName" data-formatter="nameFormatter">文件名</th>
                     <th data-field="width" data-formatter="widthFormatter">分辨率</th>
                     <th data-field="ratio" data-formatter="ratioFormatter">宽高比</th>
                     <th data-field="companyName">广告主</th>
                     <th data-field="type" data-formatter="typeFormatter">广告类型</th>
                     <th data-field="industryName">所属行业</th>
+                    <th data-field="isBind" data-formatter="isBindFormatter">是否绑定设备</th>
+                    <th data-field="addTime" data-formatter="dateTimeFormatter">添加时间</th>
                 </tr>
                 </thead>
             </table>
@@ -149,6 +154,27 @@
         } else {
             return '-';
         }
+    }
+
+    function isBindFormatter(value){
+        if (value == 1) {
+            return '是';
+        }else {
+            return '否';
+        }
+    }
+
+    function dateTimeFormatter(value) {
+        if (!!value) {
+            var date = new Date();
+            date.setTime(value);
+            return date.toLocaleString();
+        } else {
+            return "--";
+        }
+
+//        return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours()
+//                + ":" + date.getMinutes() + ":" + date.getSeconds();
     }
 </script>
 

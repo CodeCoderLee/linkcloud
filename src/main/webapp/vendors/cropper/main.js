@@ -16,6 +16,7 @@ $(function () {
     var $dataScaleX = $('#dataScaleX');
     var $dataScaleY = $('#dataScaleY');
     var options = {
+        dragMode: 'move',
         aspectRatio: 16 / 9,
         preview: '.img-preview',
         crop: function (e) {
@@ -26,6 +27,7 @@ $(function () {
             $dataRotate.val(e.rotate);
             $dataScaleX.val(e.scaleX);
             $dataScaleY.val(e.scaleY);
+
         }
     };
 
@@ -40,7 +42,11 @@ $(function () {
             console.log(e.type);
         },
         'built.cropper': function (e) {
+            var imageData = $image.cropper("getImageData");
             console.log(e.type);
+            var fileSizeInfo = " (" + imageData.naturalWidth + "x" + imageData.naturalHeight + ") ";
+            var fileName = $('#originalFileName').val();
+            $('#file-info').text(fileName + fileSizeInfo);
         },
         'cropstart.cropper': function (e) {
             console.log(e.type, e.action);
@@ -88,7 +94,7 @@ $(function () {
         // options[name] = $this.val();
         // alert($('input[name="aspectRatio"]').val());
         // $('input[name="aspectRatio"]').val($this.val());
-        $image.cropper('setAspectRatio',$this.val());
+        $image.cropper('setAspectRatio', $this.val());
         // var type = $this.prop('type');
         // var cropBoxData;
         // var canvasData;
@@ -112,7 +118,7 @@ $(function () {
         //
         // $image.cropper('destroy').cropper(options);
     });
-    
+
     // $('#complete').click(function () {
     //     // console.log($image.cropper('getData'));
     //     // $image.cropper('setData', $image.cropper('getData'));
@@ -258,7 +264,7 @@ $(function () {
 });
 
 
-function getFileName(o){
-    var pos=o.lastIndexOf("\\");
-    return o.substring(pos+1);
+function getFileName(o) {
+    var pos = o.lastIndexOf("\\");
+    return o.substring(pos + 1);
 }

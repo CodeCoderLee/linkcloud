@@ -69,6 +69,9 @@ public class Advertisement {
     @Column(name = "ratio")
     private Float ratio;
 
+    @Column(name = "is_bind")
+    private Integer isBind;
+
     @Transient
     private String companyName;
 
@@ -287,5 +290,13 @@ public class Advertisement {
 
     public void setRatio(Float ratio) {
         this.ratio = ratio;
+    }
+
+    public Integer getIsBind() {
+        return isBind;
+    }
+
+    public void setIsBind(Integer isBind) {
+        this.isBind = isBind;
     }
 }

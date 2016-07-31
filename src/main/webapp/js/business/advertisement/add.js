@@ -23,8 +23,12 @@ $(document).ready(function () {
                 formData.append('ratio', $('input[name="aspectRatio"]:checked').val());
                 formData.append('width', $('#dataWidth').val());
                 formData.append('height', $('#dataHeight').val());
+                if($('#dataWidth').val()>640||$('#dataHeight').val()>640){
+                    alert("图片的宽和高不能大于640px");
+                    return;
+                }
                 console.log("formData==", formData);
-
+                notify('success', '     图片正在上传,请稍候      ');
                 $.ajax(rootPath + '/advertisement/add.shtml', {
                     method: "POST",
                     data: formData,

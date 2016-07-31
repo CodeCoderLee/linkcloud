@@ -7,13 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer id="footer">
-    Copyright &copy; 2015 Material Admin
+
     <ul class="f-menu">
-        <li><a href="">Home</a></li>
-        <li><a href="">Dashboard</a></li>
-        <li><a href="">Reports</a></li>
-        <li><a href="">Support</a></li>
-        <li><a href="">Contact</a></li>
+        <li>Copyright &copy; 2016 北京连慧科技有限公司</li>
+        <li><a href="">备案号:京ICP备16034479-1</a></li>
+        <%--<li><a href="">Reports</a></li>--%>
+        <%--<li><a href="">Support</a></li>--%>
+        <%--<li><a href="">Contact</a></li>--%>
     </ul>
 </footer>
 

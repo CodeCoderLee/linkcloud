@@ -4,6 +4,7 @@ import cn.ac.bcc.controller.base.BaseController;
 import cn.ac.bcc.model.business.AdPublish;
 import cn.ac.bcc.model.business.DeviceToAd;
 import cn.ac.bcc.service.business.advertisement.AdvertisementPublishService;
+import cn.ac.bcc.service.business.advertisement.AdvertisementService;
 import cn.ac.bcc.service.business.advertisement.DeviceToAdService;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.HelperUtils;
@@ -36,6 +37,9 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
 
     @Autowired
     private AdvertisementPublishService advertisementPublishService;
+
+    @Autowired
+    private AdvertisementService advertisementService;
 
 
     @RequestMapping("list")
@@ -144,6 +148,8 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
         }
 
         advertisementPublishService.batchInsert(adPublishes);
+
+        advertisementService.updateBindStatus();
         return SUCCESS;
     }
 
@@ -166,6 +172,8 @@ public class AdvertisementPublishController extends BaseController<DeviceToAd> {
 //            object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
 //            CommandMap.addCommand(serialNumber[i],object);
         }
+
+        advertisementService.updateBindStatus();
         return SUCCESS;
     }
 }

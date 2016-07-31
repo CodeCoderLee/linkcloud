@@ -25,5 +25,9 @@ public class AdvertisementService extends BaseService<Advertisement> {
         return advertisementMapper.searchAdvertisement(advertisement, sortOrder, sortName);
     }
 
+    public void updateBindStatus(){
+        advertisementMapper.updateBindStatus();
+    }
+
 
 }
