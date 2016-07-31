@@ -1,6 +1,8 @@
 package cn.ac.bcc.util.helper;
 
+import cn.ac.bcc.util.MemcachedUtils;
 import net.sf.json.JSONObject;
+import net.spy.memcached.MemcachedClient;
 
 import java.util.*;
 
@@ -11,15 +13,23 @@ public class TokenNumMap {
     private static Map<String,String> map = new HashMap<String, String>();
 
     public static void add(String token,String serialNumber){
-        map.put(token,serialNumber);
+//        map.put(token,serialNumber);
+        MemcachedUtils.getClientInstance().add(token, 60 * 60 * 24 * 30, serialNumber);
     }
 
      public static String get(String token){
-        if(map.containsKey(token)){
-            return map.get(token);
-        }else{
-            return null;
-        }
+         MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+         Object object = memcachedClient.get(token);
+         if (object != null) {
+             return object.toString();
+         } else {
+             return null;
+         }
+//        if(map.containsKey(token)){
+//            return map.get(token);
+//        }else{
+//            return null;
+//        }
     }
 
 }
