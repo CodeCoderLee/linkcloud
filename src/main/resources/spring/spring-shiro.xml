@@ -25,7 +25,7 @@
         <property name="realm" ref="myRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
         <!-- 使用下面配置的缓存管理器 -->
-        <!-- <property name="cacheManager" ref="cacheManager" /> -->
+         <property name="cacheManager" ref="cacheManager" />
     </bean>
     <!--自定义Realm -->
     <bean id="myRealm" class="cn.ac.bcc.shiro.MyRealm">
@@ -83,7 +83,7 @@
                 /install.shtml = anon
                 /lanyuan.shtml = anon
                 index.html = anon
-                <!--/ = anon-->
+                / = anon
                 /index.html = anon
                 test.jsp = anon
                 test.html = anon
@@ -135,9 +135,13 @@
 
 
     <!--shiro缓存管理器 -->
-    <bean id="cacheManager" class="cn.ac.bcc.shiro.spring.SpringCacheManagerWrapper">
-        <property name="cacheManager" ref="springCacheManager"/>
+    <bean id="cacheManager" class="cn.ac.bcc.shiro.cache.ShiroCacheManager">
+        <property name="simpleCacheManager" ref="simpleCacheManager" />
     </bean>
+
+    <bean id="simpleCacheManager" class="cn.ac.bcc.shiro.cache.SimpleCacheManagerImpl">
+    </bean>
+
 
     <bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcacheManager"/>
