@@ -1,6 +1,8 @@
 package cn.ac.bcc.util.helper;
 
+import cn.ac.bcc.util.MemcachedUtils;
 import net.sf.json.JSONObject;
+import net.spy.memcached.MemcachedClient;
 
 import javax.json.Json;
 import java.util.*;
@@ -26,49 +28,74 @@ public class HeartBeatMap {
         }catch (Exception e){
 
         }
-        map.put(key,heartBeanData);
+//        map.put(key,heartBeanData);
+        MemcachedUtils.getClientInstance().add(key, 60 * 60 * 24 * 30, heartBeanData);
         return ret;
     }
 
 
-    public static List<String> getKeys(){
-        Set<String> set = map.keySet();
-        Iterator<String> ite = set.iterator();
-        List<String > keyList = new ArrayList<String>();
-        while (ite.hasNext()){
-            keyList.add(ite.next());
-        }
-        return keyList;
-    }
+//    public static List<String> getKeys(){
+//        Set<String> set = map.keySet();
+//        Iterator<String> ite = set.iterator();
+//        List<String > keyList = new ArrayList<String>();
+//        while (ite.hasNext()){
+//            keyList.add(ite.next());
+//        }
+//        return keyList;
+//    }
 
     public static long getTimestamp(String key){
-        if(map.containsKey(key)){
-            String jsonStr = map.get(key);
-            JSONObject json = JSONObject.fromObject(jsonStr);
+        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+        Object object = memcachedClient.get(key);
+        if (object != null) {
+            JSONObject json = JSONObject.fromObject(object.toString());
             return json.getLong("time");
         }else{
             return 0;
         }
+//        if(map.containsKey(key)){
+//            String jsonStr = map.get(key);
+//            JSONObject json = JSONObject.fromObject(jsonStr);
+//            return json.getLong("time");
+//        }else{
+//            return 0;
+//        }
     }
 
     public static String getSeq(String key){
-        if(map.containsKey(key)){
-            String jsonStr = map.get(key);
-            JSONObject json = JSONObject.fromObject(jsonStr);
+        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+        Object object = memcachedClient.get(key);
+        if (object != null) {
+            JSONObject json = JSONObject.fromObject(object.toString());
             return json.getString("seq");
         }else{
             return "-1";
         }
+//        if(map.containsKey(key)){
+//            String jsonStr = map.get(key);
+//            JSONObject json = JSONObject.fromObject(jsonStr);
+//            return json.getString("seq");
+//        }else{
+//            return "-1";
+//        }
     }
 
     public static String getFrq(String key){
-        if(map.containsKey(key)){
-            String jsonStr = map.get(key);
-            JSONObject json = JSONObject.fromObject(jsonStr);
+        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+        Object object = memcachedClient.get(key);
+        if (object != null) {
+            JSONObject json = JSONObject.fromObject(object.toString());
             return json.getString("frq");
         }else{
             return "-1";
         }
+//        if(map.containsKey(key)){
+//            String jsonStr = map.get(key);
+//            JSONObject json = JSONObject.fromObject(jsonStr);
+//            return json.getString("frq");
+//        }else{
+//            return "-1";
+//        }
     }
 
     public static String getLocked(String key){

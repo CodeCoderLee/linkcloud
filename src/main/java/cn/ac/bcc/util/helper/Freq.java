@@ -1,11 +1,12 @@
 package cn.ac.bcc.util.helper;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lenovo on 2016-06-06.
  */
-public class Freq {
+public class Freq implements Serializable{
     private String frq;
     private int strength;
     private int snr;

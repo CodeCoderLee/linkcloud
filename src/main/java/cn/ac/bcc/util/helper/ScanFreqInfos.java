@@ -1,11 +1,13 @@
 package cn.ac.bcc.util.helper;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by lenovo on 2016-06-06.
  */
-public class ScanFreqInfos {
+public class ScanFreqInfos implements Serializable{
+
     private boolean scanEnded;
     private int progress;
     private int frqsNum;
