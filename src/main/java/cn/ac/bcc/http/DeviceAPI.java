@@ -75,7 +75,7 @@ public class DeviceAPI {
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
 
-        if(serialNumber != null && !OnOffLineMap.isOnline(serialNumber,shiroMemcache)){
+        if(StringUtils.isNotEmpty(serialNumber) && !OnOffLineMap.isOnline(serialNumber,shiroMemcache)){
             AuthenMap.put(serialNumber,true,shiroMemcache);
             DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
             DeviceService deviceService = ctx.getBean(DeviceService.class);

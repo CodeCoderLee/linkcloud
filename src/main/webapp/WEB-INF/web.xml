@@ -17,12 +17,12 @@
         </listener-class>
     </listener>
 
-	<!--<listener>-->
-		<!--<listener-class>cn.ac.bcc.http.HttpServerListener</listener-class>-->
-	<!--</listener>-->
-	<!--<listener>-->
-		<!--<listener-class>cn.ac.bcc.http.StatusListener</listener-class>-->
-	<!--</listener>-->
+	<listener>
+		<listener-class>cn.ac.bcc.http.HttpServerListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>cn.ac.bcc.http.StatusListener</listener-class>
+	</listener>
 
 	<listener>
 	        <listener-class>  
