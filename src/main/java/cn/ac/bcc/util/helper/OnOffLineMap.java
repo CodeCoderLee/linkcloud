@@ -25,7 +25,7 @@ public class OnOffLineMap {
         MemcachedClient client = shiroMemcache.getMemcachedClient();
         Object object = client.get(KeyPrefix.ALL_SERIALNUMBER);
         if (object != null) {
-            JSONArray jsonArray = JSONArray.fromObject(object.toString());
+            JSONArray jsonArray = (JSONArray)object;
             for (Object o : jsonArray.toArray()) {
                 keyList.add(o.toString());
             }
