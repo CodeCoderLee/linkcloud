@@ -1,11 +1,12 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.NavigableMap;
 
 @Table(name = "bcc_advertisement")
-public class Advertisement {
+public class Advertisement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

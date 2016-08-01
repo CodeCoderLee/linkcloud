@@ -1,9 +1,10 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "bcc_device_apply")
-public class DeviceApply {
+public class DeviceApply implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

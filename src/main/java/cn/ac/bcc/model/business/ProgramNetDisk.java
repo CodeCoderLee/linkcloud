@@ -1,9 +1,10 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "bcc_program_netdisk")
-public class ProgramNetDisk {
+public class ProgramNetDisk implements Serializable {
     /**
      * 主键，自增id
      */

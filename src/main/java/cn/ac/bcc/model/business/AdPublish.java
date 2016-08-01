@@ -1,10 +1,11 @@
 package cn.ac.bcc.model.business;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_ad_publish")
-public class AdPublish {
+public class AdPublish implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

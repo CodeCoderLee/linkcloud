@@ -3,10 +3,11 @@ package cn.ac.bcc.model.business;
 import cn.ac.bcc.annotation.Model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name = "bcc_company")
-public class Company {
+public class Company implements Serializable {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

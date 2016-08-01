@@ -1,9 +1,10 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "bcc_area")
-public class Area {
+public class Area implements Serializable {
     /**
      * ID
      */

@@ -1,10 +1,11 @@
 package cn.ac.bcc.model.business;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_industry")
-public class Industry {
+public class Industry implements Serializable {
     /**
      * 主键
      */

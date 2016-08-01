@@ -99,7 +99,6 @@ public class MyRealm extends AuthorizingRealm {
 		} else {
 			throw new UnknownAccountException();// 没找到帐号
 		}
-
 	}
 	/**
      * 更新用户授权信息缓存.

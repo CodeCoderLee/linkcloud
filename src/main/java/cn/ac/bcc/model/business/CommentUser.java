@@ -1,10 +1,11 @@
 package cn.ac.bcc.model.business;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "comment_user_view")
-public class CommentUser {
+public class CommentUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

@@ -1,9 +1,11 @@
 package cn.ac.bcc.model.business;
 
+import java.io.Serializable;
+
 /**
  * Created by lifm on 16/7/7.
  */
-public class ProgramDto {
+public class ProgramDto implements Serializable {
     private String pid;
     private String name;
     private boolean select;

@@ -1,9 +1,10 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "bcc_program")
-public class Program {
+public class Program implements Serializable {
     /**
      * 主键，自增id
      */

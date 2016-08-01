@@ -15,32 +15,54 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by lifm on 16/7/31.
  */
-public class ShiroMemCache {
-    final static String host = "192.168.126.4";//控制台上的“内网地址”
-    final static String port = "11211"; //默认端口 11211，不用改
-    final static String username = "67f525201b064506";//控制台上的“访问账号“
-    final static String password = "Bjlinkway2016BJ";//邮件或短信中提供的“密码”
+public class ShiroMemcache {
+    private String host = "192.168.126.40";//控制台上的“内网地址”
+    private String port = "11211"; //默认端口 11211，不用改
+    private String username = "67f525201b064506";//控制台上的“访问账号“
+    private String password = "Bjlinkway2016BJ";//邮件或短信中提供的“密码”
 
     private static MemcachedClient client;
 
-    private ShiroMemCache(){
-
+    public ShiroMemcache(String host, String port, String username, String password, boolean isAuthen) {
+        this.host = host;
+        this.port = port;
+        this.username = username;
+        this.password = password;
+        getClientInstance(isAuthen);
     }
 
+    public MemcachedClient getMemcachedClient(){
+        return  client;
+    }
 
-    public static synchronized MemcachedClient getClientInstance() {
+    private void getClientInstance(boolean isAuthen) {
         if (client == null) {
-            try {
-                client = new MemcachedClient(new BinaryConnectionFactory(), AddrUtil.getAddresses(host + ":" + port));
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (isAuthen) {
+                try {
+                    AuthDescriptor ad = new AuthDescriptor(new String[]{"PLAIN"}, new PlainCallbackHandler(username, password));
+                    client = new MemcachedClient(
+                            new ConnectionFactoryBuilder().setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
+                                    .setAuthDescriptor(ad)
+                                    .build(),
+                            AddrUtil.getAddresses(host + ":" + port));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    client = new MemcachedClient(new BinaryConnectionFactory(), AddrUtil.getAddresses(host + ":" + port));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return client;
     }
 
-    public static void main(String[] args){
-        MemcachedTest.needUserPwd();
+
+    public void close() {
+        if (client != null) {
+            client.shutdown();
+        }
     }
+
 }

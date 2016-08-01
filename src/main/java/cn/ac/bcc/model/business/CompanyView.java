@@ -1,10 +1,11 @@
 package cn.ac.bcc.model.business;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_company_view")
-public class CompanyView {
+public class CompanyView implements Serializable {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

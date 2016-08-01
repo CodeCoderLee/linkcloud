@@ -1,9 +1,13 @@
 package cn.ac.bcc.util;
 
+import org.elasticsearch.action.search.SearchRequest;
+
+import java.io.Serializable;
+
 /**
  * Created by lifm on 2016/2/17.
  */
-public class ResponseObject {
+public class ResponseObject implements Serializable {
 
     public static final int SUCCESS = 1;
     public static final int ERROR = 0;

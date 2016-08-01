@@ -1,9 +1,10 @@
 package cn.ac.bcc.model.business;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "bcc_device_freq")
-public class DeviceFreq {
+public class DeviceFreq implements Serializable {
     /**
      * 设备id
      */

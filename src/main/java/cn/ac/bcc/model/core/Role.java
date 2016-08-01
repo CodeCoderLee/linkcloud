@@ -3,9 +3,10 @@ package cn.ac.bcc.model.core;
 import cn.ac.bcc.annotation.Model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "bcc_role")
-public class Role {
+public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

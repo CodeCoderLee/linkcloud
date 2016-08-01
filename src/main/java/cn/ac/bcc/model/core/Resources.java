@@ -6,8 +6,10 @@ import javax.persistence.*;
 
 import cn.ac.bcc.annotation.Model;
 
+import java.io.Serializable;
+
 @Table(name = "bcc_resources")
-public class Resources {
+public class Resources implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

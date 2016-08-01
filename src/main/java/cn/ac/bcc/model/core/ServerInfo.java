@@ -1,10 +1,11 @@
 package cn.ac.bcc.model.core;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_server_info")
-public class ServerInfo {
+public class ServerInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

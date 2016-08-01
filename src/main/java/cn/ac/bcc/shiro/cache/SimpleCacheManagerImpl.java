@@ -1,12 +1,10 @@
 package cn.ac.bcc.shiro.cache;
 
-import cn.ac.bcc.util.MemcachedUtils;
 import net.spy.memcached.MemcachedClient;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by lifm on 16/7/31.
@@ -17,8 +15,8 @@ public class SimpleCacheManagerImpl implements SimpleCacheManager {
 
 //    private MemcachedUtils memcachedUtils;
 
-    public SimpleCacheManagerImpl(MemcachedClient memcachedClient) {
-        this.memcachedClient = ShiroMemCache.getClientInstance();
+    public SimpleCacheManagerImpl(ShiroMemcache shiroMemcache) {
+        this.memcachedClient = shiroMemcache.getMemcachedClient();
 
 //        this.memcachedClient = MemcachedUtils.getClientInstance();
     }

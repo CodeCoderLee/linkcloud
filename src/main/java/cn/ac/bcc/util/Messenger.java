@@ -1,10 +1,12 @@
 package cn.ac.bcc.util;
 
+import java.io.Serializable;
+
 /**
  * Created by lifm on 16/7/17.
  */
 /*封装页面间跳转传递信息*/
-public class Messenger {
+public class Messenger implements Serializable {
     private String msgUrl;
     private Integer msgPageSize;
     private Integer msgPageNumber;

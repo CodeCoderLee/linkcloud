@@ -1,12 +1,13 @@
 package cn.ac.bcc.util;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by bcc on 16/4/21.
  * bootstrap 返回数据的封装类
  */
-public class ResponseData {
+public class ResponseData implements Serializable {
 
     private long total;
 

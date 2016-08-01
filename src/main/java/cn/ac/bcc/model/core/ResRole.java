@@ -1,9 +1,10 @@
 package cn.ac.bcc.model.core;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table(name = "bcc_res_role")
-public class ResRole {
+public class ResRole implements Serializable {
     @Id
     @Column(name = "roleId")
     private Integer roleid;

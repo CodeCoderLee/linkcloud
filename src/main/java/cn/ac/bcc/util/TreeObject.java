@@ -1,5 +1,6 @@
 package cn.ac.bcc.util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import cn.ac.bcc.model.core.Resources;
  * 这里的字段是在前台显示所有的,可修改
  * date：2014-11-20
  */
-public class TreeObject {
+public class TreeObject implements Serializable{
 	private Integer id;
 	private Integer parentId;
 	private String name;

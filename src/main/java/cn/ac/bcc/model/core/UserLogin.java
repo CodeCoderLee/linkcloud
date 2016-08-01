@@ -3,12 +3,13 @@ package cn.ac.bcc.model.core;
 import cn.ac.bcc.annotation.Model;
 import cn.ac.bcc.annotation.OnlySearch;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_userlogin")
 @OnlySearch(value = true)
-public class UserLogin {
+public class UserLogin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Model(name = "ID")

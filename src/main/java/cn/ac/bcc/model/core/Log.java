@@ -1,5 +1,6 @@
 package cn.ac.bcc.model.core;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -8,7 +9,7 @@ import cn.ac.bcc.annotation.OnlySearch;
 
 @Table(name = "bcc_log")
 @OnlySearch(value = true)
-public class Log {
+public class Log implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Model(name="Id")

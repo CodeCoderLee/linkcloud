@@ -1,10 +1,11 @@
 package cn.ac.bcc.model.business;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_device_use_apply")
-public class DeviceUseApply {
+public class DeviceUseApply implements Serializable {
     /**
      * 主键，自增
      */

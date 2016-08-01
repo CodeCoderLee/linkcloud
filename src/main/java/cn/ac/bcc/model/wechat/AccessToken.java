@@ -1,9 +1,11 @@
 package cn.ac.bcc.model.wechat;
 
+import java.io.Serializable;
+
 /**
  * Created by bcc on 16/4/17.
  */
-public class AccessToken {
+public class AccessToken implements Serializable {
     public String accessToken;
     public Integer expiresIn;
 

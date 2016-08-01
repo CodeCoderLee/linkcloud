@@ -2,11 +2,12 @@ package cn.ac.bcc.model.core;
 
 import cn.ac.bcc.annotation.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bcc_user")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
