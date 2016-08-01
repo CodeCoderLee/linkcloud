@@ -10,12 +10,12 @@ public class AuthenMap {
 
     public static void   put(String serialNumber, Boolean isAuthen, ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        client.add(serialNumber, 60 * 60 * 24 * 30, isAuthen);
+        client.set(KeyPrefix.AUTHEN_PREFIX + serialNumber, 60 * 60 * 24 * 30, isAuthen);
     }
 
     public static boolean get(String serialNumber,ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        Boolean isAuthen = (Boolean)client.get(serialNumber);
+        Boolean isAuthen = (Boolean)client.get(KeyPrefix.AUTHEN_PREFIX  + serialNumber);
         return  isAuthen;
     }
 }
