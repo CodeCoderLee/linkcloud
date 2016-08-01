@@ -7,6 +7,7 @@ import net.spy.memcached.MemcachedClient;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.formula.ptg.MemErrPtg;
 
+import javax.json.Json;
 import java.util.*;
 
 /**
@@ -48,6 +49,15 @@ public class OnOffLineMap {
     public static void clear(String key,ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
         client.delete(KeyPrefix.ON_OFF_LINE_PREFIX + key);
+        Object obj = client.get(KeyPrefix.ALL_SERIALNUMBER);
+        if (obj != null) {
+            JSONArray jsonArray = (JSONArray) obj;
+            if (jsonArray.contains(key)) {
+                jsonArray.remove(key);
+                client.set(KeyPrefix.ALL_SERIALNUMBER, 60 * 60 * 24 * 30, jsonArray);
+            }
+
+        }
 //        map.put(key,null);
 //        map.remove(key);
     }
