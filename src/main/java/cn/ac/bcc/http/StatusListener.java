@@ -7,6 +7,7 @@ import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
 import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.helper.OnOffLineMap;
+import cn.ac.bcc.util.helper.TokenNumMap;
 import org.apache.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -36,6 +37,7 @@ public class StatusListener implements ServletContextListener {
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
 
         ShiroMemcache shiroMemcache = springContext.getBean(ShiroMemcache.class);
+        TokenNumMap.clear(shiroMemcache);
         try {
             List<String> keyList = OnOffLineMap.getKeys(shiroMemcache);
             for (String serialNumber : keyList) {

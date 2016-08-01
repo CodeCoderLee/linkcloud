@@ -15,7 +15,7 @@ public class TokenNumMap {
     private static Map<String,String> map = new HashMap<String, String>();
 
 
-    public static synchronized void add(String token, String serialNumber, ShiroMemcache shiroMemcache){
+    public static void add(String token, String serialNumber, ShiroMemcache shiroMemcache){
 //        map.put(token,serialNumber);
         MemcachedClient client = shiroMemcache.getMemcachedClient();
         client.set(token, 60 * 60 * 24 * 30, serialNumber);
@@ -31,6 +31,11 @@ public class TokenNumMap {
                 client.set(KeyPrefix.ALL_SERIALNUMBER, 60 * 60 * 24 * 30, array);
             }
         }
+    }
+
+    public static  void clear(ShiroMemcache shiroMemcache){
+        MemcachedClient client = shiroMemcache.getMemcachedClient();
+        client.delete(KeyPrefix.ALL_SERIALNUMBER);
     }
 
      public static String get(String token, ShiroMemcache shiroMemcache){

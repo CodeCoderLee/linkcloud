@@ -4,6 +4,7 @@ import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.MemcachedUtils;
 import net.sf.json.JSONArray;
 import net.spy.memcached.MemcachedClient;
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.formula.ptg.MemErrPtg;
 
 import java.util.*;
@@ -12,11 +13,14 @@ import java.util.*;
  * Created by lenovo on 2016-06-07.
  */
 public class OnOffLineMap {
+    static  Logger logger = Logger.getLogger(OnOffLineMap.class);
     private static Map<String,Long> map = new HashMap<String, Long>();
     static int maxSpace = 1000*60*5;
     public static void online(String serialNumber, ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        client.set(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber, 60 * 60 * 24 * 30, System.currentTimeMillis());
+        long time =  System.currentTimeMillis();
+        client.set(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber, 60 * 60 * 24 * 30,time);
+        logger.error("--online----serialNumber is " + serialNumber  + "  time is " +  time);
 //        map.put(serialNumber,System.currentTimeMillis());
     }
 
@@ -54,12 +58,16 @@ public class OnOffLineMap {
         boolean online = true;
          try{
              MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
-             Long oldTime = (Long)memcachedClient.get(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber);
+             Object obj = memcachedClient.get(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber);
+             logger.error("--isOnline----obj is " + obj  + "   serialNumber is " + serialNumber);
+             if(obj != null) {
+                 Long oldTime = (Long)obj;
 //             Long oldTime  = map.get(serialNumber);
-             long current = System.currentTimeMillis();
-             long interval = current - oldTime;
-             if (interval > maxSpace){
-                 online = false;
+                 long current = System.currentTimeMillis();
+                 long interval = current - oldTime;
+                 if (interval > maxSpace) {
+                     online = false;
+                 }
              }
          }catch (Exception e){
              online = false;
