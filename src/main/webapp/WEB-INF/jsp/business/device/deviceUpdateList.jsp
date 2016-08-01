@@ -102,11 +102,12 @@
         });
     });
     function loadDevice(pageNum, pageSize) {
+        var serialNumber = $('#searchParam').val();
         $.ajax({
             method: 'get',
             url: 'deviceUpdate/search.shtml',
             dataType: 'json',
-            data: {pageNum: pageNum, pageSize: pageSize},
+            data: {pageNum: pageNum, pageSize: pageSize, serialNumber:serialNumber},
             success: function (data) {
                 /*刷新数据*/
 
