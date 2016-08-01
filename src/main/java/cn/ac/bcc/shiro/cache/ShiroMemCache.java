@@ -21,7 +21,7 @@ public class ShiroMemcache {
     private String username = "67f525201b064506";//控制台上的“访问账号“
     private String password = "Bjlinkway2016BJ";//邮件或短信中提供的“密码”
 
-    private static MemcachedClient client;
+    private MemcachedClient client;
 
     public ShiroMemcache(String host, String port, String username, String password, boolean isAuthen) {
         this.host = host;

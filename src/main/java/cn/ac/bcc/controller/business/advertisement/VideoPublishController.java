@@ -5,6 +5,7 @@ import cn.ac.bcc.model.business.DeviceToVideo;
 import cn.ac.bcc.model.business.VideoPublish;
 import cn.ac.bcc.service.business.advertisement.DeviceToVideoService;
 import cn.ac.bcc.service.business.advertisement.VideoPublishService;
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.ResponseData;
@@ -37,7 +38,8 @@ public class VideoPublishController extends BaseController<VideoPublish> {
 
     @Autowired
     private DeviceToVideoService deviceToVideoService;
-
+    @Autowired
+    private ShiroMemcache shiroMemcache;
     @RequestMapping("list")
     public String listUI() {
         return Common.BACKGROUND_PATH + "/business/advertisement/videoPublishList";
@@ -144,7 +146,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             JSONObject heartObj = new JSONObject();
             heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
             logger.info("=============下发视频广告更新命令,serialNumber="+serialNumber[i]+",data="+heartObj.toString()+"==========");
-            CommandMap.addCommand(serialNumber[i],heartObj);
+            CommandMap.addCommand(serialNumber[i],heartObj,shiroMemcache);
         }
 
         videoPublishService.batchInsert(videoPublishes);
@@ -169,7 +171,7 @@ public class VideoPublishController extends BaseController<VideoPublish> {
             JSONObject heartObj = new JSONObject();
             heartObj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_UPDATEAD);
             logger.info("=============下发解绑视频广告命令,serialNumber="+serialNumber[i]+",data="+heartObj.toString()+"==========");
-            CommandMap.addCommand(serialNumber[i],heartObj);
+            CommandMap.addCommand(serialNumber[i],heartObj,shiroMemcache);
         }
         return SUCCESS;
     }

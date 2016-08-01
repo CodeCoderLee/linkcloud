@@ -1,5 +1,7 @@
 package cn.ac.bcc.http;
 
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
+import cn.ac.bcc.util.helper.AuthenMap;
 import cn.ac.bcc.util.helper.HeartBeatMap;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
@@ -41,10 +43,12 @@ public class StatusListener implements ServletContextListener {
         WebApplicationContext ctx;
         ServletContext sc;
         Timer timer;
+        private ShiroMemcache shiroMemcache;
 
         public MyTask(WebApplicationContext springContext, ServletContext sc, Timer timer) {
             this.ctx = springContext;
             this.sc = sc;
+            shiroMemcache = springContext.getBean(ShiroMemcache.class);
             this.timer = timer;
         }
 
@@ -53,9 +57,9 @@ public class StatusListener implements ServletContextListener {
             logger.info("离线状态监听程序成功启动");
             while (run){
                 try {
-                    List<String> keyList = OnOffLineMap.getKeys();
+                    List<String> keyList = OnOffLineMap.getKeys(shiroMemcache);
                     for (String serialNumber : keyList) {
-                        if (!OnOffLineMap.isOnline(serialNumber)) {
+                        if (!OnOffLineMap.isOnline(serialNumber,shiroMemcache)) {
                             //超时判断为离线，更新状态
                             DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
                             DeviceService deviceService = ctx.getBean(DeviceService.class);
@@ -63,9 +67,10 @@ public class StatusListener implements ServletContextListener {
                             deviceAuthenService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
 //                            HeartBeatMap.clear(serialNumber);
 //                            OnOffLineMap.clear(serialNumber);
-                            if(DeviceAPI.AUTHEN_MAP.containsKey(serialNumber)){
-                                DeviceAPI.AUTHEN_MAP.put(serialNumber,false);
-                            }
+//                            if(DeviceAPI.AUTHEN_MAP.containsKey(serialNumber)){
+//                                DeviceAPI.AUTHEN_MAP.put(serialNumber,false);
+//                            }
+                            AuthenMap.put(serialNumber,false,shiroMemcache);
                             logger.info(serialNumber + "设备离线");
                             System.out.println("off-line");
                         }

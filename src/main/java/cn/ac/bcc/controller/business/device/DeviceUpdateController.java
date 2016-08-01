@@ -7,6 +7,7 @@ import cn.ac.bcc.model.business.DeviceUpdate;
 import cn.ac.bcc.model.business.DeviceUseApply;
 import cn.ac.bcc.model.business.Version;
 import cn.ac.bcc.service.business.device.DeviceUpdateService;
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.Common;
 import cn.ac.bcc.util.HelperUtils;
 import cn.ac.bcc.util.Messenger;
@@ -36,6 +37,8 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
     private static Logger logger = Logger.getLogger(DeviceUpdateController.class);
     @Autowired
     private DeviceUpdateService deviceUpdateService;
+    @Autowired
+    private ShiroMemcache shiroMemcache;
 
     @RequestMapping("list")
     public String listUI(Model model, HttpServletRequest request,Messenger messenger) {
@@ -105,7 +108,7 @@ public class DeviceUpdateController extends BaseController<DeviceUpdate> {
             JSONObject object = new JSONObject();
             object.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_UPDATE_VERSION);
             logger.info("===============下发设备升级版本命令,serialNumber="+serialNumber[i]+",data="+object.toString()+"==============");
-            CommandMap.addCommand(serialNumber[i], object);
+            CommandMap.addCommand(serialNumber[i], object,shiroMemcache);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("serialNumber", serialNumber[i]);

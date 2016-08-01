@@ -1,5 +1,6 @@
 package cn.ac.bcc.util.helper;
 
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.MemcachedUtils;
 import net.sf.json.JSONObject;
 import net.spy.memcached.MemcachedClient;
@@ -15,9 +16,9 @@ public class CommandMap {
     private static int MAX_SIZE = 50;
     private static Map<String,LinkedBlockingQueue<JSONObject>> map = new HashMap<String,LinkedBlockingQueue<JSONObject>>();
 
-    public static void addCommand(String serialNumber,JSONObject cmmdInfo) throws InterruptedException {
+    public static void addCommand(String serialNumber, JSONObject cmmdInfo, ShiroMemcache shiroMemcache) throws InterruptedException {
         LinkedBlockingQueue<JSONObject> queue = null;
-        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+        MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.COMMAND_PREFIX +serialNumber);
         if (object == null) {
             queue = new LinkedBlockingQueue<JSONObject>(MAX_SIZE);
@@ -34,8 +35,8 @@ public class CommandMap {
         queue.put(cmmdInfo);
     }
 
-    public static JSONObject getCommand(String serialNumber){
-        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+    public static JSONObject getCommand(String serialNumber, ShiroMemcache shiroMemcache){
+        MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.COMMAND_PREFIX +serialNumber);
         if (object != null) {
             LinkedBlockingQueue<JSONObject> queue = (LinkedBlockingQueue<JSONObject>) object;

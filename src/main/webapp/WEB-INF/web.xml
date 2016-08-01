@@ -17,12 +17,12 @@
         </listener-class>
     </listener>
 
-	<listener>
-		<listener-class>cn.ac.bcc.http.HttpServerListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>cn.ac.bcc.http.StatusListener</listener-class>
-	</listener>
+	<!--<listener>-->
+		<!--<listener-class>cn.ac.bcc.http.HttpServerListener</listener-class>-->
+	<!--</listener>-->
+	<!--<listener>-->
+		<!--<listener-class>cn.ac.bcc.http.StatusListener</listener-class>-->
+	<!--</listener>-->
 
 	<listener>
 	        <listener-class>  
@@ -156,6 +156,6 @@
 	</servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

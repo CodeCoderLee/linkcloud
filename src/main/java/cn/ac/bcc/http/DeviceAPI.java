@@ -5,6 +5,7 @@ import cn.ac.bcc.service.business.advertisement.DeviceToVideoService;
 import cn.ac.bcc.service.business.device.DeviceUpdateService;
 import cn.ac.bcc.service.business.report.VideoReportService;
 import cn.ac.bcc.service.business.version.VersionService;
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
 import cn.ac.bcc.service.business.device.DeviceService;
@@ -51,15 +52,17 @@ public class DeviceAPI {
     public static final String URI_GETUPDATEINFO = "/device/getupdateinfo.shtml";
 
     public static final String DOMAIN = "http://www.linkedcloud.com.cn";
-    public static Map<String,Boolean> AUTHEN_MAP = new HashMap<String, Boolean>();
+//    public static Map<String,Boolean> AUTHEN_MAP = new HashMap<String, Boolean>();
     public static final int IS_DIR = 1;
     public static final int IS_NOT_DIR = 0;
 
     private static Logger logger = Logger.getLogger(DeviceAPI.class);
     private ApplicationContext ctx;
+    private ShiroMemcache shiroMemcache;
 
     public DeviceAPI(ApplicationContext applicationContext) {
         this.ctx = applicationContext;
+        shiroMemcache = ctx.getBean(ShiroMemcache.class);
     }
 
     public FullHttpResponse dispatcher(HttpRequest request, String postData) throws UnsupportedEncodingException {
@@ -72,8 +75,8 @@ public class DeviceAPI {
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
 
-        if(serialNumber != null && !OnOffLineMap.isOnline(serialNumber)){
-            AUTHEN_MAP.put(serialNumber,true);
+        if(serialNumber != null && !OnOffLineMap.isOnline(serialNumber,shiroMemcache)){
+            AuthenMap.put(serialNumber,true,shiroMemcache);
             DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
             DeviceService deviceService = ctx.getBean(DeviceService.class);
             deviceService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
@@ -103,56 +106,56 @@ public class DeviceAPI {
         } else if (uri.contains(URI_REPORT_PROGRAMS)  && getAuthen(serialNumber)) {
             jsonStr = reportPrograms(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---reportPrograms over..");
         } else if (uri.contains(URI_ANALYSISV) && getAuthen(serialNumber)) {
             jsonStr = analysisv(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---reportPrograms over..");
         } else if (uri.contains(URI_REMOTECHECK) && getAuthen(serialNumber)) {
             jsonStr = remoteCheck(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
         } else if (uri.contains(URI_REMOTEWATCH) && getAuthen(serialNumber)) {
             jsonStr = remoteWatch(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---remoteWatch over..");
         } else if (uri.contains(URI_SCANFRQ) && getAuthen(serialNumber)) {
             jsonStr = scanFrq(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---scanFrq over..");
         } else if (uri.contains(URI_SETAD) && getAuthen(serialNumber)) {
             jsonStr = setAd(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---setAd over..");
         } else if (uri.contains(URI_UPDATEAD) && getAuthen(serialNumber)) {
             jsonStr = updateAd(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---updateAd over..");
         } else if (uri.contains(URI_SETFRQ) && getAuthen(serialNumber)) {
             jsonStr = setFrq(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---setFrq over..");
         } else if (uri.contains(URI_SHOCK) && getAuthen(serialNumber)) {
             jsonStr = shock(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---shock over..");
         } else if (uri.contains(URI_HEARTBEAT) && getAuthen(serialNumber)) {
             jsonStr = heartBeat(request, postData, nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---heartBeat over..");
         }  else if(uri.contains(URI_GETUPDATEINFO)){
             jsonStr = getUpdateInfo(request,postData,nvList);
             is_ok = true;
-            OnOffLineMap.online(serialNumber);
+            OnOffLineMap.online(serialNumber,shiroMemcache);
             logger.debug(serialNumber + "---getUpdateInfo over..");
         }
 
@@ -214,7 +217,7 @@ public class DeviceAPI {
         deviceAuthen = deviceAuthenService.selectOne(deviceAuthen);
 
         String serialNumber = json.getString(HelperUtils.KEY_ID);
-        TokenNumMap.add(token,serialNumber);
+        TokenNumMap.add(token,serialNumber,shiroMemcache);
 
         Device device = new Device();
         device.setSerialNumber(serialNumber);
@@ -255,7 +258,7 @@ public class DeviceAPI {
             }
 
             //TODO 授权
-            AUTHEN_MAP.put(serialNumber,true);
+            AuthenMap.put(serialNumber,true,shiroMemcache);
 
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_SUCCESS);
             map.put(HelperUtils.KEY_DESCRIPTION, "");
@@ -264,7 +267,7 @@ public class DeviceAPI {
             map.put(HelperUtils.KEY_RESULT, HelperUtils.RESULT_FAIL);
             map.put(HelperUtils.KEY_DESCRIPTION, "error.");
 
-            AUTHEN_MAP.put(serialNumber,false);
+            AuthenMap.put(serialNumber,false,shiroMemcache);
             logger.debug(serialNumber + "---没有通过授权..");
         }
         map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_NOTHING);
@@ -272,7 +275,7 @@ public class DeviceAPI {
         map.put(HelperUtils.KEY_PROGRAMS, programIds);
 
         System.out.print("on-line");
-        OnOffLineMap.online(serialNumber);
+        OnOffLineMap.online(serialNumber,shiroMemcache);
         JSONObject object = JSONObject.fromObject(map);
         return object.toString();
     }
@@ -379,7 +382,7 @@ public class DeviceAPI {
     private String getDeviceSerialNumber(String token) {
         String serialNumber = "";
         try{
-            serialNumber = TokenNumMap.get(token);
+            serialNumber = TokenNumMap.get(token,shiroMemcache);
         }catch (Exception e){
 //            e.printStackTrace();
         }
@@ -611,14 +614,14 @@ public class DeviceAPI {
         int frqsNum = frqsNumStr != null ? Integer.parseInt(frqsNumStr) : 0;
 
 
-        ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
+        ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber,shiroMemcache);
         if (scanFreqInfos == null) {
             scanFreqInfos = new ScanFreqInfos();
-            MemoryMap.add(serialNumber, scanFreqInfos);
         }
         scanFreqInfos.setScanEnded(scanEnded);
         scanFreqInfos.setProgress(progress);
         scanFreqInfos.setFrqsNum(frqsNum);
+        MemoryMap.add(serialNumber, scanFreqInfos,shiroMemcache);
 
         JSONArray freqsArray = json.getJSONArray("frqs_list");
         int size = freqsArray.size();
@@ -695,7 +698,7 @@ public class DeviceAPI {
 
         String keyFreq = null;
         String keyPrograms = null;
-        JSONObject cmmd = CommandMap.getCommand(serialNumber);
+        JSONObject cmmd = CommandMap.getCommand(serialNumber,shiroMemcache);
         if (cmmd != null) {
             keyFreq = (String) cmmd.get(HelperUtils.KEY_FRQ);
             keyPrograms = (String) cmmd.get(HelperUtils.KEY_PROGRAMS);
@@ -869,8 +872,8 @@ public class DeviceAPI {
         postData = json.toString();
         //{"dstat":"0","line":"480","temper":"68","locked":"1","frq":"786000000","strength":"179","snr":"13","dprogs":"3","ndisks":"0","camers":"0","sessions":"0"}
         String serialNumber = getDeviceSerialNumber(token);
-        long oldTime = HeartBeatMap.getTimestamp(serialNumber);
-        boolean isUpdate = HeartBeatMap.add(serialNumber, postData);
+        long oldTime = HeartBeatMap.getTimestamp(serialNumber,shiroMemcache);
+        boolean isUpdate = HeartBeatMap.add(serialNumber, postData,shiroMemcache);
         if(isUpdate){
             DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
             DeviceAuthen deviceAuthen = new DeviceAuthen();
@@ -892,7 +895,7 @@ public class DeviceAPI {
         }
 
         //TODO 从CommandMap中获取
-        JSONObject obj = CommandMap.getCommand(serialNumber);
+        JSONObject obj = CommandMap.getCommand(serialNumber,shiroMemcache);
         String cmd = obj != null ? obj.getString(HelperUtils.KEY_COMMAND) : "";
         if (HelperUtils.CMD_SCANFRQ.equals(cmd)) {
             map.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SCANFRQ);
@@ -916,7 +919,7 @@ public class DeviceAPI {
     public boolean getAuthen(String serialNumber){
         boolean authen = false;
         try {
-            authen = AUTHEN_MAP.get(serialNumber);
+            authen = AuthenMap.get(serialNumber,shiroMemcache);
         }catch (Exception e){
             authen =false;
             //e.printStackTrace();

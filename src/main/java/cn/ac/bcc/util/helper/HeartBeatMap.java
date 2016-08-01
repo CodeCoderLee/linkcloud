@@ -1,8 +1,10 @@
 package cn.ac.bcc.util.helper;
 
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.MemcachedUtils;
 import net.sf.json.JSONObject;
 import net.spy.memcached.MemcachedClient;
+import org.elasticsearch.common.geo.ShapeRelation;
 
 import javax.json.Json;
 import java.util.*;
@@ -13,15 +15,15 @@ import java.util.*;
 public class HeartBeatMap {
     private static Map<String,String> map = new HashMap<String, String>();
 
-    public static boolean add(String key,String heartBeanData){
+    public static boolean add(String key, String heartBeanData, ShiroMemcache shiroMemcache){
         //检测频率和locked是否发生变化
         boolean ret = false;
         try{
             JSONObject object = JSONObject.fromObject(heartBeanData);
             String newFrq = object.getString("frq");
             String newLocked = object.getString("locked");
-            String oldFrq = getFrq(key);
-            String oldLocked = getLocked(key);
+            String oldFrq = getFrq(key,shiroMemcache);
+            String oldLocked = getLocked(key,shiroMemcache);
             if(!newFrq.equals(oldFrq) || !newLocked.equals(oldLocked)){
                 ret = true;
             }
@@ -29,7 +31,7 @@ public class HeartBeatMap {
 
         }
 //        map.put(key,heartBeanData);
-        MemcachedUtils.getClientInstance().add(KeyPrefix.HEARTBEAT_PREFIX + key, 60 * 60 * 24 * 30, heartBeanData);
+        shiroMemcache.getMemcachedClient().add(KeyPrefix.HEARTBEAT_PREFIX + key, 60 * 60 * 24 * 30, heartBeanData);
         return ret;
     }
 
@@ -44,8 +46,8 @@ public class HeartBeatMap {
 //        return keyList;
 //    }
 
-    public static long getTimestamp(String key){
-        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+    public static long getTimestamp(String key,ShiroMemcache shiroMemcache){
+        MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             JSONObject json = JSONObject.fromObject(object.toString());
@@ -62,8 +64,8 @@ public class HeartBeatMap {
 //        }
     }
 
-    public static String getSeq(String key){
-        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+    public static String getSeq(String key,ShiroMemcache shiroMemcache){
+        MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             JSONObject json = JSONObject.fromObject(object.toString());
@@ -80,8 +82,8 @@ public class HeartBeatMap {
 //        }
     }
 
-    public static String getFrq(String key){
-        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+    public static String getFrq(String key,ShiroMemcache shiroMemcache){
+        MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             JSONObject json = JSONObject.fromObject(object.toString());
@@ -98,8 +100,8 @@ public class HeartBeatMap {
 //        }
     }
 
-    public static String getLocked(String key){
-        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+    public static String getLocked(String key,ShiroMemcache shiroMemcache){
+        MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             JSONObject json = JSONObject.fromObject(object.toString());
@@ -116,8 +118,8 @@ public class HeartBeatMap {
 //        }
     }
 
-    public static String get(String key){
-        MemcachedClient memcachedClient = MemcachedUtils.getClientInstance();
+    public static String get(String key,ShiroMemcache shiroMemcache){
+        MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.HEARTBEAT_PREFIX + key);
         if (object != null) {
             return object.toString();
@@ -131,8 +133,8 @@ public class HeartBeatMap {
 //        }
     }
 
-    public static void clear(String key){
-        MemcachedUtils.getClientInstance().delete(KeyPrefix.HEARTBEAT_PREFIX + key);
+    public static void clear(String key,ShiroMemcache shiroMemcache){
+        shiroMemcache.getMemcachedClient().delete(KeyPrefix.HEARTBEAT_PREFIX + key);
 //        map.put(key,null);
 //        map.remove(key);
     }

@@ -11,6 +11,7 @@ import cn.ac.bcc.model.core.Resources;
 import cn.ac.bcc.model.core.User;
 import cn.ac.bcc.service.business.area.AreaService;
 import cn.ac.bcc.service.business.device.DeviceViewService;
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.Messenger;
 import cn.ac.bcc.util.helper.*;
 import cn.ac.bcc.service.business.device.DeviceAuthenService;
@@ -53,6 +54,8 @@ public class DeviceController extends BaseController<Device> {
 
     @Autowired
     private AreaService areaService;
+    @Autowired
+    private ShiroMemcache shiroMemcache;
 
 
     @RequestMapping("list")
@@ -128,7 +131,7 @@ public class DeviceController extends BaseController<Device> {
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SCANFRQ);
         logger.info("===============下发扫频命令:serialNumber===" + serialNumber + "data====" + object.toString()+"===============");
-        CommandMap.addCommand(serialNumber,object);
+        CommandMap.addCommand(serialNumber,object,shiroMemcache);
 //        ScanFreqInfos scanFreqInfos = new ScanFreqInfos();
 //        scanFreqInfos.setFrqsNum(3);
 //        scanFreqInfos.setProgress(20);
@@ -427,13 +430,13 @@ public class DeviceController extends BaseController<Device> {
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SETFRQ);
         logger.info("============下发设置频点命令,serialNumber="+serialNumber+"|||data="+object.toString()+"=================");
-        CommandMap.addCommand(serialNumber,object);
+        CommandMap.addCommand(serialNumber,object,shiroMemcache);
         //设备再次请求SetFrq指令时需要的命令数据
         JSONObject obj = new JSONObject();
         obj.put(HelperUtils.KEY_COMMAND,HelperUtils.CMD_SETFRQ);
         obj.put(HelperUtils.KEY_FRQ,frequency);
         obj.put(HelperUtils.KEY_PROGRAMS,programIds);
-        CommandMap.addCommand(serialNumber,obj);
+        CommandMap.addCommand(serialNumber,obj,shiroMemcache);
         return SUCCESS;
     }
 
@@ -444,7 +447,7 @@ public class DeviceController extends BaseController<Device> {
         //心跳包下发指令
         JSONObject object = new JSONObject();
         object.put(HelperUtils.KEY_COMMAND, HelperUtils.CMD_SHOCK);
-        CommandMap.addCommand(serialNumber, object);
+        CommandMap.addCommand(serialNumber, object,shiroMemcache);
         logger.info("============下发连通性测试命令,serialNumber="+serialNumber+"|||data="+object.toString()+"=================");
         return SUCCESS;
     }
@@ -454,7 +457,7 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("getScanFrequency")
     public ScanFreqInfos getScanFrequency(String serialNumber){
         ScanFreqInfos scanFreqInfos;
-        scanFreqInfos = MemoryMap.get(serialNumber);
+        scanFreqInfos = MemoryMap.get(serialNumber,shiroMemcache);
         if(scanFreqInfos == null){
             scanFreqInfos = new ScanFreqInfos();
         }

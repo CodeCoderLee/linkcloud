@@ -44,7 +44,7 @@
 		<constructor-arg name="port" value="${memcache.port}" />
 		<constructor-arg name="username" value="${memcache.username}"/>
 		<constructor-arg name="password" value="${memcache.password}" />
-		<constructor-arg name="isAuthen" value="false"/>
+		<constructor-arg name="isAuthen" value="${memcache.authen}"/>
 	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

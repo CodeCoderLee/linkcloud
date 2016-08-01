@@ -13,6 +13,7 @@ import cn.ac.bcc.service.business.program.ProgramNetDiskService;
 import cn.ac.bcc.service.business.program.ProgramService;
 import cn.ac.bcc.service.system.user.UserRoleService;
 import cn.ac.bcc.service.system.user.UserService;
+import cn.ac.bcc.shiro.cache.ShiroMemcache;
 import cn.ac.bcc.util.*;
 import cn.ac.bcc.util.helper.HeartBeatMap;
 import cn.ac.bcc.util.helper.MemoryMap;
@@ -71,6 +72,8 @@ public class DeviceSpaceController extends BaseController<Comment>{
     private DeviceAuthenService deviceAuthenService;
     @Autowired
     private AdvertisementPublishService advertisementPublishService;
+    @Autowired
+    private ShiroMemcache shiroMemcache;
 
     private final int PAGE_SIZE = 10;
     private final int SHOW_STATUS = 3;
@@ -175,7 +178,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         DeviceAuthen deviceAuthen = deviceAuthenService.findDeviceBySerialNumber(serialNumber);
         Map<String,List<Program>> map = programService.findTop3Program(serialNumber);
         List<ProgramNetDisk> lst = programNetDiskService.findProgram(serialNumber,0,true);
-        ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
+        ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber,shiroMemcache);
         if(scanFreqInfos != null && !scanFreqInfos.isScanEnded()){
             isScan = true;
         }
@@ -472,7 +475,7 @@ public class DeviceSpaceController extends BaseController<Comment>{
         }else {
             try {
                 ScanFreqInfos ret = new ScanFreqInfos();
-                ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber);
+                ScanFreqInfos scanFreqInfos = MemoryMap.get(serialNumber,shiroMemcache);
                 if (scanFreqInfos != null) {
                     ret.setScanEnded(scanFreqInfos.isScanEnded());
                     ret.setProgress(scanFreqInfos.getProgress());
@@ -496,10 +499,10 @@ public class DeviceSpaceController extends BaseController<Comment>{
     public JSONObject getHeartBeat(Model mode,String serialNumber,String seq){
         JSONObject obj = new JSONObject();
         try {
-            long oldTime = HeartBeatMap.getTimestamp(serialNumber);
-            String oldSeq = HeartBeatMap.getSeq(serialNumber);
+            long oldTime = HeartBeatMap.getTimestamp(serialNumber,shiroMemcache);
+            String oldSeq = HeartBeatMap.getSeq(serialNumber,shiroMemcache);
             if (!oldSeq.equals(seq) && !oldSeq.equals("-1")) {
-                String json = HeartBeatMap.get(serialNumber);
+                String json = HeartBeatMap.get(serialNumber,shiroMemcache);
                 //json  = "Hello World!";
                 obj.put("json",json);
                 obj.put("date-time",timestampToDate(oldTime));
