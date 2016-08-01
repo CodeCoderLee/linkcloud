@@ -1,5 +1,6 @@
 package cn.ac.bcc.http;
 
+import cn.ac.bcc.exception.SystemException;
 import cn.ac.bcc.model.business.*;
 import cn.ac.bcc.service.business.advertisement.DeviceToVideoService;
 import cn.ac.bcc.service.business.device.DeviceUpdateService;
@@ -74,6 +75,9 @@ public class DeviceAPI {
         }
         String token = getCookieValue(request);
         String serialNumber = getDeviceSerialNumber(token);
+//        if(StringUtils.isEmpty(serialNumber) && serialNumber.endsWith("18")){
+//            System.out.println("serialNumber----" + serialNumber);
+//        }
 
         if(StringUtils.isNotEmpty(serialNumber) && !OnOffLineMap.isOnline(serialNumber,shiroMemcache)){
             AuthenMap.put(serialNumber,true,shiroMemcache);

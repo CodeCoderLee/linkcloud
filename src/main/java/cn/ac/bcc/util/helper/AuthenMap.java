@@ -1,6 +1,7 @@
 package cn.ac.bcc.util.helper;
 
 import cn.ac.bcc.shiro.cache.ShiroMemcache;
+import net.sf.ezmorph.array.BooleanArrayMorpher;
 import net.spy.memcached.MemcachedClient;
 
 /**
@@ -15,7 +16,21 @@ public class AuthenMap {
 
     public static boolean get(String serialNumber,ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        Boolean isAuthen = (Boolean)client.get(KeyPrefix.AUTHEN_PREFIX  + serialNumber);
+        boolean isAuthen = false;
+        Object obj = client.get(KeyPrefix.AUTHEN_PREFIX  + serialNumber);
+        if(obj != null){
+            isAuthen = (Boolean)obj;
+        }
         return  isAuthen;
+    }
+
+    public static boolean containsKey(String serialNumber,ShiroMemcache shiroMemcache){
+        MemcachedClient client = shiroMemcache.getMemcachedClient();
+        Object obj = client.get(KeyPrefix.AUTHEN_PREFIX  + serialNumber);
+        if(obj == null){
+            return  false;
+        }else{
+            return  true;
+        }
     }
 }

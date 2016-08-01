@@ -35,8 +35,19 @@ public class StatusListener implements ServletContextListener {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
 
+        ShiroMemcache shiroMemcache = springContext.getBean(ShiroMemcache.class);
+        try {
+            List<String> keyList = OnOffLineMap.getKeys(shiroMemcache);
+            for (String serialNumber : keyList) {
+                OnOffLineMap.clear(serialNumber,shiroMemcache);
+            }
+        }catch (Exception e){
+
+        }
         Timer timer = new Timer();
-        timer.schedule(new MyTask(springContext, sc, timer), 3000);
+        timer.schedule(new MyTask(springContext, sc, timer), 30000);
+
+
     }
 
     class MyTask extends TimerTask {
@@ -72,8 +83,7 @@ public class StatusListener implements ServletContextListener {
 //                            }
                             HeartBeatMap.clear(serialNumber,shiroMemcache);
                             OnOffLineMap.clear(serialNumber,shiroMemcache);
-                            Object obj = AuthenMap.get(serialNumber,shiroMemcache);
-                            if(obj != null) {
+                            if(AuthenMap.containsKey(serialNumber,shiroMemcache)) {
                                 AuthenMap.put(serialNumber, false, shiroMemcache);
                             }
                             logger.info(serialNumber + "设备离线");
