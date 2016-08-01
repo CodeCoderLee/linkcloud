@@ -14,7 +14,7 @@
     select t2.id id,t1.serial_number serialNumber,t2.update_info updateInfo from bcc_device t1 LEFT  JOIN  bcc_device_update t2
     on t1.serial_number = t2.serial_number where 1=1
     <if test="serialNumber != null and serialNumber != ''">
-      and t1.serial_number = #{serialNumber}
+      <![CDATA[and t1.serial_number like "%"#{serialNumber}"%"  ]]>
     </if>
     ORDER BY t1.register_time DESC
   </select>
