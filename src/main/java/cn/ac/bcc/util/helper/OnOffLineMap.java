@@ -16,7 +16,7 @@ public class OnOffLineMap {
     static int maxSpace = 1000*60*5;
     public static void online(String serialNumber, ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        client.add(serialNumber, 60 * 60 * 24 * 30, System.currentTimeMillis());
+        client.set(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber, 60 * 60 * 24 * 30, System.currentTimeMillis());
 //        map.put(serialNumber,System.currentTimeMillis());
     }
 
@@ -25,7 +25,7 @@ public class OnOffLineMap {
         MemcachedClient client = shiroMemcache.getMemcachedClient();
         Object object = client.get(KeyPrefix.ALL_SERIALNUMBER);
         if (object != null) {
-            JSONArray jsonArray = JSONArray.fromObject(object.toString());
+            JSONArray jsonArray = (JSONArray)object;
             for (Object o : jsonArray.toArray()) {
                 keyList.add(o.toString());
             }
@@ -43,7 +43,7 @@ public class OnOffLineMap {
 
     public static void clear(String key,ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        client.delete(key);
+        client.delete(KeyPrefix.ON_OFF_LINE_PREFIX + key);
 //        map.put(key,null);
 //        map.remove(key);
     }
@@ -54,7 +54,7 @@ public class OnOffLineMap {
         boolean online = true;
          try{
              MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
-             Long oldTime = (Long)memcachedClient.get(serialNumber);
+             Long oldTime = (Long)memcachedClient.get(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber);
 //             Long oldTime  = map.get(serialNumber);
              long current = System.currentTimeMillis();
              long interval = current - oldTime;

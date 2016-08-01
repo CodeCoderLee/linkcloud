@@ -15,7 +15,7 @@ public class MemoryMap {
 
     public static void add(String key, ScanFreqInfos scanFreqInfos,ShiroMemcache shiroMemcache) {
         MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
-        memcachedClient.add(KeyPrefix.MEMORY_PREFIX + key, 60 * 60 * 24 * 30, scanFreqInfos);
+        memcachedClient.set(KeyPrefix.MEMORY_PREFIX + key, 60 * 60 * 24 * 30, scanFreqInfos);
 //        map.put(key,scanFreqInfos);
     }
 

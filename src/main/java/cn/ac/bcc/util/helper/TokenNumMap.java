@@ -15,20 +15,20 @@ public class TokenNumMap {
     private static Map<String,String> map = new HashMap<String, String>();
 
 
-    public static void add(String token, String serialNumber, ShiroMemcache shiroMemcache){
+    public static synchronized void add(String token, String serialNumber, ShiroMemcache shiroMemcache){
 //        map.put(token,serialNumber);
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        client.add(token, 60 * 60 * 24 * 30, serialNumber);
+        client.set(token, 60 * 60 * 24 * 30, serialNumber);
         Object object = client.get(KeyPrefix.ALL_SERIALNUMBER);
         if (object == null) {
             JSONArray array = new JSONArray();
             array.add(serialNumber);
-            client.add(KeyPrefix.ALL_SERIALNUMBER, 60 * 60 * 24 * 30, array.toString());
+            client.set(KeyPrefix.ALL_SERIALNUMBER, 60 * 60 * 24 * 30, array);
         } else {
-            JSONArray array = JSONArray.fromObject(object.toString());
+            JSONArray array = (JSONArray)object;
             if (!array.contains(serialNumber)) {
                 array.add(serialNumber);
-                client.add(KeyPrefix.ALL_SERIALNUMBER, 60 * 60 * 24 * 30, array.toString());
+                client.set(KeyPrefix.ALL_SERIALNUMBER, 60 * 60 * 24 * 30, array);
             }
         }
     }

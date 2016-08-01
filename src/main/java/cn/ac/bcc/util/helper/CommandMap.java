@@ -22,7 +22,7 @@ public class CommandMap {
         Object object = memcachedClient.get(KeyPrefix.COMMAND_PREFIX +serialNumber);
         if (object == null) {
             queue = new LinkedBlockingQueue<JSONObject>(MAX_SIZE);
-            memcachedClient.add(KeyPrefix.COMMAND_PREFIX +serialNumber, 60 * 60 * 24 * 30, queue);
+            memcachedClient.set(KeyPrefix.COMMAND_PREFIX +serialNumber, 60 * 60 * 24 * 30, queue);
         } else {
             queue = (LinkedBlockingQueue<JSONObject>) object;
         }

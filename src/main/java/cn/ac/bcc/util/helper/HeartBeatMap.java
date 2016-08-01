@@ -31,7 +31,7 @@ public class HeartBeatMap {
 
         }
 //        map.put(key,heartBeanData);
-        shiroMemcache.getMemcachedClient().add(KeyPrefix.HEARTBEAT_PREFIX + key, 60 * 60 * 24 * 30, heartBeanData);
+        shiroMemcache.getMemcachedClient().set(KeyPrefix.HEARTBEAT_PREFIX + key, 60 * 60 * 24 * 30, heartBeanData);
         return ret;
     }
 

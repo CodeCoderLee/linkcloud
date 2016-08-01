@@ -29,7 +29,7 @@ public class MemcachedSessionDAO extends AbstractSessionDAO {
         Serializable sessionId = generateSessionId(session);
         assignSessionId(session, sessionId);
         try {
-            System.out.println("doCreate--timeout---" + session.getTimeout() + " sessionId--" + session.getId());
+            //System.out.println("doCreate--timeout---" + session.getTimeout() + " sessionId--" + session.getId());
             client.set(sessionId.toString(), (int) session.getTimeout() / 1000, session);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -42,7 +42,7 @@ public class MemcachedSessionDAO extends AbstractSessionDAO {
         Session session = null;
         try {
             session = (Session)client.get(sessionId.toString());
-            System.out.println("doReadSession--timeout---" + session.getTimeout() + " sessionId--" + session.getId());
+            //System.out.println("doReadSession--timeout---" + session.getTimeout() + " sessionId--" + session.getId());
         } catch (Exception e) {
             log.error(e.getMessage());
         }

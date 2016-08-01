@@ -70,7 +70,12 @@ public class StatusListener implements ServletContextListener {
 //                            if(DeviceAPI.AUTHEN_MAP.containsKey(serialNumber)){
 //                                DeviceAPI.AUTHEN_MAP.put(serialNumber,false);
 //                            }
-                            AuthenMap.put(serialNumber,false,shiroMemcache);
+                            HeartBeatMap.clear(serialNumber,shiroMemcache);
+                            OnOffLineMap.clear(serialNumber,shiroMemcache);
+                            Object obj = AuthenMap.get(serialNumber,shiroMemcache);
+                            if(obj != null) {
+                                AuthenMap.put(serialNumber, false, shiroMemcache);
+                            }
                             logger.info(serialNumber + "设备离线");
                             System.out.println("off-line");
                         }
