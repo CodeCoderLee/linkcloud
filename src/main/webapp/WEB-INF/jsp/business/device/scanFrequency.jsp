@@ -167,6 +167,7 @@
                 var ulHtml = "";
                 var divHtml = "";
                 if (data.scanEnded) {
+                    clearInterval(int);
                     $('#scanFrequencyBtn').text("重新扫频");
                     $('#info').html("扫描到" + data.frqsNum + "个可用频点");
                     $('div.progress-bar').attr("aria-valuenow", 100);
