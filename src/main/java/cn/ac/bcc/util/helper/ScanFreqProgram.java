@@ -1,9 +1,11 @@
 package cn.ac.bcc.util.helper;
 
+import java.io.Serializable;
+
 /**
  * Created by lenovo on 2016-06-06.
  */
-public class ScanFreqProgram {
+public class ScanFreqProgram implements Serializable {
 
     private String pid;
     private String name;

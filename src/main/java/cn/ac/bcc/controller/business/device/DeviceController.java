@@ -465,7 +465,8 @@ public class DeviceController extends BaseController<Device> {
         }catch (Exception e){
             scanFreqInfos = new ScanFreqInfos();
         }
-        logger.info("============获取扫频数据,data="+scanFreqInfos.toString()+"=================");
+        JSONObject obj = JSONObject.fromObject(scanFreqInfos);
+        logger.info(serialNumber + "============获取扫频数据,data="+ obj.toString() +"=================");
         return scanFreqInfos;
     }
 

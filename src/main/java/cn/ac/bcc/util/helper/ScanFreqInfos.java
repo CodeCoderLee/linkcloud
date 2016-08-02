@@ -13,7 +13,7 @@ public class ScanFreqInfos implements Serializable{
     private boolean scanEnded;
     private int progress;
     private int frqsNum;
-    private ArrayList<Freq> freqList;
+    private List<Freq> freqList;
 
     public boolean isScanEnded() {
         return scanEnded;
@@ -39,11 +39,11 @@ public class ScanFreqInfos implements Serializable{
         this.frqsNum = frqsNum;
     }
 
-    public ArrayList<Freq> getFreqList() {
+    public List<Freq> getFreqList() {
         return freqList;
     }
 
-    public void setFreqList(ArrayList<Freq> freqList) {
+    public void setFreqList(List<Freq> freqList) {
         this.freqList = freqList;
     }
 }

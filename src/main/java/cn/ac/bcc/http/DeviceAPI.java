@@ -628,7 +628,7 @@ public class DeviceAPI {
 
         JSONArray freqsArray = json.getJSONArray("frqs_list");
         int size = freqsArray.size();
-        ArrayList<Freq> freqList = new ArrayList<Freq>();
+        List<Freq> freqList = new ArrayList<Freq>();
 
         for (int i = 0; i < size; i++) {
             JSONObject freqObject = (JSONObject) freqsArray.get(i);
@@ -646,7 +646,7 @@ public class DeviceAPI {
 
             JSONArray programsArray = freqObject.getJSONArray("progs_list");
             int len = programsArray.size();
-            ArrayList<ScanFreqProgram> fpList = new ArrayList<ScanFreqProgram>();
+            List<ScanFreqProgram> fpList = new ArrayList<ScanFreqProgram>();
             freqObj.setProgramList(fpList);
             for (int j = 0; j < len; j++) {
                 JSONObject programObject = (JSONObject) programsArray.get(j);

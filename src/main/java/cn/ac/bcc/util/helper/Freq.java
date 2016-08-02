@@ -11,7 +11,7 @@ public class Freq implements Serializable{
     private String frq;
     private int strength;
     private int snr;
-    private ArrayList<ScanFreqProgram> programList;
+    private List<ScanFreqProgram> programList;
 
     public String getFrq() {
         return frq;
@@ -37,11 +37,11 @@ public class Freq implements Serializable{
         this.snr = snr;
     }
 
-    public ArrayList<ScanFreqProgram> getProgramList() {
+    public List<ScanFreqProgram> getProgramList() {
         return programList;
     }
 
-    public void setProgramList(ArrayList<ScanFreqProgram> programList) {
+    public void setProgramList(List<ScanFreqProgram> programList) {
         this.programList = programList;
     }
 }
