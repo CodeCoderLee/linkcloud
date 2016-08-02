@@ -14,20 +14,34 @@ import java.util.*;
  */
 public class OnOffLineMap {
     static  Logger logger = Logger.getLogger(OnOffLineMap.class);
-    private static Map<String,Long> map = new HashMap<String, Long>();
+//    private static Map<String,Long> map = new HashMap<String, Long>();
     static int maxSpace = 1000*60*5;
     public static void online(String serialNumber, ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
         long time =  System.currentTimeMillis();
         client.set(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber, 60 * 60 * 24 * 30,time);
-        logger.error("--online----serialNumber is " + serialNumber  + "  time is " +  time);
+//        logger.error("--online----serialNumber is " + serialNumber  + "  time is " +  time);
 //        map.put(serialNumber,System.currentTimeMillis());
+
+        //lisy 判断是否离线的部分需要单独的Map空间
+        Object onLineObj = client.get(KeyPrefix.ALL_SERIALNUMBER_ON_LINE);
+        if (onLineObj == null) {
+            JSONArray array = new JSONArray();
+            array.add(serialNumber);
+            client.set(KeyPrefix.ALL_SERIALNUMBER_ON_LINE, 60 * 60 * 24 * 30, array);
+        } else {
+            JSONArray array = (JSONArray)onLineObj;
+            if (!array.contains(serialNumber)) {
+                array.add(serialNumber);
+                client.set(KeyPrefix.ALL_SERIALNUMBER_ON_LINE, 60 * 60 * 24 * 30, array);
+            }
+        }
     }
 
     public static List<String> getKeys(ShiroMemcache shiroMemcache){
         List<String> keyList = new ArrayList<String>();
         MemcachedClient client = shiroMemcache.getMemcachedClient();
-        Object object = client.get(KeyPrefix.ALL_SERIALNUMBER);
+        Object object = client.get(KeyPrefix.ALL_SERIALNUMBER_ON_LINE);
         if (object != null) {
             JSONArray jsonArray = (JSONArray)object;
             for (Object o : jsonArray.toArray()) {
@@ -59,7 +73,7 @@ public class OnOffLineMap {
          try{
              MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
              Object obj = memcachedClient.get(KeyPrefix.ON_OFF_LINE_PREFIX + serialNumber);
-             logger.error("--isOnline----obj is " + obj  + "   serialNumber is " + serialNumber);
+             //logger.error("--isOnline----obj is " + obj  + "   serialNumber is " + serialNumber);
              if(obj != null) {
                  Long oldTime = (Long)obj;
 //             Long oldTime  = map.get(serialNumber);

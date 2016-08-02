@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class CommandMap {
     private static int MAX_SIZE = 50;
-    private static Map<String,LinkedBlockingQueue<JSONObject>> map = new HashMap<String,LinkedBlockingQueue<JSONObject>>();
+//    private static Map<String,LinkedBlockingQueue<JSONObject>> map = new HashMap<String,LinkedBlockingQueue<JSONObject>>();
 
     public static void addCommand(String serialNumber, JSONObject cmmdInfo, ShiroMemcache shiroMemcache) throws InterruptedException {
         LinkedBlockingQueue<JSONObject> queue = null;
@@ -22,9 +22,12 @@ public class CommandMap {
         Object object = memcachedClient.get(KeyPrefix.COMMAND_PREFIX +serialNumber);
         if (object == null) {
             queue = new LinkedBlockingQueue<JSONObject>(MAX_SIZE);
+            queue.put(cmmdInfo);
             memcachedClient.set(KeyPrefix.COMMAND_PREFIX +serialNumber, 60 * 60 * 24 * 30, queue);
         } else {
             queue = (LinkedBlockingQueue<JSONObject>) object;
+            queue.put(cmmdInfo);
+            memcachedClient.set(KeyPrefix.COMMAND_PREFIX +serialNumber, 60 * 60 * 24 * 30, queue);
         }
 //        if(!map.containsKey(serialNumber)){
 //            queue = new LinkedBlockingQueue<JSONObject>(MAX_SIZE);
@@ -32,7 +35,6 @@ public class CommandMap {
 //        }else{
 //            queue = map.get(serialNumber);
 //        }
-        queue.put(cmmdInfo);
     }
 
     public static JSONObject getCommand(String serialNumber, ShiroMemcache shiroMemcache){
