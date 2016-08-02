@@ -36,16 +36,16 @@ public class StatusListener implements ServletContextListener {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
 
-        ShiroMemcache shiroMemcache = springContext.getBean(ShiroMemcache.class);
-        TokenNumMap.clear(shiroMemcache);
-        try {
-            List<String> keyList = OnOffLineMap.getKeys(shiroMemcache);
-            for (String serialNumber : keyList) {
-                OnOffLineMap.clear(serialNumber,shiroMemcache);
-            }
-        }catch (Exception e){
-
-        }
+//        ShiroMemcache shiroMemcache = springContext.getBean(ShiroMemcache.class);
+//        TokenNumMap.clear(shiroMemcache);
+//        try {
+//            List<String> keyList = OnOffLineMap.getKeys(shiroMemcache);
+//            for (String serialNumber : keyList) {
+//                OnOffLineMap.clear(serialNumber,shiroMemcache);
+//            }
+//        }catch (Exception e){
+//
+//        }
         Timer timer = new Timer();
         timer.schedule(new MyTask(springContext, sc, timer), 30000);
 

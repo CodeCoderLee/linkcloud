@@ -31,15 +31,15 @@ public class HttpServerListener implements ServletContextListener {
     {
         ServletContext sc = event.getServletContext();
         WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(sc);
-        try {
-            DeviceAuthenService deviceAuthenService = springContext.getBean(DeviceAuthenService.class);
-            DeviceService deviceService = springContext.getBean(DeviceService.class);
-            deviceService.updateOnOffLineAll(HelperUtils.OFF_LINE);
-            deviceAuthenService.updateOnOffLineAll(HelperUtils.OFF_LINE);
-            logger.debug("初始化所有设备状态为离线");
-        }catch (Exception e){
-
-        }
+//        try {
+//            DeviceAuthenService deviceAuthenService = springContext.getBean(DeviceAuthenService.class);
+//            DeviceService deviceService = springContext.getBean(DeviceService.class);
+//            deviceService.updateOnOffLineAll(HelperUtils.OFF_LINE);
+//            deviceAuthenService.updateOnOffLineAll(HelperUtils.OFF_LINE);
+//            logger.debug("初始化所有设备状态为离线");
+//        }catch (Exception e){
+//
+//        }
 
         Timer timer = new Timer();
         timer.schedule(new MyTask(springContext, sc, timer), 3000);
