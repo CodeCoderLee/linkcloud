@@ -40,9 +40,13 @@ public class CommandMap {
     public static JSONObject getCommand(String serialNumber, ShiroMemcache shiroMemcache){
         MemcachedClient memcachedClient = shiroMemcache.getMemcachedClient();
         Object object = memcachedClient.get(KeyPrefix.COMMAND_PREFIX +serialNumber);
+        if(serialNumber != null && serialNumber.endsWith("0018")){
+            int k = 0;
+        }
         if (object != null) {
             LinkedBlockingQueue<JSONObject> queue = (LinkedBlockingQueue<JSONObject>) object;
             JSONObject jsonObject = queue.poll();
+            memcachedClient.set(KeyPrefix.COMMAND_PREFIX +serialNumber, 60 * 60 * 24 * 30, queue);
             return jsonObject;
         } else {
             return null;
