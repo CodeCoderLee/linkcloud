@@ -457,8 +457,12 @@ public class DeviceController extends BaseController<Device> {
     @RequestMapping("getScanFrequency")
     public ScanFreqInfos getScanFrequency(String serialNumber){
         ScanFreqInfos scanFreqInfos;
-        scanFreqInfos = MemoryMap.get(serialNumber,shiroMemcache);
-        if(scanFreqInfos == null){
+        try {
+            scanFreqInfos = MemoryMap.get(serialNumber, shiroMemcache);
+            if (scanFreqInfos == null) {
+                scanFreqInfos = new ScanFreqInfos();
+            }
+        }catch (Exception e){
             scanFreqInfos = new ScanFreqInfos();
         }
         logger.info("============获取扫频数据,data="+scanFreqInfos.toString()+"=================");

@@ -58,6 +58,23 @@ public class OnOffLineMap {
         return keyList;
     }
 
+    public static List<String> getKeys(MemcachedClient client){
+        List<String> keyList = new ArrayList<String>();
+        Object object = client.get(KeyPrefix.ALL_SERIALNUMBER_ON_LINE);
+        if (object != null) {
+            JSONArray jsonArray = (JSONArray)object;
+            for (Object o : jsonArray.toArray()) {
+                keyList.add(o.toString());
+            }
+        }
+//        Set<String> set = map.keySet();
+//        Iterator<String> ite = set.iterator();
+//        List<String > keyList = new ArrayList<String>();
+//        while (ite.hasNext()){
+//            keyList.add(ite.next());
+//        }
+        return keyList;
+    }
 
 
     public static void clear(String key,ShiroMemcache shiroMemcache){

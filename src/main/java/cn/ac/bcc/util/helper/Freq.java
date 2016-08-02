@@ -1,6 +1,7 @@
 package cn.ac.bcc.util.helper;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ public class Freq implements Serializable{
     private String frq;
     private int strength;
     private int snr;
-    private List<ScanFreqProgram> programList;
+    private ArrayList<ScanFreqProgram> programList;
 
     public String getFrq() {
         return frq;
@@ -36,11 +37,11 @@ public class Freq implements Serializable{
         this.snr = snr;
     }
 
-    public List<ScanFreqProgram> getProgramList() {
+    public ArrayList<ScanFreqProgram> getProgramList() {
         return programList;
     }
 
-    public void setProgramList(List<ScanFreqProgram> programList) {
+    public void setProgramList(ArrayList<ScanFreqProgram> programList) {
         this.programList = programList;
     }
 }

@@ -1,6 +1,8 @@
 package cn.ac.bcc.util.helper;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +13,7 @@ public class ScanFreqInfos implements Serializable{
     private boolean scanEnded;
     private int progress;
     private int frqsNum;
-    private List<Freq> freqList;
+    private ArrayList<Freq> freqList;
 
     public boolean isScanEnded() {
         return scanEnded;
@@ -37,11 +39,11 @@ public class ScanFreqInfos implements Serializable{
         this.frqsNum = frqsNum;
     }
 
-    public List<Freq> getFreqList() {
+    public ArrayList<Freq> getFreqList() {
         return freqList;
     }
 
-    public void setFreqList(List<Freq> freqList) {
+    public void setFreqList(ArrayList<Freq> freqList) {
         this.freqList = freqList;
     }
 }

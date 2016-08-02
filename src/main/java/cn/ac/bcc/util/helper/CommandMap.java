@@ -46,7 +46,11 @@ public class CommandMap {
         if (object != null) {
             LinkedBlockingQueue<JSONObject> queue = (LinkedBlockingQueue<JSONObject>) object;
             JSONObject jsonObject = queue.poll();
-            memcachedClient.set(KeyPrefix.COMMAND_PREFIX +serialNumber, 60 * 60 * 24 * 30, queue);
+            if(queue.size() == 0){
+                memcachedClient.delete(KeyPrefix.COMMAND_PREFIX + serialNumber);
+            }else {
+                memcachedClient.set(KeyPrefix.COMMAND_PREFIX + serialNumber, 60 * 60 * 24 * 30, queue);
+            }
             return jsonObject;
         } else {
             return null;
