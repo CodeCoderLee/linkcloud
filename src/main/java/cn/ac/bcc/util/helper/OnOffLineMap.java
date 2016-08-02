@@ -63,12 +63,12 @@ public class OnOffLineMap {
     public static void clear(String key,ShiroMemcache shiroMemcache){
         MemcachedClient client = shiroMemcache.getMemcachedClient();
         client.delete(KeyPrefix.ON_OFF_LINE_PREFIX + key);
-        Object obj = client.get(KeyPrefix.ALL_SERIALNUMBER);
+        Object obj = client.get(KeyPrefix.ALL_SERIALNUMBER_ON_LINE);
         if (obj != null) {
             JSONArray jsonArray = (JSONArray) obj;
             if (jsonArray.contains(key)) {
                 jsonArray.remove(key);
-                client.set(KeyPrefix.ALL_SERIALNUMBER, 60 * 60 * 24 * 30, jsonArray);
+                client.set(KeyPrefix.ALL_SERIALNUMBER_ON_LINE, 60 * 60 * 24 * 30, jsonArray);
             }
 
         }
