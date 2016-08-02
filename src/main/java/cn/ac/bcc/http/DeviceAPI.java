@@ -625,7 +625,6 @@ public class DeviceAPI {
         scanFreqInfos.setScanEnded(scanEnded);
         scanFreqInfos.setProgress(progress);
         scanFreqInfos.setFrqsNum(frqsNum);
-        MemoryMap.add(serialNumber, scanFreqInfos,shiroMemcache);
 
         JSONArray freqsArray = json.getJSONArray("frqs_list");
         int size = freqsArray.size();
@@ -671,6 +670,7 @@ public class DeviceAPI {
             }
         }
         scanFreqInfos.setFreqList(freqList);
+        MemoryMap.add(serialNumber, scanFreqInfos,shiroMemcache);
     }
 
     public String scanFrq(HttpRequest request, String postData, List<NameValuePair> nvList) {
