@@ -79,14 +79,14 @@ public class DeviceAPI {
 //            System.out.println("serialNumber----" + serialNumber);
 //        }
 
-        if(StringUtils.isNotEmpty(serialNumber) && !OnOffLineMap.isOnline(serialNumber,shiroMemcache)){
-            AuthenMap.put(serialNumber,true,shiroMemcache);
-            DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
-            DeviceService deviceService = ctx.getBean(DeviceService.class);
-            deviceService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
-            deviceAuthenService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
-            logger.debug(serialNumber + "离线后重新上线");
-        }
+//        if(StringUtils.isNotEmpty(serialNumber) && !OnOffLineMap.isOnline(serialNumber,shiroMemcache)){
+//            AuthenMap.put(serialNumber,true,shiroMemcache);
+//            DeviceAuthenService deviceAuthenService = ctx.getBean(DeviceAuthenService.class);
+//            DeviceService deviceService = ctx.getBean(DeviceService.class);
+//            deviceService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
+//            deviceAuthenService.updateOnOffLineByNum(serialNumber, HelperUtils.OFF_LINE);
+//            logger.debug(serialNumber + "离线后重新上线");
+//        }
 
         List<NameValuePair> nvList = URLEncodedUtils.parse(query, Charset.forName("UTF-8"));
         String jsonStr = "";
